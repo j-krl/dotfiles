@@ -2,6 +2,12 @@ return {
 	{ "justinmk/vim-sneak" },
 	{ "nvim-tree/nvim-web-devicons" },
 	{
+		"nmac427/guess-indent.nvim",
+		config = function()
+			require("guess-indent").setup()
+		end,
+	},
+	{
 		"akinsho/bufferline.nvim",
 		version = "*",
 		dependencies = "nvim-tree/nvim-web-devicons",
