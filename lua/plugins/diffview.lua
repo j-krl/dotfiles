@@ -1,2 +1,2 @@
-
-    return { 'sindrets/diffview.nvim' }
+return {}
+-- return { 'sindrets/diffview.nvim' }

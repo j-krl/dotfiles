@@ -13,6 +13,7 @@ return {
 					buffer = bufnr,
 					-- Let conform.nvim handle formatting
 					exclude = { "<F3>" },
+					preserve_mappings = false,
 				})
 			end)
 			require("mason").setup({})

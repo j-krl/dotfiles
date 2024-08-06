@@ -1,7 +1,7 @@
 return {
 	{ "Mofiqul/dracula.nvim" },
 	{ "sainnhe/gruvbox-material" },
-	{ "ellisonleao/gruvbox.nvim" },
+	{ "ellisonleao/gruvbox.nvim", priority = 1000, lazy = false },
 	{ "rose-pine/neovim", name = "rose-pine" },
 	{ "scottmckendry/cyberdream.nvim" },
 	{ "sainnhe/sonokai" },
@@ -13,6 +13,6 @@ return {
 	{ "navarasu/onedark.nvim" },
 	{ "miikanissi/modus-themes.nvim" },
 	{ "tiagovla/tokyodark.nvim" },
-	{ "folke/tokyonight.nvim", priority = 1000, lazy = false },
+	{ "folke/tokyonight.nvim" },
 	{ "0xstepit/flow.nvim" },
 }
