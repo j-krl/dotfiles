@@ -29,8 +29,8 @@ vim.opt.cursorline = true
 vim.opt.termguicolors = true -- for bufferline
 vim.opt.expandtab = true
 vim.opt.scrolloff = 20
+vim.opt.undofile = true
 vim.opt.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor"
-vim.g.netrw_bufsettings = "noma nomod nu rnu nobl nowrap ro"
 
 -- Mappings
 vim.g.mapleader = " "
