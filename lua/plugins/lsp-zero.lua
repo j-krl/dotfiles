@@ -20,7 +20,7 @@ return {
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"pyright",
-					"jedi_language_server",
+					-- "jedi_language_server",
 					"eslint",
 					"tsserver",
 					"emmet_language_server",

@@ -9,6 +9,8 @@ return {
 	{ "catppuccin/nvim", name = "catppuccin" },
 	{ "ribru17/bamboo.nvim" },
 	{ "rebelot/kanagawa.nvim" },
+	{ "AlexvZyl/nordic.nvim" },
+	{ "ray-x/aurora" },
 	{ "EdenEast/nightfox.nvim" },
 	{ "navarasu/onedark.nvim" },
 	{ "miikanissi/modus-themes.nvim" },
