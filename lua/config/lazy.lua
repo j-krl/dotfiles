@@ -50,4 +50,4 @@ require("lazy").setup({
 	checker = { enabled = true },
 })
 
-vim.cmd("colorscheme gruvbox")
+vim.cmd("colorscheme dracula")

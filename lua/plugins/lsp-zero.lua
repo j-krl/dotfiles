@@ -20,7 +20,7 @@ return {
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"pyright",
-					-- "jedi_language_server",
+					"jedi_language_server",
 					"eslint",
 					"tsserver",
 					"emmet_language_server",
@@ -37,6 +37,18 @@ return {
 									analysis = {
 										typeCheckingMode = "off",
 										autoImportCompletions = true,
+										diagnosticMode = "workspace",
+									},
+								},
+							},
+						})
+					end,
+					jedi_language_server = function()
+						require("lspconfig").jedi_language_server.setup({
+							init_options = {
+								workspace = {
+									symbols = {
+										maxSymbols = 0,
 									},
 								},
 							},

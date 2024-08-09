@@ -8,7 +8,6 @@ return {
 	{ "tanvirtin/monokai.nvim" },
 	{ "shaunsingh/solarized.nvim" },
 	{ "sainnhe/edge" },
-	{ "yorik1984/newpaper.nvim" },
 	{ "projekt0n/github-nvim-theme" },
 	{ "catppuccin/nvim", name = "catppuccin" },
 	{ "ribru17/bamboo.nvim" },
