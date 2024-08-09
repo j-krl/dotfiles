@@ -20,7 +20,8 @@ return {
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"pyright",
-					"jedi_language_server",
+					"pylsp",
+					-- "jedi_language_server",
 					"eslint",
 					"tsserver",
 					"emmet_language_server",
@@ -43,17 +44,33 @@ return {
 							},
 						})
 					end,
-					jedi_language_server = function()
-						require("lspconfig").jedi_language_server.setup({
-							init_options = {
-								workspace = {
-									symbols = {
-										maxSymbols = 0,
+					pylsp = function()
+						require("lspconfig").pylsp.setup({
+							settings = {
+								pylsp = {
+									-- Only use pylsp for completions
+									plugins = {
+										pyflakes = { enabled = false },
+										mccabe = { enabled = false },
+										pycodestyle = { enabled = false },
+										pydocstyle = { enabled = false },
+										autopep8 = { enabled = false },
 									},
 								},
 							},
 						})
 					end,
+					-- jedi_language_server = function()
+					-- 	require("lspconfig").jedi_language_server.setup({
+					-- 		init_options = {
+					-- 			workspace = {
+					-- 				symbols = {
+					-- 					maxSymbols = 0,
+					-- 				},
+					-- 			},
+					-- 		},
+					-- 	})
+					-- end,
 					lua_ls = function()
 						require("lspconfig").lua_ls.setup({
 							settings = {
