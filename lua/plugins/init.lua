@@ -1,6 +1,7 @@
 return {
 	{ "justinmk/vim-sneak" },
 	{ "nvim-tree/nvim-web-devicons" },
+	{ "tpope/vim-eunuch" },
 	{
 		"nmac427/guess-indent.nvim",
 		config = function()

@@ -4,6 +4,7 @@ return {
 		require("nvim-tree").setup({
 			view = {
 				relativenumber = true,
+				adaptive_size = true,
 			},
 			actions = {
 				open_file = {
