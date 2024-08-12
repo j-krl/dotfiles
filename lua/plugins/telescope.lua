@@ -13,7 +13,11 @@ return {
 		local sorters = require("telescope.sorters")
 		telescope.setup({
 			defaults = {
-				file_ignore_patterns = { ".git" },
+				file_ignore_patterns = {
+					".git",
+					"node_modules",
+					"venv",
+				},
 			},
 			pickers = {
 				buffers = {
@@ -28,7 +32,10 @@ return {
 		telescope.load_extension("live_grep_args")
 		local builtin = require("telescope.builtin")
 		vim.keymap.set("n", "<leader>ff", function()
-			builtin.find_files({ hidden = true })
+			builtin.find_files({
+				hidden = true,
+				-- no_ignore = true,
+			})
 		end, {})
 		vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
 		vim.keymap.set("n", "<leader>fb", builtin.buffers, {})

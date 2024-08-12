@@ -1,7 +1,8 @@
 return {
 	"nvim-tree/nvim-tree.lua",
 	config = function()
-		require("nvim-tree").setup({
+		local nvim_tree = require("nvim-tree")
+		nvim_tree.setup({
 			view = {
 				relativenumber = true,
 				adaptive_size = true,
@@ -18,5 +19,8 @@ return {
 				git_ignored = false,
 			},
 		})
+		vim.keymap.set("n", "<leader>tt", ":NvimTreeToggle<CR>", {})
+		vim.keymap.set("n", "<leader>tf", ":NvimTreeFindFile<CR>", {})
+		vim.keymap.set("n", "<leader>tr", ":NvimTreeRefresh<CR>", {})
 	end,
 }

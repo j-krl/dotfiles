@@ -4,6 +4,7 @@ return {
 		local conform = require("conform")
 		conform.setup({
 			formatters_by_ft = {
+				sh = { "beautysh" },
 				lua = { "stylua" },
 				python = { "black" },
 				typescript = { "prettierd" },

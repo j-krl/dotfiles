@@ -25,6 +25,7 @@ return {
 					"eslint",
 					"tsserver",
 					"emmet_language_server",
+					"bashls",
 					"lua_ls",
 				},
 				handlers = {
