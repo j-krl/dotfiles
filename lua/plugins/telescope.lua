@@ -34,7 +34,7 @@ return {
 		vim.keymap.set("n", "<leader>ff", function()
 			builtin.find_files({
 				hidden = true,
-				-- no_ignore = true,
+				find_command = { "fd", "--type", "f", "--color", "never", "--no-ignore-vcs" },
 			})
 		end, {})
 		vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
