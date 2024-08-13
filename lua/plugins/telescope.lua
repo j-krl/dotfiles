@@ -12,13 +12,6 @@ return {
 		local telescope = require("telescope")
 		local sorters = require("telescope.sorters")
 		telescope.setup({
-			defaults = {
-				file_ignore_patterns = {
-					".git",
-					"node_modules",
-					"venv",
-				},
-			},
 			pickers = {
 				buffers = {
 					sort_mru = true,
@@ -33,8 +26,7 @@ return {
 		local builtin = require("telescope.builtin")
 		vim.keymap.set("n", "<leader>ff", function()
 			builtin.find_files({
-				hidden = true,
-				find_command = { "fd", "--type", "f", "--color", "never", "--no-ignore-vcs" },
+				find_command = { "fd", "--type", "f", "--color", "never", "--no-ignore-vcs", "--hidden" },
 			})
 		end, {})
 		vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
