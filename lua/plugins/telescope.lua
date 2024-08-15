@@ -11,7 +11,24 @@ return {
 	config = function()
 		local telescope = require("telescope")
 		local sorters = require("telescope.sorters")
+		local actions = require("telescope.actions")
 		telescope.setup({
+			defaults = {
+				mappings = {
+					n = {
+						["<C-Q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+					},
+				},
+				vimgrep_arguments = {
+					-- All default args without smart-case
+					"rg",
+					"--color=never",
+					"--no-heading",
+					"--with-filename",
+					"--line-number",
+					"--column",
+				},
+			},
 			pickers = {
 				buffers = {
 					sort_mru = true,
@@ -26,7 +43,8 @@ return {
 		local builtin = require("telescope.builtin")
 		vim.keymap.set("n", "<leader>ff", function()
 			builtin.find_files({
-				find_command = { "fd", "--type", "f", "--color", "never", "--no-ignore-vcs", "--hidden" },
+				hidden = true,
+				find_command = { "fd", "--type", "f", "--color", "never", "--no-ignore-vcs" },
 			})
 		end, {})
 		vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
@@ -35,6 +53,8 @@ return {
 		vim.keymap.set("n", "<leader>fc", function()
 			builtin.colorscheme({ enable_preview = true })
 		end, {})
-		vim.keymap.set("n", "<leader>fs", builtin.lsp_dynamic_workspace_symbols, {})
+		vim.keymap.set("n", "<leader>fs", function()
+			builtin.lsp_dynamic_workspace_symbols({ ignore_symbols = { "variable" } })
+		end, {})
 	end,
 }

@@ -21,6 +21,8 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.loaded_netrw = 1 -- Use nvim-tree
 vim.g.loaded_netrwPlugin = 1 -- Use nvim-tree
 vim.wo.number = true
+-- vim.opt.foldmethod = "indent"
+-- vim.opt.foldenable = false
 vim.wo.relativenumber = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
@@ -36,6 +38,7 @@ vim.opt.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cur
 
 -- Mappings
 vim.g.mapleader = " "
+vim.keymap.set("n", "<C-d>b", ":%bd|e#|bd#<CR>", { desc = "Close all buffers but current" })
 -- vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
@@ -51,4 +54,4 @@ require("lazy").setup({
 	checker = { enabled = true },
 })
 
-vim.cmd("colorscheme dracula")
+vim.cmd("colorscheme cyberdream")

@@ -15,6 +15,9 @@ return {
 					exclude = { "<F3>" },
 					preserve_mappings = false,
 				})
+				vim.keymap.set("n", "gL", function()
+					vim.diagnostic.setloclist({ severity = { min = vim.diagnostic.severity.WARN } })
+				end, { desc = "Go to diagnostics" })
 			end)
 			require("mason").setup({})
 			require("mason-lspconfig").setup({
@@ -56,6 +59,8 @@ return {
 										pycodestyle = { enabled = false },
 										pydocstyle = { enabled = false },
 										autopep8 = { enabled = false },
+										-- Install manually with :PylspInstall pyls-isort
+										-- pyls_isort = { enabled = true },
 									},
 								},
 							},
