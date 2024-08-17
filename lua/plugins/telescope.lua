@@ -38,6 +38,15 @@ return {
 					sorter = sorters.get_fzy_sorter(),
 				},
 			},
+			extensions = {
+				live_grep_args = {
+					mappings = {
+						i = {
+							["<C-k>"] = require("telescope-live-grep-args.actions").quote_prompt(),
+						},
+					},
+				},
+			},
 		})
 		telescope.load_extension("live_grep_args")
 		local builtin = require("telescope.builtin")
