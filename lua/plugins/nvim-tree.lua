@@ -19,6 +19,7 @@ return {
 				git_ignored = false,
 			},
 		})
+		vim.keymap.set("n", "<leader>to", ":NvimTreeOpen<CR>", {})
 		vim.keymap.set("n", "<leader>tt", ":NvimTreeToggle<CR>", {})
 		vim.keymap.set("n", "<leader>tf", ":NvimTreeFindFile<CR>", {})
 		vim.keymap.set("n", "<leader>tr", ":NvimTreeRefresh<CR>", {})

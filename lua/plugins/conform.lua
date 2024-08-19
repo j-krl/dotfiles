@@ -19,11 +19,11 @@ return {
 				yaml = { "prettier" },
 			},
 			format_on_save = {
-				timeout_ms = 500,
+				timeout_ms = 1000,
 			},
 		})
 		vim.keymap.set("n", "<F3>", function()
-			conform.format({ opts = { timeout_ms = 500 } })
+			conform.format({ opts = { timeout_ms = 1000 } })
 		end, { desc = "conform.format()" })
 	end,
 }
