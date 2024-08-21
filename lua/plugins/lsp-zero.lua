@@ -15,17 +15,6 @@ return {
 					exclude = { "<F3>" },
 					preserve_mappings = false,
 				})
-				vim.diagnostic.config({
-					signs = {
-						severity = { min = vim.diagnostic.severity.WARN },
-					},
-					virtual_text = {
-						severity = { min = vim.diagnostic.severity.WARN },
-					},
-				})
-				vim.keymap.set("n", "gL", function()
-					vim.diagnostic.setloclist({ severity = { min = vim.diagnostic.severity.WARN } })
-				end, { desc = "Go to diagnostics" })
 			end)
 			require("mason").setup({})
 			require("mason-lspconfig").setup({
@@ -61,9 +50,6 @@ return {
 										typeCheckingMode = "off",
 										autoImportCompletions = true,
 										diagnosticMode = "workspace",
-										diagnosticSeverityOverrides = {
-											-- reportUnusedImport = "information",
-										},
 									},
 								},
 							},
@@ -109,6 +95,18 @@ return {
 					end,
 				},
 			})
+			vim.diagnostic.config({
+				signs = {
+					severity = { min = vim.diagnostic.severity.WARN },
+				},
+				virtual_text = {
+					severity = { min = vim.diagnostic.severity.WARN },
+				},
+			})
+			vim.keymap.set("n", "gL", function()
+				---@diagnostic disable-next-line: assign-type-mismatch
+				vim.diagnostic.setloclist({ severity = { min = vim.diagnostic.severity.WARN } })
+			end, { desc = "Go to diagnostics" })
 		end,
 	},
 }

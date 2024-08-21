@@ -1,7 +1,14 @@
 return {
 	"lewis6991/gitsigns.nvim",
 	config = function()
-		require("gitsigns").setup()
+		local gitsigns = require("gitsigns")
+		gitsigns.setup({})
 		vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk_inline<CR>", {})
+		vim.keymap.set("n", "]c", function()
+			gitsigns.nav_hunk("next")
+		end)
+		vim.keymap.set("n", "[c", function()
+			gitsigns.nav_hunk("prev")
+		end)
 	end,
 }
