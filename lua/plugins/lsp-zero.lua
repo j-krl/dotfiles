@@ -15,6 +15,14 @@ return {
 					exclude = { "<F3>" },
 					preserve_mappings = false,
 				})
+				vim.diagnostic.config({
+					signs = {
+						severity = { min = vim.diagnostic.severity.WARN },
+					},
+					virtual_text = {
+						severity = { min = vim.diagnostic.severity.WARN },
+					},
+				})
 				vim.keymap.set("n", "gL", function()
 					vim.diagnostic.setloclist({ severity = { min = vim.diagnostic.severity.WARN } })
 				end, { desc = "Go to diagnostics" })
@@ -37,12 +45,25 @@ return {
 					end,
 					pyright = function()
 						require("lspconfig").pyright.setup({
+							-- https://github.com/microsoft/pyright/discussions/5852#discussioncomment-6874502
+							-- capabilities = {
+							-- 	textDocument = {
+							-- 		publishDiagnostics = {
+							-- 			tagSupport = {
+							-- 				valueSet = { 2 },
+							-- 			},
+							-- 		},
+							-- 	},
+							-- },
 							settings = {
 								python = {
 									analysis = {
 										typeCheckingMode = "off",
 										autoImportCompletions = true,
 										diagnosticMode = "workspace",
+										diagnosticSeverityOverrides = {
+											-- reportUnusedImport = "information",
+										},
 									},
 								},
 							},
@@ -59,8 +80,6 @@ return {
 										pycodestyle = { enabled = false },
 										pydocstyle = { enabled = false },
 										autopep8 = { enabled = false },
-										-- Install manually with :PylspInstall pyls-isort
-										-- pyls_isort = { enabled = true },
 									},
 								},
 							},

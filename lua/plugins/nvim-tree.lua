@@ -14,6 +14,7 @@ return {
 			},
 			diagnostics = {
 				enable = true,
+				severity = { min = vim.diagnostic.severity.WARN },
 			},
 			filters = {
 				git_ignored = false,

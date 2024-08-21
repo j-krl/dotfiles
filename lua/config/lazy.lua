@@ -53,3 +53,4 @@ require("lazy").setup({
 })
 
 vim.cmd("colorscheme cyberdream")
+vim.cmd.highlight("DiagnosticUnderlineError guisp=#ff0000 gui=undercurl")
