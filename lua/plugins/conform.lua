@@ -18,12 +18,8 @@ return {
 				scss = { "prettier" },
 				yaml = { "prettier" },
 			},
-			format_on_save = {
-				timeout_ms = 1000,
-			},
+			format_after_save = {},
 		})
-		vim.keymap.set("n", "<F3>", function()
-			conform.format({ opts = { timeout_ms = 1000 } })
-		end, { desc = "conform.format()" })
+		vim.keymap.set("n", "<F3>", conform.format, { desc = "conform.format()" })
 	end,
 }

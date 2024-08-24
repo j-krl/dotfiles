@@ -8,6 +8,7 @@ return {
 		end,
 	},
 	{ "onsails/lspkind.nvim" },
+	{ "hrsh7th/cmp-buffer" },
 	{
 		"hrsh7th/nvim-cmp",
 		config = function()
@@ -15,7 +16,10 @@ return {
 			cmp.setup({
 				sources = {
 					{ name = "nvim_lsp" },
+					{ name = "buffer" },
+					{ name = "luasnip" },
 				},
+				preselect = "item",
 				completion = {
 					completeopt = "menu,menuone,noinsert",
 				},
@@ -57,7 +61,6 @@ return {
 									buffer = "[Buffer]",
 									path = "[Path]",
 									nvim_lua = "[Lua]",
-									latex_symbols = "[Latex]",
 								})[entry.source.name]
 							end
 							return vim_item
