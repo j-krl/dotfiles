@@ -1,7 +1,5 @@
 return {
-	{ "justinmk/vim-sneak" },
 	{ "nvim-tree/nvim-web-devicons" },
-	-- { "tpope/vim-eunuch" },
 	{ "tpope/vim-unimpaired" },
 	{
 		"nmac427/guess-indent.nvim",
