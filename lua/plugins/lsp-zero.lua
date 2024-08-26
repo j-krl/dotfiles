@@ -12,7 +12,7 @@ return {
 				lsp_zero.default_keymaps({
 					buffer = bufnr,
 					exclude = { "<F3>", "]d", "[d" },
-					-- preserve_mappings = false,
+					preserve_mappings = false,
 				})
 			end)
 			require("mason").setup({})

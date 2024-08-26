@@ -25,7 +25,8 @@ vim.wo.relativenumber = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.colorcolumn = "80,88"
--- vim.opt.cursorline = true
+vim.opt.cursorline = true
+vim.opt.cursorlineopt = "number"
 vim.opt.autoread = true
 vim.opt.termguicolors = true
 vim.opt.expandtab = true
@@ -37,6 +38,9 @@ vim.opt.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cur
 -- Mappings
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>bd", ":%bd|e#|bd#<CR>", { desc = "Close all buffers but current" })
+vim.keymap.set("n", "<leader>ln", ":set rnu!<CR>", { desc = "Toggle relativenumber" })
+-- vim.keymap.set("n", "oo", "o<Esc>k")
+-- vim.keymap.set("n", "OO", "O<Esc>j")
 -- vim.g.maplocalleader = "\\"
 
 -- Setup lazy.nvim
@@ -52,5 +56,4 @@ require("lazy").setup({
 	checker = { enabled = true },
 })
 
-vim.cmd("colorscheme cyberdream")
-vim.cmd.highlight("DiagnosticUnderlineError guisp=#ff0000 gui=undercurl")
+vim.cmd("colorscheme onedark")

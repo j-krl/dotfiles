@@ -7,6 +7,9 @@ return {
 			"nvim-telescope/telescope-live-grep-args.nvim",
 			version = "^1.0.0",
 		},
+		-- TODO: Ignoring builtins will be native to Telescope in future release,
+		-- 			 so delete this on next Telescope update
+		{ "andrew-george/telescope-themes" },
 	},
 	config = function()
 		local telescope = require("telescope")
@@ -39,6 +42,9 @@ return {
 				},
 			},
 			extensions = {
+				themes = {
+					enable_live_preview = true,
+				},
 				live_grep_args = {
 					mappings = {
 						i = {
@@ -59,9 +65,7 @@ return {
 		vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
 		vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
 		vim.keymap.set("n", "<leader>fo", builtin.oldfiles, {})
-		vim.keymap.set("n", "<leader>fc", function()
-			builtin.colorscheme({ enable_preview = true })
-		end, {})
+		vim.keymap.set("n", "<leader>fc", ":Telescope themes<CR>")
 		vim.keymap.set("n", "<leader>fs", function()
 			builtin.lsp_dynamic_workspace_symbols({ ignore_symbols = { "variable" } })
 		end, {})
