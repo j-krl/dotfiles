@@ -1,5 +1,6 @@
 return {
 	{ "nvim-tree/nvim-web-devicons" },
+	{ "unblevable/quick-scope" },
 	{ "tpope/vim-unimpaired" },
 	{
 		"nmac427/guess-indent.nvim",
@@ -12,6 +13,7 @@ return {
 		main = "ibl",
 		opts = {
 			indent = { char = "⎸" }, -- default char is bugged on iTerm2
+			-- scope = { enabled = false },
 		},
 	},
 	{
@@ -35,5 +37,11 @@ return {
 				-- Configuration here, or leave empty to use defaults
 			})
 		end,
+	},
+	{
+		"folke/ts-comments.nvim",
+		opts = {},
+		event = "VeryLazy",
+		enabled = vim.fn.has("nvim-0.10.0") == 1,
 	},
 }

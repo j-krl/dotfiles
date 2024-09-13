@@ -22,7 +22,7 @@ return {
 					"pylsp",
 					-- "jedi_language_server",
 					"eslint",
-					"tsserver",
+					"ts_ls",
 					"emmet_language_server",
 					"bashls",
 					"lua_ls",

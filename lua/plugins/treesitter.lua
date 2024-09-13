@@ -10,10 +10,10 @@ return {
 			},
 			indent = { enable = true },
 		})
-		vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-		vim.wo.foldtext = ""
-		vim.wo.foldmethod = "expr"
-		vim.opt.foldlevel = 99
-		vim.opt.foldcolumn = "0"
+		-- vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+		vim.wo.foldmethod = "indent"
+		vim.wo.foldminlines = 4
+		-- vim.opt.foldlevel = 99
+		vim.opt.foldlevelstart = 99
 	end,
 }
