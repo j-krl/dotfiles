@@ -45,6 +45,13 @@ return {
 			extensions = {
 				themes = {
 					ignore = vim.list_extend(builtin_schemes, {
+						"ayu",
+						"ayu-light",
+						"ayu-dark",
+						"solarized-osaka-night",
+						"solarized-osaka-day",
+						"solarized-osaka-moon",
+						"solarized-osaka-storm",
 						"OceanicNextLight",
 						"carbonfox",
 						"dawnfox",
@@ -54,13 +61,17 @@ return {
 						"terafox",
 						"bluloco-light",
 						"bluloco",
+						"monokai_soda",
+						"monokai_ristretto",
+						"monokai_pro",
 						"catppuccin",
 						"catppuccin-frappe",
 						"catppuccin-mocha",
 						"catppuccin-latte",
 						"kanagawa",
 						"kanagawa-lotus",
-						"kanagawa-dragon",
+						"kanagawa-wave",
+						-- "kanagawa-dragon",
 						"tokyonight",
 						"tokyonight-day",
 						"tokyonight-storm",
@@ -95,7 +106,7 @@ return {
 		vim.keymap.set("n", "<leader>fp", builtin.builtin, {})
 		vim.keymap.set("n", "<leader>fk", builtin.keymaps, {})
 		vim.keymap.set("n", "<leader>fo", builtin.oldfiles, {})
-		vim.keymap.set("n", "<leader>fc", ":Telescope themes<CR>")
+		vim.keymap.set("n", "<leader>fc", ":Telescope themes<CR>", { silent = true })
 		vim.keymap.set("n", "<leader>fs", function()
 			builtin.lsp_dynamic_workspace_symbols({ ignore_symbols = { "variable" } })
 		end, {})

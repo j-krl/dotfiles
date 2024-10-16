@@ -1,11 +1,16 @@
 return {
-	"justinmk/vim-sneak",
-	config = function()
-		vim.keymap.set("", "s", "<Plug>SneakLabel_s")
-		vim.keymap.set("", "S", "<Plug>SneakLabel_S")
-		-- vim.keymap.set("", "f", "<Plug>Sneak_f")
-		-- vim.keymap.set("", "F", "<Plug>Sneak_F")
-		-- vim.keymap.set("", "t", "<Plug>Sneak_t")
-		-- vim.keymap.set("", "T", "<Plug>Sneak_T")
-	end,
+	-- {
+	-- 	"rhysd/clever-f.vim",
+	-- 	config = function()
+	-- 		vim.g.clever_f_across_no_line = true
+	-- 		vim.keymap.set({ "n", "v" }, ";", "<Plug>(clever-f-repeat-forward)")
+	-- 		vim.keymap.set({ "n", "v" }, ",", "<Plug>(clever-f-repeat-back)")
+	-- 	end,
+	{
+		"justinmk/vim-sneak",
+		-- config = function()
+		-- 	vim.keymap.set("", "s", "<Plug>SneakLabel_s")
+		-- 	vim.keymap.set("", "S", "<Plug>SneakLabel_S")
+		-- end,
+	},
 }

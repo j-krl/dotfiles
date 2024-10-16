@@ -56,4 +56,4 @@ require("lazy").setup({
 	checker = { enabled = true },
 })
 
-vim.cmd("colorscheme cyberdream")
+vim.cmd("colorscheme monokai")

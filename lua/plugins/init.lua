@@ -1,7 +1,8 @@
 return {
 	{ "nvim-tree/nvim-web-devicons" },
-	{ "unblevable/quick-scope" },
+	{ "jinh0/eyeliner.nvim" },
 	{ "tpope/vim-unimpaired" },
+	{ "jeetsukumaran/vim-indentwise" },
 	{
 		"nmac427/guess-indent.nvim",
 		config = function()

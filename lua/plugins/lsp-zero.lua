@@ -11,7 +11,7 @@ return {
 			lsp_zero.on_attach(function(client, bufnr)
 				lsp_zero.default_keymaps({
 					buffer = bufnr,
-					exclude = { "<F3>", "]d", "[d" },
+					exclude = { "<F3>", "gi" },
 					preserve_mappings = false,
 				})
 			end)
@@ -20,6 +20,7 @@ return {
 				ensure_installed = {
 					"pyright",
 					"pylsp",
+					"marksman",
 					-- "jedi_language_server",
 					"eslint",
 					"ts_ls",
@@ -31,6 +32,13 @@ return {
 					function(server_name)
 						require("lspconfig")[server_name].setup({})
 					end,
+					-- marksman = function()
+					-- 	require("lspconfig").marksman.setup({
+					-- 		on_attach = function(client)
+					-- 			client.server_capabilities.completionProvider = false
+					-- 		end,
+					-- 	})
+					-- end,
 					pyright = function()
 						require("lspconfig").pyright.setup({
 							-- https://github.com/microsoft/pyright/discussions/5852#discussioncomment-6874502
