@@ -1,10 +1,36 @@
 return {
 	{ "hrsh7th/cmp-nvim-lsp" },
+	{ "saadparwaiz1/cmp_luasnip" },
 	{
 		"L3MON4D3/LuaSnip",
 		dependencies = { "rafamadriz/friendly-snippets" },
+		build = "make install_jsregexp",
 		config = function()
 			require("luasnip.loaders.from_vscode").lazy_load()
+			luasnip = require("luasnip")
+			luasnip.filetype_extend("typescript", { "tsdoc" })
+			luasnip.filetype_extend("typescriptreact", { "tsdoc" })
+			luasnip.filetype_extend("javascript", { "jsdoc" })
+			luasnip.filetype_extend("javascriptreact", { "jsdoc" })
+			luasnip.filetype_extend("python", { "pydoc" })
+			luasnip.filetype_extend("lua", { "luadoc" })
+			luasnip.filetype_extend("sh", { "shelldoc" })
+
+			vim.keymap.set({ "i" }, "<C-K>", function()
+				luasnip.expand()
+			end, { silent = true })
+			vim.keymap.set({ "i", "s" }, "<C-L>", function()
+				luasnip.jump(1)
+			end, { silent = true })
+			vim.keymap.set({ "i", "s" }, "<C-H>", function()
+				luasnip.jump(-1)
+			end, { silent = true })
+
+			-- vim.keymap.set({ "i", "s" }, "<C-E>", function()
+			-- 	if luasnip.choice_active() then
+			-- 		luasnip.change_choice(1)
+			-- 	end
+			-- end, { silent = true })
 		end,
 	},
 	{ "onsails/lspkind.nvim" },
@@ -13,19 +39,32 @@ return {
 		"hrsh7th/nvim-cmp",
 		config = function()
 			local cmp = require("cmp")
+			local luasnip = require("luasnip")
 			cmp.setup({
 				sources = {
 					{ name = "nvim_lsp" },
 					{ name = "buffer" },
 					{ name = "luasnip" },
 				},
-				preselect = "item",
-				completion = {
-					completeopt = "menu,menuone,noinsert",
-				},
+				-- preselect = "item",
+				-- completion = {
+				-- 	completeopt = "menu,menuone,noinsert",
+				-- },
 				mapping = {
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
-					["<Esc>"] = cmp.mapping.abort(),
+					-- ["<CR>"] = cmp.mapping(function(fallback)
+					-- 	if cmp.visible() then
+					-- 		if luasnip.expandable() then
+					-- 			luasnip.expand()
+					-- 		else
+					-- 			cmp.confirm({ select = true })
+					-- 		end
+					-- 	else
+					-- 		fallback()
+					-- 	end
+					-- end),
+					["<C-e>"] = cmp.mapping.abort(),
+					-- ["C-Space"] = cmp.mapping.complete(),
 					["<Up>"] = cmp.mapping.select_prev_item({ behavior = "select" }),
 					["<Down>"] = cmp.mapping.select_next_item({ behavior = "select" }),
 					["<C-p>"] = cmp.mapping(function()
@@ -42,6 +81,8 @@ return {
 							cmp.complete()
 						end
 					end),
+					["<C-b>"] = cmp.mapping.scroll_docs(-4),
+					["<C-f>"] = cmp.mapping.scroll_docs(4),
 				},
 				snippet = {
 					expand = function(args)
@@ -50,21 +91,21 @@ return {
 				},
 				formatting = {
 					format = require("lspkind").cmp_format({
-						mode = "symbol",
-						before = function(entry, vim_item)
-							if entry.completion_item.detail ~= nil and entry.completion_item.detail ~= "" then
-								vim_item.menu = entry.completion_item.detail
-							else
-								vim_item.menu = ({
-									nvim_lsp = "[LSP]",
-									luasnip = "[Snippet]",
-									buffer = "[Buffer]",
-									path = "[Path]",
-									nvim_lua = "[Lua]",
-								})[entry.source.name]
-							end
-							return vim_item
-						end,
+						mode = "symbol_text",
+						-- before = function(entry, vim_item)
+						-- 	if entry.completion_item.detail ~= nil and entry.completion_item.detail ~= "" then
+						-- 		vim_item.menu = entry.completion_item.detail
+						-- 	else
+						-- 		vim_item.menu = ({
+						-- 			nvim_lsp = "[LSP]",
+						-- 			luasnip = "[Snippet]",
+						-- 			buffer = "[Buffer]",
+						-- 			path = "[Path]",
+						-- 			nvim_lua = "[Lua]",
+						-- 		})[entry.source.name]
+						-- 	end
+						-- 	return vim_item
+						-- end,
 					}),
 				},
 			})

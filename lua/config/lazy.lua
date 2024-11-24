@@ -33,12 +33,25 @@ vim.opt.expandtab = true
 -- vim.opt.scrolloff = 20
 vim.opt.undofile = true
 vim.opt.wildmode = "list:longest,full"
-vim.opt.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor"
+-- vim.opt.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor"
 
 -- Mappings
 vim.g.mapleader = " "
+vim.keymap.set("n", "<leader>dd", ":bd<CR>", { desc = "Close current buffer" })
 vim.keymap.set("n", "<leader>bd", ":%bd|e#|bd#<CR>", { desc = "Close all buffers but current" })
-vim.keymap.set("n", "<leader>ln", ":set rnu!<CR>", { desc = "Toggle relativenumber" })
+vim.keymap.set("n", "]d", function()
+	vim.diagnostic.goto_next({
+		severity = { min = vim.diagnostic.severity.WARN },
+	})
+end, { desc = "Next warning or error" })
+vim.keymap.set("n", "[d", function()
+	vim.diagnostic.goto_prev({
+		severity = { min = vim.diagnostic.severity.WARN },
+	})
+end, { desc = "Previous warning or error" })
+vim.keymap.set("n", "]D", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+vim.keymap.set("n", "[D", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+-- vim.keymap.set("n", "<leader>ln", ":set rnu!<CR>", { desc = "Toggle relativenumber" })
 -- vim.keymap.set("n", "oo", "o<Esc>k")
 -- vim.keymap.set("n", "OO", "O<Esc>j")
 -- vim.g.maplocalleader = "\\"
@@ -56,4 +69,4 @@ require("lazy").setup({
 	checker = { enabled = true },
 })
 
-vim.cmd("colorscheme monokai")
+vim.cmd("colorscheme gruvbox")
