@@ -37,8 +37,9 @@ vim.opt.wildmode = "list:longest,full"
 
 -- Mappings
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>dd", ":bd<CR>", { desc = "Close current buffer" })
-vim.keymap.set("n", "<leader>bd", ":%bd|e#|bd#<CR>", { desc = "Close all buffers but current" })
+vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Close current buffer" })
+vim.keymap.set("n", "<leader>bc", ":%bd<CR>", { desc = "Close all buffers" })
+vim.keymap.set("n", "<leader>bo", ":%bd|e#|bd#<CR>", { desc = "Close all buffers but current" })
 vim.keymap.set("n", "]d", function()
 	vim.diagnostic.goto_next({
 		severity = { min = vim.diagnostic.severity.WARN },

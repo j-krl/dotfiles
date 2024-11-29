@@ -22,6 +22,10 @@ return {
 					n = {
 						["<C-Q>"] = actions.smart_send_to_qflist + actions.open_qflist,
 					},
+					i = {
+						["<C-e>"] = { "<esc>", type = "command" },
+						["<esc>"] = actions.close,
+					},
 				},
 				-- vimgrep_arguments = {
 				-- 	-- All default args without smart-case

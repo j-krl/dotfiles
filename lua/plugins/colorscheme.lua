@@ -67,7 +67,7 @@ return {
 	-- { "eldritch-theme/eldritch.nvim", lazy = false, priority = 1000 },
 	-- { "lewpoly/sherbet.nvim" },
 	{ "zootedb0t/citruszest.nvim", lazy = false, priority = 1000 },
-	-- { "mhartington/oceanic-next", lazy = false, priority = 1000 },
+	{ "mhartington/oceanic-next", lazy = false, priority = 1000 },
 	{ "maxmx03/solarized.nvim", lazy = false, priority = 1000 },
 	-- { "craftzdog/solarized-osaka.nvim" },
 	-- { "Tsuzat/NeoSolarized.nvim" },
