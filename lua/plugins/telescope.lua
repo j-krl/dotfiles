@@ -56,6 +56,7 @@ return {
 						"solarized-osaka-day",
 						"solarized-osaka-moon",
 						"solarized-osaka-storm",
+						"dracula-soft",
 						"OceanicNextLight",
 						"carbonfox",
 						"dawnfox",

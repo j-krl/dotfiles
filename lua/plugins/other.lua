@@ -1,23 +1,15 @@
 return {
-	{ "justinmk/vim-sneak" },
 	{ "nvim-tree/nvim-web-devicons" },
 	{ "jinh0/eyeliner.nvim" },
-	{ "tpope/vim-unimpaired" },
-	-- { "jeetsukumaran/vim-indentwise" },
 	-- {
-	-- 	"nmac427/guess-indent.nvim",
-	-- 	config = function()
-	-- 		require("guess-indent").setup()
-	-- 	end,
+	-- 	"lukas-reineke/indent-blankline.nvim",
+	-- 	main = "ibl",
+	-- 	opts = {
+	-- 		indent = {
+	-- 			char = "⎸",
+	-- 		},
+	-- 	},
 	-- },
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		opts = {
-			indent = { char = "⎸" }, -- default char is bugged on iTerm2
-			-- scope = { enabled = false },
-		},
-	},
 	{
 		"echasnovski/mini.statusline",
 		version = "*",
@@ -35,11 +27,10 @@ return {
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
 		event = "VeryLazy",
 		config = function()
-			require("nvim-surround").setup({
-				-- Configuration here, or leave empty to use defaults
-			})
+			require("nvim-surround").setup({})
 		end,
 	},
+	-- hacky extension for fixing bonked React comments
 	{
 		"folke/ts-comments.nvim",
 		opts = {},
