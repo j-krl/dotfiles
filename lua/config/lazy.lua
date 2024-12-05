@@ -50,10 +50,10 @@ vim.keymap.set("n", "m3", "mD", { desc = "mD", silent = true })
 vim.keymap.set("n", "m4", "mF", { desc = "mF", silent = true })
 vim.keymap.set("n", "m5", "mG", { desc = "mG", silent = true })
 vim.keymap.set("n", "<leader>1", "'A", { desc = "'A", silent = true })
-vim.keymap.set("n", "<leader>2", "'S", { desc = "'A", silent = true })
-vim.keymap.set("n", "<leader>3", "'D", { desc = "'A", silent = true })
-vim.keymap.set("n", "<leader>4", "'F", { desc = "'A", silent = true })
-vim.keymap.set("n", "<leader>5", "'G", { desc = "'A", silent = true })
+vim.keymap.set("n", "<leader>2", "'S", { desc = "'S", silent = true })
+vim.keymap.set("n", "<leader>3", "'D", { desc = "'D", silent = true })
+vim.keymap.set("n", "<leader>4", "'F", { desc = "'F", silent = true })
+vim.keymap.set("n", "<leader>5", "'G", { desc = "'G", silent = true })
 -- Diagnotics
 vim.keymap.set("n", "]d", function()
 	vim.diagnostic.goto_next({
@@ -68,6 +68,7 @@ end, { desc = "Previous warning or error" })
 vim.keymap.set("n", "]D", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 vim.keymap.set("n", "[D", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 -- Unimpaired
+-- These are mappings I like from the vim-unimpaired plugin that I've since removed
 vim.keymap.set("n", "]b", ":bnext<CR>", { silent = true })
 vim.keymap.set("n", "[b", ":bprev<CR>", { silent = true })
 vim.keymap.set("n", "]B", ":bfirst<CR>", { silent = true })
