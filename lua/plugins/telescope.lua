@@ -111,6 +111,7 @@ return {
 		vim.keymap.set("n", "<leader>fp", builtin.builtin, {})
 		vim.keymap.set("n", "<leader>fk", builtin.keymaps, {})
 		vim.keymap.set("n", "<leader>fo", builtin.oldfiles, {})
+		vim.keymap.set("n", "<leader>fm", builtin.marks, {})
 		vim.keymap.set("n", "<leader>fc", ":Telescope themes<CR>", { silent = true })
 		vim.keymap.set("n", "<leader>fs", function()
 			builtin.lsp_dynamic_workspace_symbols({ ignore_symbols = { "variable" } })

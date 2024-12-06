@@ -39,21 +39,21 @@ vim.opt.wildmode = "list:longest,full"
 vim.g.mapleader = " "
 -- Buffers
 vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Close current buffer" })
-vim.keymap.set("n", "<leader>bc", ":%bd<CR>", { desc = "Close all buffers" })
+vim.keymap.set("n", "<leader>bc", ":%bd|Alpha|bd#<CR>", { desc = "Close all buffers" })
 vim.keymap.set("n", "<leader>bo", ":%bd|e#|bd#<CR>", { desc = "Close all buffers but current" })
 -- Marks
 vim.keymap.set("n", "<leader>mc", ":delm! | delm A-Z<CR>", { desc = "Clear all marks" })
 vim.keymap.set("n", "<leader>mf", ":marks<CR>", { desc = "Show marks" })
-vim.keymap.set("n", "m1", "mA", { desc = "mA", silent = true })
-vim.keymap.set("n", "m2", "mS", { desc = "mS", silent = true })
-vim.keymap.set("n", "m3", "mD", { desc = "mD", silent = true })
-vim.keymap.set("n", "m4", "mF", { desc = "mF", silent = true })
-vim.keymap.set("n", "m5", "mG", { desc = "mG", silent = true })
-vim.keymap.set("n", "<leader>1", "'A", { desc = "'A", silent = true })
-vim.keymap.set("n", "<leader>2", "'S", { desc = "'S", silent = true })
-vim.keymap.set("n", "<leader>3", "'D", { desc = "'D", silent = true })
-vim.keymap.set("n", "<leader>4", "'F", { desc = "'F", silent = true })
-vim.keymap.set("n", "<leader>5", "'G", { desc = "'G", silent = true })
+vim.keymap.set("n", "mq", "mQ", { desc = "mQ", silent = true })
+vim.keymap.set("n", "mw", "mW", { desc = "mW", silent = true })
+vim.keymap.set("n", "me", "mE", { desc = "mE", silent = true })
+vim.keymap.set("n", "mr", "mR", { desc = "mR", silent = true })
+vim.keymap.set("n", "mt", "mT", { desc = "mT", silent = true })
+vim.keymap.set("n", "'q", "'Q", { desc = "'Q", silent = true })
+vim.keymap.set("n", "'w", "'W", { desc = "'W", silent = true })
+vim.keymap.set("n", "'e", "'E", { desc = "'E", silent = true })
+vim.keymap.set("n", "'r", "'R", { desc = "'R", silent = true })
+vim.keymap.set("n", "'t", "'T", { desc = "'T", silent = true })
 -- Diagnotics
 vim.keymap.set("n", "]d", function()
 	vim.diagnostic.goto_next({
