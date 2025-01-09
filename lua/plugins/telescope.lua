@@ -27,15 +27,6 @@ return {
 						["<esc>"] = actions.close,
 					},
 				},
-				-- vimgrep_arguments = {
-				-- 	-- All default args without smart-case
-				-- 	"rg",
-				-- 	"--color=never",
-				-- 	"--no-heading",
-				-- 	"--with-filename",
-				-- 	"--line-number",
-				-- 	"--column",
-				-- },
 			},
 			pickers = {
 				buffers = {
