@@ -6,7 +6,7 @@ return {
 			formatters_by_ft = {
 				sh = { "beautysh" },
 				lua = { "stylua" },
-				python = { "ruff_organize_imports", "ruff_format" },
+				python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
 				typescript = { "prettier" },
 				css = { "prettier" },
 				html = { "prettier" },

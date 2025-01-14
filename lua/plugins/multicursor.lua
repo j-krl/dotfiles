@@ -72,8 +72,8 @@ return {
 		-- end, { desc = "Add cursor end of line" })
 
 		-- Rotate the main cursor.
-		set({ "n", "v" }, "<leader>cr", mc.nextCursor, { desc = "Rotate cursor next" })
-		set({ "n", "v" }, "<leader>cR", mc.prevCursor, { desc = "Rotate cursor prev" })
+		set({ "n", "v" }, "<leader>cJ", mc.nextCursor, { desc = "Move cursor next" })
+		set({ "n", "v" }, "<leader>cK", mc.prevCursor, { desc = "Move cursor prev" })
 
 		-- Delete the main cursor.
 		set({ "n", "v" }, "<leader>cd", mc.deleteCursor, { desc = "Delete cursor" })

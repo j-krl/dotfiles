@@ -1,6 +1,10 @@
 return {
 	{ "hrsh7th/cmp-nvim-lsp" },
 	{ "saadparwaiz1/cmp_luasnip" },
+	{ "hrsh7th/cmp-path" },
+	{ "hrsh7th/cmp-nvim-lsp-signature-help" },
+	{ "onsails/lspkind.nvim" },
+	{ "hrsh7th/cmp-buffer" },
 	{
 		"L3MON4D3/LuaSnip",
 		dependencies = { "rafamadriz/friendly-snippets" },
@@ -33,8 +37,6 @@ return {
 			-- end, { silent = true })
 		end,
 	},
-	{ "onsails/lspkind.nvim" },
-	{ "hrsh7th/cmp-buffer" },
 	{
 		"hrsh7th/nvim-cmp",
 		config = function()
@@ -45,24 +47,26 @@ return {
 					{ name = "nvim_lsp" },
 					{ name = "buffer" },
 					{ name = "luasnip" },
+					{ name = "cmp-nvim-lsp-signature-help" },
+					{ name = "path" },
 				},
 				-- preselect = "item",
 				-- completion = {
 				-- 	completeopt = "menu,menuone,noinsert",
 				-- },
 				mapping = {
-					["<CR>"] = cmp.mapping.confirm({ select = true }),
-					-- ["<CR>"] = cmp.mapping(function(fallback)
-					-- 	if cmp.visible() then
-					-- 		if luasnip.expandable() then
-					-- 			luasnip.expand()
-					-- 		else
-					-- 			cmp.confirm({ select = true })
-					-- 		end
-					-- 	else
-					-- 		fallback()
-					-- 	end
-					-- end),
+					-- ["<CR>"] = cmp.mapping.confirm({ select = true }),
+					["<CR>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							if luasnip.expandable() then
+								luasnip.expand()
+							else
+								cmp.confirm({ select = true })
+							end
+						else
+							fallback()
+						end
+					end),
 					["<C-e>"] = cmp.mapping.abort(),
 					-- ["C-Space"] = cmp.mapping.complete(),
 					["<Up>"] = cmp.mapping.select_prev_item({ behavior = "select" }),
@@ -92,20 +96,13 @@ return {
 				formatting = {
 					format = require("lspkind").cmp_format({
 						mode = "symbol_text",
-						-- before = function(entry, vim_item)
-						-- 	if entry.completion_item.detail ~= nil and entry.completion_item.detail ~= "" then
-						-- 		vim_item.menu = entry.completion_item.detail
-						-- 	else
-						-- 		vim_item.menu = ({
-						-- 			nvim_lsp = "[LSP]",
-						-- 			luasnip = "[Snippet]",
-						-- 			buffer = "[Buffer]",
-						-- 			path = "[Path]",
-						-- 			nvim_lua = "[Lua]",
-						-- 		})[entry.source.name]
-						-- 	end
-						-- 	return vim_item
-						-- end,
+						-- menu = {
+						-- 	buffer = "[Buffer]",
+						-- 	nvim_lsp = "[LSP]",
+						-- 	luasnip = "[LuaSnip]",
+						-- 	nvim_lua = "[Lua]",
+						-- 	latex_symbols = "[Latex]",
+						-- },
 					}),
 				},
 			})

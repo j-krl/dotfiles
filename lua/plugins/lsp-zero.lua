@@ -21,7 +21,6 @@ return {
 					"pyright",
 					"pylsp",
 					"marksman",
-					-- "jedi_language_server",
 					"eslint",
 					"ts_ls",
 					"emmet_language_server",
@@ -29,9 +28,6 @@ return {
 					"lua_ls",
 				},
 				handlers = {
-					function(server_name)
-						require("lspconfig")[server_name].setup({})
-					end,
 					-- marksman = function()
 					-- 	require("lspconfig").marksman.setup({
 					-- 		on_attach = function(client)
@@ -41,16 +37,10 @@ return {
 					-- end,
 					pyright = function()
 						require("lspconfig").pyright.setup({
-							-- https://github.com/microsoft/pyright/discussions/5852#discussioncomment-6874502
-							-- capabilities = {
-							-- 	textDocument = {
-							-- 		publishDiagnostics = {
-							-- 			tagSupport = {
-							-- 				valueSet = { 2 },
-							-- 			},
-							-- 		},
-							-- 	},
-							-- },
+							-- Waiting for a pylsp PR that improves its hover docs
+							-- on_attach = function(client)
+							-- 	client.server_capabilities.hoverProvider = false
+							-- end,
 							settings = {
 								python = {
 									analysis = {
@@ -66,7 +56,7 @@ return {
 						require("lspconfig").pylsp.setup({
 							settings = {
 								pylsp = {
-									-- Only use pylsp for completions
+									-- Only use pylsp for completions (jedi under the hood)
 									plugins = {
 										pyflakes = { enabled = false },
 										mccabe = { enabled = false },
@@ -78,17 +68,6 @@ return {
 							},
 						})
 					end,
-					-- jedi_language_server = function()
-					-- 	require("lspconfig").jedi_language_server.setup({
-					-- 		init_options = {
-					-- 			workspace = {
-					-- 				symbols = {
-					-- 					maxSymbols = 0,
-					-- 				},
-					-- 			},
-					-- 		},
-					-- 	})
-					-- end,
 					lua_ls = function()
 						require("lspconfig").lua_ls.setup({
 							settings = {
@@ -100,12 +79,12 @@ return {
 							},
 						})
 					end,
+					function(server_name)
+						require("lspconfig")[server_name].setup({})
+					end,
 				},
 			})
 			vim.diagnostic.config({
-				-- signs = {
-				-- 	severity = { min = vim.diagnostic.severity.WARN },
-				-- },
 				virtual_text = {
 					severity = { min = vim.diagnostic.severity.WARN },
 				},
