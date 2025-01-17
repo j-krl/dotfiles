@@ -55,18 +55,18 @@ return {
 				-- 	completeopt = "menu,menuone,noinsert",
 				-- },
 				mapping = {
-					-- ["<CR>"] = cmp.mapping.confirm({ select = true }),
-					["<CR>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							if luasnip.expandable() then
-								luasnip.expand()
-							else
-								cmp.confirm({ select = true })
-							end
-						else
-							fallback()
-						end
-					end),
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
+					-- ["<CR>"] = cmp.mapping(function(fallback)
+					-- 	if cmp.visible() then
+					-- 		if luasnip.expandable() then
+					-- 			luasnip.expand()
+					-- 		else
+					-- 			cmp.confirm({ select = true })
+					-- 		end
+					-- 	else
+					-- 		fallback()
+					-- 	end
+					-- end),
 					["<C-e>"] = cmp.mapping.abort(),
 					-- ["C-Space"] = cmp.mapping.complete(),
 					["<Up>"] = cmp.mapping.select_prev_item({ behavior = "select" }),
