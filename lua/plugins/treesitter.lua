@@ -20,9 +20,5 @@ return {
 			},
 			indent = { enable = true },
 		})
-		-- vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-		vim.wo.foldmethod = "indent"
-		vim.wo.foldminlines = 4
-		vim.opt.foldlevelstart = 99
 	end,
 }

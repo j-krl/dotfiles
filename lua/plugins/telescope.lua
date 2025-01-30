@@ -41,47 +41,14 @@ return {
 				},
 				extensions = {
 					themes = {
+						enable_live_preview = true,
+						enable_previewer = true,
 						ignore = vim.list_extend(builtin_schemes, {
-							"ayu",
-							"ayu-light",
-							"ayu-dark",
-							"solarized-osaka-night",
-							"solarized-osaka-day",
-							"solarized-osaka-moon",
-							"solarized-osaka-storm",
-							"dracula-soft",
-							"OceanicNextLight",
-							"carbonfox",
-							"dawnfox",
-							"dayfox",
-							"duskfox",
-							"nordfox",
-							"terafox",
-							"bluloco-light",
-							"bluloco",
 							"monokai_soda",
 							"monokai_ristretto",
 							"monokai_pro",
-							"catppuccin",
-							"catppuccin-frappe",
-							"catppuccin-mocha",
-							"catppuccin-latte",
-							"kanagawa",
-							"kanagawa-lotus",
-							"kanagawa-wave",
-							-- "kanagawa-dragon",
-							"tokyonight",
-							"tokyonight-day",
-							"tokyonight-storm",
-							"tokyonight-night",
-							"rose-pine-dawn",
-							"rose-pine-main",
-							"rose-pine",
 						}),
 					},
-					-- themes = {
-					-- 	enable_live_preview = true,
-					-- },
 					live_grep_args = {
 						mappings = {
 							i = {
@@ -92,21 +59,18 @@ return {
 				},
 			})
 			telescope.load_extension("live_grep_args")
+			telescope.load_extension("themes")
 			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<leader>ff", function()
+			vim.keymap.set("n", "<leader>f", function()
 				builtin.find_files({
 					hidden = true,
 					find_command = { "fd", "--type", "f", "--color", "never", "--no-ignore-vcs" },
 				})
 			end, { desc = "Find files" })
-			vim.keymap.set("n", "<leader>fg", telescope.extensions.live_grep_args.live_grep_args, { desc = "ripgrep" })
-			vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "buffers" })
-			vim.keymap.set("n", "<leader>fp", builtin.builtin, { desc = "Telescope builtins" })
-			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Keymaps" })
-			vim.keymap.set("n", "<leader>fo", builtin.oldfiles, { desc = "Oldfiles" })
-			vim.keymap.set("n", "<leader>fm", builtin.marks, { desc = "Marks" })
-			vim.keymap.set("n", "<leader>fc", ":Telescope themes<CR>", { desc = "Colorschemes", silent = true })
-			vim.keymap.set("n", "<leader>fs", function()
+			vim.keymap.set("n", "<leader>g", telescope.extensions.live_grep_args.live_grep_args, { desc = "ripgrep" })
+			vim.keymap.set("n", "<leader>o", builtin.oldfiles, { desc = "Oldfiles" })
+			-- vim.keymap.set("n", "<leader>c", ":Telescope themes<CR>", { desc = "Colorschemes", silent = true })
+			vim.keymap.set("n", "<leader>s", function()
 				builtin.lsp_dynamic_workspace_symbols({
 					ignore_symbols = { "variable" },
 					path_display = { "smart" },

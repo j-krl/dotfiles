@@ -18,8 +18,8 @@ vim.opt.rtp:prepend(lazypath)
 -- Make sure to setup `mapleader` and `maplocalleader` before
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
-vim.g.loaded_netrw = 1 -- Use nvim-tree
-vim.g.loaded_netrwPlugin = 1 -- Use nvim-tree
+-- vim.g.loaded_netrw = 1 -- Use nvim-tree
+-- vim.g.loaded_netrwPlugin = 1 -- Use nvim-tree
 vim.wo.number = true
 vim.wo.relativenumber = true
 vim.opt.tabstop = 2
@@ -30,7 +30,6 @@ vim.opt.cursorlineopt = "number"
 vim.opt.autoread = true
 vim.opt.termguicolors = true
 vim.opt.expandtab = true
--- vim.opt.scrolloff = 20
 vim.opt.undofile = true
 vim.opt.wildmode = "list:longest,full"
 -- vim.opt.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor"
@@ -40,14 +39,14 @@ vim.cmd([[let &t_Ce = "\e[4:0m"]])
 
 -- MAPPINGS
 vim.g.mapleader = " "
+
 -- Buffers
-vim.keymap.set("n", "<leader>bf", ":buffers<CR>", { desc = "List open buffers" })
-vim.keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Close current buffer" })
-vim.keymap.set("n", "<leader>bc", ":%bd|Alpha|bd#<CR>", { desc = "Close all buffers" })
-vim.keymap.set("n", "<leader>bo", ":%bd|e#|bd#<CR>", { desc = "Close all buffers but current" })
+vim.keymap.set("n", "<leader>d", ":bd<CR>", { desc = "Close current buffer" })
+vim.keymap.set("n", "<leader>O", ":%bd|e#|bd#<CR>", { desc = "Close all buffers but current" })
+
 -- Marks
-vim.keymap.set("n", "<leader>mc", ":delm! | delm A-Z<CR>", { desc = "Clear all marks" })
-vim.keymap.set("n", "<leader>mf", ":marks<CR>", { desc = "Show marks" })
+vim.keymap.set("n", "mC", ":delm! | delm A-Z<CR>", { desc = "Clear all marks" })
+vim.keymap.set("n", "<leader>m", ":marks<CR>", { desc = "Show marks" })
 vim.keymap.set("n", "mq", "mQ", { desc = "mQ", silent = true })
 vim.keymap.set("n", "mw", "mW", { desc = "mW", silent = true })
 vim.keymap.set("n", "me", "mE", { desc = "mE", silent = true })
@@ -58,6 +57,7 @@ vim.keymap.set("n", "'w", "'W", { desc = "'W", silent = true })
 vim.keymap.set("n", "'e", "'E", { desc = "'E", silent = true })
 vim.keymap.set("n", "'r", "'R", { desc = "'R", silent = true })
 vim.keymap.set("n", "'t", "'T", { desc = "'T", silent = true })
+
 -- Diagnotics
 vim.keymap.set("n", "]d", function()
 	vim.diagnostic.goto_next({
@@ -71,6 +71,28 @@ vim.keymap.set("n", "[d", function()
 end, { desc = "Previous warning or error" })
 vim.keymap.set("n", "]D", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 vim.keymap.set("n", "[D", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+
+-- Folds
+vim.wo.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.wo.foldminlines = 4
+vim.opt.foldlevelstart = 99
+-- function _G.myfoldtext()
+-- 	local text = vim.treesitter.foldtext()
+--
+-- 	local n_lines = vim.v.foldend - vim.v.foldstart
+-- 	local text_lines = " lines"
+--
+-- 	if n_lines == 1 then
+-- 		text_lines = " line"
+-- 	end
+--
+-- 	table.insert(text, { " - " .. n_lines .. text_lines, { "Folded" } })
+--
+-- 	return text
+-- end
+-- vim.opt.foldtext = "v:lua.myfoldtext()"
+
 -- Unimpaired
 -- These are mappings I like from the vim-unimpaired plugin that I've since removed
 vim.keymap.set("n", "]b", ":bnext<CR>", { silent = true })
