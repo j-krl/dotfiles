@@ -6,7 +6,7 @@ return {
 		treesj.setup({
 			use_default_keymaps = false,
 		})
-		vim.keymap.set("n", "<leader>S", treesj.split, { desc = "Split" })
-		vim.keymap.set("n", "<leader>J", treesj.join, { desc = "Join" })
+		vim.keymap.set("n", "<leader>J", treesj.split, { desc = "Split" })
+		vim.keymap.set("n", "<leader>j", treesj.join, { desc = "Join" })
 	end,
 }
