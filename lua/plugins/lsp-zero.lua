@@ -41,15 +41,15 @@ return {
 							-- on_attach = function(client)
 							-- 	client.server_capabilities.hoverProvider = false
 							-- end,
-							settings = {
-								python = {
-									analysis = {
-										typeCheckingMode = "off",
-										autoImportCompletions = true,
-										diagnosticMode = "workspace",
-									},
-								},
-							},
+							-- settings = {
+							-- 	python = {
+							-- 		analysis = {
+							-- 			typeCheckingMode = "off",
+							-- 			autoImportCompletions = true,
+							-- 			diagnosticMode = "workspace",
+							-- 		},
+							-- 	},
+							-- },
 						})
 					end,
 					pylsp = function()
@@ -66,6 +66,11 @@ return {
 									},
 								},
 							},
+						})
+					end,
+					bashls = function()
+						require("lspconfig").bashls.setup({
+							filetypes = { "sh", "zsh" },
 						})
 					end,
 					lua_ls = function()

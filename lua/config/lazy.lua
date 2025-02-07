@@ -22,8 +22,8 @@ vim.opt.rtp:prepend(lazypath)
 -- vim.g.loaded_netrwPlugin = 1 -- Use nvim-tree
 vim.wo.number = true
 vim.wo.relativenumber = true
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 vim.opt.colorcolumn = "80,88"
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
