@@ -22,8 +22,9 @@ vim.opt.rtp:prepend(lazypath)
 -- vim.g.loaded_netrwPlugin = 1 -- Use nvim-tree
 vim.wo.number = true
 vim.wo.relativenumber = true
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 0
 vim.opt.colorcolumn = "80,88"
 vim.opt.cursorline = true
 vim.opt.cursorlineopt = "number"
@@ -31,6 +32,7 @@ vim.opt.autoread = true
 vim.opt.termguicolors = true
 vim.opt.expandtab = true
 vim.opt.undofile = true
+-- vim.opt.smartindent = true
 vim.opt.wildmode = "list:longest,full"
 -- vim.opt.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor"
 -- Undercurl
@@ -77,21 +79,6 @@ vim.wo.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.wo.foldminlines = 4
 vim.opt.foldlevelstart = 99
--- function _G.myfoldtext()
--- 	local text = vim.treesitter.foldtext()
---
--- 	local n_lines = vim.v.foldend - vim.v.foldstart
--- 	local text_lines = " lines"
---
--- 	if n_lines == 1 then
--- 		text_lines = " line"
--- 	end
---
--- 	table.insert(text, { " - " .. n_lines .. text_lines, { "Folded" } })
---
--- 	return text
--- end
--- vim.opt.foldtext = "v:lua.myfoldtext()"
 
 -- Unimpaired
 -- These are mappings I like from the vim-unimpaired plugin that I've since removed

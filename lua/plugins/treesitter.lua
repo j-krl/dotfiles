@@ -12,13 +12,16 @@ return {
 				"typescript",
 				"javascript",
 				"python",
+				"terraform",
 			},
 			auto_install = true,
 			highlight = {
 				enable = true,
 				use_languagetree = true,
 			},
-			indent = { enable = true },
+			indent = {
+				enable = true,
+			},
 		})
 	end,
 }
