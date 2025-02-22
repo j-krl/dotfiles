@@ -29,6 +29,16 @@ return {
 							["<esc>"] = actions.close,
 						},
 					},
+					vimgrep_arguments = {
+						-- All default args without smart-case
+						"rg",
+						"--color=never",
+						"--no-heading",
+						"--with-filename",
+						"--line-number",
+						"--column",
+						"--hidden",
+					},
 				},
 				pickers = {
 					buffers = {
@@ -50,6 +60,7 @@ return {
 						}),
 					},
 					live_grep_args = {
+						auto_quoting = true,
 						mappings = {
 							i = {
 								["<C-k>"] = require("telescope-live-grep-args.actions").quote_prompt(),
@@ -69,7 +80,6 @@ return {
 			end, { desc = "Find files" })
 			vim.keymap.set("n", "<leader>g", telescope.extensions.live_grep_args.live_grep_args, { desc = "ripgrep" })
 			vim.keymap.set("n", "<leader>o", builtin.oldfiles, { desc = "Oldfiles" })
-			-- vim.keymap.set("n", "<leader>c", ":Telescope themes<CR>", { desc = "Colorschemes", silent = true })
 			vim.keymap.set("n", "<leader>s", function()
 				builtin.lsp_dynamic_workspace_symbols({
 					ignore_symbols = { "variable" },
