@@ -3,11 +3,15 @@ return {
 	config = function()
 		local gitsigns = require("gitsigns")
 		gitsigns.setup({
-			current_line_blame = true,
+			signs = {
+				add = { text = "+" },
+				change = { text = "~" },
+				delete = { text = "-" },
+			},
+			signs_staged_enable = false,
 		})
-		vim.keymap.set("n", "<leader>S", ":Gitsigns stage_hunk<CR>", { desc = "Stage hunk" })
-		vim.keymap.set("n", "<leader>R", ":Gitsigns reset_hunk<CR>", { desc = "Reset hunk" })
-		vim.keymap.set("n", "<leader>P", ":Gitsigns preview_hunk_inline<CR>", { desc = "Preview hunk inline" })
+		vim.keymap.set("n", "<leader>r", ":Gitsigns reset_hunk<CR>", { desc = "Reset hunk" })
+		vim.keymap.set("n", "<leader>p", ":Gitsigns preview_hunk_inline<CR>", { desc = "Preview hunk inline" })
 		vim.keymap.set("n", "]c", function()
 			gitsigns.nav_hunk("next", { target = "all" })
 		end)

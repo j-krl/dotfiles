@@ -28,30 +28,6 @@ return {
 					"lua_ls",
 				},
 				handlers = {
-					-- marksman = function()
-					-- 	require("lspconfig").marksman.setup({
-					-- 		on_attach = function(client)
-					-- 			client.server_capabilities.completionProvider = false
-					-- 		end,
-					-- 	})
-					-- end,
-					pyright = function()
-						require("lspconfig").pyright.setup({
-							-- Waiting for a pylsp PR that improves its hover docs
-							-- on_attach = function(client)
-							-- 	client.server_capabilities.hoverProvider = false
-							-- end,
-							-- settings = {
-							-- 	python = {
-							-- 		analysis = {
-							-- 			typeCheckingMode = "off",
-							-- 			autoImportCompletions = true,
-							-- 			diagnosticMode = "workspace",
-							-- 		},
-							-- 	},
-							-- },
-						})
-					end,
 					pylsp = function()
 						require("lspconfig").pylsp.setup({
 							settings = {
@@ -90,9 +66,10 @@ return {
 				},
 			})
 			vim.diagnostic.config({
-				virtual_text = {
+				signs = {
 					severity = { min = vim.diagnostic.severity.WARN },
 				},
+				virtual_text = false,
 			})
 			vim.keymap.set("n", "gL", function()
 				---@diagnostic disable-next-line: assign-type-mismatch

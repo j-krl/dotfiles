@@ -15,11 +15,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
--- vim.g.loaded_netrw = 1 -- Use nvim-tree
--- vim.g.loaded_netrwPlugin = 1 -- Use nvim-tree
 vim.wo.number = true
 vim.wo.relativenumber = true
 vim.opt.tabstop = 2
@@ -32,9 +27,8 @@ vim.opt.autoread = true
 vim.opt.termguicolors = true
 vim.opt.expandtab = true
 vim.opt.undofile = true
--- vim.opt.smartindent = true
+vim.opt.smartindent = true
 vim.opt.wildmode = "list:longest,full"
--- vim.opt.guicursor = "n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor"
 -- Undercurl
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
 vim.cmd([[let &t_Ce = "\e[4:0m"]])
@@ -94,13 +88,19 @@ vim.keymap.set("n", "]l", ":lnext<CR>", { silent = true })
 vim.keymap.set("n", "[l", ":lprev<CR>", { silent = true })
 vim.keymap.set("n", "]L", ":lfirst<CR>", { silent = true })
 vim.keymap.set("n", "[L", ":llast<CR>", { silent = true })
-vim.keymap.set("n", "]t", ":tnext<CR>", { silent = true })
-vim.keymap.set("n", "[t", ":tprev<CR>", { silent = true })
-vim.keymap.set("n", "]T", ":tfirst<CR>", { silent = true })
-vim.keymap.set("n", "[T", ":tlast<CR>", { silent = true })
+vim.keymap.set("n", "]t", ":tabn<CR>", { silent = true })
+vim.keymap.set("n", "[t", ":tabp<CR>", { silent = true })
+vim.keymap.set("n", "]T", ":tabfir<CR>", { silent = true })
+vim.keymap.set("n", "[T", ":tabl<CR>", { silent = true })
 vim.cmd('nnoremap <silent> ]<Space> :<C-u>put =repeat(nr2char(10),v:count)<Bar>execute "\'[-1"<CR>') -- Blank line below
 vim.cmd('nnoremap <silent> [<Space> :<C-u>put!=repeat(nr2char(10),v:count)<Bar>execute "\']+1"<CR>') -- Blank line above
 vim.keymap.set("n", "yor", ":set rnu!<CR>", { desc = "Toggle relative numbers" })
+vim.keymap.set(
+	"n",
+	"yob",
+	':set background=<C-R>=&background == "dark" ? "light" : "dark"<CR><CR>',
+	{ desc = "Toggle background" }
+)
 
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -111,8 +111,8 @@ require("lazy").setup({
 	-- Configure any other settings here. See the documentation for more details.
 	-- colorscheme that will be used when installing plugins.
 	-- install = { colorscheme = { "habamax" } },
-	-- automatically check for plugin updates
+	-- automatically check evening plugin updates
 	checker = { enabled = true },
 })
 
-vim.cmd("colorscheme gruvbox")
+vim.cmd("colorscheme default")

@@ -9,7 +9,6 @@ return {
 				show_hidden = true,
 			},
 		})
-		vim.keymap.set("n", "<leader>e", oil.open, { desc = "Open parent directory" })
 		vim.keymap.set("n", "-", oil.open, { desc = "Open parent directory" })
 	end,
 }

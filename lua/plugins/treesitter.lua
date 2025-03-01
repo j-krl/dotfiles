@@ -15,13 +15,8 @@ return {
 				"terraform",
 			},
 			auto_install = true,
-			highlight = {
-				enable = true,
-				use_languagetree = true,
-			},
-			indent = {
-				enable = true,
-			},
+			highlight = { enable = false },
+			-- indent = { enable = true },
 		})
 	end,
 }

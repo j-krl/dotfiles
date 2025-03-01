@@ -19,7 +19,6 @@ return {
 				scss = { "prettier" },
 				yaml = { "prettier" },
 			},
-			format_after_save = {},
 		})
 		vim.keymap.set("n", "<F3>", conform.format, { desc = "conform.format()" })
 	end,

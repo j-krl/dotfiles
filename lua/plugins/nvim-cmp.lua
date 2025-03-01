@@ -29,20 +29,16 @@ return {
 			vim.keymap.set({ "i", "s" }, "<C-H>", function()
 				luasnip.jump(-1)
 			end, { silent = true })
-
-			-- vim.keymap.set({ "i", "s" }, "<C-E>", function()
-			-- 	if luasnip.choice_active() then
-			-- 		luasnip.change_choice(1)
-			-- 	end
-			-- end, { silent = true })
 		end,
 	},
 	{
 		"hrsh7th/nvim-cmp",
 		config = function()
 			local cmp = require("cmp")
-			local luasnip = require("luasnip")
 			cmp.setup({
+				completion = {
+					autocomplete = false,
+				},
 				sources = {
 					{ name = "nvim_lsp" },
 					{ name = "buffer" },
@@ -50,27 +46,10 @@ return {
 					{ name = "cmp-nvim-lsp-signature-help" },
 					{ name = "path" },
 				},
-				-- preselect = "item",
-				-- completion = {
-				-- 	completeopt = "menu,menuone,noinsert",
-				-- },
 				mapping = {
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
-					-- ["<CR>"] = cmp.mapping(function(fallback)
-					-- 	if cmp.visible() then
-					-- 		if luasnip.expandable() then
-					-- 			luasnip.expand()
-					-- 		else
-					-- 			cmp.confirm({ select = true })
-					-- 		end
-					-- 	else
-					-- 		fallback()
-					-- 	end
-					-- end),
+					["<C-Space>"] = cmp.mapping.complete(),
 					["<C-e>"] = cmp.mapping.abort(),
-					-- ["C-Space"] = cmp.mapping.complete(),
-					["<Up>"] = cmp.mapping.select_prev_item({ behavior = "select" }),
-					["<Down>"] = cmp.mapping.select_next_item({ behavior = "select" }),
 					["<C-p>"] = cmp.mapping(function()
 						if cmp.visible() then
 							cmp.select_prev_item({ behavior = "insert" })
@@ -96,13 +75,6 @@ return {
 				formatting = {
 					format = require("lspkind").cmp_format({
 						mode = "symbol_text",
-						-- menu = {
-						-- 	buffer = "[Buffer]",
-						-- 	nvim_lsp = "[LSP]",
-						-- 	luasnip = "[LuaSnip]",
-						-- 	nvim_lua = "[Lua]",
-						-- 	latex_symbols = "[Latex]",
-						-- },
 					}),
 				},
 			})
