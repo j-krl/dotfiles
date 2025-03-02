@@ -115,4 +115,4 @@ require("lazy").setup({
 	checker = { enabled = true },
 })
 
-vim.cmd("colorscheme default")
+vim.cmd("colorscheme wildcharm")

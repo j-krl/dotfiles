@@ -48,7 +48,12 @@ return {
 				},
 				mapping = {
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
-					["<C-Space>"] = cmp.mapping.complete(),
+					["<C-Space>"] = cmp.mapping(function()
+						if not cmp.visible() then
+							cmp.complete()
+							cmp.confirm({ select = true })
+						end
+					end),
 					["<C-e>"] = cmp.mapping.abort(),
 					["<C-p>"] = cmp.mapping(function()
 						if cmp.visible() then
