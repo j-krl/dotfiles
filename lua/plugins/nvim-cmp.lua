@@ -56,18 +56,16 @@ return {
 					end),
 					["<C-e>"] = cmp.mapping.abort(),
 					["<C-p>"] = cmp.mapping(function()
-						if cmp.visible() then
-							cmp.select_prev_item({ behavior = "insert" })
-						else
+						if not cmp.visible() then
 							cmp.complete()
 						end
+						cmp.select_prev_item({ behavior = "insert" })
 					end),
 					["<C-n>"] = cmp.mapping(function()
-						if cmp.visible() then
-							cmp.select_next_item({ behavior = "insert" })
-						else
+						if not cmp.visible() then
 							cmp.complete()
 						end
+						cmp.select_next_item({ behavior = "insert" })
 					end),
 					["<C-b>"] = cmp.mapping.scroll_docs(-4),
 					["<C-f>"] = cmp.mapping.scroll_docs(4),

@@ -74,8 +74,7 @@ vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.wo.foldminlines = 4
 vim.opt.foldlevelstart = 99
 
--- Unimpaired
--- These are mappings I like from the vim-unimpaired plugin that I've since removed
+-- Other
 vim.keymap.set("n", "]b", ":bnext<CR>", { silent = true })
 vim.keymap.set("n", "[b", ":bprev<CR>", { silent = true })
 vim.keymap.set("n", "]B", ":bfirst<CR>", { silent = true })
@@ -92,6 +91,8 @@ vim.keymap.set("n", "]t", ":tabn<CR>", { silent = true })
 vim.keymap.set("n", "[t", ":tabp<CR>", { silent = true })
 vim.keymap.set("n", "]T", ":tabfir<CR>", { silent = true })
 vim.keymap.set("n", "[T", ":tabl<CR>", { silent = true })
+vim.keymap.set("n", "<C-W>O", ":tabnew<CR>", { silent = true })
+vim.keymap.set("n", "<C-W>C", ":tabcl<CR>", { silent = true })
 vim.cmd('nnoremap <silent> ]<Space> :<C-u>put =repeat(nr2char(10),v:count)<Bar>execute "\'[-1"<CR>') -- Blank line below
 vim.cmd('nnoremap <silent> [<Space> :<C-u>put!=repeat(nr2char(10),v:count)<Bar>execute "\']+1"<CR>') -- Blank line above
 vim.keymap.set("n", "yor", ":set rnu!<CR>", { desc = "Toggle relative numbers" })
