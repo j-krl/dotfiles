@@ -10,8 +10,6 @@ return {
 			},
 			signs_staged_enable = false,
 		})
-		vim.keymap.set("n", "<leader>r", ":Gitsigns reset_hunk<CR>", { desc = "Reset hunk" })
-		vim.keymap.set("n", "<leader>p", ":Gitsigns preview_hunk_inline<CR>", { desc = "Preview hunk inline" })
 		vim.keymap.set("n", "]c", function()
 			gitsigns.nav_hunk("next", { target = "all" })
 		end)

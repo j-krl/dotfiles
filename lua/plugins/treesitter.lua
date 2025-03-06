@@ -16,7 +16,6 @@ return {
 			},
 			auto_install = true,
 			highlight = { enable = false },
-			-- indent = { enable = true },
 		})
 	end,
 }
