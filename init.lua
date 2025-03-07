@@ -17,26 +17,18 @@ require("paq")({
 
 -- LSP
 local lspconfig = require("lspconfig")
-local lsps = { "lua_ls", "pyright", "pylsp", "ruff", "ts_ls", "emmet_language_server", "bashls" }
+local lsps = {
+	"lua_ls",
+	"pyright",
+	"jedi_language_server",
+	"ruff",
+	"ts_ls",
+	"emmet_language_server",
+	"bashls",
+}
 -- Set up all LSPs that we want
 for _, lsp in pairs(lsps) do
 	local setup = {}
-	if lsp == "pylsp" then
-		setup = {
-			settings = {
-				pylsp = {
-					-- Only use pylsp for completions (jedi under the hood)
-					plugins = {
-						pyflakes = { enabled = false },
-						mccabe = { enabled = false },
-						pycodestyle = { enabled = false },
-						pydocstyle = { enabled = false },
-						autopep8 = { enabled = false },
-					},
-				},
-			},
-		}
-	end
 	lspconfig[lsp].setup(setup)
 end
 -- LSP only mappings
