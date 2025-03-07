@@ -65,6 +65,19 @@ return {
 					end,
 				},
 			})
+			vim.keymap.set("n", "]d", function()
+				vim.diagnostic.goto_next({
+					severity = { min = vim.diagnostic.severity.WARN },
+				})
+			end, { desc = "Next warning or error" })
+			vim.keymap.set("n", "[d", function()
+				vim.diagnostic.goto_prev({
+					severity = { min = vim.diagnostic.severity.WARN },
+				})
+			end, { desc = "Previous warning or error" })
+			vim.keymap.set("n", "]D", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+			vim.keymap.set("n", "[D", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+
 			vim.diagnostic.config({
 				signs = {
 					severity = { min = vim.diagnostic.severity.WARN },
