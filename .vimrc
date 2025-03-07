@@ -1,7 +1,24 @@
+if !has('nvim')
+    "Make config semi-reusable between vim and neovim. Packages still need to be
+    "defined in both places using different plugin manager, but at least we are
+    "generally using the same ones...
+    packadd minpac
+
+    call minpac#init()
+    call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+    call minpac#add('junegunn/fzf')
+    call minpac#add('junegunn/fzf.vim')
+    call minpac#add('unblevable/quick-scope')
+    call minpac#add('tpope/vim-surround')
+    call minpac#add('tpope/vim-obsession')
+endif
+
+syntax on
 set number
 set rnu
 set tabstop=4
-set shiftwidth=2
+set shiftwidth=4
 set colorcolumn=80,88
 set cursorline
 set culopt=number
@@ -15,44 +32,34 @@ set foldmethod=expr
 set foldexpr=v:lua.vim.treesitter.foldexpr()
 set foldminlines=4
 set foldlevelstart=99
+set laststatus=2
 
 let mapleader = ' '
 
-nnoremap - :Explore<CR>
-nnoremap ]q :cnext<CR>
-nnoremap [q :cprev<CR>
-nnoremap ]Q :cfirst<CR>
-nnoremap [Q :clast<CR>
-nnoremap ]l :lnext<CR>
-nnoremap [l :lprev<CR>
-nnoremap ]L :lfirst<CR>
-nnoremap [L :llast<CR>
-nnoremap <C-W>O :tabnew<CR>
-nnoremap <C-W>C :tabcl<CR>
-nnoremap <silent> ]<Space> :<C-u>put =repeat(nr2char(10)v:count)<Bar>execute "\'[-1<CR>
-nnoremap <silent> [<Space> :<C-u>put!=repeat(nr2char(10),v:count)<Bar>execute "\']+1"<CR>
+nnoremap - :Explore<cr>
+nnoremap ]q :cnext<cr>
+nnoremap [q :cprev<cr>
+nnoremap ]Q :cfirst<cr>
+nnoremap [Q :clast<cr>
+nnoremap ]l :lnext<cr>
+nnoremap [l :lprev<cr>
+nnoremap ]L :lfirst<cr>
+nnoremap [L :llast<cr>
+nnoremap <C-W>O :tabnew<cr>
+nnoremap <C-W>C :tabcl<cr>
+nnoremap <silent> ]<Space> :<C-u>put =repeat(nr2char(10),v:count)<Bar>execute "\'[-1"<cr>
+
+nnoremap <silent> [<Space> :<C-u>put!=repeat(nr2char(10),v:count)<Bar>execute "\']+1"<cr>
 
 let colodark = 'sorbet'
 let cololight = 'lunaperche'
-nnoremap yor :set rnu!<CR>
-nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<CR><CR>
-execute "nnoremap <silent> yod :colo " . colodark . "<CR>:set background=dark<CR>"
-execute "nnoremap <silent> yol :colo " . cololight . "<CR>:set background=light<CR>"
+nnoremap yor :set rnu!<cr>
+nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
+execute "nnoremap <silent> yod :colo " . colodark . "<cr>:set background=dark<cr>"
+execute "nnoremap <silent> yol :colo " . cololight . "<cr>:set background=light<cr>"
 
-if !has('nvim')
-  "Make config semi-reusable between vim and neovim. Packages still need to be
-  "defined in both places using different plugin manager, but at least we are
-  "generally using the same ones...
-  call plug#begin()
-  Plug 'junegunn/fzf'
-  Plug 'junegunn/fzf.vim'
-  Plug 'unblevable/quick-scope'
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-obsession'
-  call plug#end()
-endif
-
-nnoremap <leader>f :Files<CR>
-nnoremap <leader>g :RG<CR>
+nnoremap <leader>f :Files<cr>
+nnoremap <leader>g :RG<cr>
+nnoremap <F5> :source Session.vim<cr>
 
 execute "colorscheme " . colodark
