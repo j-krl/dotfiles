@@ -67,6 +67,9 @@ vim.diagnostic.config({
 	signs = { severity = { min = vim.diagnostic.severity.WARN } },
 	virtual_text = false,
 })
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldtext = ""
 
 -- Mappings
 vim.keymap.set("n", "<F3>", require("conform").format)

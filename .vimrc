@@ -21,17 +21,17 @@ set tabstop=4
 set shiftwidth=4
 set colorcolumn=80,88
 set cursorline
-set culopt=number
+set signcolumn=yes
+set cursorlineopt=number
 set autoread
 set termguicolors
 set expandtab
 set undofile
 set smartindent
 set wildmode=list:longest,full
-set foldmethod=expr
-set foldexpr=v:lua.vim.treesitter.foldexpr()
-set foldminlines=4
+set foldlevel=99
 set foldlevelstart=99
+set foldminlines=4
 set laststatus=2
 
 let mapleader = ' '
