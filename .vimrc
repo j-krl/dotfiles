@@ -58,8 +58,9 @@ nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><
 execute "nnoremap <silent> yod :colo " . colodark . "<cr>:set background=dark<cr>"
 execute "nnoremap <silent> yol :colo " . cololight . "<cr>:set background=light<cr>"
 
-nnoremap <leader>f :Files<cr>
-nnoremap <leader>g :RG<cr>
+let $FZF_DEFAULT_OPTS = '--bind "ctrl-d:half-page-down,ctrl-u:half-page-up,alt-d:preview-half-page-down,alt-u:preview-half-page-up"'
+nnoremap <leader>f :Files!<cr>
+nnoremap <leader>g :RG!<cr>
 nnoremap <F5> :source Session.vim<cr>
 
 execute "colorscheme " . colodark
