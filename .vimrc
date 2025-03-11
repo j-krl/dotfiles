@@ -29,10 +29,12 @@ set expandtab
 set undofile
 set smartindent
 set wildmode=list:longest,full
+set foldmethod=indent
 set foldlevel=99
 set foldlevelstart=99
 set foldminlines=4
 set laststatus=2
+set completeopt=menu,menuone,popup
 
 let mapleader = ' '
 
@@ -61,6 +63,7 @@ execute "nnoremap <silent> yol :colo " . cololight . "<cr>:set background=light<
 let $FZF_DEFAULT_OPTS = '--bind "ctrl-d:half-page-down,ctrl-u:half-page-up,alt-d:preview-half-page-down,alt-u:preview-half-page-up"'
 nnoremap <leader>f :Files!<cr>
 nnoremap <leader>g :RG!<cr>
+nnoremap <leader>h :History!<cr>
 nnoremap <F5> :source Session.vim<cr>
 
 execute "colorscheme " . colodark

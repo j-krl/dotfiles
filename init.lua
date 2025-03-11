@@ -6,11 +6,10 @@ require("paq")({
 	-- vimscript
 	"unblevable/quick-scope",
 	"tpope/vim-surround",
-	"tpope/vim-obsession",
+	"mbbill/undotree",
 	"junegunn/fzf",
 	"junegunn/fzf.vim",
 	-- lua
-	"nvim-treesitter/nvim-treesitter",
 	"neovim/nvim-lspconfig",
 	"stevearc/conform.nvim",
 })
@@ -19,7 +18,7 @@ require("paq")({
 local lspconfig = require("lspconfig")
 local lsps = {
 	"lua_ls",
-	"pyright",
+	"basedpyright",
 	"jedi_language_server",
 	"ruff",
 	"ts_ls",
@@ -29,6 +28,22 @@ local lsps = {
 -- Set up all LSPs that we want
 for _, lsp in pairs(lsps) do
 	local setup = {}
+	if lsp == "basedpyright" then
+		setup = {
+			settings = {
+				[lsp] = {
+					analysis = {
+						diagnosticMode = "workspace",
+						typeCheckingMode = "off",
+						-- So I can use basedpyright's import code action
+						diagnosticSeverityOverrides = {
+							reportUndefinedVariable = "error",
+						},
+					},
+				},
+			},
+		}
+	end
 	lspconfig[lsp].setup(setup)
 end
 -- LSP only mappings
@@ -47,7 +62,7 @@ require("conform").setup({
 		sh = { "beautysh" },
 		terraform = { "terraform_fmt" },
 		lua = { "stylua" },
-		python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
+		python = { "ruff_organize_imports", "ruff_format" },
 		typescript = { "prettier" },
 		css = { "prettier" },
 		html = { "prettier" },
@@ -67,9 +82,6 @@ vim.diagnostic.config({
 	signs = { severity = { min = vim.diagnostic.severity.WARN } },
 	virtual_text = false,
 })
-vim.o.foldmethod = "expr"
-vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.o.foldtext = ""
 
 -- Mappings
 vim.keymap.set("n", "<F3>", require("conform").format)
