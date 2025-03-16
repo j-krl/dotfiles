@@ -1,6 +1,6 @@
 if !has('nvim')
     "Make config semi-reusable between vim and neovim. Packages still need to be
-    "defined in both places using different plugin manager, but at least we are
+    "defined in both places using a different plugin manager, but at least we are
     "generally using the same ones...
     packadd minpac
 
@@ -9,9 +9,11 @@ if !has('nvim')
 
     call minpac#add('junegunn/fzf')
     call minpac#add('junegunn/fzf.vim')
+	call minpac#add("mbbill/undotree")
     call minpac#add('unblevable/quick-scope')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
+    call minpac#add('tpope/vim-fugitive')
 endif
 
 syntax on
@@ -34,7 +36,7 @@ set foldlevel=99
 set foldlevelstart=99
 set foldminlines=4
 set laststatus=2
-set completeopt=menu,menuone,popup
+set completeopt=menu,menuone,preview
 
 let mapleader = ' '
 
@@ -64,6 +66,8 @@ let $FZF_DEFAULT_OPTS = '--bind "ctrl-d:half-page-down,ctrl-u:half-page-up,alt-d
 nnoremap <leader>f :Files!<cr>
 nnoremap <leader>g :RG!<cr>
 nnoremap <leader>h :History!<cr>
+nnoremap <leader>c :Colors<cr>
+nnoremap <leader>b :Buffers!<cr>
 nnoremap <F5> :source Session.vim<cr>
 
 execute "colorscheme " . colodark

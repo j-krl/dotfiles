@@ -4,11 +4,14 @@ vim.cmd.source(vimrc)
 require("paq")({
 	"savq/paq-nvim",
 	-- vimscript
+	"tpope/vim-sleuth",
 	"unblevable/quick-scope",
 	"tpope/vim-surround",
+	"tpope/vim-obsession",
 	"mbbill/undotree",
 	"junegunn/fzf",
 	"junegunn/fzf.vim",
+	"tpope/vim-fugitive",
 	-- lua
 	"neovim/nvim-lspconfig",
 	"stevearc/conform.nvim",
@@ -19,11 +22,9 @@ local lspconfig = require("lspconfig")
 local lsps = {
 	"lua_ls",
 	"basedpyright",
-	"jedi_language_server",
 	"ruff",
 	"ts_ls",
 	"emmet_language_server",
-	"bashls",
 }
 -- Set up all LSPs that we want
 for _, lsp in pairs(lsps) do
@@ -37,6 +38,7 @@ for _, lsp in pairs(lsps) do
 						typeCheckingMode = "off",
 						-- So I can use basedpyright's import code action
 						diagnosticSeverityOverrides = {
+							reportMissingImports = "error",
 							reportUndefinedVariable = "error",
 						},
 					},
@@ -62,7 +64,8 @@ require("conform").setup({
 		sh = { "beautysh" },
 		terraform = { "terraform_fmt" },
 		lua = { "stylua" },
-		python = { "ruff_organize_imports", "ruff_format" },
+		-- "ruff_fix" removes unused imports
+		python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
 		typescript = { "prettier" },
 		css = { "prettier" },
 		html = { "prettier" },
