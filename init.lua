@@ -40,6 +40,7 @@ for _, lsp in pairs(lsps) do
 						diagnosticSeverityOverrides = {
 							reportMissingImports = "error",
 							reportUndefinedVariable = "error",
+							reportCallIssue = "error",
 						},
 					},
 				},

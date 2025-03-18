@@ -17,8 +17,8 @@ if !has('nvim')
 endif
 
 syntax on
-set number
 set rnu
+set number
 set tabstop=4
 set shiftwidth=4
 set colorcolumn=80,88
@@ -37,6 +37,7 @@ set foldlevelstart=99
 set foldminlines=4
 set laststatus=2
 set completeopt=menu,menuone,preview
+set grepprg=rg\ --vimgrep\ --hidden
 
 let mapleader = ' '
 
