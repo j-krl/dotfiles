@@ -8,6 +8,7 @@ require("paq")({
 	"unblevable/quick-scope",
 	"tpope/vim-surround",
 	"tpope/vim-obsession",
+	"christoomey/vim-tmux-navigator",
 	"mbbill/undotree",
 	"junegunn/fzf",
 	"junegunn/fzf.vim",
@@ -17,16 +18,16 @@ require("paq")({
 	"stevearc/conform.nvim",
 })
 
--- LSP
+-- LSP setup
 local lspconfig = require("lspconfig")
 local lsps = {
 	"lua_ls",
 	"basedpyright",
 	"ruff",
 	"ts_ls",
+	"sqlls",
 	"emmet_language_server",
 }
--- Set up all LSPs that we want
 for _, lsp in pairs(lsps) do
 	local setup = {}
 	if lsp == "basedpyright" then
@@ -40,7 +41,7 @@ for _, lsp in pairs(lsps) do
 						diagnosticSeverityOverrides = {
 							reportMissingImports = "error",
 							reportUndefinedVariable = "error",
-							reportCallIssue = "error",
+							reportCallIssue = "warning",
 						},
 					},
 				},
@@ -49,13 +50,14 @@ for _, lsp in pairs(lsps) do
 	end
 	lspconfig[lsp].setup(setup)
 end
--- LSP only mappings
+
+-- Completions
 vim.api.nvim_create_autocmd("LspAttach", {
-	desc = "LSP actions",
-	callback = function(event)
-		local opts = { buffer = event.buf }
-		vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, opts)
-		vim.keymap.set("n", "<F4>", vim.lsp.buf.code_action, opts)
+	callback = function(args)
+		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+		if client:supports_method("textDocument/completion") then
+			vim.lsp.completion.enable(true, client.id, args.buf)
+		end
 	end,
 })
 
@@ -73,7 +75,7 @@ require("conform").setup({
 		javascript = { "prettier" },
 		javascriptreact = { "prettier" },
 		typescriptreact = { "prettier" },
-		markdown = { "prettier" },
+		-- markdown = { "prettier" },
 		json = { "prettier" },
 		scss = { "prettier" },
 		yaml = { "prettier" },
@@ -83,10 +85,19 @@ require("conform").setup({
 
 -- Options
 vim.diagnostic.config({
-	signs = { severity = { min = vim.diagnostic.severity.WARN } },
 	virtual_text = false,
+	underline = false,
 })
 
 -- Mappings
 vim.keymap.set("n", "<F3>", require("conform").format)
+vim.keymap.set("n", "]D", function()
+	vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
+end)
+vim.keymap.set("n", "[D", function()
+	vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
+end)
 vim.keymap.set("n", "gl", vim.diagnostic.open_float)
+vim.keymap.set("n", "gL", function()
+	vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR })
+end)
