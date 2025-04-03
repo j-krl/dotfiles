@@ -19,6 +19,8 @@ if !has('nvim')
     endfunction
 endif
 
+packadd cfilter
+
 syntax on
 set relativenumber
 set number

@@ -37,10 +37,7 @@ for _, lsp in pairs(lsps) do
 					analysis = {
 						diagnosticMode = "workspace",
 						typeCheckingMode = "off",
-						-- So I can use basedpyright's import code action
 						diagnosticSeverityOverrides = {
-							reportMissingImports = "error",
-							reportUndefinedVariable = "error",
 							reportCallIssue = "warning",
 						},
 					},
@@ -75,7 +72,6 @@ require("conform").setup({
 		javascript = { "prettier" },
 		javascriptreact = { "prettier" },
 		typescriptreact = { "prettier" },
-		-- markdown = { "prettier" },
 		json = { "prettier" },
 		scss = { "prettier" },
 		yaml = { "prettier" },
