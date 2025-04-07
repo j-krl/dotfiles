@@ -19,6 +19,8 @@ endif
 
 packadd cfilter
 
+let mapleader = ' '
+
 syntax on
 set relativenumber
 set number
@@ -36,7 +38,7 @@ set smartindent
 set laststatus=2
 set completeopt=menuone,popup
 set wildmode=list:longest,full
-set wildignore=node_modules/*,venv/*,.venv/*,logs/*,.git/*
+set wildignore=**/node_modules/**,**/venv/**,**/.venv/**,**/logs/**,**/.git/**,**/build/**
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13.(%l,%c%V%)\ %P
 set foldmethod=indent
@@ -45,10 +47,10 @@ set foldlevelstart=100
 set foldminlines=4
 set background=dark
 
-:command Bonly %bd|e#|bd#|norm `"
-:command Bdelete e#|bd#
+:command BufOnly %bd|e#|bd#|norm `"
+:command BufDelete e#|bd#
+:command BufActive call s:CloseHiddenBuffers()
 
-let mapleader = ' '
 nnoremap - <cmd>Explore<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
@@ -73,16 +75,24 @@ augroup END
 augroup Monokai
     autocmd ColorScheme unokai highlight Normal guifg=#f8f8f0 guibg=#26292c
     autocmd ColorScheme unokai highlight ColorColumn cterm=reverse guibg=#2e323c
-    autocmd ColorScheme unokai highlight StatusLineNC cterm=bold,underline guifg=#8f908a guibg=#2e323c
-    autocmd ColorScheme unokai highlight clear StatusLine
-    autocmd ColorScheme unokai highlight StatusLine ctermbg=240 guibg=#585858
-    autocmd ColorScheme unokai highlight link WinSeparator Normal
     autocmd ColorScheme unokai highlight Identifier ctermfg=12 guifg=#f8f8f0
     autocmd ColorScheme unokai highlight PreProc guifg=#a6e22e
     autocmd ColorScheme unokai highlight Structure guifg=#66d9ef
 augroup END
 
-colorscheme retrobox
+colorscheme unokai
+
+function! s:CloseHiddenBuffers()
+  let open_buffers = []
+  for i in range(tabpagenr('$'))
+    call extend(open_buffers, tabpagebuflist(i + 1))
+  endfor
+  for num in range(1, bufnr("$") + 1)
+    if buflisted(num) && index(open_buffers, num) == -1
+      exec "bdelete ".num
+    endif
+  endfor
+endfunction
 
 if !has('nvim')
     command! PackUpdate call PackInit() | call minpac#update()

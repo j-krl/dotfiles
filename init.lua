@@ -79,8 +79,10 @@ require("conform").setup({
 
 -- Options
 vim.diagnostic.config({
-	virtual_text = false,
-	underline = false,
+	severity_sort = true,
+	virtual_text = {
+		severity = vim.diagnostic.severity.ERROR,
+	},
 })
 
 -- Mappings
