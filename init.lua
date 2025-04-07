@@ -10,8 +10,6 @@ require("paq")({
 	"tpope/vim-obsession",
 	"christoomey/vim-tmux-navigator",
 	"mbbill/undotree",
-	"junegunn/fzf",
-	"junegunn/fzf.vim",
 	"tpope/vim-fugitive",
 	-- lua
 	"neovim/nvim-lspconfig",

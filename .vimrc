@@ -8,8 +8,6 @@ if !has('nvim')
         call minpac#init()
         call minpac#add('k-takata/minpac', {'type': 'opt'})
 
-        call minpac#add('junegunn/fzf')
-        call minpac#add('junegunn/fzf.vim')
         call minpac#add("mbbill/undotree")
         call minpac#add("christoomey/vim-tmux-navigator")
         call minpac#add('unblevable/quick-scope')
@@ -36,8 +34,9 @@ set termguicolors
 set undofile
 set smartindent
 set laststatus=2
-set completeopt=menu,menuone
+set completeopt=menuone,popup
 set wildmode=list:longest,full
+set wildignore=node_modules/*,venv/*,.venv/*,logs/*,.git/*
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13.(%l,%c%V%)\ %P
 set foldmethod=indent
@@ -45,9 +44,9 @@ set foldlevel=100
 set foldlevelstart=100
 set foldminlines=4
 set background=dark
-let $FZF_DEFAULT_OPTS = '--bind ctrl-d:half-page-down,ctrl-u:half-page-up,shift-down:preview-half-page-down,shift-up:preview-half-page-up'
 
-:command BufOnly %bd|e#|bd#|norm `"
+:command Bonly %bd|e#|bd#|norm `"
+:command Bdelete e#|bd#
 
 let mapleader = ' '
 nnoremap - <cmd>Explore<cr>
@@ -57,11 +56,9 @@ nnoremap <C-W>Z <cmd>tab split<cr>
 nnoremap yor <cmd>set rnu!<cr>
 nnoremap <silent> yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 nnoremap <F5> <cmd>source Session.vim<cr>
-nnoremap <leader>f <cmd>Files!<cr>
-nnoremap <leader>g <cmd>RG!<cr>
-nnoremap <leader>b <cmd>Buffers!<cr>
 nnoremap <leader>u <cmd>UndotreeToggle<bar>UndotreeFocus<cr>
 nnoremap <leader>q <cmd>qa<cr>
+nnoremap <leader>d <cmd>Bd<cr>
 let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
@@ -72,6 +69,19 @@ augroup Gruvbox
     autocmd ColorScheme retrobox if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
     autocmd ColorScheme retrobox if &background == "dark" | highlight ColorColumn guibg=#3c3836 | endif
 augroup END
+
+augroup Monokai
+    autocmd ColorScheme unokai highlight Normal guifg=#f8f8f0 guibg=#26292c
+    autocmd ColorScheme unokai highlight ColorColumn cterm=reverse guibg=#2e323c
+    autocmd ColorScheme unokai highlight StatusLineNC cterm=bold,underline guifg=#8f908a guibg=#2e323c
+    autocmd ColorScheme unokai highlight clear StatusLine
+    autocmd ColorScheme unokai highlight StatusLine ctermbg=240 guibg=#585858
+    autocmd ColorScheme unokai highlight link WinSeparator Normal
+    autocmd ColorScheme unokai highlight Identifier ctermfg=12 guifg=#f8f8f0
+    autocmd ColorScheme unokai highlight PreProc guifg=#a6e22e
+    autocmd ColorScheme unokai highlight Structure guifg=#66d9ef
+augroup END
+
 colorscheme retrobox
 
 if !has('nvim')
