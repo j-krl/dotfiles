@@ -4,16 +4,15 @@ if !has('nvim')
         "defined in both places using a different plugin manager, but at least we are
         "generally using the same ones...
         packadd minpac
-
         call minpac#init()
         call minpac#add('k-takata/minpac', {'type': 'opt'})
-
         call minpac#add("mbbill/undotree")
         call minpac#add("christoomey/vim-tmux-navigator")
         call minpac#add('unblevable/quick-scope')
         call minpac#add('tpope/vim-surround')
         call minpac#add('tpope/vim-obsession')
         call minpac#add('tpope/vim-fugitive')
+        call minpac#add('tpope/vim-sleuth')
     endfunction
 endif
 
@@ -36,7 +35,7 @@ set termguicolors
 set undofile
 set smartindent
 set laststatus=2
-set completeopt=menuone,popup
+set completeopt=menuone,popup,fuzzy
 set wildmode=list:longest,full
 set wildignore=**/node_modules/**,**/venv/**,**/.venv/**,**/logs/**,**/.git/**,**/build/**
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
@@ -51,6 +50,9 @@ set background=dark
 :command BufDelete e#|bd#
 :command BufActive call s:CloseHiddenBuffers()
 
+let g:tmux_navigator_no_mappings = 1
+let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
+
 nnoremap - <cmd>Explore<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
@@ -61,7 +63,6 @@ nnoremap <F5> <cmd>source Session.vim<cr>
 nnoremap <leader>u <cmd>UndotreeToggle<bar>UndotreeFocus<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>d <cmd>Bd<cr>
-let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
@@ -78,24 +79,42 @@ augroup Monokai
     autocmd ColorScheme unokai highlight Identifier ctermfg=12 guifg=#f8f8f0
     autocmd ColorScheme unokai highlight PreProc guifg=#a6e22e
     autocmd ColorScheme unokai highlight Structure guifg=#66d9ef
+    autocmd ColorScheme unokai highlight Comment gui=italic guifg=#9ca0a4
 augroup END
 
-colorscheme unokai
-
 function! s:CloseHiddenBuffers()
-  let open_buffers = []
-  for i in range(tabpagenr('$'))
-    call extend(open_buffers, tabpagebuflist(i + 1))
-  endfor
-  for num in range(1, bufnr("$") + 1)
-    if buflisted(num) && index(open_buffers, num) == -1
-      exec "bdelete ".num
-    endif
-  endfor
+    let open_buffers = []
+    for i in range(tabpagenr('$'))
+        call extend(open_buffers, tabpagebuflist(i + 1))
+    endfor
+    for num in range(1, bufnr("$") + 1)
+        if buflisted(num) && index(open_buffers, num) == -1
+            exec "bdelete ".num
+        endif
+    endfor
 endfunction
+
+function! s:FdFindFunc(cmdarg, cmdcomplete)
+    let cmd = "fd -p -H -L -E .git "
+    if !a:cmdcomplete
+        let cmd = cmd . "-t f "
+    endif
+    let result = systemlist(cmd . a:cmdarg) 
+    if v:shell_error != 0
+        echoerr result
+        return []
+    endif
+    return result
+endfunction
+
+if executable('fd')
+    set findfunc=s:FdFindFunc
+endif
 
 if !has('nvim')
     command! PackUpdate call PackInit() | call minpac#update()
     command! PackClean  call PackInit() | call minpac#clean()
     command! PackStatus packadd minpac | call minpac#status()
 endif
+
+colorscheme unokai

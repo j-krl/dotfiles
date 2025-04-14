@@ -4,12 +4,12 @@ vim.cmd.source(vimrc)
 require("paq")({
 	"savq/paq-nvim",
 	-- vimscript
-	"tpope/vim-sleuth",
+	"mbbill/undotree",
+	"christoomey/vim-tmux-navigator",
 	"unblevable/quick-scope",
+	"tpope/vim-sleuth",
 	"tpope/vim-surround",
 	"tpope/vim-obsession",
-	"christoomey/vim-tmux-navigator",
-	"mbbill/undotree",
 	"tpope/vim-fugitive",
 	-- lua
 	"neovim/nvim-lspconfig",
@@ -35,9 +35,6 @@ for _, lsp in pairs(lsps) do
 					analysis = {
 						diagnosticMode = "workspace",
 						typeCheckingMode = "off",
-						diagnosticSeverityOverrides = {
-							reportCallIssue = "warning",
-						},
 					},
 				},
 			},
@@ -62,7 +59,6 @@ require("conform").setup({
 		sh = { "beautysh" },
 		terraform = { "terraform_fmt" },
 		lua = { "stylua" },
-		-- "ruff_fix" removes unused imports
 		python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
 		typescript = { "prettier" },
 		css = { "prettier" },
