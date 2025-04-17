@@ -23,7 +23,6 @@ local lsps = {
 	"basedpyright",
 	"ruff",
 	"ts_ls",
-	"eslint",
 	"sqlls",
 	"emmet_language_server",
 }

@@ -35,7 +35,7 @@ set termguicolors
 set undofile
 set smartindent
 set laststatus=2
-set completeopt=menuone,popup,fuzzy
+set completeopt=menuone,popup
 set wildmode=list:longest,full
 set wildignore=**/node_modules/**,**/venv/**,**/.venv/**,**/logs/**,**/.git/**,**/build/**
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
@@ -52,6 +52,7 @@ set background=dark
 
 let g:tmux_navigator_no_mappings = 1
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
+let g:surround_120 = "{/* \r */}" "JSX comments
 
 nnoremap - <cmd>Explore<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
@@ -62,7 +63,6 @@ nnoremap <silent> yob :set background=<C-R>=&background == "dark" ? "light" : "d
 nnoremap <F5> <cmd>source Session.vim<cr>
 nnoremap <leader>u <cmd>UndotreeToggle<bar>UndotreeFocus<cr>
 nnoremap <leader>q <cmd>qa<cr>
-nnoremap <leader>d <cmd>Bd<cr>
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
