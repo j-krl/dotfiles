@@ -6,9 +6,9 @@ if !has('nvim')
         packadd minpac
         call minpac#init()
         call minpac#add('k-takata/minpac', {'type': 'opt'})
-        call minpac#add("mbbill/undotree")
-        call minpac#add("christoomey/vim-tmux-navigator")
-        call minpac#add('unblevable/quick-scope')
+        call minpac#add('mbbill/undotree')
+        call minpac#add('christoomey/vim-tmux-navigator')
+        call minpac#add('jeetsukumaran/vim-indentwise')
         call minpac#add('tpope/vim-surround')
         call minpac#add('tpope/vim-obsession')
         call minpac#add('tpope/vim-fugitive')
@@ -68,12 +68,20 @@ nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 
-augroup Gruvbox
+"Mark cursor position before any grep that jumps to first match
+augroup markgrep
+    autocmd!
+    autocmd QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
+augroup END
+
+augroup gruvbox
+    autocmd!
     autocmd ColorScheme retrobox if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
     autocmd ColorScheme retrobox if &background == "dark" | highlight ColorColumn guibg=#3c3836 | endif
 augroup END
 
-augroup Monokai
+augroup monokai
+    autocmd!
     autocmd ColorScheme unokai highlight Normal guifg=#f8f8f0 guibg=#26292c
     autocmd ColorScheme unokai highlight ColorColumn cterm=reverse guibg=#2e323c
     autocmd ColorScheme unokai highlight Identifier ctermfg=12 guifg=#f8f8f0

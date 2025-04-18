@@ -6,7 +6,7 @@ require("paq")({
 	-- vimscript
 	"mbbill/undotree",
 	"christoomey/vim-tmux-navigator",
-	"unblevable/quick-scope",
+	"jeetsukumaran/vim-indentwise",
 	"tpope/vim-sleuth",
 	"tpope/vim-surround",
 	"tpope/vim-obsession",
