@@ -13,6 +13,7 @@ if !has('nvim')
         call minpac#add('tpope/vim-obsession')
         call minpac#add('tpope/vim-fugitive')
         call minpac#add('tpope/vim-sleuth')
+        call minpac#add('dense-analysis/ale')
     endfunction
 endif
 
@@ -54,6 +55,7 @@ let g:tmux_navigator_no_mappings = 1
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:surround_120 = "{/* \r */}" "JSX comments
 
+nnoremap / ms/
 nnoremap - <cmd>Explore<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
@@ -62,13 +64,17 @@ nnoremap yor <cmd>set rnu!<cr>
 nnoremap <silent> yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 nnoremap <F5> <cmd>source Session.vim<cr>
 nnoremap <leader>u <cmd>UndotreeToggle<bar>UndotreeFocus<cr>
-nnoremap <leader>q <cmd>qa<cr>
+nnoremap <leader>y "+y
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+nnoremap <C-S> a<cr><esc>k$
+inoremap <C-S> <cr><esc>kA
+nmap <expr> yccp "yy" .. v:count1 .. "gcc\']p"
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 
-"Mark cursor position before any grep that jumps to first match
 augroup markgrep
     autocmd!
     autocmd QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
@@ -89,6 +95,25 @@ augroup monokai
     autocmd ColorScheme unokai highlight Structure guifg=#66d9ef
     autocmd ColorScheme unokai highlight Comment gui=italic guifg=#9ca0a4
 augroup END
+
+augroup diffcolors
+    autocmd!
+    autocmd Colorscheme * call s:SetDiffHighlights()
+augroup END
+
+function! s:SetDiffHighlights()
+    if &background == "dark"
+        highlight DiffAdd gui=bold guifg=none guibg=#2e4b2e
+        highlight DiffDelete gui=bold guifg=none guibg=#4c1e15
+        highlight DiffChange gui=bold guifg=none guibg=#45565c
+        highlight DiffText gui=bold guifg=none guibg=#996d74
+    else
+        highlight DiffAdd gui=bold guifg=none guibg=palegreen
+        highlight DiffDelete gui=bold guifg=none guibg=lightred
+        highlight DiffChange gui=bold guifg=none guibg=lightblue
+        highlight DiffText gui=bold guifg=none guibg=lightpink
+    endif
+endfunction
 
 function! s:CloseHiddenBuffers()
     let open_buffers = []
@@ -115,7 +140,7 @@ function! s:FdFindFunc(cmdarg, cmdcomplete)
     return result
 endfunction
 
-if executable('fd')
+if exists('&findfunc') && executable('fd')
     set findfunc=s:FdFindFunc
 endif
 
@@ -125,4 +150,4 @@ if !has('nvim')
     command! PackStatus packadd minpac | call minpac#status()
 endif
 
-colorscheme unokai
+silent! colorscheme unokai
