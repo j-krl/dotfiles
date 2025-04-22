@@ -19,13 +19,12 @@ endif
 
 packadd cfilter
 
-let mapleader = ' '
-
 syntax on
 set relativenumber
 set number
 set tabstop=4
 set shiftwidth=4
+set background=dark
 set expandtab
 set colorcolumn=80,88
 set cursorline
@@ -45,31 +44,40 @@ set foldmethod=indent
 set foldlevel=100
 set foldlevelstart=100
 set foldminlines=4
-set background=dark
-
-:command BufOnly %bd|e#|bd#|norm `"
-:command BufDelete e#|bd#
-:command BufActive call s:CloseHiddenBuffers()
 
 let g:tmux_navigator_no_mappings = 1
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:surround_120 = "{/* \r */}" "JSX comments
+let colodark = 'unokai'
+let cololight = 'lunaperche'
 
 nnoremap / ms/
-nnoremap - <cmd>Explore<cr>
+nnoremap ? ms?
+nnoremap * ms*
+nnoremap # ms#
+nnoremap <leader>p "0p
+nnoremap <leader>P "0P
+nnoremap +y "+y
+nnoremap +p "+p
+nnoremap +P "+P
+nmap <expr> yccp "yy" .. v:count1 .. "gcc\']p"
+nnoremap <leader>s a<cr><esc>k$
+nnoremap <leader>S i<cr><esc>k$
+nnoremap <silent> <expr> <C-J> ':<C-U>keepp ,+' .. (v:count1 - 1) .. 's/\n\s*//g<cr>``'
+inoremap <C-S> <cr><esc>kA
+nnoremap <Space> i_<esc>r
+inoremap <C-Space> <C-X><C-O>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
 nnoremap yor <cmd>set rnu!<cr>
-nnoremap <silent> yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
+nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
+nnoremap <silent> <expr> yod ":colo " .. colodark .. "<cr>:set background=dark<cr>"
+nnoremap <silent> <expr> yol ":colo " .. cololight .. "<cr>:set background=light<cr>"
+nnoremap - <cmd>Explore<cr>
+
 nnoremap <F5> <cmd>source Session.vim<cr>
 nnoremap <leader>u <cmd>UndotreeToggle<bar>UndotreeFocus<cr>
-nnoremap <leader>y "+y
-nnoremap <leader>p "+p
-nnoremap <leader>P "+P
-nnoremap <C-S> a<cr><esc>k$
-inoremap <C-S> <cr><esc>kA
-nmap <expr> yccp "yy" .. v:count1 .. "gcc\']p"
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
@@ -115,32 +123,20 @@ function! s:SetDiffHighlights()
     endif
 endfunction
 
-function! s:CloseHiddenBuffers()
-    let open_buffers = []
-    for i in range(tabpagenr('$'))
-        call extend(open_buffers, tabpagebuflist(i + 1))
-    endfor
-    for num in range(1, bufnr("$") + 1)
-        if buflisted(num) && index(open_buffers, num) == -1
-            exec "bdelete ".num
-        endif
-    endfor
-endfunction
-
-function! s:FdFindFunc(cmdarg, cmdcomplete)
-    let cmd = "fd -p -H -L -E .git "
-    if !a:cmdcomplete
-        let cmd = cmd . "-t f "
-    endif
-    let result = systemlist(cmd . a:cmdarg) 
-    if v:shell_error != 0
-        echoerr result
-        return []
-    endif
-    return result
-endfunction
-
 if exists('&findfunc') && executable('fd')
+    function! s:FdFindFunc(cmdarg, cmdcomplete)
+        let cmd = "fd -p -H -L -E .git "
+        if !a:cmdcomplete
+            let cmd = cmd . "-t f "
+        endif
+        let result = systemlist(cmd . a:cmdarg) 
+        if v:shell_error != 0
+            echoerr result
+            return []
+        endif
+        return result
+    endfunction
+
     set findfunc=s:FdFindFunc
 endif
 
@@ -150,4 +146,4 @@ if !has('nvim')
     command! PackStatus packadd minpac | call minpac#status()
 endif
 
-silent! colorscheme unokai
+execute "silent! colorscheme " .. colodark
