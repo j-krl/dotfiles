@@ -50,7 +50,7 @@ set foldlevelstart=100
 let g:tmux_navigator_no_mappings = 1
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:surround_120 = "{/* \r */}" "JSX comments
-let colodark = 'unokai'
+let colodark = has('nvim') ? 'unokai' : 'default'
 let cololight = 'lunaperche'
 
 nnoremap / ms/
