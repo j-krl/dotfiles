@@ -25,6 +25,7 @@ local lsps = {
 	"ts_ls",
 	"sqlls",
 	"emmet_language_server",
+	"terraformls",
 }
 for _, lsp in pairs(lsps) do
 	local setup = {}

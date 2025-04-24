@@ -24,8 +24,10 @@ set relativenumber
 set number
 set tabstop=4
 set shiftwidth=4
+set mouse=a
 set background=dark
 set expandtab
+set re=0
 set colorcolumn=80,88
 set cursorline
 set cursorlineopt=number
@@ -40,10 +42,10 @@ set wildmode=list:longest,full
 set wildignore=**/node_modules/**,**/venv/**,**/.venv/**,**/logs/**,**/.git/**,**/build/**
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13.(%l,%c%V%)\ %P
+set fillchars=diff:\
 set foldmethod=indent
 set foldlevel=100
 set foldlevelstart=100
-set foldminlines=4
 
 let g:tmux_navigator_no_mappings = 1
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
@@ -55,25 +57,28 @@ nnoremap / ms/
 nnoremap ? ms?
 nnoremap * ms*
 nnoremap # ms#
-nnoremap <leader>p "0p
-nnoremap <leader>P "0P
+nnoremap <leader>q <cmd>qa<cr>
 nnoremap +y "+y
 nnoremap +p "+p
 nnoremap +P "+P
+nnoremap <leader>p "0p
+nnoremap <leader>P "0P
 nmap <expr> yccp "yy" .. v:count1 .. "gcc\']p"
 nnoremap <leader>s a<cr><esc>k$
 nnoremap <leader>S i<cr><esc>k$
-nnoremap <silent> <expr> <C-J> ':<C-U>keepp ,+' .. (v:count1 - 1) .. 's/\n\s*//g<cr>``'
+nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count1 - 1) .. 's/\n\s*//g<cr>`l'
 inoremap <C-S> <cr><esc>kA
 nnoremap <Space> i_<esc>r
+nnoremap <C-Space> a_<esc>r
 inoremap <C-Space> <C-X><C-O>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
 nnoremap yor <cmd>set rnu!<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap <silent> <expr> yod ":colo " .. colodark .. "<cr>:set background=dark<cr>"
-nnoremap <silent> <expr> yol ":colo " .. cololight .. "<cr>:set background=light<cr>"
+nnoremap <silent> <expr> yod ":colo " .. colodark .. "\|set background=dark<cr>"
+nnoremap <silent> <expr> yol ":colo " .. cololight .. "\|set background=light<cr>"
+nnoremap <leader>a <cmd>!git add %<cr>
 nnoremap - <cmd>Explore<cr>
 
 nnoremap <F5> <cmd>source Session.vim<cr>
@@ -111,15 +116,15 @@ augroup END
 
 function! s:SetDiffHighlights()
     if &background == "dark"
-        highlight DiffAdd gui=bold guifg=none guibg=#2e4b2e
-        highlight DiffDelete gui=bold guifg=none guibg=#4c1e15
-        highlight DiffChange gui=bold guifg=none guibg=#45565c
-        highlight DiffText gui=bold guifg=none guibg=#996d74
+        highlight DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
+        highlight DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
+        highlight DiffChange gui=BOLD guifg=NONE guibg=#3e4d53
+        highlight DiffText gui=BOLD guifg=NONE guibg=#5c4306
     else
-        highlight DiffAdd gui=bold guifg=none guibg=palegreen
-        highlight DiffDelete gui=bold guifg=none guibg=lightred
-        highlight DiffChange gui=bold guifg=none guibg=lightblue
-        highlight DiffText gui=bold guifg=none guibg=lightpink
+        highlight DiffAdd gui=BOLD guifg=NONE guibg=palegreen
+        highlight DiffDelete gui=BOLD guifg=NONE guibg=lightred
+        highlight DiffChange gui=BOLD guifg=NONE guibg=lightblue
+        highlight DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
     endif
 endfunction
 
@@ -141,6 +146,8 @@ if exists('&findfunc') && executable('fd')
 endif
 
 if !has('nvim')
+    let g:ale_linters = {'python': ['ruff']}
+
     command! PackUpdate call PackInit() | call minpac#update()
     command! PackClean  call PackInit() | call minpac#clean()
     command! PackStatus packadd minpac | call minpac#status()
