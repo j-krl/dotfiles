@@ -25,12 +25,10 @@ set number
 set tabstop=4
 set shiftwidth=4
 set mouse=a
-set background=dark
 set expandtab
 set re=0
 set colorcolumn=80,88
 set cursorline
-set cursorlineopt=number
 set signcolumn=yes
 set autoread
 set termguicolors
@@ -47,23 +45,24 @@ set foldmethod=indent
 set foldlevel=100
 set foldlevelstart=100
 
-let g:tmux_navigator_no_mappings = 1
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
+let g:tmux_navigator_no_mappings = 1
 let g:surround_120 = "{/* \r */}" "JSX comments
-let colodark = has('nvim') ? 'unokai' : 'default'
+let colodark = has('nvim') ? 'vim' : 'default'
 let cololight = 'lunaperche'
 
-nnoremap / ms/
-nnoremap ? ms?
-nnoremap * ms*
-nnoremap # ms#
-nnoremap <leader>q <cmd>qa<cr>
-nnoremap +y "+y
-nnoremap +p "+p
-nnoremap +P "+P
-nnoremap <leader>p "0p
-nnoremap <leader>P "0P
+noremap / ms/
+noremap ? ms?
+noremap * ms*
+noremap # ms#
+noremap +y "+y
+noremap +p "+p
+noremap +P "+P
+noremap <leader>p "0p
+noremap <leader>P "0P
 nmap <expr> yccp "yy" .. v:count1 .. "gcc\']p"
+nnoremap <leader>q <cmd>qa<cr>
+nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>s a<cr><esc>k$
 nnoremap <leader>S i<cr><esc>k$
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count1 - 1) .. 's/\n\s*//g<cr>`l'
@@ -81,12 +80,15 @@ nnoremap <silent> <expr> yol ":colo " .. cololight .. "\|set background=light<cr
 nnoremap <leader>a <cmd>!git add %<cr>
 nnoremap - <cmd>Explore<cr>
 
-nnoremap <F5> <cmd>source Session.vim<cr>
 nnoremap <leader>u <cmd>UndotreeToggle<bar>UndotreeFocus<cr>
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
+
+"Diff the current buffer with its [count]th undo 
+command! -count=1 DiffUndo :exe 'norm mu'|exe repeat('undo|', <count>)|%y|tab split|vnew|
+    \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
 
 augroup markgrep
     autocmd!

@@ -51,6 +51,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		if client:supports_method("textDocument/completion") then
 			vim.lsp.completion.enable(true, client.id, args.buf)
 		end
+		local opts = { buffer = args.buf }
+		vim.keymap.set("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
 	end,
 })
 
@@ -90,7 +92,7 @@ end)
 vim.keymap.set("n", "[D", function()
 	vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
 end)
-vim.keymap.set("n", "gl", vim.diagnostic.open_float)
-vim.keymap.set("n", "gL", function()
+vim.keymap.set("n", "<leader>k", vim.diagnostic.open_float)
+vim.keymap.set("n", "<leader>K", function()
 	vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR })
 end)
