@@ -1,23 +1,24 @@
 if !has('nvim')
     function! PackInit() abort
-        "Make config semi-reusable between vim and neovim. Packages still need to be
-        "defined in both places using a different plugin manager, but at least we are
-        "generally using the same ones...
         packadd minpac
         call minpac#init()
         call minpac#add('k-takata/minpac', {'type': 'opt'})
         call minpac#add('mbbill/undotree')
         call minpac#add('christoomey/vim-tmux-navigator')
-        call minpac#add('jeetsukumaran/vim-indentwise')
         call minpac#add('tpope/vim-surround')
         call minpac#add('tpope/vim-obsession')
         call minpac#add('tpope/vim-fugitive')
         call minpac#add('tpope/vim-sleuth')
+        call minpac#add('tpope/vim-dotenv')
         call minpac#add('dense-analysis/ale')
     endfunction
 endif
 
 packadd cfilter
+
+augroup vimrc
+    autocmd!
+augroup END
 
 syntax on
 set relativenumber
@@ -37,9 +38,10 @@ set smartindent
 set laststatus=2
 set completeopt=menuone,popup
 set wildmode=list:longest,full
-set wildignore=**/node_modules/**,**/venv/**,**/.venv/**,**/logs/**,**/.git/**,**/build/**
+set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,\**/.git/*,
+    \**/build/*,**/__pycache__/*
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
-set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13.(%l,%c%V%)\ %P
+set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r\ %a%=%-13.(%l,%c%V%)\ %P
 set fillchars=diff:\
 set foldmethod=indent
 set foldlevel=100
@@ -48,6 +50,7 @@ set foldlevelstart=100
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:tmux_navigator_no_mappings = 1
 let g:surround_120 = "{/* \r */}" "JSX comments
+let g:surround_100 = "\1dict: \1[\"\r\"]" "Python dict
 let colodark = has('nvim') ? 'vim' : 'default'
 let cololight = 'lunaperche'
 
@@ -73,6 +76,10 @@ inoremap <C-Space> <C-X><C-O>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
+onoremap ik :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-<cr>
+xnoremap ik :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-<cr>
+onoremap ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
+xnoremap ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
 nnoremap yor <cmd>set rnu!<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 nnoremap <silent> <expr> yod ":colo " .. colodark .. "\|set background=dark<cr>"
@@ -90,10 +97,9 @@ nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 command! -count=1 DiffUndo :exe 'norm mu'|exe repeat('undo|', <count>)|%y|tab split|vnew|
     \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
 
-augroup markgrep
-    autocmd!
-    autocmd QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
-augroup END
+autocmd vimrc VimEnter * call s:SetProjectPath()
+autocmd vimrc Colorscheme * call s:SetDiffHighlights()
+autocmd vimrc QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
 
 augroup gruvbox
     autocmd!
@@ -111,11 +117,6 @@ augroup monokai
     autocmd ColorScheme unokai highlight Comment gui=italic guifg=#9ca0a4
 augroup END
 
-augroup diffcolors
-    autocmd!
-    autocmd Colorscheme * call s:SetDiffHighlights()
-augroup END
-
 function! s:SetDiffHighlights()
     if &background == "dark"
         highlight DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
@@ -130,26 +131,18 @@ function! s:SetDiffHighlights()
     endif
 endfunction
 
-if exists('&findfunc') && executable('fd')
-    function! s:FdFindFunc(cmdarg, cmdcomplete)
-        let cmd = "fd -p -H -L -E .git "
-        if !a:cmdcomplete
-            let cmd = cmd . "-t f "
-        endif
-        let result = systemlist(cmd . a:cmdarg) 
-        if v:shell_error != 0
-            echoerr result
-            return []
-        endif
-        return result
-    endfunction
-
-    set findfunc=s:FdFindFunc
-endif
+function! s:SetProjectPath()
+    if !filereadable(".vimenv")
+        return
+    endif
+    Dotenv .vimenv
+    if !empty($VIMPROJPATH)
+        set path+=$VIMPROJPATH
+    endif
+endfunction
 
 if !has('nvim')
     let g:ale_linters = {'python': ['ruff']}
-
     command! PackUpdate call PackInit() | call minpac#update()
     command! PackClean  call PackInit() | call minpac#clean()
     command! PackStatus packadd minpac | call minpac#status()

@@ -6,11 +6,11 @@ require("paq")({
 	-- vimscript
 	"mbbill/undotree",
 	"christoomey/vim-tmux-navigator",
-	"jeetsukumaran/vim-indentwise",
 	"tpope/vim-sleuth",
 	"tpope/vim-surround",
 	"tpope/vim-obsession",
 	"tpope/vim-fugitive",
+	"tpope/vim-dotenv",
 	-- lua
 	"neovim/nvim-lspconfig",
 	"stevearc/conform.nvim",
