@@ -39,7 +39,8 @@ set completeopt=menuone,popup
 set wildmode=list:longest,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,\**/.git/*,\**/build/*,**/__pycache__/*
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
-set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r\ %a%=%-13.(%l,%c%V%)\ %P
+set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
+set guicursor=n-v-c-sm:block,i-ve:ver25,r-o:hor20
 set fillchars=diff:\
 set foldmethod=indent
 set foldopen-=search
@@ -47,6 +48,7 @@ set foldlevel=100
 set foldlevelstart=100
 
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
+let g:pyindent_open_paren = 'shiftwidth()'
 let g:tmux_navigator_no_mappings = 1
 let g:surround_120 = "{/* \r */}" "JSX comments
 let g:surround_100 = "\1dict: \1[\"\r\"]" "Python dict
@@ -57,36 +59,53 @@ noremap / ms/
 noremap ? ms?
 noremap * ms*
 noremap # ms#
+nnoremap <backspace> <C-^>
 noremap <leader>y "+y
 noremap <leader>p "+p
 noremap <leader>P "+P
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <leader>q <cmd>qa<cr>
-nnoremap <leader>Q <cmd>qa!<cr>
-nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count1 - 1) .. 's/\n\s*//g<cr>`l'
+nnoremap <leader>x <cmd>xa<cr>
+nnoremap <leader>w <cmd>w<cr>
+nnoremap <leader>W <cmd>wa<cr>
+nnoremap <leader>b :call feedkeys(":b <tab>", "tn")<cr>
+nnoremap <leader>f :find 
+nnoremap <leader>g :grep <C-R><C-W><cr>
+nnoremap <expr> <leader>s v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
 nnoremap <Space> i_<esc>r
 nnoremap <C-S> a<cr><esc>k$
 inoremap <C-S> <cr><esc>kA
+nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count1 - 1) .. 's/\n\s*//g<cr>`l'
 inoremap <C-Space> <C-X><C-O>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
-onoremap ik :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-<cr>
-xnoremap ik :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-<cr>
-onoremap ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
-xnoremap ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
+nnoremap [a <cmd>exe v:count1 .. 'N'<bar>args<cr><esc>
+nnoremap ]a <cmd>exe v:count1 .. 'n'<bar>args<cr><esc>
+nnoremap [A <cmd>first<bar>args<cr><esc>
+nnoremap ]A <cmd>last<bar>args<cr><esc>
+nnoremap <A-s> <cmd>args<cr>
+nnoremap <A-a> <cmd>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-A> <cmd>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
+nnoremap <A-D> <cmd>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <silent> <expr> <leader>r ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
+onoremap <silent> ik :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-<cr>
+xnoremap <silent> ik :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-<cr>
+onoremap <silent> ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
+xnoremap <silent> ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 nnoremap <silent> <expr> yod ":colo " .. colodark .. "\|set background=dark<cr>"
 nnoremap <silent> <expr> yol ":colo " .. cololight .. "\|set background=light<cr>"
-nnoremap <leader>g :grep <C-R><C-W><cr>
-nnoremap <leader>a <cmd>!git add %<cr>
+nnoremap <leader>A <cmd>!git add %<cr>
 nnoremap - <cmd>Explore<cr>
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
+nmap dsf dsbdT<space>
 
-"Diff the current buffer with its [count]th undo 
+
 command! -count=1 DiffUndo :exe 'norm mu' .. <count> .. 'u'|%y|tab split|vnew|
     \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
 
