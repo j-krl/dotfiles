@@ -4,7 +4,6 @@ vim.cmd.source(vimrc)
 require("paq")({
 	"savq/paq-nvim",
 	-- vimscript
-	"mbbill/undotree",
 	"christoomey/vim-tmux-navigator",
 	"tpope/vim-sleuth",
 	"tpope/vim-surround",
@@ -14,6 +13,7 @@ require("paq")({
 	-- lua
 	"neovim/nvim-lspconfig",
 	"stevearc/conform.nvim",
+	"supermaven-inc/supermaven-nvim",
 })
 
 -- LSP setup
@@ -76,6 +76,14 @@ require("conform").setup({
 	format_after_save = {}, -- TODO: remove
 })
 
+-- AI
+vim.g.SUPERMAVEN_DISABLED = true -- https://github.com/supermaven-inc/supermaven-nvim/pull/101
+require("supermaven-nvim").setup({
+	condition = function()
+		return vim.g.SUPERMAVEN_DISABLED
+	end,
+})
+
 -- Options
 vim.diagnostic.config({
 	severity_sort = true,
@@ -86,6 +94,7 @@ vim.diagnostic.config({
 
 -- Mappings
 vim.keymap.set("n", "<F3>", require("conform").format)
+vim.keymap.set("n", "<leader>m", "<cmd>SupermavenToggle<cr>")
 vim.keymap.set("n", "]D", function()
 	vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
 end)
