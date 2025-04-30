@@ -1,17 +1,21 @@
-if !has('nvim')
-    function! PackInit() abort
-        packadd minpac
-        call minpac#init()
-        call minpac#add('k-takata/minpac', {'type': 'opt'})
-        call minpac#add('christoomey/vim-tmux-navigator')
-        call minpac#add('tpope/vim-surround')
-        call minpac#add('tpope/vim-obsession')
-        call minpac#add('tpope/vim-fugitive')
-        call minpac#add('tpope/vim-sleuth')
-        call minpac#add('tpope/vim-dotenv')
+function! PackInit() abort
+    packadd minpac
+    call minpac#init()
+    call minpac#add('k-takata/minpac', {'type': 'opt'})
+    call minpac#add('christoomey/vim-tmux-navigator')
+    call minpac#add('tpope/vim-surround')
+    call minpac#add('tpope/vim-obsession')
+    call minpac#add('tpope/vim-fugitive')
+    call minpac#add('tpope/vim-sleuth')
+    call minpac#add('tpope/vim-dotenv')
+    if has('nvim')
+        call minpac#add("neovim/nvim-lspconfig")
+        call minpac#add("stevearc/conform.nvim")
+        call minpac#add("supermaven-inc/supermaven-nvim")
+    else
         call minpac#add('dense-analysis/ale')
-    endfunction
-endif
+    endif
+endfunction
 
 augroup vimrc
     autocmd!
@@ -35,7 +39,7 @@ set undofile
 set hlsearch
 set smartindent
 set laststatus=2
-set completeopt=menuone,popup
+set completeopt=menuone,popup,noinsert
 set wildmode=list:longest,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,\**/.git/*,\**/build/*,**/__pycache__/*
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
@@ -52,7 +56,10 @@ let g:pyindent_open_paren = 'shiftwidth()'
 let g:tmux_navigator_no_mappings = 1
 let g:surround_120 = "{/* \r */}" "JSX comments
 let g:surround_100 = "\1dict: \1[\"\r\"]" "Python dict
-let colodefault = has('nvim') ? 'vim' : 'default'
+let g:colodefault = has('nvim') ? 'vim' : 'default'
+if !has('nvim')
+    let g:ale_linters = {'python': ['ruff']}
+endif
 
 nnoremap <backspace> <C-^>
 noremap / ms/
@@ -66,6 +73,7 @@ noremap <A-p> "0p
 noremap <A-P> "0P
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <leader>q <cmd>qa<cr>
+nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
@@ -98,7 +106,7 @@ onoremap <silent> ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlo
 xnoremap <silent> ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
 nmap dsf dsb<left>dik
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap <expr> ycd ":colo " .. colodefault<cr>"
+nnoremap <expr> ycd ":colo " .. g:colodefault .. "<cr>"
 nnoremap ycr :colo retrobox<cr>
 nnoremap ycu :colo unokai<cr>
 nnoremap ych :colo habamax<cr>
@@ -111,7 +119,9 @@ nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
-
+if !has('nvim')
+    nnoremap <C-L> <cmd>noh<cr>
+endif
 
 command! -count=1 DiffUndo :exe 'norm mu' .. <count> .. 'u'|%y|tab split|vnew|
     \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
@@ -163,12 +173,12 @@ function! s:SetProjectPath()
     endif
 endfunction
 
-if !has('nvim')
-    nnoremap <C-L> <cmd>noh<cr>
-    let g:ale_linters = {'python': ['ruff']}
-    command! PackUpdate call PackInit() | call minpac#update()
-    command! PackClean  call PackInit() | call minpac#clean()
-    command! PackStatus packadd minpac | call minpac#status()
+if has('nvim')
+    lua require('config')
 endif
+
+command! PackUpdate call PackInit() | call minpac#update()
+command! PackClean  call PackInit() | call minpac#clean()
+command! PackStatus packadd minpac | call minpac#status()
 
 execute "silent! colorscheme " .. colodefault

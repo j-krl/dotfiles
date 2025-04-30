@@ -1,21 +1,3 @@
-local vimrc = vim.fn.stdpath("config") .. "/.vimrc"
-vim.cmd.source(vimrc)
-
-require("paq")({
-	"savq/paq-nvim",
-	-- vimscript
-	"christoomey/vim-tmux-navigator",
-	"tpope/vim-sleuth",
-	"tpope/vim-surround",
-	"tpope/vim-obsession",
-	"tpope/vim-fugitive",
-	"tpope/vim-dotenv",
-	-- lua
-	"neovim/nvim-lspconfig",
-	"stevearc/conform.nvim",
-	"supermaven-inc/supermaven-nvim",
-})
-
 -- LSP setup
 local lspconfig = require("lspconfig")
 local lsps = {
@@ -52,7 +34,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.lsp.completion.enable(true, client.id, args.buf)
 		end
 		local opts = { buffer = args.buf }
-		vim.keymap.set("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
+		vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, opts)
 	end,
 })
 
