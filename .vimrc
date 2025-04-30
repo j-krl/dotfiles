@@ -13,8 +13,6 @@ if !has('nvim')
     endfunction
 endif
 
-packadd cfilter
-
 augroup vimrc
     autocmd!
 augroup END
@@ -27,12 +25,14 @@ set shiftwidth=4
 set mouse=a
 set expandtab
 set re=0
+set splitright
 set colorcolumn=80,88
 set cursorline
 set signcolumn=yes
 set autoread
 set termguicolors
 set undofile
+set hlsearch
 set smartindent
 set laststatus=2
 set completeopt=menuone,popup
@@ -40,7 +40,7 @@ set wildmode=list:longest,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,\**/.git/*,\**/build/*,**/__pycache__/*
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
-set guicursor=n-v-c-sm:block,i-ve:ver25,r-o:hor20
+set guicursor=
 set fillchars=diff:\
 set foldmethod=indent
 set foldopen-=search
@@ -52,17 +52,18 @@ let g:pyindent_open_paren = 'shiftwidth()'
 let g:tmux_navigator_no_mappings = 1
 let g:surround_120 = "{/* \r */}" "JSX comments
 let g:surround_100 = "\1dict: \1[\"\r\"]" "Python dict
-let colodark = has('nvim') ? 'vim' : 'default'
-let cololight = 'lunaperche'
+let colodefault = has('nvim') ? 'vim' : 'default'
 
+nnoremap <backspace> <C-^>
 noremap / ms/
 noremap ? ms?
 noremap * ms*
 noremap # ms#
-nnoremap <backspace> <C-^>
 noremap <leader>y "+y
 noremap <leader>p "+p
 noremap <leader>P "+P
+noremap <A-p> "0p
+noremap <A-P> "0P
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>x <cmd>xa<cr>
@@ -70,9 +71,10 @@ nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
 nnoremap <leader>b :call feedkeys(":b <tab>", "tn")<cr>
 nnoremap <leader>f :find 
-nnoremap <leader>g :grep <C-R><C-W><cr>
-nnoremap <expr> <leader>s v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
-nnoremap <Space> i_<esc>r
+nnoremap <leader>g :grep 
+nnoremap <leader>G :grep <C-R><C-W><cr>
+nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
+nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>//g<Left><Left>" : ":%s/<C-R><C-W>//g<Left><Left>"
 nnoremap <C-S> a<cr><esc>k$
 inoremap <C-S> <cr><esc>kA
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count1 - 1) .. 's/\n\s*//g<cr>`l'
@@ -94,22 +96,28 @@ onoremap <silent> ik :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! viw'<bar>setlo
 xnoremap <silent> ik :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-<cr>
 onoremap <silent> ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
 xnoremap <silent> ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
+nmap dsf dsb<left>dik
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap <silent> <expr> yod ":colo " .. colodark .. "\|set background=dark<cr>"
-nnoremap <silent> <expr> yol ":colo " .. cololight .. "\|set background=light<cr>"
+nnoremap <expr> ycd ":colo " .. colodefault<cr>"
+nnoremap ycr :colo retrobox<cr>
+nnoremap ycu :colo unokai<cr>
+nnoremap ych :colo habamax<cr>
+nnoremap ycs :colo sorbet<cr>
+nnoremap ycm :colo morning<cr>
+nnoremap ycl :colo lunaperche<cr>
 nnoremap <leader>A <cmd>!git add %<cr>
 nnoremap - <cmd>Explore<cr>
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
-nmap dsf dsbdT<space>
 
 
 command! -count=1 DiffUndo :exe 'norm mu' .. <count> .. 'u'|%y|tab split|vnew|
     \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
 
 autocmd vimrc VimEnter * call s:SetProjectPath()
+autocmd vimrc DirChanged global call s:SetProjectPath()
 autocmd vimrc Colorscheme * call s:SetDiffHighlights()
 autocmd vimrc QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
 
@@ -144,20 +152,23 @@ function! s:SetDiffHighlights()
 endfunction
 
 function! s:SetProjectPath()
-    if !filereadable(".vimenv")
+    set path&
+    let vim_env_path = (has('nvim') ? getcwd(-1, -1) : getcwd(-1)) .. "/.vimenv"
+    if !filereadable(vim_env_path)
         return
     endif
-    Dotenv .vimenv
+    exe 'Dotenv ' .. vim_env_path
     if !empty($VIMPROJPATH)
         set path+=$VIMPROJPATH
     endif
 endfunction
 
 if !has('nvim')
+    nnoremap <C-L> <cmd>noh<cr>
     let g:ale_linters = {'python': ['ruff']}
     command! PackUpdate call PackInit() | call minpac#update()
     command! PackClean  call PackInit() | call minpac#clean()
     command! PackStatus packadd minpac | call minpac#status()
 endif
 
-execute "silent! colorscheme " .. colodark
+execute "silent! colorscheme " .. colodefault
