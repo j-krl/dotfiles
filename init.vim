@@ -41,7 +41,7 @@ set smartindent
 set laststatus=2
 set completeopt=menuone,popup,noinsert
 set wildmode=list:longest,full
-set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,\**/.git/*,\**/build/*,**/__pycache__/*
+set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 set guicursor=
@@ -56,7 +56,6 @@ let g:pyindent_open_paren = 'shiftwidth()'
 let g:tmux_navigator_no_mappings = 1
 let g:surround_120 = "{/* \r */}" "JSX comments
 let g:surround_100 = "\1dict: \1[\"\r\"]" "Python dict
-let g:colodefault = has('nvim') ? 'vim' : 'default'
 if !has('nvim')
     let g:ale_linters = {'python': ['ruff']}
 endif
@@ -106,13 +105,14 @@ onoremap <silent> ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlo
 xnoremap <silent> ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
 nmap dsf dsb<left>dik
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap <expr> ycd ":colo " .. g:colodefault .. "<cr>"
+nnoremap ycd :colo default<cr>
 nnoremap ycr :colo retrobox<cr>
 nnoremap ycu :colo unokai<cr>
 nnoremap ych :colo habamax<cr>
 nnoremap ycs :colo sorbet<cr>
 nnoremap ycm :colo morning<cr>
 nnoremap ycl :colo lunaperche<cr>
+nnoremap <expr> ycv ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
 nnoremap <leader>A <cmd>!git add %<cr>
 nnoremap - <cmd>Explore<cr>
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
@@ -175,10 +175,10 @@ endfunction
 
 if has('nvim')
     lua require('config')
+    colo vim
 endif
 
 command! PackUpdate call PackInit() | call minpac#update()
-command! PackClean  call PackInit() | call minpac#clean()
-command! PackStatus packadd minpac | call minpac#status()
+command! PackClean call PackInit() | call minpac#clean()
+command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
 
-execute "silent! colorscheme " .. colodefault
