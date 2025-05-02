@@ -29,12 +29,21 @@ end
 -- Completions
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
+		local opts = { buffer = args.buf }
 		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 		if client:supports_method("textDocument/completion") then
 			vim.lsp.completion.enable(true, client.id, args.buf)
 		end
-		local opts = { buffer = args.buf }
-		vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, opts)
+		local function symbol_on_list(options)
+			vim.fn.setqflist({}, " ", options)
+			vim.cmd.normal("mG")
+			vim.cmd.cfirst()
+			vim.cmd.cclose()
+		end
+		vim.keymap.set("n", "gry", vim.lsp.buf.type_definition, opts)
+		vim.keymap.set("n", "grs", function()
+			vim.lsp.buf.workspace_symbol(nil, { on_list = symbol_on_list })
+		end)
 	end,
 })
 
@@ -83,7 +92,7 @@ end)
 vim.keymap.set("n", "[D", function()
 	vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
 end)
-vim.keymap.set("n", "<leader>k", vim.diagnostic.open_float)
-vim.keymap.set("n", "<leader>K", function()
+vim.keymap.set("n", "<A-k>", vim.diagnostic.open_float)
+vim.keymap.set("n", "<A-K>", function()
 	vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR })
 end)

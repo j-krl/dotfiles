@@ -3,6 +3,7 @@ function! PackInit() abort
     call minpac#init()
     call minpac#add('k-takata/minpac', {'type': 'opt'})
     call minpac#add('christoomey/vim-tmux-navigator')
+    call minpac#add('jeetsukumaran/vim-indentwise')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
@@ -39,7 +40,7 @@ set undofile
 set hlsearch
 set smartindent
 set laststatus=2
-set completeopt=menuone,popup,noinsert
+set completeopt=menuone,popup
 set wildmode=list:longest,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
@@ -50,6 +51,7 @@ set foldmethod=indent
 set foldopen-=search
 set foldlevel=100
 set foldlevelstart=100
+set background=dark
 
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:pyindent_open_paren = 'shiftwidth()'
@@ -76,10 +78,12 @@ nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
+nnoremap <leader>c <cmd>copen<cr>
+nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>b :call feedkeys(":b <tab>", "tn")<cr>
 nnoremap <leader>f :find 
-nnoremap <leader>g :grep 
-nnoremap <leader>G :grep <C-R><C-W><cr>
+nnoremap <leader>g :sil grep
+nnoremap <leader>G :sil grep <C-R><C-W><cr>
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>//g<Left><Left>" : ":%s/<C-R><C-W>//g<Left><Left>"
 nnoremap <C-S> a<cr><esc>k$
@@ -89,30 +93,31 @@ inoremap <C-Space> <C-X><C-O>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
-nnoremap [a <cmd>exe v:count1 .. 'N'<bar>args<cr><esc>
-nnoremap ]a <cmd>exe v:count1 .. 'n'<bar>args<cr><esc>
+nnoremap <C-W>V <C-W>x<C-W>c
+nnoremap [a <cmd>exe v:count1 .. 'wN'<bar>args<cr><esc>
+nnoremap ]a <cmd>exe v:count1 .. 'wn'<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
 nnoremap ]A <cmd>last<bar>args<cr><esc>
 nnoremap <A-s> <cmd>args<cr>
-nnoremap <A-a> <cmd>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <A-A> <cmd>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-a> <cmd>w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-A> <cmd>w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
 nnoremap <A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
 nnoremap <A-D> <cmd>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <silent> <expr> <leader>r ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
-onoremap <silent> ik :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-<cr>
-xnoremap <silent> ik :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-<cr>
-onoremap <silent> ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
-xnoremap <silent> ak :<C-U>setlocal iskeyword+=.,-<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-<cr>
+nnoremap <silent> <expr> <leader>a ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
+onoremap <silent> ik :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=<cr>
+xnoremap <silent> ik :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=<cr>
+onoremap <silent> ak :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=<cr>
+xnoremap <silent> ak :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=<cr>
 nmap dsf dsb<left>dik
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap ycd :colo default<cr>
-nnoremap ycr :colo retrobox<cr>
-nnoremap ycu :colo unokai<cr>
-nnoremap ych :colo habamax<cr>
-nnoremap ycs :colo sorbet<cr>
-nnoremap ycm :colo morning<cr>
-nnoremap ycl :colo lunaperche<cr>
-nnoremap <expr> ycv ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
+nnoremap <A-c>d :colo default<cr>
+nnoremap <A-c>r :colo retrobox<cr>
+nnoremap <A-c>u :colo unokai<cr>
+nnoremap <A-c>h :colo habamax<cr>
+nnoremap <A-c>s :colo sorbet<cr>
+nnoremap <A-c>m :colo morning<cr>
+nnoremap <A-c>l :colo lunaperche<cr>
+nnoremap <expr> <A-c>v ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
 nnoremap <leader>A <cmd>!git add %<cr>
 nnoremap - <cmd>Explore<cr>
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
@@ -126,10 +131,11 @@ endif
 command! -count=1 DiffUndo :exe 'norm mu' .. <count> .. 'u'|%y|tab split|vnew|
     \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
 
-autocmd vimrc VimEnter * call s:SetProjectPath()
-autocmd vimrc DirChanged global call s:SetProjectPath()
+autocmd vimrc BufEnter * call s:SetProjectPath()
+autocmd vimrc DirChanged * call s:SetProjectPath()
 autocmd vimrc Colorscheme * call s:SetDiffHighlights()
 autocmd vimrc QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
+autocmd vimrc TabNewEntered * argl|%argd
 
 augroup gruvbox
     autocmd!
@@ -163,11 +169,10 @@ endfunction
 
 function! s:SetProjectPath()
     set path&
-    let vim_env_path = (has('nvim') ? getcwd(-1, -1) : getcwd(-1)) .. "/.vimenv"
-    if !filereadable(vim_env_path)
+    if !filereadable(".vimenv")
         return
     endif
-    exe 'Dotenv ' .. vim_env_path
+    Dotenv .vimenv
     if !empty($VIMPROJPATH)
         set path+=$VIMPROJPATH
     endif
