@@ -4,17 +4,20 @@ function! PackInit() abort
     call minpac#add('k-takata/minpac', {'type': 'opt'})
     call minpac#add('christoomey/vim-tmux-navigator')
     call minpac#add('jeetsukumaran/vim-indentwise')
+    call minpac#add('jpalardy/vim-slime')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('tpope/vim-dotenv')
+    call minpac#add('tpope/vim-dadbod')
     if has('nvim')
         call minpac#add("neovim/nvim-lspconfig")
         call minpac#add("stevearc/conform.nvim")
         call minpac#add("supermaven-inc/supermaven-nvim")
     else
         call minpac#add('dense-analysis/ale')
+        call minpac#add('tpope/vim-commentary')
     endif
 endfunction
 
@@ -22,7 +25,9 @@ augroup vimrc
     autocmd!
 augroup END
 
-syntax on
+if !has('nvim')
+    syntax on
+endif
 set relativenumber
 set number
 set tabstop=4
@@ -56,6 +61,9 @@ set background=dark
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:pyindent_open_paren = 'shiftwidth()'
 let g:tmux_navigator_no_mappings = 1
+let g:slime_target = "tmux"
+let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
+let g:slime_bracketed_paste = 1
 let g:surround_120 = "{/* \r */}" "JSX comments
 let g:surround_100 = "\1dict: \1[\"\r\"]" "Python dict
 if !has('nvim')
@@ -88,7 +96,8 @@ nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>//g<Left><Left>" : ":%s/<C-R><C-W>//g<Left><Left>"
 nnoremap <C-S> a<cr><esc>k$
 inoremap <C-S> <cr><esc>kA
-nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count1 - 1) .. 's/\n\s*//g<cr>`l'
+nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
+            \.. 's/\n\s*//g<cr>`l'
 inoremap <C-Space> <C-X><C-O>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
@@ -108,6 +117,10 @@ onoremap <silent> ik :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! viw'<bar>set
 xnoremap <silent> ik :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=<cr>
 onoremap <silent> ak :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=<cr>
 xnoremap <silent> ak :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=<cr>
+xnoremap <silent> il g_o^
+onoremap <silent> il :normal vil<CR>
+xnoremap <silent> al $o0
+onoremap <silent> al :normal val<CR>
 nmap dsf dsb<left>dik
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 nnoremap <A-c>d :colo default<cr>
@@ -124,34 +137,49 @@ nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
+nnoremap <leader>D vip:DB<cr>
 if !has('nvim')
     nnoremap <C-L> <cmd>noh<cr>
 endif
 
+command! BOnly %bd|e#|bd#|norm `"
+command! BDelete e#|bd#
+command! BActive call s:CloseHiddenBuffers()
 command! -count=1 DiffUndo :exe 'norm mu' .. <count> .. 'u'|%y|tab split|vnew|
     \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
 
-autocmd vimrc BufEnter * call s:SetProjectPath()
-autocmd vimrc DirChanged * call s:SetProjectPath()
-autocmd vimrc Colorscheme * call s:SetDiffHighlights()
+autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
+autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
 autocmd vimrc QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
-autocmd vimrc TabNewEntered * argl|%argd
+autocmd vimrc Colorscheme unokai call s:SetMonokaiHighlights()
+autocmd vimrc Colorscheme retrobox call s:SetGruvboxHighlights()
+autocmd vimrc Colorscheme * call s:SetDiffHighlights()
+if has('nvim')
+    autocmd vimrc TabNewEntered * argl|%argd
+endif
 
-augroup gruvbox
-    autocmd!
-    autocmd ColorScheme retrobox if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
-    autocmd ColorScheme retrobox if &background == "dark" | highlight ColorColumn guibg=#3c3836 | endif
-augroup END
+function! s:SetWorkspaceEnv()
+    set path&
+    if !filereadable(".vimenv")
+        return
+    endif
+    Dotenv .vimenv
+    if !empty($VIMPROJPATH)
+        set path+=$VIMPROJPATH
+    endif
+endfunction
 
-augroup monokai
-    autocmd!
-    autocmd ColorScheme unokai highlight Normal guifg=#f8f8f0 guibg=#26292c
-    autocmd ColorScheme unokai highlight ColorColumn cterm=reverse guibg=#2e323c
-    autocmd ColorScheme unokai highlight Identifier ctermfg=12 guifg=#f8f8f0
-    autocmd ColorScheme unokai highlight PreProc guifg=#a6e22e
-    autocmd ColorScheme unokai highlight Structure guifg=#66d9ef
-    autocmd ColorScheme unokai highlight Comment gui=italic guifg=#9ca0a4
-augroup END
+function! s:CloseHiddenBuffers()
+    let open_buffers = []
+    for i in range(tabpagenr('$'))
+        call extend(open_buffers, tabpagebuflist(i + 1))
+    endfor
+    for num in range(1, bufnr("$") + 1)
+        if buflisted(num) && index(open_buffers, num) == -1
+            exec "bdelete ".num
+        endif
+    endfor
+endfunction
 
 function! s:SetDiffHighlights()
     if &background == "dark"
@@ -167,15 +195,20 @@ function! s:SetDiffHighlights()
     endif
 endfunction
 
-function! s:SetProjectPath()
-    set path&
-    if !filereadable(".vimenv")
-        return
+function! s:SetGruvboxHighlights()
+    if &background == "dark"
+        highlight ColorColumn guibg=#3c3836
+        highlight Normal guifg=#ebdbb2 guibg=#282828
     endif
-    Dotenv .vimenv
-    if !empty($VIMPROJPATH)
-        set path+=$VIMPROJPATH
-    endif
+endfunction
+
+function! s:SetMonokaiHighlights()
+    highlight Normal guifg=#f8f8f0 guibg=#26292c
+    highlight ColorColumn cterm=reverse guibg=#2e323c
+    highlight Identifier ctermfg=12 guifg=#f8f8f0
+    highlight PreProc guifg=#a6e22e
+    highlight Structure guifg=#66d9ef
+    highlight Comment gui=italic guifg=#9ca0a4
 endfunction
 
 if has('nvim')

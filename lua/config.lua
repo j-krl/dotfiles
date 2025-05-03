@@ -22,6 +22,10 @@ for _, lsp in pairs(lsps) do
 				},
 			},
 		}
+	elseif lsp == "sqlls" then
+		setup = {
+			root_dir = "~/.config/sql-language-server",
+		}
 	end
 	lspconfig[lsp].setup(setup)
 end
@@ -54,6 +58,7 @@ require("conform").setup({
 		terraform = { "terraform_fmt" },
 		lua = { "stylua" },
 		python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
+		sql = { "sql_formatter" },
 		typescript = { "prettier" },
 		css = { "prettier" },
 		html = { "prettier" },
