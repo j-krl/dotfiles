@@ -1,4 +1,7 @@
--- LSP setup
+---------
+-- LSP --
+---------
+
 local lspconfig = require("lspconfig")
 local lsps = {
 	"lua_ls",
@@ -38,6 +41,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.lsp.completion.enable(true, client.id, args.buf)
 		end
 		local function symbol_on_list(options)
+			-- Improve the default qflist behaviour in `workspace_symbol`
 			vim.fn.setqflist({}, " ", options)
 			vim.cmd.normal("mG")
 			vim.cmd.cfirst()
@@ -50,7 +54,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
--- Formatting
+----------------
+-- Formatting --
+----------------
+
 require("conform").setup({
 	formatters_by_ft = {
 		sh = { "beautysh" },
@@ -71,13 +78,20 @@ require("conform").setup({
 	format_after_save = {}, -- TODO: remove
 })
 
--- AI
+--------
+-- AI --
+--------
+
 vim.g.SUPERMAVEN_DISABLED = true -- https://github.com/supermaven-inc/supermaven-nvim/pull/101
 require("supermaven-nvim").setup({
 	condition = function()
 		return vim.g.SUPERMAVEN_DISABLED
 	end,
 })
+
+------------------------
+-- Mappings & options --
+------------------------
 
 -- Options
 vim.diagnostic.config({

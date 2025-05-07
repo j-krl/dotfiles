@@ -12,20 +12,28 @@ function! PackInit() abort
     call minpac#add('tpope/vim-dotenv')
     call minpac#add('tpope/vim-dadbod')
     if has('nvim')
+        " Neovim only packages
         call minpac#add("neovim/nvim-lspconfig")
         call minpac#add("stevearc/conform.nvim")
         call minpac#add("supermaven-inc/supermaven-nvim")
     else
+        " Vim only packages
         call minpac#add('dense-analysis/ale')
         call minpac#add('tpope/vim-commentary')
     endif
 endfunction
 
+" Global augroup to use with ungrouped autocmds
 augroup vimrc
     autocmd!
 augroup END
 
+"""""""""""
+" Options "
+"""""""""""
+
 if !has('nvim')
+    " Setting syntax on in nvim clashes with vim-slime
     syntax on
 endif
 set relativenumber
@@ -34,6 +42,8 @@ set tabstop=4
 set shiftwidth=4
 set mouse=a
 set expandtab
+" Typescript syntax highlighting is very slow in vim if `re` isn't explicitly
+" set
 set re=0
 set splitright
 set colorcolumn=80,88
@@ -50,6 +60,7 @@ set completeopt=menuone,popup
 set wildmode=list:longest,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
+" Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 set guicursor=
 set fillchars=diff:\
@@ -58,8 +69,9 @@ set foldopen-=search
 set foldlevel=100
 set foldlevelstart=100
 set background=dark
-
 let g:maplocalleader = "_"
+
+" Plugin options
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:python_indent = {
         \'open_paren': 'shiftwidth()',
@@ -75,32 +87,27 @@ if !has('nvim')
     let g:ale_linters = {'python': ['ruff']}
 endif
 
-nnoremap <backspace> <C-^>
-noremap / ms/
-noremap ? ms?
-noremap * ms*
-noremap # ms#
+""""""""""""
+" Mappings "
+""""""""""""
+
+" Text manipulation
 noremap <leader>y "+y
 noremap <leader>p "+p
 noremap <leader>P "+P
+" Duplicate [count] lines and comment originals
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
-nnoremap <leader>q <cmd>qa<cr>
-nnoremap <leader>Q <cmd>qa!<cr>
-nnoremap <leader>x <cmd>xa<cr>
-nnoremap <leader>w <cmd>w<cr>
-nnoremap <leader>W <cmd>wa<cr>
-nnoremap <leader>c <cmd>copen<cr>
-nnoremap <leader>C <cmd>cclose<cr>
-nnoremap <leader>b :call feedkeys(":b <tab>", "tn")<cr>
-nnoremap <leader>f :find 
-nnoremap <leader>g :grep ""<left>
-nnoremap <leader>G :grep <C-R><C-W><cr>
+" Prefill substitute command over [count] range, or whole file if no count
+" provided. `S` prefills with word under cursor.
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
-nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>//g<Left><Left>" : ":%s/<C-R><C-W>//g<Left><Left>"
-nnoremap gl t(<C-]>
-nnoremap <cr> <C-]>
+nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : \":%s/<C-R><C-W>/"
+" Split line at cursor without moving cursor
 nnoremap s a<cr><esc>k$
 nnoremap S i<cr><esc>k$
+inoremap <C-S> <cr><esc>kA
+" Join lines with same behaviour as `J` without space after line
+nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
+            \ .. 's/\n\s*//g<cr>`l'
 inoremap "<tab> ""<Left>
 inoremap '<tab> ''<Left>
 inoremap (<tab> ()<Left>
@@ -109,17 +116,59 @@ inoremap {<tab> {}<Left>
 inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
-inoremap <C-S> <cr><esc>kA
-nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
-            \ .. 's/\n\s*//g<cr>`l'
-inoremap <A-backspace> <C-W><backspace>
-inoremap <C-Space> <C-X><C-O>
+" Delete surrounding function call. Requires vim-surround and `e` text object 
+" to be set below
 nmap dsf %<left>diedsb
-nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
+
+" File & pane navigation
+nnoremap <leader>q <cmd>qa<cr>
+nnoremap <leader>Q <cmd>qa!<cr>
+nnoremap <leader>x <cmd>xa<cr>
+nnoremap <leader>w <cmd>w<cr>
+nnoremap <leader>W <cmd>wa<cr>
+nnoremap <leader>c <cmd>copen<cr>
+nnoremap <leader>C <cmd>cclose<cr>
+nnoremap <backspace> <C-^>
+nnoremap <leader>b :call feedkeys(":b <tab>", "tn")<cr>
+nnoremap <leader>f :find 
+nnoremap <leader>g :grep ""<left>
+nnoremap <leader>G :grep <C-R><C-W><cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
-nnoremap <C-W>V <C-W>x<C-W>c
+" Close the next (or previous) window
+nnoremap <C-W>X <C-W>x<C-W>c
+nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
+nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
+nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
+nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
+nnoremap - <cmd>Explore<cr>
+
+" Searching
+noremap / ms/
+noremap ? ms?
+noremap * ms*
+noremap # ms#
+" Go to definition of next function on line
+nnoremap gl t(<C-]>
+nnoremap <cr> <C-]>
+
+" Text objects
+xnoremap <silent> il g_o^
+onoremap <silent> il :normal vil<CR>
+xnoremap <silent> al $o0
+onoremap <silent> al :normal val<CR>
+" Word object that's somewhere between 'word' and 'WORD'
+onoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+xnoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+onoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+" Hungry delete contiguous whitespace until previous line
+inoremap <A-backspace> <C-W><backspace>
+" Set foldlevel to [count]
+nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
+
+" Arglist
 nnoremap [a <cmd>exe v:count1 .. 'wN'<bar>args<cr><esc>
 nnoremap ]a <cmd>exe v:count1 .. 'wn'<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
@@ -129,17 +178,11 @@ nnoremap <A-a> <cmd>w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
 nnoremap <A-A> <cmd>w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
 nnoremap <A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
 nnoremap <A-D> <cmd>argded<bar>redrawstatus<bar>args<cr>
+" Open arglist file at current index, or [count]th index if provided
 nnoremap <silent> <expr> <leader>a ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
-onoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
-xnoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
-onoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
-xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
-xnoremap <silent> il g_o^
-onoremap <silent> il :normal vil<CR>
-xnoremap <silent> al $o0
-onoremap <silent> al :normal val<CR>
+
+" Colorschemes
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap yor <cmd>set rnu!<cr>
 nnoremap <A-c>d :colo default<cr>
 nnoremap <A-c>r :colo retrobox<cr>
 nnoremap <A-c>u :colo unokai<cr>
@@ -149,28 +192,40 @@ nnoremap <A-c>m :colo morning<cr>
 nnoremap <A-c>l :colo lunaperche<cr>
 nnoremap <A-c>t :colo slate<cr>
 nnoremap <expr> <A-c>v ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
+
+" Misc
+nnoremap yor <cmd>set rnu!<cr>
+inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
-nnoremap - <cmd>Explore<cr>
-nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
-nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
-nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
-nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
+" Run paragraph under cursor as command on connected database with vim-dadbod
 nnoremap <leader>D mvvip:DB<cr>`v
+if !has('nvim')
+    nnoremap <C-L> <cmd>noh<cr>
+endif
+
+" Python mappings
 augroup ftpython
     autocmd!
     autocmd FileType python nnoremap <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
     autocmd FileType python nnoremap <localleader>D di"a<backspace><backspace><C-R>"
                 \<right><right><backspace><backspace>=<esc>
 augroup END
-if !has('nvim')
-    nnoremap <C-L> <cmd>noh<cr>
-endif
+
+""""""""""""
+" Commands "
+""""""""""""
 
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
+" Open diff with the last undo. Useful when using aider.
 command! -count=1 DiffUndo :exe 'norm mu' .. <count> .. 'u'|%y|tab split|vnew|
     \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
+
+
+""""""""""""""""
+" Autocommands "
+""""""""""""""""
 
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
@@ -181,6 +236,11 @@ autocmd vimrc Colorscheme * call s:SetDiffHighlights()
 if has('nvim')
     autocmd vimrc TabNewEntered * argl|%argd
 endif
+
+
+"""""""""""""
+" Functions "
+"""""""""""""
 
 function! s:SetWorkspaceEnv()
     set path&
@@ -236,10 +296,12 @@ function! s:SetMonokaiHighlights()
 endfunction
 
 if has('nvim')
+    " Import lua config and set default colorscheme
     lua require('config')
     colo vim
 endif
 
+" Set up minpac commands last
 command! PackUpdate call PackInit() | call minpac#update()
 command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
