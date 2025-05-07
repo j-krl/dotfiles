@@ -30,7 +30,6 @@ for _, lsp in pairs(lsps) do
 	lspconfig[lsp].setup(setup)
 end
 
--- Completions
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
 		local opts = { buffer = args.buf }

@@ -1,0 +1,19 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+	name = Jesse
+	email = jessekearl@gmail.com
+[pull]
+	ff = only
+[core]
+	editor = nvim
+	pager = diff-so-fancy | less --tabs=4 -RF
+[merge]
+	tool = nvimdiff
+[alias]
+	ac = !git add -A && git commit
+	amend = !git add -A && git commit --amend --no-edit
+	wip = !git add -A && git commit -m wip
+	reset-wip = !git reset $(git log --grep=wip --invert-grep -n 1 --format=%h)
+[interactive]
+	diffFilter = diff-so-fancy --patch

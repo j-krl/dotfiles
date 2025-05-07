@@ -44,6 +44,7 @@ set termguicolors
 set undofile
 set hlsearch
 set smartindent
+set scrolloff=5
 set laststatus=2
 set completeopt=menuone,popup
 set wildmode=list:longest,full
@@ -58,8 +59,12 @@ set foldlevel=100
 set foldlevelstart=100
 set background=dark
 
+let g:maplocalleader = "_"
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
-let g:pyindent_open_paren = 'shiftwidth()'
+let g:python_indent = {
+        \'open_paren': 'shiftwidth()',
+        \'closed_paren_align_last_line': v:false
+    \}
 let g:tmux_navigator_no_mappings = 1
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
@@ -78,8 +83,6 @@ noremap # ms#
 noremap <leader>y "+y
 noremap <leader>p "+p
 noremap <leader>P "+P
-noremap <A-p> "0p
-noremap <A-P> "0P
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
@@ -90,15 +93,29 @@ nnoremap <leader>c <cmd>copen<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>b :call feedkeys(":b <tab>", "tn")<cr>
 nnoremap <leader>f :find 
-nnoremap <leader>g :sil grep
-nnoremap <leader>G :sil grep <C-R><C-W><cr>
+nnoremap <leader>g :grep ""<left>
+nnoremap <leader>G :grep <C-R><C-W><cr>
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>//g<Left><Left>" : ":%s/<C-R><C-W>//g<Left><Left>"
-nnoremap <C-S> a<cr><esc>k$
+nnoremap gl t(<C-]>
+nnoremap <cr> <C-]>
+nnoremap s a<cr><esc>k$
+nnoremap S i<cr><esc>k$
+inoremap "<tab> ""<Left>
+inoremap '<tab> ''<Left>
+inoremap (<tab> ()<Left>
+inoremap [<tab> []<Left>
+inoremap {<tab> {}<Left>
+inoremap {<cr> {<cr>}<C-O>O
+inoremap [<cr> [<cr>]<C-O>O
+inoremap (<cr> (<cr>)<C-O>O
 inoremap <C-S> <cr><esc>kA
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
-            \.. 's/\n\s*//g<cr>`l'
+            \ .. 's/\n\s*//g<cr>`l'
+inoremap <A-backspace> <C-W><backspace>
 inoremap <C-Space> <C-X><C-O>
+nmap dsf %<left>diedsb
+nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -113,16 +130,16 @@ nnoremap <A-A> <cmd>w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
 nnoremap <A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
 nnoremap <A-D> <cmd>argded<bar>redrawstatus<bar>args<cr>
 nnoremap <silent> <expr> <leader>a ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
-onoremap <silent> ik :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=<cr>
-xnoremap <silent> ik :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=<cr>
-onoremap <silent> ak :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=<cr>
-xnoremap <silent> ak :<C-U>setlocal iskeyword+=.,-,=<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=<cr>
+onoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+xnoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+onoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 xnoremap <silent> il g_o^
 onoremap <silent> il :normal vil<CR>
 xnoremap <silent> al $o0
 onoremap <silent> al :normal val<CR>
-nmap dsf dsb<left>dik
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
+nnoremap yor <cmd>set rnu!<cr>
 nnoremap <A-c>d :colo default<cr>
 nnoremap <A-c>r :colo retrobox<cr>
 nnoremap <A-c>u :colo unokai<cr>
@@ -130,6 +147,7 @@ nnoremap <A-c>h :colo habamax<cr>
 nnoremap <A-c>s :colo sorbet<cr>
 nnoremap <A-c>m :colo morning<cr>
 nnoremap <A-c>l :colo lunaperche<cr>
+nnoremap <A-c>t :colo slate<cr>
 nnoremap <expr> <A-c>v ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
 nnoremap <leader>A <cmd>!git add %<cr>
 nnoremap - <cmd>Explore<cr>
@@ -137,7 +155,13 @@ nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
-nnoremap <leader>D vip:DB<cr>
+nnoremap <leader>D mvvip:DB<cr>`v
+augroup ftpython
+    autocmd!
+    autocmd FileType python nnoremap <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
+    autocmd FileType python nnoremap <localleader>D di"a<backspace><backspace><C-R>"
+                \<right><right><backspace><backspace>=<esc>
+augroup END
 if !has('nvim')
     nnoremap <C-L> <cmd>noh<cr>
 endif
