@@ -42,10 +42,8 @@ set tabstop=4
 set shiftwidth=4
 set mouse=a
 set expandtab
-" Typescript syntax highlighting is very slow in vim if `re` isn't explicitly
-" set
+" Typescript syntax highlighting is very slow in vim if `re` isn't explicitly set
 set re=0
-set splitright
 set colorcolumn=80,88
 set cursorline
 set signcolumn=yes
@@ -54,7 +52,6 @@ set termguicolors
 set undofile
 set hlsearch
 set smartindent
-set scrolloff=5
 set laststatus=2
 set completeopt=menuone,popup
 set wildmode=list:longest,full
@@ -81,8 +78,6 @@ let g:tmux_navigator_no_mappings = 1
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
-let g:surround_120 = "{/* \r */}" "JSX comments
-let g:surround_100 = "\1dict: \1[\"\r\"]" "Python dict
 if !has('nvim')
     let g:ale_linters = {'python': ['ruff']}
 endif
@@ -95,7 +90,7 @@ endif
 noremap <leader>y "+y
 noremap <leader>p "+p
 noremap <leader>P "+P
-" Duplicate [count] lines and comment originals
+" Duplicate [count] lines and comment the originals
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 " Prefill substitute command over [count] range, or whole file if no count
 " provided. `S` prefills with word under cursor.
@@ -108,6 +103,8 @@ inoremap <C-S> <cr><esc>kA
 " Join lines with same behaviour as `J` without space after line
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
             \ .. 's/\n\s*//g<cr>`l'
+" Hungry delete contiguous whitespace until previous line
+inoremap <A-backspace> <C-W><backspace>
 inoremap "<tab> ""<Left>
 inoremap '<tab> ''<Left>
 inoremap (<tab> ()<Left>
@@ -131,10 +128,12 @@ nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <backspace> <C-^>
 nnoremap <leader>b :call feedkeys(":b <tab>", "tn")<cr>
 nnoremap <leader>f :find 
+nnoremap <leader>F :vert sf 
 nnoremap <leader>g :grep ""<left>
 nnoremap <leader>G :grep <C-R><C-W><cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
+" Mimics tmux zoom behaviour for vim windows by opening in new tab
 nnoremap <C-W>Z <cmd>tab split<cr>
 " Close the next (or previous) window
 nnoremap <C-W>X <C-W>x<C-W>c
@@ -143,6 +142,19 @@ nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 nnoremap - <cmd>Explore<cr>
+
+" Arglist
+nnoremap [a <cmd>exe 'sil ' ..  v:count1 .. 'wN'<bar>args<cr><esc>
+nnoremap ]a <cmd>exe 'sil ' ..  v:count1 .. 'wn'<bar>args<cr><esc>
+nnoremap [A <cmd>first<bar>args<cr><esc>
+nnoremap ]A <cmd>last<bar>args<cr><esc>
+nnoremap <A-s> <cmd>args<cr>
+nnoremap <A-a> <cmd>sil w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-A> <cmd>sil w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
+nnoremap <A-D> <cmd>%argd<bar>redrawstatus<cr>
+" Open arglist file at current index, or [count]th index if provided
+nnoremap <silent> <expr> <leader>a ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 " Searching
 noremap / ms/
@@ -163,38 +175,22 @@ onoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>s
 xnoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 onoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
-" Hungry delete contiguous whitespace until previous line
-inoremap <A-backspace> <C-W><backspace>
-" Set foldlevel to [count]
-nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
-
-" Arglist
-nnoremap [a <cmd>exe 'sil ' ..  v:count1 .. 'wN'<bar>args<cr><esc>
-nnoremap ]a <cmd>exe 'sil ' ..  v:count1 .. 'wn'<bar>args<cr><esc>
-nnoremap [A <cmd>first<bar>args<cr><esc>
-nnoremap ]A <cmd>last<bar>args<cr><esc>
-nnoremap <A-s> <cmd>args<cr>
-nnoremap <A-a> <cmd>sil w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <A-A> <cmd>sil w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
-nnoremap <A-D> <cmd>%argd<bar>redrawstatus<bar>args<cr>
-" Open arglist file at current index, or [count]th index if provided
-nnoremap <silent> <expr> <leader>a ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 " Colorschemes
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap <A-c>d :colo default<cr>
 nnoremap <A-c>r :colo retrobox<cr>
 nnoremap <A-c>u :colo unokai<cr>
 nnoremap <A-c>h :colo habamax<cr>
 nnoremap <A-c>s :colo sorbet<cr>
-nnoremap <A-c>m :colo morning<cr>
 nnoremap <A-c>l :colo lunaperche<cr>
 nnoremap <A-c>t :colo slate<cr>
+" Default vim colorscheme in both vim and neovim
 nnoremap <expr> <A-c>v ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
 
 " Misc
 nnoremap yor <cmd>set rnu!<cr>
+" Override zM to set foldlevel to [count] instead of just 0
+nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
 " Run paragraph under cursor as command on connected database with vim-dadbod
@@ -202,14 +198,6 @@ nnoremap <leader>D mvvip:DB<cr>`v
 if !has('nvim')
     nnoremap <C-L> <cmd>noh<cr>
 endif
-
-" Python mappings
-augroup ftpython
-    autocmd!
-    autocmd FileType python nnoremap <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
-    autocmd FileType python nnoremap <localleader>D di"a<backspace><backspace><C-R>"
-                \<right><right><backspace><backspace>=<esc>
-augroup END
 
 """"""""""""
 " Commands "
@@ -221,37 +209,6 @@ command! BActive call s:CloseHiddenBuffers()
 " Open diff with the last undo. Useful when using aider.
 command! -count=1 DiffUndo :exe 'norm mu' .. <count> .. 'u'|%y|tab split|vnew|
     \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
-
-
-""""""""""""""""
-" Autocommands "
-""""""""""""""""
-
-autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
-autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
-autocmd vimrc QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
-autocmd vimrc Colorscheme unokai call s:SetMonokaiHighlights()
-autocmd vimrc Colorscheme retrobox call s:SetGruvboxHighlights()
-autocmd vimrc Colorscheme * call s:SetDiffHighlights()
-if has('nvim')
-    autocmd vimrc TabNewEntered * argl|%argd
-endif
-
-
-"""""""""""""
-" Functions "
-"""""""""""""
-
-function! s:SetWorkspaceEnv()
-    set path&
-    if !filereadable(".vimenv")
-        return
-    endif
-    Dotenv .vimenv
-    if !empty($VIMPROJPATH)
-        set path+=$VIMPROJPATH
-    endif
-endfunction
 
 function! s:CloseHiddenBuffers()
     let open_buffers = []
@@ -265,6 +222,31 @@ function! s:CloseHiddenBuffers()
     endfor
 endfunction
 
+""""""""""""""""
+" Autocommands "
+""""""""""""""""
+
+" Add a global mark before running any grep commands that jump to first match
+autocmd vimrc QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
+autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
+autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
+if has('nvim')
+    " `TabNewEntered` does not exist in vim
+    autocmd vimrc TabNewEntered * argl|%argd
+endif
+
+function! s:SetWorkspaceEnv()
+    set path&
+    if !filereadable(".vimenv")
+        return
+    endif
+    Dotenv .vimenv
+    if !empty($VIMPROJPATH)
+        set path+=$VIMPROJPATH
+    endif
+endfunction
+
+autocmd vimrc Colorscheme * call s:SetDiffHighlights()
 function! s:SetDiffHighlights()
     if &background == "dark"
         highlight DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
@@ -279,6 +261,7 @@ function! s:SetDiffHighlights()
     endif
 endfunction
 
+autocmd vimrc Colorscheme retrobox call s:SetGruvboxHighlights()
 function! s:SetGruvboxHighlights()
     if &background == "dark"
         highlight ColorColumn guibg=#3c3836
@@ -286,6 +269,7 @@ function! s:SetGruvboxHighlights()
     endif
 endfunction
 
+autocmd vimrc Colorscheme unokai call s:SetMonokaiHighlights()
 function! s:SetMonokaiHighlights()
     highlight Normal guifg=#f8f8f0 guibg=#26292c
     highlight ColorColumn cterm=reverse guibg=#2e323c
@@ -294,6 +278,33 @@ function! s:SetMonokaiHighlights()
     highlight Structure guifg=#66d9ef
     highlight Comment gui=italic guifg=#9ca0a4
 endfunction
+
+" Filetype specific configs
+augroup ftpython
+    autocmd!
+    " Surround with dict reference with vim-surround
+    autocmd FileType python let b:surround_{char2nr("d")} = "\1dict: \1[\"\r\"]"
+    " Change dict to keyword and vice versa
+    autocmd FileType python nnoremap <buffer> <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
+    autocmd FileType python nnoremap <buffer> <localleader>D di"a<backspace><backspace><C-R>"
+                \<right><right><backspace><backspace>=<esc>
+    " Add breakpoint above or below
+    autocmd FileType python nnoremap <buffer> <localleader>b obreakpoint()<esc>
+    autocmd FileType python nnoremap <buffer> <localleader>B Obreakpoint()<esc>
+augroup END
+
+augroup ftreact
+    " Comment JSX syntax with vim-surround
+    autocmd FileType javascriptreact,typescriptreact 
+                \let b:surround_{char2nr("x")} = "{/* \r */}" "JSX comments
+    " Go to next `const` at start of line without polluting search history
+    autocmd FileType javascriptreact,typescriptreact 
+                \nnoremap <silent> <buffer> <localleader>] 
+                \:exe "sil keepp norm! /^const\<lt>cr>"\|noh<cr>
+    autocmd FileType javascriptreact,typescriptreact 
+                \nnoremap <silent> <buffer> <localleader>[ 
+                \:exe "sil keepp norm! ?^const\<lt>cr>"\|noh<cr>
+augroup END
 
 if has('nvim')
     " Import lua config and set default colorscheme
