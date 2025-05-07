@@ -169,15 +169,15 @@ inoremap <A-backspace> <C-W><backspace>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 
 " Arglist
-nnoremap [a <cmd>exe v:count1 .. 'wN'<bar>args<cr><esc>
-nnoremap ]a <cmd>exe v:count1 .. 'wn'<bar>args<cr><esc>
+nnoremap [a <cmd>exe 'sil ' ..  v:count1 .. 'wN'<bar>args<cr><esc>
+nnoremap ]a <cmd>exe 'sil ' ..  v:count1 .. 'wn'<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
 nnoremap ]A <cmd>last<bar>args<cr><esc>
 nnoremap <A-s> <cmd>args<cr>
-nnoremap <A-a> <cmd>w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <A-A> <cmd>w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-a> <cmd>sil w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-A> <cmd>sil w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
 nnoremap <A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
-nnoremap <A-D> <cmd>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-D> <cmd>%argd<bar>redrawstatus<bar>args<cr>
 " Open arglist file at current index, or [count]th index if provided
 nnoremap <silent> <expr> <leader>a ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
