@@ -14,10 +14,12 @@ function! PackInit() abort
     if has('nvim')
         " Neovim only packages
         call minpac#add("neovim/nvim-lspconfig")
+        call minpac#add("jinh0/eyeliner.nvim")
         call minpac#add("stevearc/conform.nvim")
         call minpac#add("supermaven-inc/supermaven-nvim")
     else
         " Vim only packages
+        call minpac#add('unblevable/quick-scope')
         call minpac#add('dense-analysis/ale')
         call minpac#add('tpope/vim-commentary')
     endif
@@ -90,20 +92,14 @@ endif
 noremap <leader>y "+y
 noremap <leader>p "+p
 noremap <leader>P "+P
-" Duplicate [count] lines and comment the originals
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
-" Prefill substitute command over [count] range, or whole file if no count
-" provided. `S` prefills with word under cursor.
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : \":%s/<C-R><C-W>/"
-" Split line at cursor without moving cursor
 nnoremap s a<cr><esc>k$
 nnoremap S i<cr><esc>k$
 inoremap <C-S> <cr><esc>kA
-" Join lines with same behaviour as `J` without space after line
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
             \ .. 's/\n\s*//g<cr>`l'
-" Hungry delete contiguous whitespace until previous line
 inoremap <A-backspace> <C-W><backspace>
 inoremap "<tab> ""<Left>
 inoremap '<tab> ''<Left>
@@ -113,8 +109,7 @@ inoremap {<tab> {}<Left>
 inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
-" Delete surrounding function call. Requires vim-surround and `e` text object 
-" to be set below
+" Requires vim-surround and `e` text object to be set below
 nmap dsf %<left>diedsb
 
 " File & pane navigation
@@ -123,8 +118,6 @@ nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
-nnoremap <leader>c <cmd>copen<cr>
-nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <backspace> <C-^>
 nnoremap <leader>b :call feedkeys(":b <tab>", "tn")<cr>
 nnoremap <leader>f :find 
@@ -133,27 +126,45 @@ nnoremap <leader>g :grep ""<left>
 nnoremap <leader>G :grep <C-R><C-W><cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
-" Mimics tmux zoom behaviour for vim windows by opening in new tab
 nnoremap <C-W>Z <cmd>tab split<cr>
-" Close the next (or previous) window
 nnoremap <C-W>X <C-W>x<C-W>c
+nnoremap <C-W>v <C-W>v<C-W>w
+nnoremap <C-W>s <C-W>s<C-W>w
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 nnoremap - <cmd>Explore<cr>
+nnoremap <leader>cc <cmd>copen<cr>
+nnoremap <leader>C <cmd>cclose<cr>
+nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
+
+function! RemoveQfEntry()
+    let qfData = getqflist({'idx': 0, 'title': 0, 'items': 0})
+    let qfIdx = get(qfData, 'idx', 0)
+    let qfTitle = get(qfData, 'title', 0)
+    let qfItems = get(qfData, 'items', 0)
+    if qfIdx == 0
+        return
+    endif
+    let filteredItems = filter(qfItems, {idx -> idx != qfIdx - 1})
+    call setqflist([], 'r', {'items': filteredItems, 'title': qfTitle})
+    if len(filteredItems) > 0
+        exe qfIdx .. 'cc'
+    endif
+endfunction
+
 
 " Arglist
 nnoremap [a <cmd>exe 'sil ' ..  v:count1 .. 'wN'<bar>args<cr><esc>
 nnoremap ]a <cmd>exe 'sil ' ..  v:count1 .. 'wn'<bar>args<cr><esc>
-nnoremap [A <cmd>first<bar>args<cr><esc>
-nnoremap ]A <cmd>last<bar>args<cr><esc>
+nnoremap [A <cmd>w<bar>first<bar>args<cr><esc>
+nnoremap ]A <cmd>w<bar>last<bar>args<cr><esc>
 nnoremap <A-s> <cmd>args<cr>
 nnoremap <A-a> <cmd>sil w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
 nnoremap <A-A> <cmd>sil w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
 nnoremap <A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
 nnoremap <A-D> <cmd>%argd<bar>redrawstatus<cr>
-" Open arglist file at current index, or [count]th index if provided
 nnoremap <silent> <expr> <leader>a ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 " Searching
@@ -161,16 +172,14 @@ noremap / ms/
 noremap ? ms?
 noremap * ms*
 noremap # ms#
-" Go to definition of next function on line
 nnoremap gl t(<C-]>
-nnoremap <cr> <C-]>
+nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
 
 " Text objects
 xnoremap <silent> il g_o^
 onoremap <silent> il :normal vil<CR>
 xnoremap <silent> al $o0
 onoremap <silent> al :normal val<CR>
-" Word object that's somewhere between 'word' and 'WORD'
 onoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 xnoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 onoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
@@ -184,16 +193,13 @@ nnoremap <A-c>h :colo habamax<cr>
 nnoremap <A-c>s :colo sorbet<cr>
 nnoremap <A-c>l :colo lunaperche<cr>
 nnoremap <A-c>t :colo slate<cr>
-" Default vim colorscheme in both vim and neovim
 nnoremap <expr> <A-c>v ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
 
 " Misc
 nnoremap yor <cmd>set rnu!<cr>
-" Override zM to set foldlevel to [count] instead of just 0
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
-" Run paragraph under cursor as command on connected database with vim-dadbod
 nnoremap <leader>D mvvip:DB<cr>`v
 if !has('nvim')
     nnoremap <C-L> <cmd>noh<cr>
@@ -206,7 +212,6 @@ endif
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
-" Open diff with the last undo. Useful when using aider.
 command! -count=1 DiffUndo :exe 'norm mu' .. <count> .. 'u'|%y|tab split|vnew|
     \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
 
@@ -226,7 +231,6 @@ endfunction
 " Autocommands "
 """"""""""""""""
 
-" Add a global mark before running any grep commands that jump to first match
 autocmd vimrc QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
@@ -282,22 +286,17 @@ endfunction
 " Filetype specific configs
 augroup ftpython
     autocmd!
-    " Surround with dict reference with vim-surround
     autocmd FileType python let b:surround_{char2nr("d")} = "\1dict: \1[\"\r\"]"
-    " Change dict to keyword and vice versa
     autocmd FileType python nnoremap <buffer> <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
     autocmd FileType python nnoremap <buffer> <localleader>D di"a<backspace><backspace><C-R>"
                 \<right><right><backspace><backspace>=<esc>
-    " Add breakpoint above or below
     autocmd FileType python nnoremap <buffer> <localleader>b obreakpoint()<esc>
     autocmd FileType python nnoremap <buffer> <localleader>B Obreakpoint()<esc>
 augroup END
 
 augroup ftreact
-    " Comment JSX syntax with vim-surround
     autocmd FileType javascriptreact,typescriptreact 
-                \let b:surround_{char2nr("x")} = "{/* \r */}" "JSX comments
-    " Go to next `const` at start of line without polluting search history
+                \let b:surround_{char2nr("x")} = "{/* \r */}"
     autocmd FileType javascriptreact,typescriptreact 
                 \nnoremap <silent> <buffer> <localleader>] 
                 \:exe "sil keepp norm! /^const\<lt>cr>"\|noh<cr>
@@ -307,12 +306,10 @@ augroup ftreact
 augroup END
 
 if has('nvim')
-    " Import lua config and set default colorscheme
     lua require('config')
     colo vim
 endif
 
-" Set up minpac commands last
 command! PackUpdate call PackInit() | call minpac#update()
 command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
