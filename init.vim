@@ -11,21 +11,20 @@ function! PackInit() abort
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('tpope/vim-dotenv')
     call minpac#add('tpope/vim-dadbod')
+    packadd cfilter
     if has('nvim')
-        " Neovim only packages
         call minpac#add("neovim/nvim-lspconfig")
         call minpac#add("jinh0/eyeliner.nvim")
         call minpac#add("stevearc/conform.nvim")
         call minpac#add("supermaven-inc/supermaven-nvim")
     else
-        " Vim only packages
         call minpac#add('unblevable/quick-scope')
         call minpac#add('dense-analysis/ale')
         call minpac#add('tpope/vim-commentary')
     endif
 endfunction
 
-" Global augroup to use with ungrouped autocmds
+
 augroup vimrc
     autocmd!
 augroup END
@@ -160,12 +159,12 @@ nnoremap [a <cmd>exe 'sil ' ..  v:count1 .. 'wN'<bar>args<cr><esc>
 nnoremap ]a <cmd>exe 'sil ' ..  v:count1 .. 'wn'<bar>args<cr><esc>
 nnoremap [A <cmd>w<bar>first<bar>args<cr><esc>
 nnoremap ]A <cmd>w<bar>last<bar>args<cr><esc>
-nnoremap <A-s> <cmd>args<cr>
-nnoremap <A-a> <cmd>sil w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <A-A> <cmd>sil w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
-nnoremap <A-D> <cmd>%argd<bar>redrawstatus<cr>
-nnoremap <silent> <expr> <leader>a ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
+nnoremap <F2> <cmd>args<cr>
+nnoremap <A-a><A-a> <cmd>sil w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-a><A-p> <cmd>sil w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <A-a><A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
+nnoremap <A-a><A-c> <cmd>%argd<bar>redrawstatus<cr>
+nnoremap <silent> <expr> ga ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 " Searching
 noremap / ms/
@@ -187,13 +186,14 @@ xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 
 " Colorschemes
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap <A-c>r :colo retrobox<cr>
-nnoremap <A-c>u :colo unokai<cr>
-nnoremap <A-c>h :colo habamax<cr>
-nnoremap <A-c>s :colo sorbet<cr>
-nnoremap <A-c>l :colo lunaperche<cr>
-nnoremap <A-c>t :colo slate<cr>
-nnoremap <expr> <A-c>v ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
+nnoremap <A-c><A-r> :colo retrobox<cr>
+nnoremap <A-c><A-u> :colo unokai<cr>
+nnoremap <A-c><A-h> :colo habamax<cr>
+nnoremap <A-c><A-s> :colo sorbet<cr>
+nnoremap <A-c><A-l> :colo lunaperche<cr>
+nnoremap <A-c><A-t> :colo slate<cr>
+nnoremap <A-c><A-w> :colo wildcharm<cr>
+nnoremap <expr> <A-c><A-v> ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
 
 " Misc
 nnoremap yor <cmd>set rnu!<cr>
