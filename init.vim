@@ -273,16 +273,6 @@ function! s:SetGruvboxHighlights()
     endif
 endfunction
 
-autocmd vimrc Colorscheme unokai call s:SetMonokaiHighlights()
-function! s:SetMonokaiHighlights()
-    highlight Normal guifg=#f8f8f0 guibg=#26292c
-    highlight ColorColumn cterm=reverse guibg=#2e323c
-    highlight Identifier ctermfg=12 guifg=#f8f8f0
-    highlight PreProc guifg=#a6e22e
-    highlight Structure guifg=#66d9ef
-    highlight Comment gui=italic guifg=#9ca0a4
-endfunction
-
 " Filetype specific configs
 augroup ftpython
     autocmd!

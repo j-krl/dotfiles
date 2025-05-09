@@ -37,7 +37,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
 		local opts = { buffer = args.buf }
 		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-		-- client.server_capabilities.semanticTokensProvider = false
+		client.server_capabilities.semanticTokensProvider = false
 		if client:supports_method("textDocument/completion") then
 			vim.lsp.completion.enable(true, client.id, args.buf)
 		end
