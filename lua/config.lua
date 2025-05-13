@@ -42,7 +42,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.lsp.completion.enable(true, client.id, args.buf)
 		end
 		local function symbol_on_list(options)
-			-- Improve the default qflist behaviour in `workspace_symbol`
 			vim.fn.setqflist({}, " ", options)
 			vim.cmd.normal("mG")
 			vim.cmd.cfirst()
@@ -111,7 +110,7 @@ end)
 vim.keymap.set("n", "[D", function()
 	vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
 end)
-vim.keymap.set("n", "<A-k>", vim.diagnostic.open_float)
-vim.keymap.set("n", "<A-K>", function()
+vim.keymap.set("n", "<C-K>", vim.diagnostic.open_float)
+vim.keymap.set("n", "gL", function()
 	vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR })
 end)

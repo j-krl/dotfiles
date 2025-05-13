@@ -11,7 +11,6 @@ function! PackInit() abort
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('tpope/vim-dotenv')
     call minpac#add('tpope/vim-dadbod')
-    packadd cfilter
     if has('nvim')
         call minpac#add("neovim/nvim-lspconfig")
         call minpac#add("jinh0/eyeliner.nvim")
@@ -23,7 +22,7 @@ function! PackInit() abort
         call minpac#add('tpope/vim-commentary')
     endif
 endfunction
-
+packadd cfilter
 
 augroup vimrc
     autocmd!
@@ -45,7 +44,7 @@ set mouse=a
 set expandtab
 " Typescript syntax highlighting is very slow in vim if `re` isn't explicitly set
 set re=0
-set colorcolumn=80,88
+set colorcolumn=80,88,120
 set cursorline
 set signcolumn=yes
 set autoread
@@ -88,18 +87,19 @@ endif
 """"""""""""
 
 " Text manipulation
-noremap <leader>y "+y
-noremap <leader>p "+p
-noremap <leader>P "+P
+noremap +y "+y
+noremap +Y "+Y
+noremap +p "+p
+noremap +P "+P
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
-nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : \":%s/<C-R><C-W>/"
+nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
 nnoremap s a<cr><esc>k$
 nnoremap S i<cr><esc>k$
 inoremap <C-S> <cr><esc>kA
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
             \ .. 's/\n\s*//g<cr>`l'
-inoremap <A-backspace> <C-W><backspace>
+inoremap <C-H> <C-U><backspace>
 inoremap "<tab> ""<Left>
 inoremap '<tab> ''<Left>
 inoremap (<tab> ()<Left>
@@ -153,17 +153,16 @@ function! RemoveQfEntry()
     endif
 endfunction
 
-
 " Arglist
 nnoremap [a <cmd>exe 'sil ' ..  v:count1 .. 'wN'<bar>args<cr><esc>
 nnoremap ]a <cmd>exe 'sil ' ..  v:count1 .. 'wn'<bar>args<cr><esc>
 nnoremap [A <cmd>w<bar>first<bar>args<cr><esc>
 nnoremap ]A <cmd>w<bar>last<bar>args<cr><esc>
 nnoremap <F2> <cmd>args<cr>
-nnoremap <A-a><A-a> <cmd>sil w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <A-a><A-p> <cmd>sil w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <A-a><A-d> <cmd>argd %<bar>redrawstatus<bar>args<cr>
-nnoremap <A-a><A-c> <cmd>%argd<bar>redrawstatus<cr>
+nnoremap <leader>aa <cmd>sil w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <leader>ap <cmd>sil w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
+nnoremap <leader>ad <cmd>argd %<bar>redrawstatus<bar>args<cr>
+nnoremap <leader>ac <cmd>%argd<bar>redrawstatus<cr>
 nnoremap <silent> <expr> ga ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 " Searching
@@ -186,14 +185,15 @@ xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 
 " Colorschemes
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap <A-c><A-r> :colo retrobox<cr>
-nnoremap <A-c><A-u> :colo unokai<cr>
-nnoremap <A-c><A-h> :colo habamax<cr>
-nnoremap <A-c><A-s> :colo sorbet<cr>
-nnoremap <A-c><A-l> :colo lunaperche<cr>
-nnoremap <A-c><A-t> :colo slate<cr>
-nnoremap <A-c><A-w> :colo wildcharm<cr>
-nnoremap <expr> <A-c><A-v> ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
+nnoremap <space>cr :colo retrobox<cr>
+nnoremap <space>cu :colo unokai<cr>
+nnoremap <space>ch :colo habamax<cr>
+nnoremap <space>cs :colo sorbet<cr>
+nnoremap <space>cl :colo lunaperche<cr>
+nnoremap <space>ct :colo slate<cr>
+nnoremap <space>cw :colo wildcharm<cr>
+nnoremap <space>cd :colo default<cr>
+nnoremap <expr> <space>cv ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
 
 " Misc
 nnoremap yor <cmd>set rnu!<cr>
@@ -231,9 +231,18 @@ endfunction
 " Autocommands "
 """"""""""""""""
 
-autocmd vimrc QuickFixCmdPost l\=\(vim\)\=grep\(add\)\= norm mG
+autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
+autocmd vimrc Colorscheme * call s:SetDiffHighlights()
+autocmd vimrc Colorscheme retrobox call s:SetGruvboxHighlights()
+augroup cursorline
+    autocmd!
+    autocmd VimEnter * setlocal cursorline
+    autocmd WinEnter * setlocal cursorline
+    autocmd BufWinEnter * setlocal cursorline
+    autocmd WinLeave * setlocal nocursorline
+augroup END
 if has('nvim')
     " `TabNewEntered` does not exist in vim
     autocmd vimrc TabNewEntered * argl|%argd
@@ -250,7 +259,7 @@ function! s:SetWorkspaceEnv()
     endif
 endfunction
 
-autocmd vimrc Colorscheme * call s:SetDiffHighlights()
+
 function! s:SetDiffHighlights()
     if &background == "dark"
         highlight DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
@@ -265,7 +274,6 @@ function! s:SetDiffHighlights()
     endif
 endfunction
 
-autocmd vimrc Colorscheme retrobox call s:SetGruvboxHighlights()
 function! s:SetGruvboxHighlights()
     if &background == "dark"
         highlight ColorColumn guibg=#3c3836
@@ -276,24 +284,28 @@ endfunction
 " Filetype specific configs
 augroup ftpython
     autocmd!
-    autocmd FileType python let b:surround_{char2nr("d")} = "\1dict: \1[\"\r\"]"
-    autocmd FileType python nnoremap <buffer> <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
-    autocmd FileType python nnoremap <buffer> <localleader>D di"a<backspace><backspace><C-R>"
-                \<right><right><backspace><backspace>=<esc>
-    autocmd FileType python nnoremap <buffer> <localleader>b obreakpoint()<esc>
-    autocmd FileType python nnoremap <buffer> <localleader>B Obreakpoint()<esc>
+    autocmd FileType python call s:SetupPython()
 augroup END
+function! s:SetupPython()
+    let b:surround_{char2nr("d")} = "\1dict: \1[\"\r\"]"
+    let b:surround_{char2nr("m")} = "\"\"\"\r\"\"\""
+    let b:surround_{char2nr("t")} = "f\"\r\""
+    let b:surround_{char2nr("T")} = "f\'\r\'"
+    nnoremap <buffer> <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
+    nnoremap <buffer> <localleader>D di"a<backspace><backspace><C-R>"<right><right><backspace><backspace>=<esc>
+    nnoremap <buffer> <localleader>b obreakpoint()<esc>
+    nnoremap <buffer> <localleader>B Obreakpoint()<esc>
+    nnoremap <buffer> <localleader>F mfF"if<esc>`fl
+endfunction
 
 augroup ftreact
-    autocmd FileType javascriptreact,typescriptreact 
-                \let b:surround_{char2nr("x")} = "{/* \r */}"
-    autocmd FileType javascriptreact,typescriptreact 
-                \nnoremap <silent> <buffer> <localleader>] 
-                \:exe "sil keepp norm! /^const\<lt>cr>"\|noh<cr>
-    autocmd FileType javascriptreact,typescriptreact 
-                \nnoremap <silent> <buffer> <localleader>[ 
-                \:exe "sil keepp norm! ?^const\<lt>cr>"\|noh<cr>
+    autocmd FileType javascriptreact,typescriptreact call s:SetupReact()
 augroup END
+function s:SetupReact()
+    let b:surround_{char2nr("x")} = "{/* \r */}"
+    nnoremap <silent> <buffer> <localleader>] :exe "sil keepp norm! /^const\<lt>cr>"\|noh<cr>
+    nnoremap <silent> <buffer> <localleader>[ :exe "sil keepp norm! ?^const\<lt>cr>"\|noh<cr>
+endfunction
 
 if has('nvim')
     lua require('config')
