@@ -106,8 +106,10 @@ nnoremap go o<esc>
 nnoremap gO O<esc>
 inoremap <C-S> <cr><esc>kA
 inoremap <C-H> <C-U><backspace>
+inoremap `<tab> ``<Left>
 inoremap "<tab> ""<Left>
 inoremap '<tab> ''<Left>
+inoremap <<tab> <><Left>
 inoremap (<tab> ()<Left>
 inoremap [<tab> []<Left>
 inoremap {<tab> {}<Left>
@@ -136,6 +138,7 @@ nnoremap <C-W>Z <cmd>tab split<cr>
 nnoremap <C-W>X <C-W>x<C-W>c
 nnoremap <C-W>v <C-W>v<C-W>w
 nnoremap <C-W>s <C-W>s<C-W>w
+nmap <C-W>[ <C-W>v<C-]>
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
@@ -161,15 +164,15 @@ function! RemoveQfEntry()
 endfunction
 
 " Arglist
-nnoremap [a <cmd>exe 'sil ' ..  v:count1 .. 'wN'<bar>args<cr><esc>
-nnoremap ]a <cmd>exe 'sil ' ..  v:count1 .. 'wn'<bar>args<cr><esc>
-nnoremap [A <cmd>w<bar>first<bar>args<cr><esc>
-nnoremap ]A <cmd>w<bar>last<bar>args<cr><esc>
+nnoremap [a <cmd>exe v:count1 .. 'N'<bar>args<cr><esc>
+nnoremap ]a <cmd>exe v:count1 .. 'n'<bar>args<cr><esc>
+nnoremap [A <cmd>first<bar>args<cr><esc>
+nnoremap ]A <cmd>last<bar>args<cr><esc>
 nnoremap <F2> <cmd>args<cr>
-nnoremap <leader>aa <cmd>sil w<bar>$arge %<bar>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <leader>ap <cmd>sil w<bar>0arge %<bar>argded<bar>redrawstatus<bar>args<cr>
-nnoremap <leader>ad <cmd>argd %<bar>redrawstatus<bar>args<cr>
-nnoremap <leader>ac <cmd>%argd<bar>redrawstatus<cr>
+nnoremap <leader>aa <cmd>$arge %<bar>argded<bar>args<cr>
+nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
+nnoremap <leader>ad <cmd>argd %<bar>args<cr>
+nnoremap <leader>ac <cmd>%argd<cr><C-L>
 nnoremap <silent> <expr> ga ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 " Searching
@@ -240,6 +243,7 @@ endfunction
 """"""""""""""""
 
 autocmd vimrc QuickFixCmdPost * norm mG
+autocmd vimrc TabClosed * tabprevious
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
 autocmd vimrc Colorscheme * call s:SetDiffHighlights()
@@ -315,7 +319,7 @@ if has('nvim')
     colo vim
 endif
 
-command! PackUpdate call PackInit() | call minpac#update()
+command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
 
