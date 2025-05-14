@@ -91,14 +91,20 @@ noremap +y "+y
 noremap +Y "+Y
 noremap +p "+p
 noremap +P "+P
+nnoremap <leader>p <cmd>put "<cr>
+nnoremap <leader>P <cmd>put! "<cr>
+nnoremap <leader>0p <cmd>put 0<cr>
+nnoremap <leader>0P <cmd>put! 0<cr>
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
 nnoremap s a<cr><esc>k$
 nnoremap S i<cr><esc>k$
-inoremap <C-S> <cr><esc>kA
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
             \ .. 's/\n\s*//g<cr>`l'
+nnoremap go o<esc>
+nnoremap gO O<esc>
+inoremap <C-S> <cr><esc>kA
 inoremap <C-H> <C-U><backspace>
 inoremap "<tab> ""<Left>
 inoremap '<tab> ''<Left>
@@ -108,7 +114,8 @@ inoremap {<tab> {}<Left>
 inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
-" Requires vim-surround and `e` text object to be set below
+" Requires vim-surround and `e` text object to be set below. Only works for a
+" single line
 nmap dsf %<left>diedsb
 
 " File & pane navigation
@@ -185,15 +192,16 @@ xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 
 " Colorschemes
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap <space>cr :colo retrobox<cr>
-nnoremap <space>cu :colo unokai<cr>
-nnoremap <space>ch :colo habamax<cr>
-nnoremap <space>cs :colo sorbet<cr>
-nnoremap <space>cl :colo lunaperche<cr>
-nnoremap <space>ct :colo slate<cr>
-nnoremap <space>cw :colo wildcharm<cr>
-nnoremap <space>cd :colo default<cr>
-nnoremap <expr> <space>cv ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
+nnoremap <expr> <space>1 ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
+nnoremap <space>2 :colo retrobox<cr>
+nnoremap <space>3 :colo unokai<cr>
+nnoremap <space>4 :colo habamax<cr>
+nnoremap <space>5 :colo sorbet<cr>
+nnoremap <space>6 :colo slate<cr>
+nnoremap <space>7 :colo desert<cr>
+nnoremap <space>8 :colo peachpuff<cr>
+nnoremap <space>9 :colo lunaperche<cr>
+nnoremap <space>0 :colo default<cr>
 
 " Misc
 nnoremap yor <cmd>set rnu!<cr>
@@ -235,7 +243,8 @@ autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
 autocmd vimrc Colorscheme * call s:SetDiffHighlights()
-autocmd vimrc Colorscheme retrobox call s:SetGruvboxHighlights()
+autocmd vimrc ColorScheme * if &background == "dark" | highlight ColorColumn guibg=#3c3836 | endif
+autocmd vimrc ColorScheme retrobox if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
 augroup cursorline
     autocmd!
     autocmd VimEnter * setlocal cursorline
@@ -274,13 +283,6 @@ function! s:SetDiffHighlights()
     endif
 endfunction
 
-function! s:SetGruvboxHighlights()
-    if &background == "dark"
-        highlight ColorColumn guibg=#3c3836
-        highlight Normal guifg=#ebdbb2 guibg=#282828
-    endif
-endfunction
-
 " Filetype specific configs
 augroup ftpython
     autocmd!
@@ -303,8 +305,9 @@ augroup ftreact
 augroup END
 function s:SetupReact()
     let b:surround_{char2nr("x")} = "{/* \r */}"
-    nnoremap <silent> <buffer> <localleader>] :exe "sil keepp norm! /^const\<lt>cr>"\|noh<cr>
-    nnoremap <silent> <buffer> <localleader>[ :exe "sil keepp norm! ?^const\<lt>cr>"\|noh<cr>
+    nmap <silent> <buffer> dsx ds/dsB
+    nnoremap <silent> <buffer> ]1 :exe "sil keepp norm! /^const\<lt>cr>"\|noh<cr>
+    nnoremap <silent> <buffer> [1 :exe "sil keepp norm! ?^const\<lt>cr>"\|noh<cr>
 endfunction
 
 if has('nvim')
