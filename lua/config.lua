@@ -11,6 +11,7 @@ local lsps = {
 	"sqlls",
 	"emmet_language_server",
 	"terraformls",
+	"vimls",
 }
 for _, lsp in pairs(lsps) do
 	local setup = {}
@@ -78,20 +79,11 @@ require("conform").setup({
 	format_after_save = {}, -- TODO: remove
 })
 
---------
--- AI --
---------
+-----------
+-- Other --
+-----------
 
-vim.g.SUPERMAVEN_DISABLED = true -- https://github.com/supermaven-inc/supermaven-nvim/pull/101
-require("supermaven-nvim").setup({
-	condition = function()
-		return vim.g.SUPERMAVEN_DISABLED
-	end,
-})
-
-------------------------
--- Mappings & options --
-------------------------
+require("supermaven-nvim").setup({})
 
 -- Options
 vim.diagnostic.config({
@@ -103,7 +95,7 @@ vim.diagnostic.config({
 
 -- Mappings
 vim.keymap.set("n", "<F3>", require("conform").format)
-vim.keymap.set("n", "<leader>m", "<cmd>SupermavenToggle<cr>")
+vim.keymap.set("n", "<F9>", "<cmd>SupermavenToggle<cr>")
 vim.keymap.set("n", "]D", function()
 	vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
 end)

@@ -4,20 +4,23 @@ function! PackInit() abort
     call minpac#add('k-takata/minpac', {'type': 'opt'})
     call minpac#add('christoomey/vim-tmux-navigator')
     call minpac#add('jeetsukumaran/vim-indentwise')
+    call minpac#add('unblevable/quick-scope')
     call minpac#add('jpalardy/vim-slime')
+    call minpac#add('luochen1990/rainbow')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('tpope/vim-dotenv')
     call minpac#add('tpope/vim-dadbod')
+    call minpac#add('garbas/vim-snipmate')
+    call minpac#add('MarcWeber/vim-addon-mw-utils')
+    call minpac#add('honza/vim-snippets')
     if has('nvim')
         call minpac#add("neovim/nvim-lspconfig")
-        call minpac#add("jinh0/eyeliner.nvim")
         call minpac#add("stevearc/conform.nvim")
         call minpac#add("supermaven-inc/supermaven-nvim")
     else
-        call minpac#add('unblevable/quick-scope')
         call minpac#add('dense-analysis/ale')
         call minpac#add('tpope/vim-commentary')
     endif
@@ -74,10 +77,33 @@ let g:python_indent = {
         \'open_paren': 'shiftwidth()',
         \'closed_paren_align_last_line': v:false
     \}
+let g:vim_indent_cont = shiftwidth() * 2
 let g:tmux_navigator_no_mappings = 1
+let g:rainbow_ts_after = 'syn clear typescriptBlock @typescriptDestructures @typescriptCallSignature typescriptFuncCallArg typescriptConditionalParen typescriptTemplateSubstitution typescriptTernary typescriptObjectLiteral typescriptArray typescriptTypeBracket typescriptTypeBlock @typescriptFunctionType typescriptParenthesizedType'
+let g:rainbow_conf = {
+        \'separately': {
+            \'typescriptreact': {
+                \'parentheses_options': 'containedin=ALL contains=typescriptIdentifierName',
+                \'after': [g:rainbow_ts_after]
+            \},
+            \'typescript': {
+                \'parentheses_options': 'containedin=ALL contains=typescriptIdentifierName',
+                \'after': [g:rainbow_ts_after]
+            \},
+            \'vim': {
+                \'parentheses_options': 'containedin=vimFuncBody',
+                \'after': ['syn clear vimOperParen']
+            \},
+            \'help': 0
+        \}
+    \}
+let g:rainbow_active = 1
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
+let g:snipMate = {
+        \'description_in_completion': 1
+    \}
 if !has('nvim')
     let g:ale_linters = {'python': ['ruff']}
 endif
@@ -130,8 +156,8 @@ nnoremap <backspace> <C-^>
 nnoremap <leader>b :call feedkeys(":b <tab>", "tn")<cr>
 nnoremap <leader>f :find 
 nnoremap <leader>F :vert sf 
-nnoremap <leader>g :grep ""<left>
-nnoremap <leader>G :grep <C-R><C-W><cr>
+nnoremap <leader>g :grep ''<left>
+nnoremap <leader>G :grep '<C-R><C-W>'<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -197,14 +223,19 @@ xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 nnoremap <expr> <space>1 ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
 nnoremap <space>2 :colo retrobox<cr>
-nnoremap <space>3 :colo unokai<cr>
+nnoremap <space>3 :colo sorbet<cr>
 nnoremap <space>4 :colo habamax<cr>
-nnoremap <space>5 :colo sorbet<cr>
-nnoremap <space>6 :colo slate<cr>
-nnoremap <space>7 :colo desert<cr>
+nnoremap <space>5 :colo slate<cr>
+nnoremap <space>6 :colo desert<cr>
+nnoremap <space>7 :colo unokai<cr>
 nnoremap <space>8 :colo peachpuff<cr>
-nnoremap <space>9 :colo lunaperche<cr>
+nnoremap <space>9 :colo shine<cr>
 nnoremap <space>0 :colo default<cr>
+
+" Snippets
+imap <C-L><C-L> <Plug>snipMateNextOrTrigger
+imap <C-L><C-S> <Plug>snipMateShow
+imap <C-L><C-K> <Plug>snipMateBack
 
 " Misc
 nnoremap yor <cmd>set rnu!<cr>
@@ -246,9 +277,11 @@ autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc TabClosed * tabprevious
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
-autocmd vimrc Colorscheme * call s:SetDiffHighlights()
-autocmd vimrc ColorScheme * if &background == "dark" | highlight ColorColumn guibg=#3c3836 | endif
+autocmd vimrc BufEnter * RainbowToggleOn
+autocmd vimrc ColorScheme * call s:SetHighlights()
 autocmd vimrc ColorScheme retrobox if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
+autocmd vimrc ColorScheme \(desert\)\|\(evening\)\|\(vim\) highlight CursorLine guibg=gray28
+
 augroup cursorline
     autocmd!
     autocmd VimEnter * setlocal cursorline
@@ -272,18 +305,19 @@ function! s:SetWorkspaceEnv()
     endif
 endfunction
 
-
-function! s:SetDiffHighlights()
+function! s:SetHighlights()
     if &background == "dark"
         highlight DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
         highlight DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
         highlight DiffChange gui=BOLD guifg=NONE guibg=#3e4d53
         highlight DiffText gui=BOLD guifg=NONE guibg=#5c4306
+        highlight ColorColumn guibg=#3c3836
     else
         highlight DiffAdd gui=BOLD guifg=NONE guibg=palegreen
         highlight DiffDelete gui=BOLD guifg=NONE guibg=lightred
         highlight DiffChange gui=BOLD guifg=NONE guibg=lightblue
         highlight DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
+        highlight ColorColumn ctermbg=255 guibg=#eeeeee
     endif
 endfunction
 
@@ -297,14 +331,19 @@ function! s:SetupPython()
     let b:surround_{char2nr("m")} = "\"\"\"\r\"\"\""
     let b:surround_{char2nr("t")} = "f\"\r\""
     let b:surround_{char2nr("T")} = "f\'\r\'"
+    nmap dsd %<left>dieds]ds"
+    nmap dsm ds"ds"ds"
     nnoremap <buffer> <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
     nnoremap <buffer> <localleader>D di"a<backspace><backspace><C-R>"<right><right><backspace><backspace>=<esc>
     nnoremap <buffer> <localleader>b obreakpoint()<esc>
     nnoremap <buffer> <localleader>B Obreakpoint()<esc>
     nnoremap <buffer> <localleader>F mfF"if<esc>`fl
+    nnoremap <buffer> <localleader>gc :grep 'class \('<left><left><left>
+    nnoremap <buffer> <localleader>gd :grep 'def \('<left><left><left>
 endfunction
 
 augroup ftreact
+    autocmd!
     autocmd FileType javascriptreact,typescriptreact call s:SetupReact()
 augroup END
 function s:SetupReact()
@@ -312,14 +351,23 @@ function s:SetupReact()
     nmap <silent> <buffer> dsx ds/dsB
     nnoremap <silent> <buffer> ]1 :exe "sil keepp norm! /^const\<lt>cr>"\|noh<cr>
     nnoremap <silent> <buffer> [1 :exe "sil keepp norm! ?^const\<lt>cr>"\|noh<cr>
+    nnoremap <buffer> <localleader>gd :grep "^const  =>"<left><left><left><left>
 endfunction
+
+augroup ftlua
+    autocmd!
+    if has('nvim')
+        " This is the only way to disable lua treesitter highlighting...
+        autocmd FileType lua lua vim.treesitter.stop()
+    endif
+augroup END
 
 if has('nvim')
     lua require('config')
-    colo vim
 endif
+
+colo slate
 
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
-
