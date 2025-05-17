@@ -6,7 +6,7 @@ tmux has-session -t $SES &> /dev/null
 if [ $? != 0 ]; then
     tmux new-session -s $SES -d -x- -y-
     tmux set-option base-index 1
-    tmux rename-window -t 1 "prpl"
+    tmux rename-window -t 1 "work"
     tmux send-keys "pcd" C-m
     tmux split-window
     tmux send-keys "pscd" C-m

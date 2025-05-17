@@ -278,6 +278,7 @@ autocmd vimrc TabClosed * tabprevious
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
 autocmd vimrc BufEnter * RainbowToggleOn
+autocmd vimrc BufEnter .vimrc,~/.config/nvim/** call s:CheckConfigSchedule() 
 autocmd vimrc ColorScheme * call s:SetHighlights()
 autocmd vimrc ColorScheme retrobox if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
 autocmd vimrc ColorScheme \(desert\)\|\(evening\)\|\(vim\) highlight CursorLine guibg=gray28
@@ -302,6 +303,16 @@ function! s:SetWorkspaceEnv()
     Dotenv .vimenv
     if !empty($VIMPROJPATH)
         set path+=$VIMPROJPATH
+    endif
+endfunction
+
+function! s:CheckConfigSchedule()
+    let hour = strftime("%H")
+    let weekday = strftime("%w")
+    let is_work_hour = hour >= 9 && hour <= 14
+    let is_night = hour >= 22 || hour <= 5
+    if is_work_hour || is_night
+        bd
     endif
 endfunction
 
