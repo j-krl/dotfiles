@@ -39,6 +39,7 @@ if !has('nvim')
     " Setting syntax on in nvim clashes with vim-slime
     syntax on
 endif
+
 set relativenumber
 set number
 set tabstop=4
@@ -159,6 +160,8 @@ nnoremap <leader>F :vert sf
 nnoremap <leader>g :grep ''<left>
 nnoremap <leader>G :grep '<C-R><C-W>'<cr>
 nnoremap <leader>o :browse filter  o<left><left>
+nnoremap <leader>mm <cmd>marks HJKLMN<cr>
+nnoremap <leader>M <cmd>delm HJKLMN<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -201,43 +204,6 @@ nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ad <cmd>argd %<bar>args<cr>
 nnoremap <leader>ac <cmd>%argd<cr><C-L>
 nnoremap <silent> <expr> ga ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
-
-" Marks
-nnoremap [k <cmd>call CycleMark(-1)<cr><esc>
-nnoremap ]k <cmd>call CycleMark(1)<cr><esc>
-
-let g:curr_mark = ''
-function! g:CycleMark(jump)
-    let marks_order = ["Q","W","E","R","T","Y"]
-    let marks_indexed = map(getmarklist(), {
-            \_, val -> extend(val, {'idx': index(marks_order, val['mark'][1])})
-        \})
-    let marks_filtered = filter(marks_indexed, {_, val -> val['idx'] > -1}) 
-    if len(marks_filtered) == 0
-        return
-    endif
-    let marks_sorted = sort(marks_filtered, {a, b -> a['idx'] > b['idx']})
-    let mark_index = -1
-    if g:curr_mark != ''
-        let mark_index = indexof(marks_sorted, "v:val['mark'][1] == g:curr_mark")
-    endif
-    let mark_index += a:jump
-    if mark_index >= len(marks_sorted)
-        let mark_index = 0
-    elseif mark_index < 0
-        let mark_index = len(marks_sorted) - 1
-    endif
-    let marks_formatted = map(marks_sorted, {
-            \_, val -> [val['mark'][1], fnamemodify(val['file'], ":."), val['pos'][1]]
-        \})
-    let g:curr_mark = marks_formatted[mark_index][0]
-    let marks_strings = map(marks_formatted, {_, val -> join(val, ":")})
-    let marks_final = map(marks_strings, {
-            \_, val -> g:curr_mark == val[0] ? '[' .. val .. ']' : val}
-        \)
-    exe "norm `" .. g:curr_mark
-    echo join(marks_final," ")
-endfunction
 
 " Searching
 noremap / ms/
