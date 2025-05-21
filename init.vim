@@ -4,6 +4,7 @@ function! PackInit() abort
     call minpac#add('k-takata/minpac', {'type': 'opt'})
     call minpac#add('christoomey/vim-tmux-navigator')
     call minpac#add('jeetsukumaran/vim-indentwise')
+    call minpac#add('justinmk/vim-sneak')
     call minpac#add('unblevable/quick-scope')
     call minpac#add('jpalardy/vim-slime')
     call minpac#add('luochen1990/rainbow')
@@ -13,16 +14,16 @@ function! PackInit() abort
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('tpope/vim-dotenv')
     call minpac#add('tpope/vim-dadbod')
-    call minpac#add('garbas/vim-snipmate')
-    call minpac#add('MarcWeber/vim-addon-mw-utils')
-    call minpac#add('honza/vim-snippets')
+    call minpac#add('github/copilot.vim')
     if has('nvim')
-        call minpac#add("neovim/nvim-lspconfig")
-        call minpac#add("stevearc/conform.nvim")
-        call minpac#add("supermaven-inc/supermaven-nvim")
+        call minpac#add('neovim/nvim-lspconfig')
+        call minpac#add('stevearc/conform.nvim')
+        call minpac#add('nvim-lua/plenary.nvim')
+        call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
     else
         call minpac#add('dense-analysis/ale')
         call minpac#add('tpope/vim-commentary')
+        call minpac#add('DanBradbury/copilot-chat.vim')
     endif
 endfunction
 packadd cfilter
@@ -71,6 +72,7 @@ set foldlevel=100
 set foldlevelstart=100
 set background=dark
 let g:maplocalleader = "_"
+let g:markdown_fenced_languages = ["python", "javascript", "typescript", "html", "css", "json", "vim", "lua"]
 
 " Plugin options
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
@@ -80,7 +82,7 @@ let g:python_indent = {
     \}
 let g:vim_indent_cont = shiftwidth() * 2
 let g:tmux_navigator_no_mappings = 1
-let g:rainbow_ts_after = 'syn clear typescriptBlock @typescriptDestructures @typescriptCallSignature typescriptFuncCallArg typescriptConditionalParen typescriptTemplateSubstitution typescriptTernary typescriptObjectLiteral typescriptArray typescriptTypeBracket typescriptTypeBlock @typescriptFunctionType typescriptParenthesizedType'
+let g:rainbow_ts_after = 'syn clear typescriptBlock @typescriptDestructures @typescriptCallSignature typescriptFuncCallArg typescriptConditionalParen typescriptTemplateSubstitution typescriptTernary typescriptObjectLiteral typescriptArray typescriptTypeBracket typescriptTypeBlock @typescriptFunctionType typescriptParenthesizedType typescriptParenExp typescriptExceptions'
 let g:rainbow_conf = {
         \'separately': {
             \'typescriptreact': {
@@ -93,7 +95,7 @@ let g:rainbow_conf = {
             \},
             \'vim': {
                 \'parentheses_options': 'containedin=vimFuncBody',
-                \'after': ['syn clear vimOperParen']
+                \'after': ['syn clear vimOperParen vimFunction']
             \},
             \'help': 0
         \}
@@ -102,9 +104,6 @@ let g:rainbow_active = 1
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
-let g:snipMate = {
-        \'description_in_completion': 1
-    \}
 if !has('nvim')
     let g:ale_linters = {'python': ['ruff']}
 endif
@@ -125,8 +124,8 @@ nnoremap <leader>0P <cmd>put! 0<cr>
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
-nnoremap s a<cr><esc>k$
-nnoremap S i<cr><esc>k$
+nnoremap <space>s a<cr><esc>k$
+nnoremap <space>S i<cr><esc>k$
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
             \ .. 's/\n\s*//g<cr>`l'
 nnoremap go o<esc>
@@ -161,6 +160,7 @@ nnoremap <leader>g :grep ''<left>
 nnoremap <leader>G :grep '<C-R><C-W>'<cr>
 nnoremap <leader>o :browse filter  o<left><left>
 nnoremap <leader>mm <cmd>marks HJKLMN<cr>
+nnoremap <leader>ml <cmd>marks hjklmn<cr>
 nnoremap <leader>M <cmd>delm HJKLMN<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
@@ -176,6 +176,8 @@ nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 nnoremap - <cmd>Explore<cr>
 nnoremap <leader>cc <cmd>copen<cr>
 nnoremap <leader>C <cmd>cclose<cr>
+nnoremap <silent> <expr> <leader>co ":colder " .. v:count1 .. "<cr>"
+nnoremap <silent> <expr> <leader>cn ":cnewer " .. v:count1 .. "<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
 
 function! RemoveQfEntry()
@@ -198,7 +200,7 @@ nnoremap [a <cmd>exe v:count1 .. 'N'<bar>args<cr><esc>
 nnoremap ]a <cmd>exe v:count1 .. 'n'<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
 nnoremap ]A <cmd>last<bar>args<cr><esc>
-nnoremap <leader>as <cmd>args<cr>
+nnoremap <F2> <cmd>args<cr>
 nnoremap <leader>aa <cmd>$arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ad <cmd>argd %<bar>args<cr>
@@ -212,6 +214,12 @@ noremap * ms*
 noremap # ms#
 nnoremap gl t(<C-]>
 nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
+
+" Copilot
+imap <C-J> <Plug>(copilot-accept-word)
+imap <C-L><C-L> <Plug>(copilot-next)
+imap <C-L><C-K> <Plug>(copilot-previous)
+imap <C-L><space> <Plug>(copilot-accept-line)
 
 " Text objects
 xnoremap <silent> il g_o^
@@ -236,12 +244,8 @@ nnoremap <space>8 :colo peachpuff<cr>
 nnoremap <space>9 :colo shine<cr>
 nnoremap <space>0 :colo default<cr>
 
-" Snippets
-imap <C-L><C-L> <Plug>snipMateNextOrTrigger
-imap <C-L><C-S> <Plug>snipMateShow
-imap <C-L><C-K> <Plug>snipMateBack
-
 " Misc
+cnoremap <C-\><C-W> .*?
 nnoremap yor <cmd>set rnu!<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 inoremap <C-Space> <C-X><C-O>
@@ -279,11 +283,13 @@ endfunction
 
 autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc TabClosed * tabprevious
+autocmd vimrc BufEnter * let b:workspace_folder = getcwd()
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
-autocmd vimrc BufEnter * RainbowToggleOn
 autocmd vimrc BufEnter .vimrc,~/.config/nvim/** call s:CheckConfigSchedule() 
+autocmd vimrc BufEnter * RainbowToggleOn
 autocmd vimrc ColorScheme * call s:SetHighlights()
+autocmd vimrc ColorScheme * highlight link CopilotSuggestion MoreMsg
 autocmd vimrc ColorScheme retrobox if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
 autocmd vimrc ColorScheme \(desert\)\|\(evening\)\|\(vim\) highlight CursorLine guibg=gray28
 

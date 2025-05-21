@@ -83,7 +83,16 @@ require("conform").setup({
 -- Other --
 -----------
 
-require("supermaven-nvim").setup({})
+require("CopilotChat").setup({
+	mappings = {
+		complete = { insert = "<S-tab>" },
+		submit_prompt = { insert = "<C-y>" },
+		accept_diff = { normal = "grd", insert = false },
+	},
+	window = {
+		width = 0.33,
+	},
+})
 
 -- Options
 vim.diagnostic.config({
@@ -95,7 +104,7 @@ vim.diagnostic.config({
 
 -- Mappings
 vim.keymap.set("n", "<F3>", require("conform").format)
-vim.keymap.set("n", "<F9>", "<cmd>SupermavenToggle<cr>")
+vim.keymap.set({ "n", "v" }, "<F9>", ":<C-U>CopilotChatToggle<cr><C-W>=", { silent = true })
 vim.keymap.set("n", "]D", function()
 	vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
 end)
