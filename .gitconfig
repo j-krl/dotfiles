@@ -11,9 +11,13 @@
 [merge]
 	tool = nvimdiff
 [alias]
-	ac = !git add -A && git commit
-	amend = !git add -A && git commit --amend --no-edit
-	wip = !git add -A && git commit -m wip
-	reset-wip = !git reset $(git log --grep=wip --invert-grep -n 1 --format=%h)
+	ac = "!git add -A && git commit"
+	amend = "!git add -A && git commit --amend --no-edit"
+	wip = "!git add -A && git commit -m wip"
+	nogrep-sha = "!f() { git log --grep=\"$1\" --invert-grep -n 1 --format=%h; }; f"
+	reset-wip = "!git reset $(git nogrep-sha \"^wip\")"
+	diff-wip = "!git diff $(git nogrep-sha \"^wip\")"
+	reset-aider = "!git reset $(git nogrep-sha \"^aider\")"
+	diff-aider = "!git diff $(git nogrep-sha \"^aider\")"
 [interactive]
 	diffFilter = diff-so-fancy --patch

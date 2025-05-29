@@ -4,10 +4,8 @@ function! PackInit() abort
     call minpac#add('k-takata/minpac', {'type': 'opt'})
     call minpac#add('christoomey/vim-tmux-navigator')
     call minpac#add('jeetsukumaran/vim-indentwise')
-    call minpac#add('justinmk/vim-sneak')
     call minpac#add('unblevable/quick-scope')
     call minpac#add('jpalardy/vim-slime')
-    call minpac#add('luochen1990/rainbow')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
@@ -15,6 +13,8 @@ function! PackInit() abort
     call minpac#add('tpope/vim-dotenv')
     call minpac#add('tpope/vim-dadbod')
     call minpac#add('github/copilot.vim')
+    call minpac#add('kadekillary/skull-vim')
+    call minpac#add('karoliskoncevicius/sacredforest-vim')
     if has('nvim')
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
@@ -61,7 +61,7 @@ set laststatus=2
 set completeopt=menuone,popup
 set wildmode=list:longest,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
-set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git'
+set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'\ -g\ '!**/migrations/*'
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 set guicursor=
@@ -72,7 +72,7 @@ set foldlevel=100
 set foldlevelstart=100
 set background=dark
 let g:maplocalleader = "_"
-let g:markdown_fenced_languages = ["python", "javascript", "typescript", "html", "css", "json", "vim", "lua"]
+let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "css", "json", "vim", "lua"]
 
 " Plugin options
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
@@ -82,25 +82,6 @@ let g:python_indent = {
     \}
 let g:vim_indent_cont = shiftwidth() * 2
 let g:tmux_navigator_no_mappings = 1
-let g:rainbow_ts_after = 'syn clear typescriptBlock @typescriptDestructures @typescriptCallSignature typescriptFuncCallArg typescriptConditionalParen typescriptTemplateSubstitution typescriptTernary typescriptObjectLiteral typescriptArray typescriptTypeBracket typescriptTypeBlock @typescriptFunctionType typescriptParenthesizedType typescriptParenExp typescriptExceptions'
-let g:rainbow_conf = {
-        \'separately': {
-            \'typescriptreact': {
-                \'parentheses_options': 'containedin=ALL contains=typescriptIdentifierName',
-                \'after': [g:rainbow_ts_after]
-            \},
-            \'typescript': {
-                \'parentheses_options': 'containedin=ALL contains=typescriptIdentifierName',
-                \'after': [g:rainbow_ts_after]
-            \},
-            \'vim': {
-                \'parentheses_options': 'containedin=vimFuncBody',
-                \'after': ['syn clear vimOperParen vimFunction']
-            \},
-            \'help': 0
-        \}
-    \}
-let g:rainbow_active = 1
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
@@ -159,9 +140,10 @@ nnoremap <leader>F :vert sf
 nnoremap <leader>g :grep ''<left>
 nnoremap <leader>G :grep '<C-R><C-W>'<cr>
 nnoremap <leader>o :browse filter  o<left><left>
-nnoremap <leader>mm <cmd>marks HJKLMN<cr>
-nnoremap <leader>ml <cmd>marks hjklmn<cr>
-nnoremap <leader>M <cmd>delm HJKLMN<cr>
+nnoremap <leader>mm <cmd>marks HJKL<cr>
+nnoremap <leader>mM <cmd>marks hjkl<cr>
+nnoremap <leader>mc <cmd>delm HJKL<cr>
+nnoremap <leader>mC <cmd>delm hjkl<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -210,16 +192,15 @@ nnoremap <silent> <expr> ga ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|a
 " Searching
 noremap / ms/
 noremap ? ms?
-noremap * ms*
-noremap # ms#
 nnoremap gl t(<C-]>
 nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
 
 " Copilot
 imap <C-J> <Plug>(copilot-accept-word)
+imap <C-L><C-]> <Plug>(copilot-dismiss)
 imap <C-L><C-L> <Plug>(copilot-next)
 imap <C-L><C-K> <Plug>(copilot-previous)
-imap <C-L><space> <Plug>(copilot-accept-line)
+imap <C-L><C-space> <Plug>(copilot-accept-line)
 
 " Text objects
 xnoremap <silent> il g_o^
@@ -231,22 +212,15 @@ xnoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>s
 onoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 
-" Colorschemes
-nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap <expr> <space>1 ":colo " .. (has('nvim') ? 'vim' : 'default') .. "<cr>"
-nnoremap <space>2 :colo retrobox<cr>
-nnoremap <space>3 :colo sorbet<cr>
-nnoremap <space>4 :colo habamax<cr>
-nnoremap <space>5 :colo slate<cr>
-nnoremap <space>6 :colo desert<cr>
-nnoremap <space>7 :colo zaibatsu<cr>
-nnoremap <space>8 :colo peachpuff<cr>
-nnoremap <space>9 :colo shine<cr>
-nnoremap <space>0 :colo default<cr>
-
 " Misc
+nnoremap <space>1 :set background=dark\|colo default<cr>
+nnoremap <space>2 :colo skull<cr>
+nnoremap <space>3 :colo sacredforest<cr>
+nnoremap <space>4 :set background=light\|colo default<cr>
+nnoremap yfc :let @+ = @%<cr>
 cnoremap <C-\><C-W> .*?
 nnoremap yor <cmd>set rnu!<cr>
+nnoremap <leader>u <cmd>undolist<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
@@ -262,8 +236,6 @@ endif
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
-command! -count=1 DiffUndo :exe 'norm mu' .. <count> .. 'u'|%y|tab split|vnew|
-    \setlocal bufhidden=delete|pu|wincmd l|exe repeat('redo|', <count>)|windo diffthis
 
 function! s:CloseHiddenBuffers()
     let open_buffers = []
@@ -286,13 +258,17 @@ autocmd vimrc TabClosed * tabprevious
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd()
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
-autocmd vimrc BufEnter .vimrc,~/.config/nvim/** call s:CheckConfigSchedule() 
-autocmd vimrc BufEnter * RainbowToggleOn
 autocmd vimrc ColorScheme * call s:SetHighlights()
-autocmd vimrc ColorScheme * highlight link CopilotSuggestion MoreMsg
-autocmd vimrc ColorScheme retrobox if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
-autocmd vimrc ColorScheme \(desert\)\|\(evening\)\|\(vim\) highlight CursorLine guibg=gray28
-
+autocmd vimrc ColorScheme skull hi TabLineSel gui=underline cterm=underline
+autocmd vimrc ColorScheme skull hi! link Special Statement
+autocmd vimrc ColorScheme skull hi! link DiagnosticUnnecessary Conceal
+autocmd vimrc ColorScheme sacredforest hi LineNr gui=BOLD cterm=BOLD
+autocmd vimrc ColorScheme sacredforest hi! link Comment Folded
+autocmd vimrc ColorScheme sacredforest hi! link DiagnosticUnnecessary Conceal
+if has('nvim')
+    " `TabNewEntered` does not exist in vim
+    autocmd vimrc TabNewEntered * argl|%argd
+endif
 augroup cursorline
     autocmd!
     autocmd VimEnter * setlocal cursorline
@@ -300,10 +276,6 @@ augroup cursorline
     autocmd BufWinEnter * setlocal cursorline
     autocmd WinLeave * setlocal nocursorline
 augroup END
-if has('nvim')
-    " `TabNewEntered` does not exist in vim
-    autocmd vimrc TabNewEntered * argl|%argd
-endif
 
 function! s:SetWorkspaceEnv()
     set path&
@@ -316,29 +288,17 @@ function! s:SetWorkspaceEnv()
     endif
 endfunction
 
-function! s:CheckConfigSchedule()
-    let hour = strftime("%H")
-    let weekday = strftime("%w")
-    let is_work_hour = hour >= 9 && hour <= 14
-    let is_night = hour >= 22 || hour <= 5
-    if is_work_hour || is_night
-        bd
-    endif
-endfunction
-
 function! s:SetHighlights()
     if &background == "dark"
         highlight DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
         highlight DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
         highlight DiffChange gui=BOLD guifg=NONE guibg=#3e4d53
         highlight DiffText gui=BOLD guifg=NONE guibg=#5c4306
-        highlight ColorColumn guibg=#3c3836
     else
         highlight DiffAdd gui=BOLD guifg=NONE guibg=palegreen
         highlight DiffDelete gui=BOLD guifg=NONE guibg=lightred
         highlight DiffChange gui=BOLD guifg=NONE guibg=lightblue
         highlight DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
-        highlight ColorColumn ctermbg=255 guibg=#eeeeee
     endif
 endfunction
 
@@ -350,8 +310,8 @@ augroup END
 function! s:SetupPython()
     let b:surround_{char2nr("d")} = "\1dict: \1[\"\r\"]"
     let b:surround_{char2nr("m")} = "\"\"\"\r\"\"\""
-    let b:surround_{char2nr("t")} = "f\"\r\""
-    let b:surround_{char2nr("T")} = "f\'\r\'"
+    let b:surround_{char2nr("p")} = "f\"\r\""
+    let b:surround_{char2nr("P")} = "f\'\r\'"
     nmap dsd %<left>dieds]ds"
     nmap dsm ds"ds"ds"
     nnoremap <buffer> <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
@@ -365,14 +325,16 @@ endfunction
 
 augroup ftreact
     autocmd!
-    autocmd FileType javascriptreact,typescriptreact call s:SetupReact()
+    autocmd FileType javascriptreact,typescriptreact,javascript,typescript call s:SetupReact()
 augroup END
 function s:SetupReact()
     let b:surround_{char2nr("x")} = "{/* \r */}"
+    let b:surround_{char2nr("p")} = "${`\r`}"
     nmap <silent> <buffer> dsx ds/dsB
-    nnoremap <silent> <buffer> ]1 :exe "sil keepp norm! /^const\<lt>cr>"\|noh<cr>
-    nnoremap <silent> <buffer> [1 :exe "sil keepp norm! ?^const\<lt>cr>"\|noh<cr>
-    nnoremap <buffer> <localleader>gd :grep "^const  =>"<left><left><left><left>
+    noremap <silent> <buffer> ]1 :<C-U>exe "sil keepp norm! /^\\(export \\)\\=const\<lt>cr>"\|noh<cr>
+    noremap <silent> <buffer> [1 :<C-U>exe "sil keepp norm! ?^\\(export \\)\\=const\<lt>cr>"\|noh<cr>
+    nnoremap <buffer> <localleader>gd :grep "^const  = \("<left><left><left><left><left><left>
+    iab co const
 endfunction
 
 augroup ftlua
@@ -387,7 +349,7 @@ if has('nvim')
     lua require('config')
 endif
 
-colo slate
+colo skull
 
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
