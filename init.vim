@@ -15,16 +15,10 @@ function! PackInit() abort
     call minpac#add('github/copilot.vim')
     call minpac#add('kadekillary/skull-vim')
     call minpac#add('karoliskoncevicius/sacredforest-vim')
-    if has('nvim')
-        call minpac#add('neovim/nvim-lspconfig')
-        call minpac#add('stevearc/conform.nvim')
-        call minpac#add('nvim-lua/plenary.nvim')
-        call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
-    else
-        call minpac#add('dense-analysis/ale')
-        call minpac#add('tpope/vim-commentary')
-        call minpac#add('DanBradbury/copilot-chat.vim')
-    endif
+    call minpac#add('neovim/nvim-lspconfig')
+    call minpac#add('stevearc/conform.nvim')
+    call minpac#add('nvim-lua/plenary.nvim')
+    call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
 endfunction
 packadd cfilter
 
@@ -36,18 +30,12 @@ augroup END
 " Options "
 """""""""""
 
-if !has('nvim')
-    " Setting syntax on in nvim clashes with vim-slime
-    syntax on
-endif
-
 set relativenumber
 set number
 set tabstop=4
 set shiftwidth=4
 set mouse=a
 set expandtab
-" Typescript syntax highlighting is very slow in vim if `re` isn't explicitly set
 set re=0
 set colorcolumn=80,88,120
 set cursorline
@@ -85,9 +73,6 @@ let g:tmux_navigator_no_mappings = 1
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
-if !has('nvim')
-    let g:ale_linters = {'python': ['ruff']}
-endif
 
 """"""""""""
 " Mappings "
@@ -123,8 +108,6 @@ inoremap {<tab> {}<Left>
 inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
-" Requires vim-surround and `e` text object to be set below. Only works for a
-" single line
 nmap dsf %<left>diedsb
 
 " File & pane navigation
@@ -182,7 +165,7 @@ nnoremap [a <cmd>exe v:count1 .. 'N'<bar>args<cr><esc>
 nnoremap ]a <cmd>exe v:count1 .. 'n'<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
 nnoremap ]A <cmd>last<bar>args<cr><esc>
-nnoremap <F2> <cmd>args<cr>
+nmap <F2> <C-L><cmd>args<cr>
 nnoremap <leader>aa <cmd>$arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ad <cmd>argd %<bar>args<cr>
@@ -225,9 +208,6 @@ nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
 nnoremap <leader>D mvvip:DB<cr>`v
-if !has('nvim')
-    nnoremap <C-L> <cmd>noh<cr>
-endif
 
 """"""""""""
 " Commands "
@@ -236,6 +216,7 @@ endif
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
+command! -nargs=1 FixArglist call FixArglistHack(<args>)
 
 function! s:CloseHiddenBuffers()
     let open_buffers = []
@@ -249,6 +230,17 @@ function! s:CloseHiddenBuffers()
     endfor
 endfunction
 
+" Terrible hack for weird local arglist issues when used with sessions where
+" working directory was changed
+function! FixArglistHack(prefix)
+    let broken_arglist = argv()
+    %argd
+    for entry in broken_arglist
+        let newpath = substitute(entry, a:prefix, '', '')
+        exe 'arga ' .. newpath
+    endfor
+endfunction
+
 """"""""""""""""
 " Autocommands "
 """"""""""""""""
@@ -258,17 +250,10 @@ autocmd vimrc TabClosed * tabprevious
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd()
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
-autocmd vimrc ColorScheme * call s:SetHighlights()
-autocmd vimrc ColorScheme skull hi TabLineSel gui=underline cterm=underline
-autocmd vimrc ColorScheme skull hi! link Special Statement
-autocmd vimrc ColorScheme skull hi! link DiagnosticUnnecessary Conceal
-autocmd vimrc ColorScheme sacredforest hi LineNr gui=BOLD cterm=BOLD
-autocmd vimrc ColorScheme sacredforest hi! link Comment Folded
-autocmd vimrc ColorScheme sacredforest hi! link DiagnosticUnnecessary Conceal
-if has('nvim')
-    " `TabNewEntered` does not exist in vim
-    autocmd vimrc TabNewEntered * argl|%argd
-endif
+autocmd vimrc ColorScheme sacredforest call s:ModifySacredForestColorScheme()
+autocmd vimrc ColorScheme skull call s:ModifySkullColorScheme()
+autocmd vimrc ColorScheme * call s:SetDiffHighlights()
+autocmd vimrc TabNewEntered * argl|%argd
 augroup cursorline
     autocmd!
     autocmd VimEnter * setlocal cursorline
@@ -288,17 +273,33 @@ function! s:SetWorkspaceEnv()
     endif
 endfunction
 
-function! s:SetHighlights()
+function! s:ModifySacredForestColorScheme()
+     hi LineNr gui=BOLD cterm=BOLD
+     hi! link DiagnosticUnnecessary Conceal
+     hi! link Comment Folded
+endfunction
+
+function! s:ModifySkullColorScheme()
+     hi TabLineSel gui=underline cterm=underline
+     hi! link LineNr Conceal
+     hi! link DiagnosticUnnecessary Conceal
+     hi! link StatusLineNC CursorLine
+     hi! link Visual StatusLine
+     hi! link Special Statement
+     hi! link Conditional Operator
+endfunction
+
+function! s:SetDiffHighlights()
     if &background == "dark"
-        highlight DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
-        highlight DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
-        highlight DiffChange gui=BOLD guifg=NONE guibg=#3e4d53
-        highlight DiffText gui=BOLD guifg=NONE guibg=#5c4306
+        hi DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
+        hi DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
+        hi DiffChange gui=BOLD guifg=NONE guibg=#3e4d53
+        hi DiffText gui=BOLD guifg=NONE guibg=#5c4306
     else
-        highlight DiffAdd gui=BOLD guifg=NONE guibg=palegreen
-        highlight DiffDelete gui=BOLD guifg=NONE guibg=lightred
-        highlight DiffChange gui=BOLD guifg=NONE guibg=lightblue
-        highlight DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
+        hi DiffAdd gui=BOLD guifg=NONE guibg=palegreen
+        hi DiffDelete gui=BOLD guifg=NONE guibg=lightred
+        hi DiffChange gui=BOLD guifg=NONE guibg=lightblue
+        hi DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
     endif
 endfunction
 
@@ -339,16 +340,10 @@ endfunction
 
 augroup ftlua
     autocmd!
-    if has('nvim')
-        " This is the only way to disable lua treesitter highlighting...
-        autocmd FileType lua lua vim.treesitter.stop()
-    endif
+    autocmd FileType lua lua vim.treesitter.stop()
 augroup END
 
-if has('nvim')
-    lua require('config')
-endif
-
+lua require('config')
 colo skull
 
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
