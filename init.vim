@@ -15,10 +15,12 @@ function! PackInit() abort
     call minpac#add('github/copilot.vim')
     call minpac#add('kadekillary/skull-vim')
     call minpac#add('karoliskoncevicius/sacredforest-vim')
-    call minpac#add('neovim/nvim-lspconfig')
-    call minpac#add('stevearc/conform.nvim')
-    call minpac#add('nvim-lua/plenary.nvim')
-    call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
+    if has("nvim")
+        call minpac#add('neovim/nvim-lspconfig')
+        call minpac#add('stevearc/conform.nvim')
+        call minpac#add('nvim-lua/plenary.nvim')
+        call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
+    endif
 endfunction
 packadd cfilter
 
@@ -96,6 +98,7 @@ nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1:
             \ .. 's/\n\s*//g<cr>`l'
 nnoremap go o<esc>
 nnoremap gO O<esc>
+nnoremap <space><space> i_<esc>r
 inoremap <C-S> <cr><esc>kA
 inoremap <C-H> <C-U><backspace>
 inoremap `<tab> ``<Left>
@@ -236,7 +239,7 @@ function! FixArglistHack(prefix)
     let broken_arglist = argv()
     %argd
     for entry in broken_arglist
-        let newpath = substitute(entry, a:prefix, '', '')
+        let newpath = substitute(entry, '\(' .. a:prefix .. '\)*', '', '')
         exe 'arga ' .. newpath
     endfor
 endfunction
@@ -253,7 +256,9 @@ autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
 autocmd vimrc ColorScheme sacredforest call s:ModifySacredForestColorScheme()
 autocmd vimrc ColorScheme skull call s:ModifySkullColorScheme()
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
-autocmd vimrc TabNewEntered * argl|%argd
+if has("nvim")
+    autocmd vimrc TabNewEntered * argl|%argd
+endif
 augroup cursorline
     autocmd!
     autocmd VimEnter * setlocal cursorline
@@ -281,12 +286,12 @@ endfunction
 
 function! s:ModifySkullColorScheme()
      hi TabLineSel gui=underline cterm=underline
+     hi ColorColumn guifg=NONE ctermfg=NONE
      hi! link LineNr Conceal
      hi! link DiagnosticUnnecessary Conceal
      hi! link StatusLineNC CursorLine
      hi! link Visual StatusLine
      hi! link Special Statement
-     hi! link Conditional Operator
 endfunction
 
 function! s:SetDiffHighlights()
@@ -343,8 +348,9 @@ augroup ftlua
     autocmd FileType lua lua vim.treesitter.stop()
 augroup END
 
-lua require('config')
-colo skull
+if has("nvim")
+    lua require('config')
+endif
 
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
