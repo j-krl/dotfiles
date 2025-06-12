@@ -14,7 +14,6 @@ function! PackInit() abort
     call minpac#add('tpope/vim-dadbod')
     call minpac#add('github/copilot.vim')
     call minpac#add('kadekillary/skull-vim')
-    call minpac#add('axvr/photon.vim')
     call minpac#add('davidosomething/vim-colors-meh')
     call minpac#add('karoliskoncevicius/sacredforest-vim')
     if has("nvim")
@@ -203,10 +202,9 @@ xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 " Misc
 nnoremap <space>1 :set background=dark\|colo default<cr>
 nnoremap <space>2 :colo skull<cr>
-nnoremap <space>3 :colo photon<cr>
-nnoremap <space>4 :colo meh<cr>
-nnoremap <space>5 :colo sacredforest<cr>
-nnoremap <space>6 :set background=light\|colo default<cr>
+nnoremap <space>3 :colo meh<cr>
+nnoremap <space>4 :colo sacredforest<cr>
+nnoremap <space>5 :set background=light\|colo default<cr>
 nnoremap yfc :let @+ = @%<cr>
 cnoremap <C-\><C-W> .*?
 nnoremap yor <cmd>set rnu!<cr>
@@ -257,9 +255,8 @@ autocmd vimrc BufEnter * let b:workspace_folder = getcwd()
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
 autocmd vimrc ColorScheme sacredforest call s:ModifySacredForestColorScheme()
-autocmd vimrc ColorScheme skull call s:ModifySkullColorScheme()
+autocmd vimrc Colorscheme skull call s:ModifySkullColorScheme()
 autocmd vimrc Colorscheme meh call s:ModifyMehColorScheme()
-autocmd vimrc Colorscheme photon call s:ModifyPhotonColorScheme()
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
@@ -284,25 +281,23 @@ function! s:SetWorkspaceEnv()
 endfunction
 
 function! s:ModifyMehColorScheme()
+    hi! link LineNr Comment
     hi! link StorageClass dkoTextType
     hi! link dkoRegex Noise
+    hi! link dkoDecorations Noise
+    hi! link Delimiter Noise
     hi! link typescriptTry dkoTextLight
     hi! link typescriptExceptions dkoTextLight
     hi! link typescriptStatementKeyword dkoTextLight
     hi! link Operator dkoTextLight
     hi! link Statement dkoTextLight
+    hi! link pythonConditional dkoTextLight
 endfunction
 
 function! s:ModifySacredForestColorScheme()
      hi LineNr gui=BOLD cterm=BOLD
      hi! link DiagnosticUnnecessary Conceal
      hi! link Comment Folded
-endfunction
-
-function! s:ModifyPhotonColorScheme()
-    hi Statement guifg=#a0a0a0
-    hi PreProc guifg=#a0a0a0
-    hi Special guifg=#a0a0a0
 endfunction
 
 function! s:ModifySkullColorScheme()
