@@ -13,7 +13,7 @@
 [alias]
 	ac = "!git add -A && git commit"
 	amend = "!git add -A && git commit --amend --no-edit"
-	wip = "!git add -A && git commit -m wip"
+	wip = "!f() { git add -A && git commit -m \"wip: $1\"; }; f"
 	nogrep-sha = "!f() { git log --grep=\"$1\" --invert-grep -n 1 --format=%h; }; f"
 	reset-wip = "!git reset $(git nogrep-sha \"^wip\")"
 	diff-wip = "!git diff $(git nogrep-sha \"^wip\")"

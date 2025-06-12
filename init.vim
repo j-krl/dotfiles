@@ -14,6 +14,8 @@ function! PackInit() abort
     call minpac#add('tpope/vim-dadbod')
     call minpac#add('github/copilot.vim')
     call minpac#add('kadekillary/skull-vim')
+    call minpac#add('axvr/photon.vim')
+    call minpac#add('davidosomething/vim-colors-meh')
     call minpac#add('karoliskoncevicius/sacredforest-vim')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
@@ -168,12 +170,12 @@ nnoremap [a <cmd>exe v:count1 .. 'N'<bar>args<cr><esc>
 nnoremap ]a <cmd>exe v:count1 .. 'n'<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
 nnoremap ]A <cmd>last<bar>args<cr><esc>
-nmap <F2> <C-L><cmd>args<cr>
+nnoremap <F2> <C-L><cmd>args<cr>
 nnoremap <leader>aa <cmd>$arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ad <cmd>argd %<bar>args<cr>
 nnoremap <leader>ac <cmd>%argd<cr><C-L>
-nnoremap <silent> <expr> ga ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
+nnoremap <expr> ga ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 " Searching
 noremap / ms/
@@ -184,9 +186,9 @@ nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
 " Copilot
 imap <C-J> <Plug>(copilot-accept-word)
 imap <C-L><C-]> <Plug>(copilot-dismiss)
-imap <C-L><C-L> <Plug>(copilot-next)
-imap <C-L><C-K> <Plug>(copilot-previous)
-imap <C-L><C-space> <Plug>(copilot-accept-line)
+imap <C-L><C-K> <Plug>(copilot-next)
+imap <C-L><C-J> <Plug>(copilot-previous)
+imap <C-L><C-L> <Plug>(copilot-accept-line)
 
 " Text objects
 xnoremap <silent> il g_o^
@@ -201,8 +203,10 @@ xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 " Misc
 nnoremap <space>1 :set background=dark\|colo default<cr>
 nnoremap <space>2 :colo skull<cr>
-nnoremap <space>3 :colo sacredforest<cr>
-nnoremap <space>4 :set background=light\|colo default<cr>
+nnoremap <space>3 :colo photon<cr>
+nnoremap <space>4 :colo meh<cr>
+nnoremap <space>5 :colo sacredforest<cr>
+nnoremap <space>6 :set background=light\|colo default<cr>
 nnoremap yfc :let @+ = @%<cr>
 cnoremap <C-\><C-W> .*?
 nnoremap yor <cmd>set rnu!<cr>
@@ -249,12 +253,13 @@ endfunction
 """"""""""""""""
 
 autocmd vimrc QuickFixCmdPost * norm mG
-autocmd vimrc TabClosed * tabprevious
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd()
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
 autocmd vimrc ColorScheme sacredforest call s:ModifySacredForestColorScheme()
 autocmd vimrc ColorScheme skull call s:ModifySkullColorScheme()
+autocmd vimrc Colorscheme meh call s:ModifyMehColorScheme()
+autocmd vimrc Colorscheme photon call s:ModifyPhotonColorScheme()
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
@@ -278,10 +283,26 @@ function! s:SetWorkspaceEnv()
     endif
 endfunction
 
+function! s:ModifyMehColorScheme()
+    hi! link StorageClass dkoTextType
+    hi! link dkoRegex Noise
+    hi! link typescriptTry dkoTextLight
+    hi! link typescriptExceptions dkoTextLight
+    hi! link typescriptStatementKeyword dkoTextLight
+    hi! link Operator dkoTextLight
+    hi! link Statement dkoTextLight
+endfunction
+
 function! s:ModifySacredForestColorScheme()
      hi LineNr gui=BOLD cterm=BOLD
      hi! link DiagnosticUnnecessary Conceal
      hi! link Comment Folded
+endfunction
+
+function! s:ModifyPhotonColorScheme()
+    hi Statement guifg=#a0a0a0
+    hi PreProc guifg=#a0a0a0
+    hi Special guifg=#a0a0a0
 endfunction
 
 function! s:ModifySkullColorScheme()
@@ -289,7 +310,7 @@ function! s:ModifySkullColorScheme()
      hi ColorColumn guifg=NONE ctermfg=NONE
      hi! link LineNr Conceal
      hi! link DiagnosticUnnecessary Conceal
-     hi! link StatusLineNC CursorLine
+     hi! link StatusLineNC VisualNOS
      hi! link Visual StatusLine
      hi! link Special Statement
 endfunction
@@ -318,8 +339,8 @@ function! s:SetupPython()
     let b:surround_{char2nr("m")} = "\"\"\"\r\"\"\""
     let b:surround_{char2nr("p")} = "f\"\r\""
     let b:surround_{char2nr("P")} = "f\'\r\'"
-    nmap dsd %<left>dieds]ds"
-    nmap dsm ds"ds"ds"
+    nmap <buffer> dsd %<left>dieds]ds"
+    nmap <buffer> dsm ds"ds"ds"
     nnoremap <buffer> <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
     nnoremap <buffer> <localleader>D di"a<backspace><backspace><C-R>"<right><right><backspace><backspace>=<esc>
     nnoremap <buffer> <localleader>b obreakpoint()<esc>
@@ -339,7 +360,7 @@ function s:SetupReact()
     nmap <silent> <buffer> dsx ds/dsB
     noremap <silent> <buffer> ]1 :<C-U>exe "sil keepp norm! /^\\(export \\)\\=const\<lt>cr>"\|noh<cr>
     noremap <silent> <buffer> [1 :<C-U>exe "sil keepp norm! ?^\\(export \\)\\=const\<lt>cr>"\|noh<cr>
-    nnoremap <buffer> <localleader>gd :grep "^const  = \("<left><left><left><left><left><left>
+    nnoremap <buffer> <localleader>gd :grep "^\(export \)?const  = \("<left><left><left><left><left><left>
     iab co const
 endfunction
 

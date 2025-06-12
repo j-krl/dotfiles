@@ -32,13 +32,13 @@ if [ $? != 0 ]; then
     tmux send-keys "pssrv" C-m
     tmux split-window -h
     tmux send-keys "pcsrv" C-m
-    # tmux new-window -t 9
-    # tmux rename-window -t 9 "cfg"
-    # tmux send-keys "nvcd" C-m
-    # tmux split-window
-    # tmux send-keys "nvcd" C-m
-    # tmux resize-pane -y 15
-    # tmux select-pane -t "{top}"
+    tmux new-window -t 9
+    tmux rename-window -t 9 "cfg"
+    tmux send-keys "nvcd" C-m
+    tmux split-window
+    tmux send-keys "nvcd" C-m
+    tmux resize-pane -y 15
+    tmux select-pane -t "{top}"
     tmux select-window -t 1
 fi
 
