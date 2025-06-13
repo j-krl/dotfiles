@@ -14,13 +14,14 @@ function! PackInit() abort
     call minpac#add('tpope/vim-dadbod')
     call minpac#add('github/copilot.vim')
     call minpac#add('kadekillary/skull-vim')
-    call minpac#add('davidosomething/vim-colors-meh')
+    call minpac#add('axvr/photon.vim')
     call minpac#add('karoliskoncevicius/sacredforest-vim')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
         call minpac#add('nvim-lua/plenary.nvim')
         call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
+        call minpac#add('olivercederborg/poimandres.nvim')
     endif
 endfunction
 packadd cfilter
@@ -127,10 +128,9 @@ nnoremap <leader>F :vert sf
 nnoremap <leader>g :grep ''<left>
 nnoremap <leader>G :grep '<C-R><C-W>'<cr>
 nnoremap <leader>o :browse filter  o<left><left>
-nnoremap <leader>mm <cmd>marks HJKL<cr>
-nnoremap <leader>mM <cmd>marks hjkl<cr>
-nnoremap <leader>mc <cmd>delm HJKL<cr>
-nnoremap <leader>mC <cmd>delm hjkl<cr>
+nnoremap <leader>mm <cmd>marks<cr>
+nnoremap <leader>mc <cmd>delm a-z<cr>
+nnoremap <leader>mC <cmd>delm A-Z<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -199,12 +199,16 @@ xnoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>s
 onoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 
-" Misc
+" Colorschemes
 nnoremap <space>1 :set background=dark\|colo default<cr>
-nnoremap <space>2 :colo skull<cr>
-nnoremap <space>3 :colo meh<cr>
-nnoremap <space>4 :colo sacredforest<cr>
-nnoremap <space>5 :set background=light\|colo default<cr>
+nnoremap <space>2 :colo poimandres<cr>
+nnoremap <space>3 :colo skull<cr>
+nnoremap <space>4 :colo photon<cr>
+nnoremap <space>5 :colo sacredforest<cr>
+nnoremap <space>6 :set background=light\|colo default<cr>
+nnoremap <space>7 :colo antiphoton<cr>
+
+" Misc
 nnoremap yfc :let @+ = @%<cr>
 cnoremap <C-\><C-W> .*?
 nnoremap yor <cmd>set rnu!<cr>
@@ -256,7 +260,8 @@ autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
 autocmd vimrc ColorScheme sacredforest call s:ModifySacredForestColorScheme()
 autocmd vimrc Colorscheme skull call s:ModifySkullColorScheme()
-autocmd vimrc Colorscheme meh call s:ModifyMehColorScheme()
+autocmd vimrc Colorscheme poimandres call s:ModifyPoimandresColorScheme()
+autocmd vimrc Colorscheme photon call s:ModifyPhotonColorScheme()
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
@@ -280,29 +285,43 @@ function! s:SetWorkspaceEnv()
     endif
 endfunction
 
-function! s:ModifyMehColorScheme()
-    hi! link LineNr Comment
-    hi! link StorageClass dkoTextType
-    hi! link dkoRegex Noise
-    hi! link dkoDecorations Noise
-    hi! link Delimiter Noise
-    hi! link typescriptTry dkoTextLight
-    hi! link typescriptExceptions dkoTextLight
-    hi! link typescriptStatementKeyword dkoTextLight
-    hi! link Operator dkoTextLight
-    hi! link Statement dkoTextLight
-    hi! link pythonConditional dkoTextLight
+function! s:ModifyPhotonColorScheme()
+    hi PreProc guifg=#a0a0a0
+    hi Statement guifg=#a0a0a0
+    hi Special guifg=#a0a0a0
+    hi! link Identifier Statement
 endfunction
 
 function! s:ModifySacredForestColorScheme()
      hi LineNr gui=BOLD cterm=BOLD
+     hi Conditional guifg=#b2a488
+     hi Include guifg=#b2a488
+     hi Comment guifg=grey58
+     hi! link Type Normal
+     hi! link Statement Normal
+     hi! link PreProc Normal
      hi! link DiagnosticUnnecessary Conceal
-     hi! link Comment Folded
+     hi! link typescriptDestructureVariable Normal
+     hi! link typescriptConditional Conditional
+     hi! link pythonStatement pythonBuiltin
+     hi! link pythonInclude Include
+endfunction
+
+function! s:ModifyPoimandresColorScheme()
+    hi ColorColumn guibg=#506477
+    hi Visual guifg=NONE
+    hi! link Type Normal
+    hi! link Conditional Function
+    hi! link Special Function
+    hi! link Keyword Normal
+    hi! link Identifier Normal
+    hi! link typescriptParenExp Normal
 endfunction
 
 function! s:ModifySkullColorScheme()
      hi TabLineSel gui=underline cterm=underline
      hi ColorColumn guifg=NONE ctermfg=NONE
+     hi PmenuSel gui=UNDERLINE
      hi! link LineNr Conceal
      hi! link DiagnosticUnnecessary Conceal
      hi! link StatusLineNC VisualNOS
