@@ -15,7 +15,6 @@ function! PackInit() abort
     call minpac#add('github/copilot.vim')
     call minpac#add('kadekillary/skull-vim')
     call minpac#add('axvr/photon.vim')
-    call minpac#add('davidosomething/vim-colors-meh')
     call minpac#add('karoliskoncevicius/sacredforest-vim')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
@@ -205,10 +204,9 @@ nnoremap <space>1 :set background=dark\|colo default<cr>
 nnoremap <space>2 :colo poimandres<cr>
 nnoremap <space>3 :colo skull<cr>
 nnoremap <space>4 :colo photon<cr>
-nnoremap <space>5 :colo meh<cr>
-nnoremap <space>6 :colo sacredforest<cr>
-nnoremap <space>7 :set background=light\|colo default<cr>
-nnoremap <space>8 :colo antiphoton<cr>
+nnoremap <space>5 :colo sacredforest<cr>
+nnoremap <space>6 :set background=light\|colo default<cr>
+nnoremap <space>7 :colo antiphoton<cr>
 
 " Misc
 nnoremap yfc :let @+ = @%<cr>
@@ -263,7 +261,6 @@ autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
 autocmd vimrc ColorScheme sacredforest call s:ModifySacredForestColorScheme()
 autocmd vimrc Colorscheme skull call s:ModifySkullColorScheme()
 autocmd vimrc Colorscheme poimandres call s:ModifyPoimandresColorScheme()
-autocmd vimrc Colorscheme meh call s:ModifyMehColorScheme()
 autocmd vimrc Colorscheme photon call s:ModifyPhotonColorScheme()
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
 if has("nvim")
@@ -279,21 +276,6 @@ function! s:SetWorkspaceEnv()
     if !empty($VIMPROJPATH)
         set path+=$VIMPROJPATH
     endif
-endfunction
-
-function! s:ModifyMehColorScheme()
-    hi! link LineNr Comment
-    hi! link StorageClass dkoTextType
-    hi! link dkoRegex Noise
-    hi! link dkoDecorations Noise
-    hi! link Delimiter Noise
-    hi! link typescriptTry dkoTextLight
-    hi! link typescriptExceptions dkoTextLight
-    hi! link typescriptStatementKeyword dkoTextLight
-    hi! link typescriptDestructureVariable Normal
-    hi! link Operator dkoTextLight
-    hi! link Statement dkoTextLight
-    hi! link pythonConditional dkoTextLight
 endfunction
 
 function! s:ModifyPhotonColorScheme()
