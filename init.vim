@@ -103,13 +103,6 @@ nnoremap gO O<esc>
 nnoremap <space><space> i_<esc>r
 inoremap <C-S> <cr><esc>kA
 inoremap <C-H> <C-U><backspace>
-inoremap `<tab> ``<Left>
-inoremap "<tab> ""<Left>
-inoremap '<tab> ''<Left>
-inoremap <<tab> <><Left>
-inoremap (<tab> ()<Left>
-inoremap [<tab> []<Left>
-inoremap {<tab> {}<Left>
 inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
@@ -138,6 +131,7 @@ nnoremap <C-W>X <C-W>x<C-W>c
 nnoremap <C-W>v <C-W>v<C-W>w
 nnoremap <C-W>s <C-W>s<C-W>w
 nmap <C-W>[ <C-W>v<C-]>
+nmap <C-W>r <C-W>o<C-W>v
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
@@ -165,16 +159,29 @@ function! RemoveQfEntry()
 endfunction
 
 " Arglist
-nnoremap [a <cmd>exe v:count1 .. 'N'<bar>args<cr><esc>
-nnoremap ]a <cmd>exe v:count1 .. 'n'<bar>args<cr><esc>
+nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
+nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
 nnoremap ]A <cmd>last<bar>args<cr><esc>
 nnoremap <F2> <C-L><cmd>args<cr>
 nnoremap <leader>aa <cmd>$arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
-nnoremap <leader>ad <cmd>argd %<bar>args<cr>
+nnoremap <leader>ad <cmd>argd %<bar>exe 'norm <C-L>'<bar>args<cr>
 nnoremap <leader>ac <cmd>%argd<cr><C-L>
 nnoremap <expr> ga ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
+
+function! NavArglist(count)
+    let arglen = argc()
+    if arglen == 0
+        return
+    endif
+    let next = fmod(argidx() + a:count, arglen)
+    if next < 0
+        let next += arglen
+    endif
+    exe float2nr(next + 1) .. 'argu'
+endfunction
+
 
 " Searching
 noremap / ms/
@@ -291,6 +298,7 @@ function! s:ModifySacredForestColorScheme()
      hi Conditional guifg=#b2a488
      hi Include guifg=#b2a488
      hi Comment guifg=grey58
+     hi! link Operator Keyword
      hi! link Type Normal
      hi! link Statement Normal
      hi! link PreProc Normal
@@ -299,6 +307,7 @@ function! s:ModifySacredForestColorScheme()
      hi! link typescriptConditional Conditional
      hi! link pythonStatement pythonBuiltin
      hi! link pythonInclude Include
+     hi! link pythonException Conditional
 endfunction
 
 function! s:ModifyPoimandresColorScheme()
