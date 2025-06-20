@@ -13,15 +13,15 @@ function! PackInit() abort
     call minpac#add('tpope/vim-dotenv')
     call minpac#add('tpope/vim-dadbod')
     call minpac#add('github/copilot.vim')
-    call minpac#add('kadekillary/skull-vim')
-    call minpac#add('axvr/photon.vim')
-    call minpac#add('karoliskoncevicius/sacredforest-vim')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
         call minpac#add('nvim-lua/plenary.nvim')
         call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
-        call minpac#add('olivercederborg/poimandres.nvim')
+        call minpac#add('rktjmp/lush.nvim')
+        call minpac#add('idr4n/github-monochrome.nvim')
+        call minpac#add('ronisbr/nano-theme.nvim')
+        call minpac#add('zenbones-theme/zenbones.nvim')
     endif
 endfunction
 packadd cfilter
@@ -29,10 +29,6 @@ packadd cfilter
 augroup vimrc
     autocmd!
 augroup END
-
-"""""""""""
-" Options "
-"""""""""""
 
 set relativenumber
 set number
@@ -78,10 +74,6 @@ let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
 
-""""""""""""
-" Mappings "
-""""""""""""
-
 " Text manipulation
 noremap +y "+y
 noremap +Y "+Y
@@ -100,7 +92,6 @@ nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1:
             \ .. 's/\n\s*//g<cr>`l'
 nnoremap go o<esc>
 nnoremap gO O<esc>
-nnoremap <space><space> i_<esc>r
 inoremap <C-S> <cr><esc>kA
 inoremap <C-H> <C-U><backspace>
 inoremap {<cr> {<cr>}<C-O>O
@@ -122,8 +113,7 @@ nnoremap <leader>g :grep ''<left>
 nnoremap <leader>G :grep '<C-R><C-W>'<cr>
 nnoremap <leader>o :browse filter  o<left><left>
 nnoremap <leader>mm <cmd>marks<cr>
-nnoremap <leader>mc <cmd>delm a-z<cr>
-nnoremap <leader>mC <cmd>delm A-Z<cr>
+nnoremap <leader>mc <cmd>delm a-zA-Z<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -166,9 +156,9 @@ nnoremap ]A <cmd>last<bar>args<cr><esc>
 nnoremap <F2> <C-L><cmd>args<cr>
 nnoremap <leader>aa <cmd>$arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
-nnoremap <leader>ad <cmd>argd %<bar>exe 'norm <C-L>'<bar>args<cr>
+nnoremap <leader>ad <cmd>argd %<bar>args<cr>
 nnoremap <leader>ac <cmd>%argd<cr><C-L>
-nnoremap <expr> ga ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
+nnoremap <expr> <space><space> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 function! NavArglist(count)
     let arglen = argc()
@@ -207,13 +197,16 @@ onoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 
 " Colorschemes
-nnoremap <space>1 :set background=dark\|colo default<cr>
-nnoremap <space>2 :colo poimandres<cr>
-nnoremap <space>3 :colo skull<cr>
-nnoremap <space>4 :colo photon<cr>
-nnoremap <space>5 :colo sacredforest<cr>
-nnoremap <space>6 :set background=light\|colo default<cr>
-nnoremap <space>7 :colo antiphoton<cr>
+nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
+nnoremap <space>2 :<C-U>set background=dark\|colo forestbones<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo seoulbones<cr>
+nnoremap <space>4 :<C-U>set background=dark\|colo nano-theme<cr>
+nnoremap <space>5 :<C-U>set background=dark\|colo tokyobones<cr>
+nnoremap <space>6 :<C-U>set background=dark\|colo zenbones<cr>
+nnoremap <space>7 :<C-U>set background=dark\|colo github-monochrome-solarized<cr>
+nnoremap <space>8 :<C-U>set background=light\|colo default<cr>
+nnoremap <space>9 :<C-U>set background=light\|colo zenwritten<cr>
+nnoremap <space>0 :<C-U>set background=light\|colo rosebones<cr>
 
 " Misc
 nnoremap yfc :let @+ = @%<cr>
@@ -224,10 +217,6 @@ nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
 nnoremap <leader>D mvvip:DB<cr>`v
-
-""""""""""""
-" Commands "
-""""""""""""
 
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
@@ -265,10 +254,14 @@ autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd()
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
-autocmd vimrc ColorScheme sacredforest call s:ModifySacredForestColorScheme()
-autocmd vimrc Colorscheme skull call s:ModifySkullColorScheme()
-autocmd vimrc Colorscheme poimandres call s:ModifyPoimandresColorScheme()
-autocmd vimrc Colorscheme photon call s:ModifyPhotonColorScheme()
+autocmd vimrc ColorScheme nano-theme hi String guifg=#9eafc9
+autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#9eafc9
+autocmd vimrc ColorScheme seoulbones hi! link PreProc Function
+autocmd vimrc ColorScheme seoulbones hi! link Keyword Function
+autocmd vimrc ColorScheme seoulbones hi! link Number Function
+autocmd vimrc ColorScheme forestbones hi! link PreProc Identifier
+autocmd vimrc ColorScheme forestbones hi! link Operator Statement
+autocmd vimrc ColorScheme tokyobones hi! link Type Normal
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
@@ -283,53 +276,6 @@ function! s:SetWorkspaceEnv()
     if !empty($VIMPROJPATH)
         set path+=$VIMPROJPATH
     endif
-endfunction
-
-function! s:ModifyPhotonColorScheme()
-    hi PreProc guifg=#a0a0a0
-    hi Statement guifg=#a0a0a0
-    hi Special guifg=#a0a0a0
-    hi! link Identifier Statement
-    hi! link typescriptDestructureVariable Normal
-endfunction
-
-function! s:ModifySacredForestColorScheme()
-     hi LineNr gui=BOLD cterm=BOLD
-     hi Conditional guifg=#b2a488
-     hi Include guifg=#b2a488
-     hi Comment guifg=grey58
-     hi! link Operator Keyword
-     hi! link Type Normal
-     hi! link Statement Normal
-     hi! link PreProc Normal
-     hi! link DiagnosticUnnecessary Conceal
-     hi! link typescriptDestructureVariable Normal
-     hi! link typescriptConditional Conditional
-     hi! link pythonStatement pythonBuiltin
-     hi! link pythonInclude Include
-     hi! link pythonException Conditional
-endfunction
-
-function! s:ModifyPoimandresColorScheme()
-    hi ColorColumn guibg=#506477
-    hi Visual guifg=NONE
-    hi! link Type Normal
-    hi! link Conditional Function
-    hi! link Special Function
-    hi! link Keyword Normal
-    hi! link Identifier Normal
-    hi! link typescriptParenExp Normal
-endfunction
-
-function! s:ModifySkullColorScheme()
-     hi TabLineSel gui=underline cterm=underline
-     hi ColorColumn guifg=NONE ctermfg=NONE
-     hi PmenuSel gui=UNDERLINE
-     hi! link LineNr Conceal
-     hi! link DiagnosticUnnecessary Conceal
-     hi! link StatusLineNC VisualNOS
-     hi! link Visual StatusLine
-     hi! link Special Statement
 endfunction
 
 function! s:SetDiffHighlights()
@@ -389,6 +335,8 @@ augroup END
 if has("nvim")
     lua require('config')
 endif
+
+colo nano-theme
 
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()

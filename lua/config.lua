@@ -1,7 +1,3 @@
----------
--- LSP --
----------
-
 local lspconfig = require("lspconfig")
 local lsps = {
 	"lua_ls",
@@ -55,10 +51,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
-----------------
--- Formatting --
-----------------
-
 require("conform").setup({
 	formatters_by_ft = {
 		sh = { "beautysh" },
@@ -79,10 +71,6 @@ require("conform").setup({
 	format_after_save = {}, -- TODO: remove
 })
 
------------
--- Other --
------------
-
 require("CopilotChat").setup({
 	mappings = {
 		complete = { insert = "<S-tab>" },
@@ -96,7 +84,6 @@ require("CopilotChat").setup({
 	},
 })
 
--- Options
 vim.diagnostic.config({
 	severity_sort = true,
 	virtual_text = {
@@ -107,7 +94,6 @@ vim.diagnostic.config({
 	},
 })
 
--- Mappings
 vim.keymap.set("n", "<F3>", require("conform").format)
 vim.keymap.set({ "n", "v" }, "<F9>", ":<C-U>CopilotChatOpen<cr><C-W>=", { silent = true })
 vim.keymap.set("n", "]D", function()
