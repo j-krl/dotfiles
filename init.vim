@@ -13,15 +13,13 @@ function! PackInit() abort
     call minpac#add('tpope/vim-dotenv')
     call minpac#add('tpope/vim-dadbod')
     call minpac#add('github/copilot.vim')
+    call minpac#add('kxzk/skull-vim')
+    call minpac#add('karoliskoncevicius/sacredforest-vim')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
-        call minpac#add('nvim-lua/plenary.nvim')
-        call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
-        call minpac#add('rktjmp/lush.nvim')
-        call minpac#add('idr4n/github-monochrome.nvim')
+        call minpac#add('nyoom-engineering/oxocarbon.nvim')
         call minpac#add('ronisbr/nano-theme.nvim')
-        call minpac#add('zenbones-theme/zenbones.nvim')
     endif
 endfunction
 packadd cfilter
@@ -75,14 +73,8 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
 
 " Text manipulation
-noremap +y "+y
-noremap +Y "+Y
-noremap +p "+p
-noremap +P "+P
 nnoremap <leader>p <cmd>put "<cr>
 nnoremap <leader>P <cmd>put! "<cr>
-nnoremap <leader>0p <cmd>put 0<cr>
-nnoremap <leader>0P <cmd>put! 0<cr>
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
@@ -90,8 +82,8 @@ nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
             \ .. 's/\n\s*//g<cr>`l'
-nnoremap go o<esc>
-nnoremap gO O<esc>
+nmap ]o ]<space>j
+nmap [o [<space>k
 inoremap <C-S> <cr><esc>kA
 inoremap <C-H> <C-U><backspace>
 inoremap {<cr> {<cr>}<C-O>O
@@ -198,15 +190,12 @@ xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 
 " Colorschemes
 nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
-nnoremap <space>2 :<C-U>set background=dark\|colo forestbones<cr>
-nnoremap <space>3 :<C-U>set background=dark\|colo seoulbones<cr>
-nnoremap <space>4 :<C-U>set background=dark\|colo nano-theme<cr>
-nnoremap <space>5 :<C-U>set background=dark\|colo tokyobones<cr>
-nnoremap <space>6 :<C-U>set background=dark\|colo zenbones<cr>
-nnoremap <space>7 :<C-U>set background=dark\|colo github-monochrome-solarized<cr>
-nnoremap <space>8 :<C-U>set background=light\|colo default<cr>
-nnoremap <space>9 :<C-U>set background=light\|colo zenwritten<cr>
-nnoremap <space>0 :<C-U>set background=light\|colo rosebones<cr>
+nnoremap <space>2 :<C-U>set background=dark\|colo oxocarbon<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo nano-theme<cr>
+nnoremap <space>4 :<C-U>set background=dark\|colo sacredforest<cr>
+nnoremap <space>5 :<C-U>set background=dark\|colo skull<cr>
+nnoremap <space>9 :<C-U>set background=light\|colo nano-theme<cr>
+nnoremap <space>0 :<C-U>set background=light\|colo default<cr>
 
 " Misc
 nnoremap yfc :let @+ = @%<cr>
@@ -254,14 +243,17 @@ autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd()
 autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
 autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
-autocmd vimrc ColorScheme nano-theme hi String guifg=#9eafc9
-autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#9eafc9
-autocmd vimrc ColorScheme seoulbones hi! link PreProc Function
-autocmd vimrc ColorScheme seoulbones hi! link Keyword Function
-autocmd vimrc ColorScheme seoulbones hi! link Number Function
-autocmd vimrc ColorScheme forestbones hi! link PreProc Identifier
-autocmd vimrc ColorScheme forestbones hi! link Operator Statement
-autocmd vimrc ColorScheme tokyobones hi! link Type Normal
+autocmd vimrc ColorScheme nano-theme hi! link TabLine LineNr
+autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#677691
+autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi Comment guifg=#b8bdd7 | endif
+autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi String guifg=#b8bdd7 | endif
+autocmd vimrc ColorScheme sacredforest hi Comment guifg=grey
+autocmd vimrc ColorScheme oxocarbon hi Comment guifg=grey
+autocmd vimrc ColorScheme skull hi Special guifg=#707070 guibg=#222222
+autocmd vimrc ColorScheme skull hi LineNr guifg=grey35
+autocmd vimrc ColorScheme skull hi TabLineSel gui=UNDERLINE
+autocmd vimrc ColorScheme skull hi Visual gui=REVERSE
+autocmd vimrc ColorScheme skull hi! link Operator Statement
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
@@ -323,7 +315,7 @@ function s:SetupReact()
     nmap <silent> <buffer> dsx ds/dsB
     noremap <silent> <buffer> ]1 :<C-U>exe "sil keepp norm! /^\\(export \\)\\=const\<lt>cr>"\|noh<cr>
     noremap <silent> <buffer> [1 :<C-U>exe "sil keepp norm! ?^\\(export \\)\\=const\<lt>cr>"\|noh<cr>
-    nnoremap <buffer> <localleader>gd :grep "^\(export \)?const  = \("<left><left><left><left><left><left>
+    nnoremap <buffer> <localleader>gd :grep "^(export )?const  = \("<left><left><left><left><left><left>
     iab co const
 endfunction
 
@@ -336,7 +328,7 @@ if has("nvim")
     lua require('config')
 endif
 
-colo nano-theme
+colo sacredforest
 
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()

@@ -71,18 +71,18 @@ require("conform").setup({
 	format_after_save = {}, -- TODO: remove
 })
 
-require("CopilotChat").setup({
-	mappings = {
-		complete = { insert = "<S-tab>" },
-		submit_prompt = { insert = "<C-y>" },
-		accept_diff = { normal = "yd", insert = false },
-		show_diff = { full_diff = true },
-		reset = { normal = "grR", insert = false },
-	},
-	window = {
-		width = 0.33,
-	},
-})
+-- require("CopilotChat").setup({
+-- 	mappings = {
+-- 		complete = { insert = "<S-tab>" },
+-- 		submit_prompt = { insert = "<C-y>" },
+-- 		accept_diff = { normal = "yd", insert = false },
+-- 		show_diff = { full_diff = true },
+-- 		reset = { normal = "grR", insert = false },
+-- 	},
+-- 	window = {
+-- 		width = 0.33,
+-- 	},
+-- })
 
 vim.diagnostic.config({
 	severity_sort = true,
@@ -95,7 +95,7 @@ vim.diagnostic.config({
 })
 
 vim.keymap.set("n", "<F3>", require("conform").format)
-vim.keymap.set({ "n", "v" }, "<F9>", ":<C-U>CopilotChatOpen<cr><C-W>=", { silent = true })
+-- vim.keymap.set({ "n", "v" }, "<F9>", ":<C-U>CopilotChatOpen<cr><C-W>=", { silent = true })
 vim.keymap.set("n", "]D", function()
 	vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
 end)
