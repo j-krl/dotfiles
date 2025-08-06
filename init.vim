@@ -6,6 +6,7 @@ function! PackInit() abort
     call minpac#add('jeetsukumaran/vim-indentwise')
     call minpac#add('unblevable/quick-scope')
     call minpac#add('jpalardy/vim-slime')
+    call minpac#add('justinmk/vim-sneak')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
@@ -89,7 +90,6 @@ inoremap <C-H> <C-U><backspace>
 inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
-nmap dsf %<left>diedsb
 
 " File & pane navigation
 nnoremap <leader>q <cmd>qa<cr>
@@ -98,7 +98,7 @@ nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
 nnoremap <backspace> <C-^>
-nnoremap <leader>b :call feedkeys(":b <tab>", "tn")<cr>
+nnoremap <leader>b :b 
 nnoremap <leader>f :find 
 nnoremap <leader>F :vert sf 
 nnoremap <leader>g :grep ''<left>
@@ -254,6 +254,7 @@ autocmd vimrc ColorScheme skull hi LineNr guifg=grey35
 autocmd vimrc ColorScheme skull hi TabLineSel gui=UNDERLINE
 autocmd vimrc ColorScheme skull hi Visual gui=REVERSE
 autocmd vimrc ColorScheme skull hi! link Operator Statement
+autocmd vimrc ColorScheme skull hi ColorColumn guifg=NONE
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
@@ -322,6 +323,11 @@ endfunction
 augroup ftlua
     autocmd!
     autocmd FileType lua lua vim.treesitter.stop()
+augroup END
+
+augroup ftmarkdown
+    autocmd!
+    autocmd FileType markdown Copilot disable
 augroup END
 
 if has("nvim")
