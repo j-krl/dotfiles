@@ -4,22 +4,18 @@ function! PackInit() abort
     call minpac#add('k-takata/minpac', {'type': 'opt'})
     call minpac#add('christoomey/vim-tmux-navigator')
     call minpac#add('jeetsukumaran/vim-indentwise')
-    call minpac#add('unblevable/quick-scope')
     call minpac#add('jpalardy/vim-slime')
     call minpac#add('justinmk/vim-sneak')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
-    call minpac#add('tpope/vim-dotenv')
-    call minpac#add('tpope/vim-dadbod')
     call minpac#add('github/copilot.vim')
     call minpac#add('kxzk/skull-vim')
     call minpac#add('karoliskoncevicius/sacredforest-vim')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
-        call minpac#add('nyoom-engineering/oxocarbon.nvim')
         call minpac#add('ronisbr/nano-theme.nvim')
     endif
 endfunction
@@ -81,8 +77,7 @@ nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
 nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
-nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2)
-            \ .. 's/\n\s*//g<cr>`l'
+nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
 nmap ]o ]<space>j
 nmap [o [<space>k
 inoremap <C-S> <cr><esc>kA
@@ -164,7 +159,6 @@ function! NavArglist(count)
     exe float2nr(next + 1) .. 'argu'
 endfunction
 
-
 " Searching
 noremap / ms/
 noremap ? ms?
@@ -190,10 +184,9 @@ xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 
 " Colorschemes
 nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
-nnoremap <space>2 :<C-U>set background=dark\|colo oxocarbon<cr>
-nnoremap <space>3 :<C-U>set background=dark\|colo nano-theme<cr>
-nnoremap <space>4 :<C-U>set background=dark\|colo sacredforest<cr>
-nnoremap <space>5 :<C-U>set background=dark\|colo skull<cr>
+nnoremap <space>2 :<C-U>set background=dark\|colo nano-theme<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo sacredforest<cr>
+nnoremap <space>4 :<C-U>set background=dark\|colo skull<cr>
 nnoremap <space>9 :<C-U>set background=light\|colo nano-theme<cr>
 nnoremap <space>0 :<C-U>set background=light\|colo default<cr>
 
@@ -205,7 +198,7 @@ nnoremap <leader>u <cmd>undolist<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
-nnoremap <leader>D mvvip:DB<cr>`v
+nnoremap <F7> :call RecurSetPath()<cr>
 
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
@@ -224,31 +217,18 @@ function! s:CloseHiddenBuffers()
     endfor
 endfunction
 
-" Terrible hack for weird local arglist issues when used with sessions where
-" working directory was changed
-function! FixArglistHack(prefix)
-    let broken_arglist = argv()
-    %argd
-    for entry in broken_arglist
-        let newpath = substitute(entry, '\(' .. a:prefix .. '\)*', '', '')
-        exe 'arga ' .. newpath
-    endfor
-endfunction
-
 """"""""""""""""
 " Autocommands "
 """"""""""""""""
 
 autocmd vimrc QuickFixCmdPost * norm mG
-autocmd vimrc BufEnter * let b:workspace_folder = getcwd()
-autocmd vimrc BufEnter * call s:SetWorkspaceEnv()
-autocmd vimrc DirChanged * call s:SetWorkspaceEnv()
+autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
+autocmd vimrc DirChanged * call RecurSetPath()
 autocmd vimrc ColorScheme nano-theme hi! link TabLine LineNr
 autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#677691
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi Comment guifg=#b8bdd7 | endif
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi String guifg=#b8bdd7 | endif
 autocmd vimrc ColorScheme sacredforest hi Comment guifg=grey
-autocmd vimrc ColorScheme oxocarbon hi Comment guifg=grey
 autocmd vimrc ColorScheme skull hi Special guifg=#707070 guibg=#222222
 autocmd vimrc ColorScheme skull hi LineNr guifg=grey35
 autocmd vimrc ColorScheme skull hi TabLineSel gui=UNDERLINE
@@ -260,14 +240,11 @@ if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
 
-function! s:SetWorkspaceEnv()
-    set path&
-    if !filereadable(".vimenv")
-        return
-    endif
-    Dotenv .vimenv
-    if !empty($VIMPROJPATH)
-        set path+=$VIMPROJPATH
+function! RecurSetPath()
+    if executable('fd')
+        let &path = join(systemlist('fd . --type d --hidden'), ',')
+    elseif isdirectory('.git')
+        let &path = join(systemlist('git ls-tree -d --name-only -r HEAD'), ',')
     endif
 endfunction
 
@@ -314,10 +291,11 @@ function s:SetupReact()
     let b:surround_{char2nr("x")} = "{/* \r */}"
     let b:surround_{char2nr("p")} = "${`\r`}"
     nmap <silent> <buffer> dsx ds/dsB
+    "TODO: Make ]1 and [1 work in visual mode
     noremap <silent> <buffer> ]1 :<C-U>exe "sil keepp norm! /^\\(export \\)\\=const\<lt>cr>"\|noh<cr>
     noremap <silent> <buffer> [1 :<C-U>exe "sil keepp norm! ?^\\(export \\)\\=const\<lt>cr>"\|noh<cr>
     nnoremap <buffer> <localleader>gd :grep "^(export )?const  = \("<left><left><left><left><left><left>
-    iab co const
+    iab co const 
 endfunction
 
 augroup ftlua
@@ -328,6 +306,7 @@ augroup END
 augroup ftmarkdown
     autocmd!
     autocmd FileType markdown Copilot disable
+    autocmd FileType markdown iab -] - [ ] 
 augroup END
 
 if has("nvim")
