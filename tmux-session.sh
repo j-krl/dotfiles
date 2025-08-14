@@ -9,18 +9,10 @@ if [ $? != 0 ]; then
     tmux rename-window -t 1 "work"
     tmux send-keys "pcd" C-m
     tmux split-window
-    tmux select-pane -t "{top}"
     tmux send-keys "pscd" C-m
     tmux split-window -h
     tmux send-keys "pccd" C-m
-    tmux resize-pane -y 10
-    tmux select-pane -t "{bottom}"
-    tmux send-keys "pcd" C-m
-    tmux split-window
-    tmux send-keys "pscd" C-m
-    tmux split-window -h
-    tmux send-keys "pccd" C-m
-    tmux resize-pane -y 10
+    tmux resize-pane -y 15
     tmux select-pane -t "{top}"
     tmux new-window -t 2
     tmux rename-window -t 2 "proj"

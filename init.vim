@@ -5,7 +5,6 @@ function! PackInit() abort
     call minpac#add('christoomey/vim-tmux-navigator')
     call minpac#add('jeetsukumaran/vim-indentwise')
     call minpac#add('jpalardy/vim-slime')
-    call minpac#add('justinmk/vim-sneak')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
@@ -108,7 +107,7 @@ nnoremap <C-W>X <C-W>x<C-W>c
 nnoremap <C-W>v <C-W>v<C-W>w
 nnoremap <C-W>s <C-W>s<C-W>w
 nmap <C-W>[ <C-W>v<C-]>
-nmap <C-W>r <C-W>o<C-W>v
+nmap <C-W>V <C-W>o<C-W>v
 nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
@@ -252,7 +251,7 @@ function! s:SetDiffHighlights()
     if &background == "dark"
         hi DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
         hi DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
-        hi DiffChange gui=BOLD guifg=NONE guibg=#3e4d53
+        hi DiffChange gui=BOLD guifg=NONE guibg=#515f64
         hi DiffText gui=BOLD guifg=NONE guibg=#5c4306
     else
         hi DiffAdd gui=BOLD guifg=NONE guibg=palegreen
