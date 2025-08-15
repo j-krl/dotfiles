@@ -5,6 +5,7 @@ function! PackInit() abort
     call minpac#add('christoomey/vim-tmux-navigator')
     call minpac#add('jeetsukumaran/vim-indentwise')
     call minpac#add('jpalardy/vim-slime')
+    call minpac#add('unblevable/quick-scope')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
@@ -16,6 +17,7 @@ function! PackInit() abort
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
         call minpac#add('ronisbr/nano-theme.nvim')
+        call minpac#add('nyoom-engineering/oxocarbon.nvim')
     endif
 endfunction
 packadd cfilter
@@ -183,9 +185,10 @@ xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 
 " Colorschemes
 nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
-nnoremap <space>2 :<C-U>set background=dark\|colo nano-theme<cr>
-nnoremap <space>3 :<C-U>set background=dark\|colo sacredforest<cr>
-nnoremap <space>4 :<C-U>set background=dark\|colo skull<cr>
+nnoremap <space>2 :<C-U>set background=dark\|colo oxocarbon<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo nano-theme<cr>
+nnoremap <space>4 :<C-U>set background=dark\|colo sacredforest<cr>
+nnoremap <space>5 :<C-U>set background=dark\|colo skull<cr>
 nnoremap <space>9 :<C-U>set background=light\|colo nano-theme<cr>
 nnoremap <space>0 :<C-U>set background=light\|colo default<cr>
 
@@ -228,6 +231,7 @@ autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#677691
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi Comment guifg=#b8bdd7 | endif
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi String guifg=#b8bdd7 | endif
 autocmd vimrc ColorScheme sacredforest hi Comment guifg=grey
+autocmd vimrc ColorScheme oxocarbon hi Comment guifg=grey
 autocmd vimrc ColorScheme skull hi Special guifg=#707070 guibg=#222222
 autocmd vimrc ColorScheme skull hi LineNr guifg=grey35
 autocmd vimrc ColorScheme skull hi TabLineSel gui=UNDERLINE
@@ -240,10 +244,11 @@ if has("nvim")
 endif
 
 function! RecurSetPath()
+    let path = ".,,"
     if executable('fd')
-        let &path = join(systemlist('fd . --type d --hidden'), ',')
+        let &path = &path .. join(systemlist('fd . --type d --hidden'), ',')
     elseif isdirectory('.git')
-        let &path = join(systemlist('git ls-tree -d --name-only -r HEAD'), ',')
+        let &path = &path .. join(systemlist('git ls-tree -d --name-only -r HEAD'), ',')
     endif
 endfunction
 
