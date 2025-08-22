@@ -6,6 +6,7 @@ function! PackInit() abort
     call minpac#add('jeetsukumaran/vim-indentwise')
     call minpac#add('jpalardy/vim-slime')
     call minpac#add('unblevable/quick-scope')
+    call minpac#add('gpanders/vim-oldfiles')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
@@ -17,6 +18,7 @@ function! PackInit() abort
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
         call minpac#add('ronisbr/nano-theme.nvim')
+        call minpac#add('mcauley-penney/techbase.nvim')
         call minpac#add('nyoom-engineering/oxocarbon.nvim')
     endif
 endfunction
@@ -99,7 +101,8 @@ nnoremap <leader>f :find
 nnoremap <leader>F :vert sf 
 nnoremap <leader>g :grep ''<left>
 nnoremap <leader>G :grep '<C-R><C-W>'<cr>
-nnoremap <leader>o :browse filter  o<left><left>
+nnoremap <leader>o :Oldfiles<cr>
+nnoremap <leader>O :Oldfiles 
 nnoremap <leader>mm <cmd>marks<cr>
 nnoremap <leader>mc <cmd>delm a-zA-Z<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
@@ -185,11 +188,14 @@ xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 
 " Colorschemes
 nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
-nnoremap <space>2 :<C-U>set background=dark\|colo oxocarbon<cr>
-nnoremap <space>3 :<C-U>set background=dark\|colo nano-theme<cr>
-nnoremap <space>4 :<C-U>set background=dark\|colo sacredforest<cr>
-nnoremap <space>5 :<C-U>set background=dark\|colo skull<cr>
-nnoremap <space>9 :<C-U>set background=light\|colo nano-theme<cr>
+nnoremap <space>2 :<C-U>set background=dark\|colo lunaperche<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo oxocarbon<cr>
+nnoremap <space>4 :<C-U>set background=dark\|colo techbase<cr>
+nnoremap <space>5 :<C-U>set background=dark\|colo nano-theme<cr>
+nnoremap <space>6 :<C-U>set background=dark\|colo sacredforest<cr>
+nnoremap <space>7 :<C-U>set background=dark\|colo skull<cr>
+nnoremap <space>8 :<C-U>set background=light\|colo nano-theme<cr>
+nnoremap <space>9 :<C-U>set background=light\|colo lunaperche<cr>
 nnoremap <space>0 :<C-U>set background=light\|colo default<cr>
 
 " Misc
@@ -232,6 +238,7 @@ autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi Comment guifg
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi String guifg=#b8bdd7 | endif
 autocmd vimrc ColorScheme sacredforest hi Comment guifg=grey
 autocmd vimrc ColorScheme oxocarbon hi Comment guifg=grey
+autocmd vimrc ColorScheme lunaperche hi! link Type PreProc
 autocmd vimrc ColorScheme skull hi Special guifg=#707070 guibg=#222222
 autocmd vimrc ColorScheme skull hi LineNr guifg=grey35
 autocmd vimrc ColorScheme skull hi TabLineSel gui=UNDERLINE
