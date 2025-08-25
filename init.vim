@@ -17,6 +17,8 @@ function! PackInit() abort
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
+        call minpac#add('nvim-lua/plenary.nvim')
+        call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
         call minpac#add('ronisbr/nano-theme.nvim')
         call minpac#add('mcauley-penney/techbase.nvim')
         call minpac#add('nyoom-engineering/oxocarbon.nvim')
