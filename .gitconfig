@@ -3,8 +3,6 @@
 # Please adapt and uncomment the following lines:
 	name = Jesse
 	email = jessekearl@gmail.com
-[pull]
-	ff = only
 [core]
 	editor = nvim
 	pager = diff-so-fancy | less --tabs=4 -RF
@@ -21,3 +19,5 @@
 	diff-aider = "!git diff $(git nogrep-sha \"^aider\")"
 [interactive]
 	diffFilter = diff-so-fancy --patch
+[pull]
+	ff = only

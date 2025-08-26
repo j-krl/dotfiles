@@ -12,7 +12,6 @@ function! PackInit() abort
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('github/copilot.vim')
-    call minpac#add('kxzk/skull-vim')
     call minpac#add('karoliskoncevicius/sacredforest-vim')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
@@ -21,6 +20,7 @@ function! PackInit() abort
         call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
         call minpac#add('ronisbr/nano-theme.nvim')
         call minpac#add('mcauley-penney/techbase.nvim')
+        call minpac#add('slugbyte/lackluster.nvim')
         call minpac#add('nyoom-engineering/oxocarbon.nvim')
     endif
 endfunction
@@ -195,7 +195,8 @@ nnoremap <space>3 :<C-U>set background=dark\|colo oxocarbon<cr>
 nnoremap <space>4 :<C-U>set background=dark\|colo techbase<cr>
 nnoremap <space>5 :<C-U>set background=dark\|colo nano-theme<cr>
 nnoremap <space>6 :<C-U>set background=dark\|colo sacredforest<cr>
-nnoremap <space>7 :<C-U>set background=dark\|colo skull<cr>
+nnoremap <space>7 :<C-U>set background=dark\|colo lackluster-night<cr>
+nnoremap <space>8 :<C-U>set background=dark\|colo lackluster<cr>
 nnoremap <space>9 :<C-U>set background=light\|colo lunaperche<cr>
 nnoremap <space>0 :<C-U>set background=light\|colo default<cr>
 
@@ -246,17 +247,12 @@ autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#677691
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi Comment guifg=#b8bdd7 | endif
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi String guifg=#b8bdd7 | endif
 autocmd vimrc ColorScheme sacredforest hi Comment guifg=grey
+autocmd vimrc ColorScheme lackluster hi Normal guifg=grey70
 autocmd vimrc ColorScheme oxocarbon hi Comment guifg=grey
 autocmd vimrc ColorScheme lunaperche hi! link Type PreProc
 autocmd vimrc ColorScheme lunaperche hi! link Function PreProc
 autocmd vimrc ColorScheme techbase hi! link Operator Keyword
 autocmd vimrc ColorScheme techbase hi! link NormalNC Normal
-autocmd vimrc ColorScheme skull hi Special guifg=#707070 guibg=#222222
-autocmd vimrc ColorScheme skull hi LineNr guifg=grey35
-autocmd vimrc ColorScheme skull hi TabLineSel gui=UNDERLINE
-autocmd vimrc ColorScheme skull hi Visual gui=REVERSE
-autocmd vimrc ColorScheme skull hi! link Operator Statement
-autocmd vimrc ColorScheme skull hi ColorColumn guifg=NONE
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
