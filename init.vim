@@ -213,6 +213,7 @@ command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
 command! -nargs=1 FixArglist call FixArglistHack(<args>)
+command! SetProjPath call RecurSetPath()
 
 function! s:CloseHiddenBuffers()
     let open_buffers = []
@@ -226,13 +227,20 @@ function! s:CloseHiddenBuffers()
     endfor
 endfunction
 
+function! RecurSetPath()
+    if executable('fd')
+        let &path = &path .. join(systemlist('fd . --type d --hidden'), ',')
+    elseif isdirectory('.git')
+        let &path = &path .. join(systemlist('git ls-tree -d --name-only -r HEAD'), ',')
+    endif
+endfunction
+
 """"""""""""""""
 " Autocommands "
 """"""""""""""""
 
 autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
-autocmd vimrc DirChanged * call RecurSetPath()
 autocmd vimrc ColorScheme nano-theme hi! link TabLine LineNr
 autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#677691
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi Comment guifg=#b8bdd7 | endif
@@ -242,6 +250,7 @@ autocmd vimrc ColorScheme oxocarbon hi Comment guifg=grey
 autocmd vimrc ColorScheme lunaperche hi! link Type PreProc
 autocmd vimrc ColorScheme lunaperche hi! link Function PreProc
 autocmd vimrc ColorScheme techbase hi! link Operator Keyword
+autocmd vimrc ColorScheme techbase hi! link NormalNC Normal
 autocmd vimrc ColorScheme skull hi Special guifg=#707070 guibg=#222222
 autocmd vimrc ColorScheme skull hi LineNr guifg=grey35
 autocmd vimrc ColorScheme skull hi TabLineSel gui=UNDERLINE
@@ -252,15 +261,6 @@ autocmd vimrc ColorScheme * call s:SetDiffHighlights()
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
-
-function! RecurSetPath()
-    let path = ".,,"
-    if executable('fd')
-        let &path = &path .. join(systemlist('fd . --type d --hidden'), ',')
-    elseif isdirectory('.git')
-        let &path = &path .. join(systemlist('git ls-tree -d --name-only -r HEAD'), ',')
-    endif
-endfunction
 
 function! s:SetDiffHighlights()
     if &background == "dark"

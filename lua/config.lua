@@ -4,6 +4,7 @@ local lsps = {
 	"basedpyright",
 	"ruff",
 	"ts_ls",
+	"clangd",
 	"sqlls",
 	"emmet_language_server",
 	"terraformls",
