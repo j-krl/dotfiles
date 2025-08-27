@@ -260,6 +260,7 @@ endfunction
 autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc TabEnter * call RecurSetPath()
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
+autocmd vimrc ColorSchemePre * hi clear
 autocmd vimrc ColorScheme nano-theme hi! link TabLine LineNr
 autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#677691
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi Comment guifg=#b8bdd7 | endif
