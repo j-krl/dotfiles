@@ -49,7 +49,7 @@ set laststatus=2
 set completeopt=menuone,popup
 set wildmode=list:longest,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
-set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'\ -g\ '!**/migrations/*'
+set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'\ -g\ '!**/migrations/*'\ '$*'
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 set guicursor=
@@ -91,6 +91,9 @@ inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
 
+" Vim surround
+nmap dsf dib%hviel%p
+
 " File & pane navigation
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
@@ -101,8 +104,9 @@ nnoremap <backspace> <C-^>
 nnoremap <leader>b :b 
 nnoremap <leader>f :find 
 nnoremap <leader>F :vert sf 
-nnoremap <leader>g :grep ''<left>
-nnoremap <leader>G :grep '<C-R><C-W>'<cr>
+nnoremap <leader>g :grep 
+nnoremap <leader>G :grep <C-R><C-W><cr>
+nnoremap <leader>z :Zgrep 
 nnoremap <leader>o :Oldfiles<cr>
 nnoremap <leader>O :Oldfiles 
 nnoremap <leader>mm <cmd>marks<cr>
@@ -125,6 +129,7 @@ nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <silent> <expr> <leader>co ":colder " .. v:count1 .. "<cr>"
 nnoremap <silent> <expr> <leader>cn ":cnewer " .. v:count1 .. "<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
+command! -nargs=1 Zgrep call FuzzyGrep(<f-args>)
 
 function! RemoveQfEntry()
     let qfData = getqflist({'idx': 0, 'title': 0, 'items': 0})
@@ -139,6 +144,13 @@ function! RemoveQfEntry()
     if len(filteredItems) > 0
         exe qfIdx .. 'cc'
     endif
+endfunction
+
+function! FuzzyGrep(query)
+    let oldgrepprg = &grepprg
+    set grepprg=rg\ --column\ --hidden\ -g\ '!.git/*'\ -g\ '!**/migrations/*'\ .\ \\\|\ fzf\ --filter='$*'\ --delimiter\ :\ --nth\ 4..
+    exe 'grep ' .. a:query
+    let &grepprg = oldgrepprg
 endfunction
 
 " Arglist
@@ -183,10 +195,14 @@ xnoremap <silent> il g_o^
 onoremap <silent> il :normal vil<CR>
 xnoremap <silent> al $o0
 onoremap <silent> al :normal val<CR>
-onoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
-xnoremap <silent> ie :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
-onoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
-xnoremap <silent> ae :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+onoremap <silent> ie :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
+xnoremap <silent> ie :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
+onoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
+xnoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
+onoremap <silent> iE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+xnoremap <silent> iE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+onoremap <silent> aE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
+xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.,-,=,:<cr>
 
 " Colorschemes
 nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
@@ -282,7 +298,7 @@ function! s:SetupPython()
     let b:surround_{char2nr("m")} = "\"\"\"\r\"\"\""
     let b:surround_{char2nr("p")} = "f\"\r\""
     let b:surround_{char2nr("P")} = "f\'\r\'"
-    nmap <buffer> dsd %<left>dieds]ds"
+    nmap <buffer> dsd di]%hviel%p
     nmap <buffer> dsm ds"ds"ds"
     nnoremap <buffer> <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
     nnoremap <buffer> <localleader>D di"a<backspace><backspace><C-R>"<right><right><backspace><backspace>=<esc>
