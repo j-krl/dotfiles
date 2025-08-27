@@ -47,11 +47,10 @@ set hlsearch
 set smartindent
 set laststatus=2
 set completeopt=menuone,popup
-set wildmode=list:longest,full
+set wildmode=noselect,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
+set wildoptions=fuzzy,pum,tagfile
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'\ -g\ '!**/migrations/*'\ '$*'
-" Add session status and arglist position to statusline
-set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 set guicursor=
 set fillchars=diff:\
 set foldmethod=indent
@@ -61,6 +60,14 @@ set foldlevelstart=100
 set background=dark
 let g:maplocalleader = "_"
 let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "css", "json", "vim", "lua"]
+set findfunc=FuzzyFindFunc
+" Add session status and arglist position to statusline
+set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
+
+function! FuzzyFindFunc(cmdarg, cmdcomplete)
+    return systemlist("fd --full-path . \| fzf --filter='".. a:cmdarg .. "'")
+endfunction
+
 
 " Plugin options
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
@@ -308,8 +315,6 @@ function! s:SetupPython()
     nnoremap <buffer> <localleader>b obreakpoint()<esc>
     nnoremap <buffer> <localleader>B Obreakpoint()<esc>
     nnoremap <buffer> <localleader>F mfF"if<esc>`fl
-    nnoremap <buffer> <localleader>gc :grep 'class \('<left><left><left>
-    nnoremap <buffer> <localleader>gd :grep 'def \('<left><left><left>
 endfunction
 
 augroup ftreact
@@ -323,7 +328,6 @@ function s:SetupReact()
     "TODO: Make ]1 and [1 work in visual mode
     noremap <silent> <buffer> ]1 :<C-U>exe "sil keepp norm! /^\\(export \\)\\=const\<lt>cr>"\|noh<cr>
     noremap <silent> <buffer> [1 :<C-U>exe "sil keepp norm! ?^\\(export \\)\\=const\<lt>cr>"\|noh<cr>
-    nnoremap <buffer> <localleader>gd :grep "^(export )?const  = \("<left><left><left><left><left><left>
     iab co const 
 endfunction
 
