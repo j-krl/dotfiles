@@ -224,7 +224,7 @@ nnoremap <leader>u <cmd>undolist<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
-nnoremap <F7> :call RecurSetPath()<cr>
+nnoremap <F7> :SetProjPath<cr>
 
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
@@ -245,10 +245,11 @@ function! s:CloseHiddenBuffers()
 endfunction
 
 function! RecurSetPath()
+    let basepath = '.,,'
     if executable('fd')
-        let &path = &path .. join(systemlist('fd . --type d --hidden'), ',')
+        let &path = basepath .. join(systemlist('fd . --type d --hidden'), ',')
     elseif isdirectory('.git')
-        let &path = &path .. join(systemlist('git ls-tree -d --name-only -r HEAD'), ',')
+        let &path = basepath .. join(systemlist('git ls-tree -d --name-only -r HEAD'), ',')
     endif
 endfunction
 
@@ -257,6 +258,7 @@ endfunction
 """"""""""""""""
 
 autocmd vimrc QuickFixCmdPost * norm mG
+autocmd vimrc TabEnter * call RecurSetPath()
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc ColorScheme nano-theme hi! link TabLine LineNr
 autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#677691
@@ -339,7 +341,11 @@ if has("nvim")
     lua require('config')
 endif
 
-colo sacredforest
+if strftime("%H") >= 20 || strftime("%H") < 7
+    colo techbase
+else
+    colo sacredforest
+endif
 
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
