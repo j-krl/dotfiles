@@ -47,7 +47,7 @@ set hlsearch
 set smartindent
 set laststatus=2
 set completeopt=menuone,popup
-set wildmode=noselect,full
+set wildmode=noselect:longest,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set wildoptions=fuzzy,pum,tagfile
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'\ -g\ '!**/migrations/*'\ '$*'
@@ -93,10 +93,16 @@ nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. (v:count < 2 ? v:count - 1:
 nmap ]o ]<space>j
 nmap [o [<space>k
 inoremap <C-S> <cr><esc>kA
-inoremap <C-H> <C-U><backspace>
 inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
+" Hungry delete
+inoremap <silent><expr><bs> 
+  \ (&indentexpr isnot '' ? &indentkeys : &cinkeys) =~? '!\^F' &&
+  \ &backspace =~? '.*eol\&.*start\&.*indent\&' &&
+  \ !search('\S','nbW',line('.')) ? (col('.') != 1 ? "\<C-U>" : "") .
+  \ "\<bs>" . (getline(line('.')-1) =~ '\S' ? "" : "\<C-F>") : "\<bs>"
+inoremap <c-bs> <bs>
 
 " Vim surround
 nmap dsf dib%hviel%p
@@ -116,8 +122,6 @@ nnoremap <leader>G :grep <C-R><C-W><cr>
 nnoremap <leader>z :Zgrep 
 nnoremap <leader>o :Oldfiles<cr>
 nnoremap <leader>O :Oldfiles 
-nnoremap <leader>mm <cmd>marks<cr>
-nnoremap <leader>mc <cmd>delm a-zA-Z<cr>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -224,19 +228,17 @@ nnoremap <space>9 :<C-U>set background=light\|colo lunaperche<cr>
 nnoremap <space>0 :<C-U>set background=light\|colo default<cr>
 
 " Misc
-nnoremap yfc :let @+ = @%<cr>
-cnoremap <C-\><C-W> .*?
 nnoremap yor <cmd>set rnu!<cr>
 nnoremap <leader>u <cmd>undolist<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
-nnoremap <F7> :SetProjPath<cr>
+" Copy name of current file to system register
+nnoremap yfc :let @+ = @%<cr>
 
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
-command! -nargs=1 FixArglist call FixArglistHack(<args>)
 command! SetProjPath call RecurSetPath()
 
 function! s:CloseHiddenBuffers()
@@ -347,7 +349,7 @@ if has("nvim")
 endif
 
 if strftime("%H") >= 20 || strftime("%H") < 7
-    colo techbase
+    colo oxocarbon
 else
     colo sacredforest
 endif
