@@ -6,7 +6,6 @@ function! PackInit() abort
     call minpac#add('jeetsukumaran/vim-indentwise')
     call minpac#add('jpalardy/vim-slime')
     call minpac#add('unblevable/quick-scope')
-    call minpac#add('gpanders/vim-oldfiles')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
@@ -49,7 +48,7 @@ set laststatus=2
 set completeopt=menuone,popup
 set wildmode=noselect:longest:lastused,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
-set wildoptions=fuzzy,pum,tagfile
+set wildoptions=pum,tagfile
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'\ -g\ '!**/migrations/*'\ '$*'
 set guicursor=
 set fillchars=diff:\
@@ -60,14 +59,16 @@ set foldlevelstart=100
 set background=dark
 let g:maplocalleader = "_"
 let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "css", "json", "vim", "lua"]
-set findfunc=FuzzyFindFunc
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 
-function! FuzzyFindFunc(cmdarg, cmdcomplete)
-    return systemlist("fd --full-path . \| fzf --filter='".. a:cmdarg .. "'")
+function! FdFzfFindFunc(cmdarg, cmdcomplete)
+    return systemlist("fd --full-path --hidden . | fzf --filter='".. a:cmdarg .. "'")
 endfunction
 
+if executable('fd') && executable('fzf')
+    set findfunc=FdFzfFindFunc
+endif
 
 " Plugin options
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
@@ -121,8 +122,6 @@ nnoremap <leader>d :Fdqf
 nnoremap <leader>g :grep 
 nnoremap <leader>G :grep <C-R><C-W><cr>
 nnoremap <leader>z :Zgrep 
-nnoremap <leader>o :Oldfiles<cr>
-nnoremap <leader>O :Oldfiles 
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -168,7 +167,7 @@ function! FuzzyGrep(query)
 endfunction
 
 function! FdSetQuickfix(query)
-    call setqflist(map(systemlist("fd -t f " .. a:query .. " ."), {_, val -> {'filename': val, 'lnum': 1}}))
+    call setqflist(map(systemlist("fd -t f --hidden " .. a:query .. " ."), {_, val -> {'filename': val, 'lnum': 1}}))
     copen
 endfunction
 
