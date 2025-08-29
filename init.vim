@@ -247,7 +247,6 @@ nnoremap yfc :let @+ = @%<cr>
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
-command! -bang SetProjPath call RecurSetPath(<bang>0)
 
 function! s:CloseHiddenBuffers()
     let open_buffers = []
@@ -261,26 +260,11 @@ function! s:CloseHiddenBuffers()
     endfor
 endfunction
 
-function! RecurSetPath(force)
-    if !isdirectory('.git') && !a:force
-        return
-    endif
-    let basepath = '.,,'
-    if executable('fd')
-        let &path = basepath .. join(systemlist('fd . --type d --hidden'), ',')
-    elseif isdirectory('.git')
-        let &path = basepath .. join(systemlist('git ls-tree -d --name-only -r HEAD'), ',')
-    endif
-endfunction
-
 """"""""""""""""
 " Autocommands "
 """"""""""""""""
 
 autocmd vimrc QuickFixCmdPost * norm mG
-autocmd vimrc TabEnter * call RecurSetPath(v:false)
-autocmd vimrc VimEnter * call RecurSetPath(v:false)
-autocmd vimrc DirChanged * call RecurSetPath(v:false)
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc ColorSchemePre * hi clear
 autocmd vimrc ColorScheme nano-theme hi! link TabLine LineNr
