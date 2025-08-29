@@ -247,7 +247,7 @@ nnoremap yfc :let @+ = @%<cr>
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
-command! SetProjPath call RecurSetPath()
+command! -bang SetProjPath call RecurSetPath(<bang>0)
 
 function! s:CloseHiddenBuffers()
     let open_buffers = []
@@ -261,7 +261,10 @@ function! s:CloseHiddenBuffers()
     endfor
 endfunction
 
-function! RecurSetPath()
+function! RecurSetPath(force)
+    if !isdirectory('.git') && !a:force
+        return
+    endif
     let basepath = '.,,'
     if executable('fd')
         let &path = basepath .. join(systemlist('fd . --type d --hidden'), ',')
@@ -275,7 +278,9 @@ endfunction
 """"""""""""""""
 
 autocmd vimrc QuickFixCmdPost * norm mG
-autocmd vimrc TabEnter * call RecurSetPath()
+autocmd vimrc TabEnter * call RecurSetPath(v:false)
+autocmd vimrc VimEnter * call RecurSetPath(v:false)
+autocmd vimrc DirChanged * call RecurSetPath(v:false)
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc ColorSchemePre * hi clear
 autocmd vimrc ColorScheme nano-theme hi! link TabLine LineNr
@@ -362,7 +367,9 @@ else
     colo sacredforest
 endif
 
+command! PackInstall call PackInit() | call minpac#update(keys(filter(copy(minpac#pluglist), {-> !isdirectory(v:val.dir . '/.git')})))
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
+command! PackStatus packadd minpac | call minpac#status()
 

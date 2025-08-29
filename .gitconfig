@@ -1,7 +1,7 @@
 # This is Git's per-user configuration file.
 [user]
 # Please adapt and uncomment the following lines:
-	name = Jesse
+	name = Jesse Kearl
 	email = jessekearl@gmail.com
 [core]
 	editor = nvim
@@ -11,6 +11,7 @@
 [alias]
 	ac = "!git add -A && git commit"
 	amend = "!git add -A && git commit --amend --no-edit"
+	force-amend = "!git add -A && git commit --amend --no-edit && git push --force"
 	wip = "!f() { git add -A && git commit -m \"wip: $1\"; }; f"
 	nogrep-sha = "!f() { git log --grep=\"$1\" --invert-grep -n 1 --format=%h; }; f"
 	reset-wip = "!git reset $(git nogrep-sha \"^wip\")"
