@@ -143,6 +143,7 @@ nnoremap <silent> <expr> <leader>cn ":cnewer " .. v:count1 .. "<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
 command! -nargs=1 Zgrep call FuzzyGrep(<f-args>)
 command! -nargs=1 Findqf call FdSetQuickfix(<f-args>)
+command! -nargs=1 -bang FuzzySortQf call FuzzySortQf(<f-args>, !<bang>0)
 
 function! RemoveQfEntry()
     let qfData = getqflist({'idx': 0, 'title': 0, 'items': 0})
@@ -170,6 +171,15 @@ endfunction
 function! FdSetQuickfix(query)
     call setqflist(map(systemlist("fd -t f --hidden " .. a:query .. " ."), {_, val -> {'filename': val, 'lnum': 1}}))
     copen
+endfunction
+
+function! FuzzySortQf(pattern, jump)
+    let fuzzy_results = matchfuzzy(getqflist(), a:pattern, {'key': 'text'})
+    call setqflist(fuzzy_results, 'r')
+    if a:jump
+        cfirst
+        norm zz
+    endif
 endfunction
 
 " Arglist
