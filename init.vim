@@ -49,7 +49,7 @@ set completeopt=menuone,popup
 set wildmode=noselect:longest:lastused,full
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set wildoptions=pum,tagfile
-set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'\ -g\ '!**/migrations/*'\ '$*'
+set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'\ '$*'
 set guicursor=
 set fillchars=diff:\
 set foldmethod=indent
@@ -121,7 +121,7 @@ nnoremap <leader>F :vert sf
 nnoremap <leader>d :Fdqf 
 nnoremap <leader>g :grep 
 nnoremap <leader>G :grep <C-R><C-W><cr>
-nnoremap <leader>z :Zgrep 
+"nnoremap <leader>z :Zgrep 
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -141,8 +141,8 @@ nnoremap <leader>ch <cmd>chistory<cr>
 nnoremap <silent> <expr> <leader>co ":colder " .. v:count1 .. "<cr>"
 nnoremap <silent> <expr> <leader>cn ":cnewer " .. v:count1 .. "<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
-command! -nargs=1 Zgrep call FuzzyGrep(<f-args>)
-command! -nargs=1 Fdqf call FdSetQuickfix(<f-args>)
+"command! -nargs=1 Zgrep call FuzzyGrep(<f-args>)
+command! -nargs=1 Findqf call FdSetQuickfix(<f-args>)
 
 function! RemoveQfEntry()
     let qfData = getqflist({'idx': 0, 'title': 0, 'items': 0})
@@ -159,12 +159,12 @@ function! RemoveQfEntry()
     endif
 endfunction
 
-function! FuzzyGrep(query)
-    let oldgrepprg = &grepprg
-    set grepprg=rg\ --column\ --hidden\ -g\ '!.git/*'\ -g\ '!**/migrations/*'\ .\ \\\|\ fzf\ --filter='$*'\ --delimiter\ :\ --nth\ 4..
-    exe 'grep ' .. a:query
-    let &grepprg = oldgrepprg
-endfunction
+"function! FuzzyGrep(query)
+"    let oldgrepprg = &grepprg
+"    set grepprg=rg\ --column\ --hidden\ -g\ '!.git/*'\ .\ \\\|\ fzf\ --filter='$*'\ --delimiter\ :\ --nth\ 4..
+"    exe 'grep ' .. a:query
+"    let &grepprg = oldgrepprg
+"endfunction
 
 function! FdSetQuickfix(query)
     call setqflist(map(systemlist("fd -t f --hidden " .. a:query .. " ."), {_, val -> {'filename': val, 'lnum': 1}}))
@@ -242,6 +242,7 @@ inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
 " Copy name of current file to system register
 nnoremap yfc :let @+ = @%<cr>
+cnoremap <C-\> .*?
 
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
