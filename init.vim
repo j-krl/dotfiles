@@ -122,6 +122,7 @@ nnoremap <leader>d :Fdqf
 nnoremap <leader>g :grep 
 nnoremap <leader>G :grep <C-R><C-W><cr>
 nnoremap <leader>z :Zgrep 
+nnoremap <leader>Z :Fzfgrep 
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -141,9 +142,40 @@ nnoremap <leader>ch <cmd>chistory<cr>
 nnoremap <silent> <expr> <leader>co ":colder " .. v:count1 .. "<cr>"
 nnoremap <silent> <expr> <leader>cn ":cnewer " .. v:count1 .. "<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
-command! -nargs=1 Zgrep call FuzzyGrep(<f-args>)
+nnoremap <leader>cf :Cfilter 
+nnoremap <leader>cz :Cfuzzy 
+command! -nargs=1 -bang Cfuzzy call FuzzyFilterQf(<f-args>, !<bang>0)
+command! -nargs=1 Fzfgrep call FzfGrep(<f-args>)
+command! -nargs=1 Zgrep call FuzzyFilterGrep(<f-args>)
 command! -nargs=1 Findqf call FdSetQuickfix(<f-args>)
-command! -nargs=1 -bang FuzzySortQf call FuzzySortQf(<f-args>, !<bang>0)
+
+" WARNING: slow!
+function! FzfGrep(query)
+    let oldgrepprg = &grepprg
+    set grepprg=rg\ --column\ --hidden\ -g\ '!.git/*'\ .\ \\\|\ fzf\ --filter='$*'\ --delimiter\ :\ --nth\ 4..
+    exe 'grep ' .. a:query
+    let &grepprg = oldgrepprg
+endfunction
+
+function! FuzzyFilterGrep(query)
+    exe 'grep ' .. a:query
+    let sort_query = substitute(a:query, '\.\*?', '', 'g')
+    let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
+    call FuzzyFilterQf(sort_query, 1)
+endfunction
+
+function! FdSetQuickfix(query)
+    call setqflist(map(systemlist("fd -t f --hidden " .. a:query .. " ."), {_, val -> {'filename': val, 'lnum': 1, 'text': val}}))
+    copen
+endfunction
+
+function! FuzzyFilterQf(pattern, jump)
+    let fuzzy_results = matchfuzzy(getqflist(), a:pattern, {'key': 'text'})
+    call setqflist(fuzzy_results)
+    if a:jump
+        cfirst
+    endif
+endfunction
 
 function! RemoveQfEntry()
     let qfData = getqflist({'idx': 0, 'title': 0, 'items': 0})
@@ -157,28 +189,6 @@ function! RemoveQfEntry()
     call setqflist([], 'r', {'items': filteredItems, 'title': qfTitle})
     if len(filteredItems) > 0
         exe qfIdx .. 'cc'
-    endif
-endfunction
-
-"WARNING: slow on large repos
-function! FuzzyGrep(query)
-    let oldgrepprg = &grepprg
-    set grepprg=rg\ --column\ --hidden\ -g\ '!.git/*'\ .\ \\\|\ fzf\ --filter='$*'\ --delimiter\ :\ --nth\ 4..
-    exe 'grep ' .. a:query
-    let &grepprg = oldgrepprg
-endfunction
-
-function! FdSetQuickfix(query)
-    call setqflist(map(systemlist("fd -t f --hidden " .. a:query .. " ."), {_, val -> {'filename': val, 'lnum': 1}}))
-    copen
-endfunction
-
-function! FuzzySortQf(pattern, jump)
-    let fuzzy_results = matchfuzzy(getqflist(), a:pattern, {'key': 'text'})
-    call setqflist(fuzzy_results, 'r')
-    if a:jump
-        cfirst
-        norm zz
     endif
 endfunction
 
@@ -253,7 +263,9 @@ inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
 " Copy name of current file to system register
 nnoremap yfc :let @+ = @%<cr>
-cnoremap <C-\> .*?
+cnoremap <C-space> .*?
+cnoremap <A-9> \(
+cnoremap <A-0> \)
 
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
