@@ -152,20 +152,15 @@ nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
 nnoremap <leader>cf :Cfilter 
 nnoremap <leader>cz :Cfuzzy 
 command! -nargs=1 -bang Cfuzzy call FuzzyFilterQf(<f-args>, !<bang>0)
-command! -nargs=1 Fzfgrep call FzfGrep(<f-args>)
-command! -nargs=1 Zgrep call FuzzyFilterGrep(<f-args>)
-command! -nargs=1 Findqf call FdSetQuickfix(<f-args>)
-
-function! FdSetQuickfix(query)
-    call setqflist(map(systemlist("fd -t f --hidden " .. a:query .. " ."), {_, val -> {'filename': val, 'lnum': 1, 'text': val}}))
-    copen
-endfunction
+command! -nargs=+ -complete=file_in_path Findqf call FdSetQuickfix(<f-args>)
+command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
+command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 
 " WARNING: slow!
 function! FzfGrep(query, path=".")
     let oldgrepprg = &grepprg
-    exe "set grepprg=rg\ --column\ --hidden\ -g\ \'!.git/*'\ " .. a:path .. "\ \\\|\ fzf\ --filter='$*'\ --delimiter\ :\ --nth\ 4.."
-    exe "grep '" .. a:query .. "'"
+    let &grepprg = "rg --column --hidden -g '!.git/*' . " .. a:path .. " \\| fzf --filter='$*' --delimiter : --nth 4.."
+    exe "grep " .. a:query
     let &grepprg = oldgrepprg
 endfunction
 
@@ -182,6 +177,12 @@ function! FuzzyFilterGrep(query, path=".")
     let sort_query = substitute(a:query, '\.\*?', '', 'g')
     let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
     call FuzzyFilterQf(sort_query, 1)
+endfunction
+
+function! FdSetQuickfix(...)
+    call setqflist(map(systemlist("fd -t f --hidden " .. join(a:000, " ")),
+            \ {_, val -> {'filename': val, 'lnum': 1, 'text': val}}))
+    copen
 endfunction
 
 function! RemoveQfEntry()
