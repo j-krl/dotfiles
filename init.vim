@@ -11,16 +11,11 @@ function! PackInit() abort
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('github/copilot.vim')
-    call minpac#add('karoliskoncevicius/sacredforest-vim')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
-        call minpac#add('nvim-lua/plenary.nvim')
-        call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
-        call minpac#add('ronisbr/nano-theme.nvim')
-        call minpac#add('mcauley-penney/techbase.nvim')
-        call minpac#add('slugbyte/lackluster.nvim')
-        call minpac#add('nyoom-engineering/oxocarbon.nvim')
+        "call minpac#add('nvim-lua/plenary.nvim')
+        "call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
     endif
 endfunction
 packadd cfilter
@@ -266,12 +261,11 @@ xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>s
 " Colorschemes
 nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
 nnoremap <space>2 :<C-U>set background=dark\|colo lunaperche<cr>
-nnoremap <space>3 :<C-U>set background=dark\|colo oxocarbon<cr>
-nnoremap <space>4 :<C-U>set background=dark\|colo techbase<cr>
-nnoremap <space>5 :<C-U>set background=dark\|colo nano-theme<cr>
-nnoremap <space>6 :<C-U>set background=dark\|colo sacredforest<cr>
-nnoremap <space>7 :<C-U>set background=dark\|colo lackluster-night<cr>
-nnoremap <space>8 :<C-U>set background=dark\|colo lackluster<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo sorbet<cr>
+nnoremap <space>4 :<C-U>set background=dark\|colo unokai<cr>
+nnoremap <space>5 :<C-U>set background=dark\|colo slate<cr>
+nnoremap <space>6 :<C-U>set background=dark\|colo retrobox<cr>
+nnoremap <space>8 :<C-U>set background=light\|colo retrobox<cr>
 nnoremap <space>9 :<C-U>set background=light\|colo lunaperche<cr>
 nnoremap <space>0 :<C-U>set background=light\|colo default<cr>
 
@@ -310,18 +304,34 @@ endfunction
 autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc ColorSchemePre * hi clear
-autocmd vimrc ColorScheme nano-theme hi! link TabLine LineNr
-autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#677691
-autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi Comment guifg=#b8bdd7 | endif
-autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi String guifg=#b8bdd7 | endif
-autocmd vimrc ColorScheme sacredforest hi Comment guifg=grey
-autocmd vimrc ColorScheme oxocarbon hi Comment guifg=grey
-autocmd vimrc ColorScheme lackluster* hi Comment guifg=grey27
-autocmd vimrc ColorScheme lackluster* hi Normal guifg=grey70
 autocmd vimrc ColorScheme lunaperche hi! link Type PreProc
-autocmd vimrc ColorScheme lunaperche hi! link Function PreProc
-autocmd vimrc ColorScheme techbase hi! link Operator Keyword
-autocmd vimrc ColorScheme techbase hi! link NormalNC Normal
+autocmd vimrc ColorScheme lunaperche hi Comment guifg=grey
+autocmd vimrc ColorScheme lunaperche hi clear Constant
+autocmd vimrc ColorScheme sorbet hi Comment guifg=grey
+autocmd vimrc ColorScheme sorbet hi clear Constant
+autocmd vimrc ColorScheme sorbet hi! link Special PreProc
+autocmd vimrc ColorScheme unokai hi Normal guifg=#f8f8f0 guibg=#26292c
+autocmd vimrc ColorScheme unokai hi clear Constant
+autocmd vimrc ColorScheme unokai hi clear Type
+autocmd vimrc ColorScheme unokai hi PreProc guifg=#ff6188
+autocmd vimrc ColorScheme unokai hi Statement guifg=#ff6188
+autocmd vimrc ColorScheme unokai hi Special guifg=#ff6188
+autocmd vimrc ColorScheme unokai hi! link Identifier Function
+autocmd vimrc ColorScheme slate hi clear Constant
+autocmd vimrc ColorScheme slate hi clear Define
+autocmd vimrc ColorScheme slate hi clear Structure
+autocmd vimrc ColorScheme slate hi! link Special PreProc
+autocmd vimrc ColorScheme slate hi! link Identifier PreProc
+autocmd vimrc ColorScheme retrobox hi clear Constant
+autocmd vimrc ColorScheme retrobox hi clear Boolean
+autocmd vimrc ColorScheme retrobox hi clear Number
+autocmd vimrc ColorScheme retrobox hi clear Float
+autocmd vimrc ColorScheme retrobox hi clear Type
+autocmd vimrc ColorScheme retrobox hi clear Delimiter
+autocmd vimrc ColorScheme retrobox hi! link Identifier Keyword
+autocmd vimrc ColorScheme retrobox hi! link Special Include
+autocmd vimrc Colorscheme retrobox if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
+
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
@@ -392,14 +402,12 @@ if has("nvim")
 endif
 
 if strftime("%H") >= 20 || strftime("%H") < 7
-    if has('nvim')
-        colo oxocarbon
-    else
-        colo lunaperche
-    endif
+    set background=dark
 else
-    colo sacredforest
+    set background=light
 endif
+
+colo retrobox
 
 command! PackInstall call PackInit() | call minpac#update(keys(filter(copy(minpac#pluglist), {-> !isdirectory(v:val.dir . '/.git')})))
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
