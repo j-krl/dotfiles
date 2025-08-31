@@ -29,6 +29,13 @@ augroup vimrc
     autocmd!
 augroup END
 
+if !has("nvim")
+    syntax on
+    " noselect not on stable vim yet
+    set wildmode=full:longest:lastused,full
+else
+    set wildmode=noselect:longest:lastused,full
+endif
 set relativenumber
 set number
 set tabstop=4
@@ -46,7 +53,7 @@ set hlsearch
 set smartindent
 set laststatus=2
 set completeopt=menuone,popup
-set wildmode=noselect:longest:lastused,full
+set wildmenu
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set wildoptions=pum,tagfile
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'\ '$*'
@@ -66,7 +73,7 @@ function! FdFzfFindFunc(cmdarg, cmdcomplete)
     return systemlist("fd --full-path --hidden . | fzf --filter='".. a:cmdarg .. "'")
 endfunction
 
-if executable('fd') && executable('fzf')
+if exists('&findfunc') && executable('fd') && executable('fzf')
     set findfunc=FdFzfFindFunc
 endif
 
@@ -355,7 +362,9 @@ endfunction
 
 augroup ftlua
     autocmd!
-    autocmd FileType lua lua vim.treesitter.stop()
+    if has('nvim')
+        autocmd FileType lua lua vim.treesitter.stop()
+    endif
 augroup END
 
 augroup ftmarkdown
@@ -369,7 +378,11 @@ if has("nvim")
 endif
 
 if strftime("%H") >= 20 || strftime("%H") < 7
-    colo oxocarbon
+    if has('nvim')
+        colo oxocarbon
+    else
+        colo lunaperche
+    endif
 else
     colo sacredforest
 endif
