@@ -92,6 +92,9 @@ let g:slime_bracketed_paste = 1
 " Text manipulation
 nnoremap <leader>p <cmd>put "<cr>
 nnoremap <leader>P <cmd>put! "<cr>
+nnoremap <space>y "+y
+nnoremap <space>p "+p
+nnoremap <space>P "+P
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
