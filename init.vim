@@ -56,7 +56,7 @@ set completeopt=menuone,popup
 set wildmenu
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set wildoptions=pum,tagfile
-set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'\ '$*'
+set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
 set guicursor=
 set fillchars=diff:\
 set foldmethod=indent
@@ -126,7 +126,7 @@ nnoremap <leader>b :b
 nnoremap <leader>f :find 
 nnoremap <leader>F :vert sf 
 nnoremap <leader>d :Fdqf 
-nnoremap <leader>g :grep 
+nnoremap <leader>g :grep ''<left>
 nnoremap <leader>G :grep <C-R><C-W><cr>
 nnoremap <leader>z :Zgrep 
 nnoremap <leader>Z :Fzfgrep 
@@ -156,24 +156,17 @@ command! -nargs=1 Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=1 Zgrep call FuzzyFilterGrep(<f-args>)
 command! -nargs=1 Findqf call FdSetQuickfix(<f-args>)
 
-" WARNING: slow!
-function! FzfGrep(query)
-    let oldgrepprg = &grepprg
-    set grepprg=rg\ --column\ --hidden\ -g\ '!.git/*'\ .\ \\\|\ fzf\ --filter='$*'\ --delimiter\ :\ --nth\ 4..
-    exe 'grep ' .. a:query
-    let &grepprg = oldgrepprg
-endfunction
-
-function! FuzzyFilterGrep(query)
-    exe 'grep ' .. a:query
-    let sort_query = substitute(a:query, '\.\*?', '', 'g')
-    let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
-    call FuzzyFilterQf(sort_query, 1)
-endfunction
-
 function! FdSetQuickfix(query)
     call setqflist(map(systemlist("fd -t f --hidden " .. a:query .. " ."), {_, val -> {'filename': val, 'lnum': 1, 'text': val}}))
     copen
+endfunction
+
+" WARNING: slow!
+function! FzfGrep(query, path=".")
+    let oldgrepprg = &grepprg
+    exe "set grepprg=rg\ --column\ --hidden\ -g\ \'!.git/*'\ " .. a:path .. "\ \\\|\ fzf\ --filter='$*'\ --delimiter\ :\ --nth\ 4.."
+    exe "grep '" .. a:query .. "'"
+    let &grepprg = oldgrepprg
 endfunction
 
 function! FuzzyFilterQf(pattern, jump)
@@ -182,6 +175,13 @@ function! FuzzyFilterQf(pattern, jump)
     if a:jump
         cfirst
     endif
+endfunction
+
+function! FuzzyFilterGrep(query, path=".")
+    exe "grep '" .. a:query .. "' " .. a:path
+    let sort_query = substitute(a:query, '\.\*?', '', 'g')
+    let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
+    call FuzzyFilterQf(sort_query, 1)
 endfunction
 
 function! RemoveQfEntry()
@@ -302,6 +302,7 @@ autocmd vimrc ColorScheme nano-theme hi StatusLineNC guifg=#677691
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi Comment guifg=#b8bdd7 | endif
 autocmd vimrc ColorScheme nano-theme if &background == "dark" | hi String guifg=#b8bdd7 | endif
 autocmd vimrc ColorScheme sacredforest hi Comment guifg=grey
+autocmd vimrc ColorScheme oxocarbon hi Comment guifg=grey
 autocmd vimrc ColorScheme lackluster* hi Comment guifg=grey27
 autocmd vimrc ColorScheme lackluster* hi Normal guifg=grey70
 autocmd vimrc ColorScheme lunaperche hi! link Type PreProc
