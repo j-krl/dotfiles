@@ -65,7 +65,8 @@ set foldlevel=100
 set foldlevelstart=100
 set background=dark
 let g:maplocalleader = "_"
-let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "css", "json", "vim", "lua"]
+let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
+        \"typescriptreact", "html", "css", "json", "vim", "lua"]
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 
@@ -92,9 +93,9 @@ let g:slime_bracketed_paste = 1
 " Text manipulation
 nnoremap <leader>p <cmd>put "<cr>
 nnoremap <leader>P <cmd>put! "<cr>
-nnoremap <space>y "+y
-nnoremap <space>p "+p
-nnoremap <space>P "+P
+noremap <space>y "+y
+noremap <space>p "+p
+noremap <space>P "+P
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
@@ -108,12 +109,9 @@ inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
 " Hungry delete
-inoremap <silent><expr><bs> 
-  \ (&indentexpr isnot '' ? &indentkeys : &cinkeys) =~? '!\^F' &&
-  \ &backspace =~? '.*eol\&.*start\&.*indent\&' &&
-  \ !search('\S','nbW',line('.')) ? (col('.') != 1 ? "\<C-U>" : "") .
-  \ "\<bs>" . (getline(line('.')-1) =~ '\S' ? "" : "\<C-F>") : "\<bs>"
+inoremap <silent> <expr> <bs> !search('\S','nbW',line('.')) ? (col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"
 inoremap <c-bs> <bs>
+
 
 " Vim surround
 nmap dsf dib%hviel%p
@@ -128,7 +126,7 @@ nnoremap <backspace> <C-^>
 nnoremap <leader>b :b 
 nnoremap <leader>f :find 
 nnoremap <leader>F :vert sf 
-nnoremap <leader>d :Fdqf 
+nnoremap <leader>d :Findqf<space>
 nnoremap <leader>g :grep ''<left>
 nnoremap <leader>G :grep <C-R><C-W><cr>
 nnoremap <leader>z :Zgrep 
@@ -154,10 +152,12 @@ nnoremap <silent> <expr> <leader>cn ":cnewer " .. v:count1 .. "<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
 nnoremap <leader>cf :Cfilter 
 nnoremap <leader>cz :Cfuzzy 
-command! -nargs=1 -bang Cfuzzy call FuzzyFilterQf(<f-args>, !<bang>0)
+command! -nargs=1 -bang Cfuzzy call FuzzyFilterQf(<f-args>, !<bang>0, 1)
 command! -nargs=+ -complete=file_in_path Findqf call FdSetQuickfix(<f-args>)
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
+
+"TODO: add optional jump bangs
 
 " WARNING: slow!
 function! FzfGrep(query, path=".")
@@ -167,28 +167,37 @@ function! FzfGrep(query, path=".")
     let &grepprg = oldgrepprg
 endfunction
 
-function! FuzzyFilterQf(pattern, jump)
+function! FuzzyFilterGrep(query, path=".") abort
+    exe "grep! '" .. a:query .. "' " .. a:path
+    let sort_query = substitute(a:query, '\.\*?', '', 'g')
+    let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
+    call FuzzyFilterQf(sort_query, 1, 0)
+endfunction
+
+function! FuzzyFilterQf(pattern, jump=0, open=1) abort
+    "TODO: to filter on bufnames you could add them to qflist with a map that
+    "includes `'bufname': bufname(val.bufnr)`
     let fuzzy_results = matchfuzzy(getqflist(), a:pattern, {'key': 'text'})
     call setqflist(fuzzy_results)
     if a:jump
         cfirst
     endif
+    if a:open
+        copen
+    endif
 endfunction
 
-function! FuzzyFilterGrep(query, path=".")
-    exe "grep '" .. a:query .. "' " .. a:path
-    let sort_query = substitute(a:query, '\.\*?', '', 'g')
-    let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
-    call FuzzyFilterQf(sort_query, 1)
-endfunction
-
-function! FdSetQuickfix(...)
-    call setqflist(map(systemlist("fd -t f --hidden " .. join(a:000, " ")),
-            \ {_, val -> {'filename': val, 'lnum': 1, 'text': val}}))
+function! FdSetQuickfix(...) abort
+    let fdresults = systemlist("fd -t f --hidden " .. join(a:000, " "))
+    if v:shell_error
+        echoerr "Fd error: " .. fdresults[0]
+        return
+    endif
+    call setqflist(map(fdresults, {_, val -> {'filename': val, 'lnum': 1, 'text': val}}))
     copen
 endfunction
 
-function! RemoveQfEntry()
+function! RemoveQfEntry() abort
     let qfData = getqflist({'idx': 0, 'title': 0, 'items': 0})
     let qfIdx = get(qfData, 'idx', 0)
     let qfTitle = get(qfData, 'title', 0)
