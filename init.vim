@@ -65,13 +65,13 @@ let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "t
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 
-function! FdFzfFindFunc(cmdarg, cmdcomplete)
-    return systemlist("fd --full-path --hidden . | fzf --filter='".. a:cmdarg .. "'")
-endfunction
-
 if exists('&findfunc') && executable('fd') && executable('fzf')
-    set findfunc=FdFzfFindFunc
+    set findfunc=FuzzyFindFunc
 endif
+
+function! FuzzyFindFunc(cmdarg, cmdcomplete)
+    return systemlist("fd --hidden . | fzf --filter='" .. a:cmdarg .. "'")
+endfunction
 
 " Plugin options
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
@@ -118,14 +118,14 @@ nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
 nnoremap <backspace> <C-^>
-nnoremap <leader>b :b 
-nnoremap <leader>f :find 
-nnoremap <leader>F :vert sf 
+nnoremap <leader>b :b<space>
+nnoremap <leader>f :find<space>
+nnoremap <leader>F :vert sf<space>
 nnoremap <leader>d :Findqf<space>
 nnoremap <leader>g :grep ''<left>
 nnoremap <leader>G :grep <C-R><C-W><cr>
-nnoremap <leader>z :Zgrep 
-nnoremap <leader>Z :Fzfgrep 
+nnoremap <leader>z :Zgrep<space>
+nnoremap <leader>Z :Fzfgrep<space>
 nnoremap <C-W>N <cmd>tabnew<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
@@ -265,6 +265,7 @@ nnoremap <space>3 :<C-U>set background=dark\|colo sorbet<cr>
 nnoremap <space>4 :<C-U>set background=dark\|colo unokai<cr>
 nnoremap <space>5 :<C-U>set background=dark\|colo slate<cr>
 nnoremap <space>6 :<C-U>set background=dark\|colo retrobox<cr>
+nnoremap <space>7 :<C-U>set background=dark\|colo habamax<cr>
 nnoremap <space>8 :<C-U>set background=light\|colo retrobox<cr>
 nnoremap <space>9 :<C-U>set background=light\|colo lunaperche<cr>
 nnoremap <space>0 :<C-U>set background=light\|colo default<cr>
@@ -305,29 +306,41 @@ autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc ColorSchemePre * hi clear
 autocmd vimrc ColorScheme lunaperche hi! link Type PreProc
+autocmd vimrc ColorScheme lunaperche hi! link Special PreProc
 autocmd vimrc ColorScheme lunaperche hi Comment guifg=grey
 autocmd vimrc ColorScheme lunaperche hi clear Constant
+autocmd vimrc ColorScheme lunaperche hi! link QuickFixLine Visual
 autocmd vimrc ColorScheme sorbet hi Comment guifg=grey
 autocmd vimrc ColorScheme sorbet hi clear Constant
 autocmd vimrc ColorScheme sorbet hi! link Special PreProc
 autocmd vimrc ColorScheme unokai hi Normal guifg=#f8f8f0 guibg=#26292c
 autocmd vimrc ColorScheme unokai hi clear Constant
-autocmd vimrc ColorScheme unokai hi clear Type
 autocmd vimrc ColorScheme unokai hi PreProc guifg=#ff6188
 autocmd vimrc ColorScheme unokai hi Statement guifg=#ff6188
 autocmd vimrc ColorScheme unokai hi Special guifg=#ff6188
+autocmd vimrc ColorScheme unokai hi! link Type PreProc
 autocmd vimrc ColorScheme unokai hi! link Identifier Function
 autocmd vimrc ColorScheme slate hi clear Constant
 autocmd vimrc ColorScheme slate hi clear Define
 autocmd vimrc ColorScheme slate hi clear Structure
 autocmd vimrc ColorScheme slate hi! link Special PreProc
 autocmd vimrc ColorScheme slate hi! link Identifier PreProc
+autocmd vimrc ColorScheme peachpuff hi! link Special PreProc
+autocmd vimrc ColorScheme peachpuff hi! link Type PreProc
+autocmd vimrc ColorScheme peachpuff hi Comment guifg=grey
+autocmd vimrc ColorScheme habamax hi clear Constant
+autocmd vimrc ColorScheme habamax hi! link Special Identifier
+autocmd vimrc ColorScheme habamax hi! link Type PreProc
+autocmd vimrc ColorScheme habamax hi! link Statement PreProc
+"autocmd vimrc ColorScheme habamax hi Statement ctermfg=109 guifg=#87afaf
+autocmd vimrc ColorScheme habamax hi Identifier ctermfg=67 guifg=#5f87af
+autocmd vimrc ColorScheme habamax hi! link QuickFixLine Visual
 autocmd vimrc ColorScheme retrobox hi clear Constant
 autocmd vimrc ColorScheme retrobox hi clear Boolean
 autocmd vimrc ColorScheme retrobox hi clear Number
 autocmd vimrc ColorScheme retrobox hi clear Float
-autocmd vimrc ColorScheme retrobox hi clear Type
-autocmd vimrc ColorScheme retrobox hi clear Delimiter
+autocmd vimrc ColorScheme retrobox hi! link Type PreProc
+autocmd vimrc ColorScheme retrobox hi! link Delimiter PreProc
 autocmd vimrc ColorScheme retrobox hi! link Identifier Keyword
 autocmd vimrc ColorScheme retrobox hi! link Special Include
 autocmd vimrc Colorscheme retrobox if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
@@ -401,13 +414,11 @@ if has("nvim")
     lua require('config')
 endif
 
-if strftime("%H") >= 20 || strftime("%H") < 7
-    set background=dark
+if strftime("%H") >= 22 || strftime("%H") < 7
+    colo habamax
 else
-    set background=light
+    colo slate
 endif
-
-colo retrobox
 
 command! PackInstall call PackInit() | call minpac#update(keys(filter(copy(minpac#pluglist), {-> !isdirectory(v:val.dir . '/.git')})))
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
