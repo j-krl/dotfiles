@@ -281,6 +281,7 @@ nnoremap yfc :let @+ = @%<cr>
 cnoremap <C-space> .*?
 cnoremap <A-9> \(
 cnoremap <A-0> \)
+cnoremap <A-space> \<space>
 
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
