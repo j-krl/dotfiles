@@ -142,17 +142,21 @@ nnoremap - <cmd>Explore<cr>
 nnoremap <leader>cc <cmd>copen<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>ch <cmd>chistory<cr>
-nnoremap <silent> <expr> <leader>co ":colder " .. v:count1 .. "<cr>"
-nnoremap <silent> <expr> <leader>cn ":cnewer " .. v:count1 .. "<cr>"
+if !has("nvim")
+    nnoremap ]q <cmd>cnext<cr>
+    nnoremap [q <cmd>cprev<cr>
+    nnoremap ]Q <cmd>clast<cr>
+    nnoremap [Q <cmd>cfirst<cr>
+endif
+nnoremap <expr> <leader>co ":<C-U>colder " .. v:count1 .. "<cr>"
+nnoremap <expr> <leader>cn ":<C-U>cnewer " .. v:count1 .. "<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
-nnoremap <leader>cf :Cfilter 
-nnoremap <leader>cz :Cfuzzy 
-command! -nargs=1 -bang Cfuzzy call FuzzyFilterQf(<f-args>, !<bang>0, 1)
+nnoremap <leader>cf :Cfilter<space>
+nnoremap <leader>cz :Cfuzzy<space>
+command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
 command! -nargs=+ -complete=file_in_path Findqf call FdSetQuickfix(<f-args>)
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
-
-"TODO: add optional jump bangs
 
 " WARNING: slow!
 function! FzfGrep(query, path=".")
@@ -166,20 +170,13 @@ function! FuzzyFilterGrep(query, path=".") abort
     exe "grep! '" .. a:query .. "' " .. a:path
     let sort_query = substitute(a:query, '\.\*?', '', 'g')
     let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
-    call FuzzyFilterQf(sort_query, 1, 0)
+    call FuzzyFilterQf(sort_query)
+    cfirst
+    copen
 endfunction
 
-function! FuzzyFilterQf(pattern, jump=0, open=1) abort
-    "TODO: to filter on bufnames you could add them to qflist with a map that
-    "includes `'bufname': bufname(val.bufnr)`
-    let fuzzy_results = matchfuzzy(getqflist(), a:pattern, {'key': 'text'})
-    call setqflist(fuzzy_results)
-    if a:jump
-        cfirst
-    endif
-    if a:open
-        copen
-    endif
+function! FuzzyFilterQf(...) abort
+    call setqflist(matchfuzzy(getqflist(), join(a:000, " "), {'key': 'text'}))
 endfunction
 
 function! FdSetQuickfix(...) abort
@@ -320,8 +317,9 @@ autocmd vimrc ColorSchemePre * hi clear
 
 autocmd vimrc ColorScheme lunaperche call s:Lunaperche()
 function! s:Lunaperche()
-    hi! link Type PreProc
     hi! link Special PreProc
+    hi! link Type Statement
+    hi! link Identifier PreProc
     hi Comment guifg=grey
     hi clear Constant
     hi! link QuickFixLine Visual
@@ -360,6 +358,7 @@ function! s:Slate()
     hi clear Define
     hi clear Structure
     hi! link Special Function
+    hi! link Function PreProc
     hi! link Identifier PreProc
 endfunction
 
