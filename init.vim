@@ -263,14 +263,14 @@ nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
 nnoremap <space>! :<C-U>set background=light\|colo default<cr>
 nnoremap <space>2 :<C-U>set background=dark\|colo lunaperche<cr>
 nnoremap <space>@ :<C-U>set background=light\|colo lunaperche<cr>
-nnoremap <space>3 :<C-U>set background=dark\|colo unokai<cr>
-nnoremap <space>4 :<C-U>set background=dark\|colo sorbet<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo wildcharm<cr>
+nnoremap <space># :<C-U>set background=light\|colo wildcharm<cr>
+nnoremap <space>4 :<C-U>set background=dark\|colo unokai<cr>
 nnoremap <space>5 :<C-U>set background=dark\|colo slate<cr>
-nnoremap <space>6 :<C-U>set background=dark\|colo retrobox<cr>
-nnoremap <space>^ :<C-U>set background=light\|colo retrobox<cr>
-nnoremap <space>7 :<C-U>set background=dark\|colo habamax<cr>
-nnoremap <space>8 :<C-U>set background=dark\|colo wildcharm<cr>
-nnoremap <space>* :<C-U>set background=light\|colo wildcharm<cr>
+nnoremap <space>6 :<C-U>set background=dark\|colo sorbet<cr>
+nnoremap <space>7 :<C-U>set background=dark\|colo retrobox<cr>
+nnoremap <space>& :<C-U>set background=light\|colo retrobox<cr>
+nnoremap <space>8 :<C-U>set background=dark\|colo habamax<cr>
 nnoremap <space>9 :<C-U>set background=light\|colo peachpuff<cr>
 
 " Misc
@@ -325,22 +325,29 @@ function! s:Lunaperche()
     hi Comment guifg=grey
     hi clear Constant
     hi! link QuickFixLine Visual
+    if &background == "light"
+        hi Visual guifg=NONE guibg=#9fb7cf
+    else
+        hi Visual guifg=NONE
+    endif
 endfunction
 
 autocmd vimrc ColorScheme sorbet call s:Sorbet()
 function! s:Sorbet()
+    hi Visual gui=NONE guifg=NONE guibg=#664600
     hi Comment guifg=grey
     hi clear Constant
-    hi! link Special PreProc
+    hi! link Special Function
 endfunction
 
 autocmd vimrc ColorScheme unokai call s:Unokai()
 function! s:Unokai()
     hi Normal guifg=#f8f8f0 guibg=#26292c
+    hi Visual gui=NONE guifg=NONE guibg=#40605b
     hi clear Constant
     hi PreProc guifg=#ff6188
     hi Statement guifg=#ff6188
-    hi Special guifg=#ff6188
+    hi! link Special Function
     hi Comment guifg=grey
     hi! link Type PreProc
     hi! link Identifier Function
@@ -348,22 +355,25 @@ endfunction
 
 autocmd vimrc ColorScheme slate call s:Slate()
 function! s:Slate()
+    hi Visual guifg=NONE guibg=#395100
     hi clear Constant
     hi clear Define
     hi clear Structure
-    hi! link Special PreProc
+    hi! link Special Function
     hi! link Identifier PreProc
 endfunction
 
 autocmd vimrc ColorScheme peachpuff call s:PeachPuff()
 function! s:PeachPuff()
-    hi! link Special PreProc
+    hi Visual guifg=NONE
+    hi! link Special Function
     hi! link Type PreProc
     hi Comment guifg=grey
 endfunction
 
 autocmd vimrc ColorScheme habamax call s:Habamax()
 function! s:Habamax()
+    hi Visual gui=NONE guifg=NONE guibg=#364646
     hi clear Constant
     hi! link Special Identifier
     hi! link Type PreProc
@@ -383,7 +393,12 @@ function! s:Retrobox()
     hi! link Delimiter PreProc
     hi! link Identifier Keyword
     hi! link Special Include
-    if &background == "dark" | highlight Normal guifg=#ebdbb2 guibg=#282828 | endif
+    if &background == "dark"
+        hi Visual guifg=NONE guibg=#42534c
+        hi Normal guifg=#ebdbb2 guibg=#282828
+    else
+        hi Visual guifg=NONE guibg=#b5d1d7
+    endif
 endfunction
 
 autocmd vimrc ColorScheme wildcharm call s:Wildcharm()
@@ -392,6 +407,11 @@ function! s:Wildcharm()
     hi! link Type PreProc
     hi! link PreProc Statement
     hi! link Special Identifier
+    if &background == "dark"
+        hi Visual gui=NONE guifg=NONE guibg=#364646
+    else
+        hi Visual gui=NONE guifg=NONE guibg=#b3dbf3
+    endif
 endfunction
 
 autocmd vimrc ColorScheme * call s:SetDiffHighlights()
