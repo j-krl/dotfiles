@@ -121,16 +121,17 @@ nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
 nnoremap <backspace> <C-^>
-nnoremap <leader>b :b<space>
-nnoremap <leader>f :find<space>
-nnoremap <leader>F :vert sf<space>
-nnoremap <leader>d :Findqf<space>
-nnoremap <leader>g :grep ''<left>
-nnoremap <leader>G :grep <C-R><C-W><cr>
-nnoremap <leader>z :Zgrep<space>
-nnoremap <leader>Z :Fzfgrep<space>
-nnoremap <leader>t :tjump<space>
-nnoremap <leader>T :tjump <C-R><C-W><cr>
+nnoremap <leader>b :<C-U>b<space>
+nnoremap <leader>B :<C-U>Git blame<cr>
+nnoremap <leader>f :<C-U>find<space>
+nnoremap <leader>F :<C-U>vert sf<space>
+nnoremap <leader>d :<C-U>Findqf<space>
+nnoremap <leader>g :<C-U>grep ''<left>
+nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
+nnoremap <leader>z :<C-U>Zgrep<space>
+nnoremap <leader>Z :<C-U>Fzfgrep<space>
+nnoremap <leader>t :<C-U>tjump<space>
+nnoremap <leader>T :<C-U>tjump <C-R><C-W><cr>
 " go to definition (not in qflist)
 nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
 " go to definition of next function call
@@ -253,10 +254,12 @@ xnoremap <silent> il g_o^
 onoremap <silent> il :normal vil<CR>
 xnoremap <silent> al $o0
 onoremap <silent> al :normal val<CR>
+" Word including "."
 onoremap <silent> ie :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
 xnoremap <silent> ie :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
 onoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
 xnoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
+" Word including many other chars except brackets and quotes
 onoremap <silent> iE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>
         \setlocal iskeyword-=.,-,=,:<cr>
 xnoremap <silent> iE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>
@@ -337,15 +340,16 @@ augroup colors
 augroup END
 
 autocmd colors ColorSchemePre * hi clear
+autocmd colors ColorScheme * hi! link pythonInclude Special
 
 autocmd colors ColorScheme lunaperche call s:Lunaperche()
 function! s:Lunaperche()
-    hi! link Special PreProc
-    hi! link Type Statement
-    hi! link Identifier PreProc
-    hi Comment guifg=grey
     hi clear Constant
+    hi Comment guifg=grey
+    hi! link Special Statement
     hi! link QuickFixLine Visual
+    hi! link Type Statement
+    hi! link Function PreProc
     if &background == "light"
         hi Visual guifg=NONE guibg=#9fb7cf
     else
@@ -355,52 +359,59 @@ endfunction
 
 autocmd colors ColorScheme sorbet call s:Sorbet()
 function! s:Sorbet()
-    hi Visual gui=NONE guifg=NONE guibg=#664600
-    hi Comment guifg=grey
     hi clear Constant
-    hi! link Special Function
+    hi clear PreProc
+    hi Comment guifg=grey
+    hi! link Special Statement
+    hi! link Type String
+    hi Visual gui=NONE guifg=NONE guibg=#664600
 endfunction
 
 autocmd colors ColorScheme unokai call s:Unokai()
 function! s:Unokai()
-    hi Normal guifg=#f8f8f0 guibg=#26292c
-    hi Visual gui=NONE guifg=NONE guibg=#40605b
     hi clear Constant
-    hi PreProc guifg=#ff6188
-    hi Statement guifg=#ff6188
-    hi! link Special Function
+    hi clear PreProc
+    " Monokai pro red
     hi Comment guifg=grey
-    hi! link Type PreProc
+    hi Statement guifg=#ff6188
     hi! link Identifier Function
+    hi! link Type String
+    hi! link Special Statement
+    hi Visual gui=NONE guifg=NONE guibg=#40605b
+    hi Normal guifg=#f8f8f0 guibg=#26292c
 endfunction
 
 autocmd colors ColorScheme slate call s:Slate()
 function! s:Slate()
-    hi Visual guifg=NONE guibg=#395100
     hi clear Constant
     hi clear Define
     hi clear Structure
-    hi! link Special Function
-    hi! link Function PreProc
-    hi! link Identifier PreProc
+    hi clear PreProc
+    hi! link Type String
+    hi! link Special Statement
+    hi! link Identifier Operator
+    hi! link Function Operator
+    hi Visual guifg=NONE guibg=#395100
 endfunction
 
 autocmd colors ColorScheme peachpuff call s:PeachPuff()
 function! s:PeachPuff()
-    hi Visual guifg=NONE
-    hi! link Special Function
-    hi! link Type PreProc
+    hi clear PreProc
     hi Comment guifg=grey
+    hi! link Special Statement
+    hi! link Type String
+    hi Visual guifg=NONE
 endfunction
 
 autocmd colors ColorScheme habamax call s:Habamax()
 function! s:Habamax()
-    hi Visual gui=NONE guifg=NONE guibg=#364646
     hi clear Constant
-    hi! link Special Identifier
-    hi! link Type PreProc
-    hi! link Statement PreProc
+    hi clear PreProc
+    hi Statement ctermfg=137 guifg=#af875f
     hi Identifier ctermfg=67 guifg=#5f87af
+    hi! link Type String
+    hi! link Special Statement
+    hi Visual gui=NONE guifg=NONE guibg=#364646
     hi! link QuickFixLine Visual
 endfunction
 
@@ -410,10 +421,13 @@ function! s:Retrobox()
     hi clear Boolean
     hi clear Number
     hi clear Float
-    hi! link Type PreProc
-    hi! link Delimiter PreProc
-    hi! link Identifier Keyword
-    hi! link Special Include
+    hi clear PreProc
+    hi clear StorageClass
+    hi! link Function Include
+    hi! link Identifier Function
+    hi! link Special Statement
+    hi! link Structure String
+    hi! link Type String
     if &background == "dark"
         hi Visual guifg=NONE guibg=#42534c
         hi Normal guifg=#ebdbb2 guibg=#282828
@@ -425,9 +439,9 @@ endfunction
 autocmd colors ColorScheme wildcharm call s:Wildcharm()
 function! s:Wildcharm()
     hi clear Constant
-    hi! link Type PreProc
-    hi! link PreProc Statement
-    hi! link Special Identifier
+    hi clear PreProc
+    hi! link Special Statement
+    hi! link Type String
     if &background == "dark"
         hi Visual gui=NONE guifg=NONE guibg=#364646
     else
