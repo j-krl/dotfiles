@@ -168,11 +168,10 @@ endfunction
 
 function! FuzzyFilterGrep(query, path=".") abort
     exe "grep! '" .. a:query .. "' " .. a:path
-    let sort_query = substitute(a:query, '\.\*?', '', 'g')
+    let sort_query = substitute(a:query, '\.\*', '', 'g')
     let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
     call FuzzyFilterQf(sort_query)
     cfirst
-    copen
 endfunction
 
 function! FuzzyFilterQf(...) abort
@@ -278,10 +277,11 @@ inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
 " Copy name of current file to system register
 nnoremap yfc :let @+ = @%<cr>
-cnoremap <C-space> .*?
+cnoremap <C-space> .*
 cnoremap <A-9> \(
 cnoremap <A-0> \)
 cnoremap <A-space> \<space>
+cnoremap <A-.> \.
 
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
