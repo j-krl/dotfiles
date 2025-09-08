@@ -338,27 +338,7 @@ augroup colors
 augroup END
 
 autocmd colors ColorSchemePre * hi clear
-
-autocmd colors ColorScheme \(default\)\@!\&* call s:ColorschemeOverrides()
-autocmd colors ColorScheme retrobox if &background == "dark" | 
-        \hi Normal guifg=#ebdbb2 guibg=#282828 | endif
-autocmd colors ColorScheme retrobox if &background == "dark" | 
-        \hi String ctermfg=214 guifg=#fabd2f | endif
-autocmd colors ColorScheme retrobox if &background == "dark" | 
-        \hi Identifier cterm=bold ctermfg=142 gui=bold guifg=#b8bb26 | endif
-autocmd colors ColorScheme retrobox if &background == "light" | 
-        \hi String ctermfg=172 guifg=#b57614 | endif
-autocmd colors ColorScheme retrobox if &background == "light" | 
-        \hi Identifier cterm=bold ctermfg=64 gui=bold guifg=#79740e | endif
-autocmd colors ColorScheme lunaperche if &background == "dark" | 
-        \hi Identifier ctermfg=116 guifg=#5fd7d7 | endif
-autocmd colors ColorScheme lunaperche if &background == "light" | 
-        \hi Identifier ctermfg=23 guifg=#005f5f | endif
-autocmd colors ColorScheme slate hi Identifier ctermfg=223 guifg=#ffd7af
-autocmd colors ColorScheme unokai hi Normal guifg=#f8f8f0 guibg=#26292c
-autocmd colors ColorScheme unokai hi Identifier ctermfg=112 guifg=#a6e22e
-" Monokai pro red
-autocmd colors ColorScheme unokai hi Statement guifg=#ff6188 
+autocmd colors ColorScheme * call s:ColorschemeOverrides()
 
 function! s:ColorschemeOverrides()
     hi clear PreProc
@@ -375,10 +355,43 @@ function! s:ColorschemeOverrides()
     hi! link Function Identifier
     hi! link Include Statement
     hi Comment guifg=grey
-    if &background == "light"
-        hi Visual guifg=NONE gui=NONE guibg=grey75
+    if &background == "dark"
+        hi Visual guifg=NONE gui=NONE guibg=grey30
+        hi DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
+        hi DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
+        hi DiffChange gui=BOLD guifg=NONE guibg=#515f64
+        hi DiffText gui=BOLD guifg=NONE guibg=#5c4306
     else
-        hi Visual guifg=NONE gui=NONE guibg=grey35
+        hi Visual guifg=NONE gui=NONE guibg=grey75
+        hi DiffAdd gui=BOLD guifg=NONE guibg=palegreen
+        hi DiffDelete gui=BOLD guifg=NONE guibg=lightred
+        hi DiffChange gui=BOLD guifg=NONE guibg=lightblue
+        hi DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
+    endif
+    " colorscheme specific
+    if g:colors_name == "retrobox"
+        if &background == "dark"
+            hi Normal guifg=#ebdbb2 guibg=#282828
+            hi String ctermfg=214 guifg=#fabd2f
+            hi Identifier cterm=bold ctermfg=142 gui=bold guifg=#b8bb26
+        else
+            hi String ctermfg=172 guifg=#b57614
+            hi Identifier cterm=bold ctermfg=64 gui=bold guifg=#79740e
+        endif
+    elseif g:colors_name == "lunaperche"
+        if &background == "dark"
+            hi Identifier ctermfg=116 guifg=#5fd7d7
+        else
+            hi Identifier ctermfg=23 guifg=#005f5f
+        endif
+    elseif g:colors_name == "unokai"
+        hi Normal guifg=#f8f8f0 guibg=#26292c
+        hi Identifier ctermfg=112 guifg=#a6e22e
+        hi Statement guifg=#ff6188 
+    elseif g:colors_name == "slate"
+        hi Identifier ctermfg=223 guifg=#ffd7af
+    elseif g:colors_name == "default" && has("nvim")
+        hi Statement ctermfg=14 guifg=NvimLightCyan
     endif
     " typescript
     hi! link typescriptMember Normal
@@ -399,21 +412,6 @@ function! s:ColorschemeOverrides()
     " vim
     hi! link vimBracket Identifier
     hi! link vimCommentString Comment
-endfunction
-
-autocmd colors ColorScheme * call s:SetDiffHighlights()
-function! s:SetDiffHighlights()
-    if &background == "dark"
-        hi DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
-        hi DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
-        hi DiffChange gui=BOLD guifg=NONE guibg=#515f64
-        hi DiffText gui=BOLD guifg=NONE guibg=#5c4306
-    else
-        hi DiffAdd gui=BOLD guifg=NONE guibg=palegreen
-        hi DiffDelete gui=BOLD guifg=NONE guibg=lightred
-        hi DiffChange gui=BOLD guifg=NONE guibg=lightblue
-        hi DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
-    endif
 endfunction
 
 """""""""""""
