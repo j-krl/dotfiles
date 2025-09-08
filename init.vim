@@ -348,12 +348,11 @@ function! s:ColorschemeOverrides()
     hi! link Boolean Constant
     hi! link Float Constant
     hi! link Number Constant
-    hi! link Boolean Constant
+    hi! link Include Statement
     hi! link Operator Statement
     hi! link Special Statement
     hi! link Structure Function
     hi! link Function Identifier
-    hi! link Include Statement
     hi Comment guifg=grey
     if &background == "dark"
         hi Visual guifg=NONE gui=NONE guibg=grey30
@@ -391,7 +390,11 @@ function! s:ColorschemeOverrides()
     elseif g:colors_name == "slate"
         hi Identifier ctermfg=223 guifg=#ffd7af
     elseif g:colors_name == "default" && has("nvim")
-        hi Statement ctermfg=14 guifg=NvimLightCyan
+        if &background == "dark"
+            hi Statement ctermfg=14 guifg=NvimLightCyan
+        else
+            hi Statement ctermfg=6 guifg=NvimDarkCyan
+        endif
     endif
     " typescript
     hi! link typescriptMember Normal
