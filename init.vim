@@ -100,14 +100,14 @@ nnoremap <space>S i<cr><esc>k$
 " Join lines like 'J' without space between
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. 
         \(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
+" Move line or selection of lines [count] lines up or down
+nnoremap <expr> <A-j> ":<C-U>m +" .. v:count1 .. " <cr>"
+nnoremap <expr> <A-k> ":<C-U>m -" .. (v:count1 + 1) .. " <cr>"
+vnoremap <expr> <A-j> ":m '>+" .. v:count1 .. "<CR>gv=gv"
+vnoremap <expr> <A-k> ":m '<-" .. (v:count1 + 1) .. "<CR>gv=gv"
 nmap ]o ]<space>j
 nmap [o [<space>k
 inoremap <C-S> <cr><esc>kA
-inoremap {<cr> {<cr>}<C-O>O
-inoremap [<cr> [<cr>]<C-O>O
-inoremap (<cr> (<cr>)<C-O>O
-" Hungry delete
-inoremap <silent> <expr> <bs> !search('\S','nbW',line('.')) ? 
         \(col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"
 inoremap <c-bs> <bs>
 " Vim surround delete surrounding function. Uses text objects defined below
@@ -121,7 +121,6 @@ nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
-nnoremap <backspace> <C-^>
 nnoremap <leader>b :<C-U>b<space>
 nnoremap <leader>B :<C-U>Git blame<cr>
 nnoremap <leader>f :<C-U>find<space>
@@ -133,6 +132,7 @@ nnoremap <leader>z :<C-U>Zgrep<space>
 nnoremap <leader>Z :<C-U>Fzfgrep<space>
 nnoremap <leader>t :<C-U>tjump<space>
 nnoremap <leader>T :<C-U>tjump <C-R><C-W><cr>
+nnoremap <backspace> <C-^>
 " go to definition (not in qflist)
 nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
 " go to definition of next function call
@@ -347,6 +347,8 @@ autocmd colors ColorScheme retrobox if &background == "dark" |
 autocmd colors ColorScheme retrobox if &background == "dark" | 
         \hi Identifier cterm=bold ctermfg=142 gui=bold guifg=#b8bb26 | endif
 autocmd colors ColorScheme retrobox if &background == "light" | 
+        \hi String ctermfg=172 guifg=#b57614 | endif
+autocmd colors ColorScheme retrobox if &background == "light" | 
         \hi Identifier cterm=bold ctermfg=64 gui=bold guifg=#79740e | endif
 autocmd colors ColorScheme lunaperche if &background == "dark" | 
         \hi Identifier ctermfg=116 guifg=#5fd7d7 | endif
@@ -376,13 +378,14 @@ function! s:ColorschemeOverrides()
     if &background == "light"
         hi Visual guifg=NONE gui=NONE guibg=grey75
     else
-        hi Visual guifg=NONE gui=NONE guibg=grey25
+        hi Visual guifg=NONE gui=NONE guibg=grey35
     endif
     " typescript
     hi! link typescriptMember Normal
     hi! link typescriptObjectLabel Normal
     hi! link typescriptTypeReference Normal
     hi! link typescriptVariable Statement
+    hi! link typescriptEnumKeyword Statement
     hi! link typescriptAssign Operator
     hi! link typescriptOperator Operator
     hi! link typescriptObjectColon Operator
@@ -392,8 +395,10 @@ function! s:ColorschemeOverrides()
     hi! link pythonFunctionCall Normal
     hi! link pythonClassVar Function
     hi! link pythonBuiltinType Normal
+    hi! link pythonBuiltinFunc Normal
     " vim
     hi! link vimBracket Identifier
+    hi! link vimCommentString Comment
 endfunction
 
 autocmd colors ColorScheme * call s:SetDiffHighlights()
