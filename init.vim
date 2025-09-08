@@ -11,6 +11,7 @@ function! PackInit() abort
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('github/copilot.vim')
+    call minpac#add('sheerun/vim-polyglot')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
@@ -271,18 +272,15 @@ xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>
 
 """ Colorschemes """
 nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
-nnoremap <space>! :<C-U>set background=light\|colo default<cr>
 nnoremap <space>2 :<C-U>set background=dark\|colo lunaperche<cr>
-nnoremap <space>@ :<C-U>set background=light\|colo lunaperche<cr>
-nnoremap <space>3 :<C-U>set background=dark\|colo wildcharm<cr>
-nnoremap <space># :<C-U>set background=light\|colo wildcharm<cr>
-nnoremap <space>4 :<C-U>set background=dark\|colo unokai<cr>
-nnoremap <space>5 :<C-U>set background=dark\|colo slate<cr>
-nnoremap <space>6 :<C-U>set background=dark\|colo sorbet<cr>
-nnoremap <space>7 :<C-U>set background=dark\|colo retrobox<cr>
-nnoremap <space>& :<C-U>set background=light\|colo retrobox<cr>
-nnoremap <space>8 :<C-U>set background=dark\|colo habamax<cr>
-nnoremap <space>9 :<C-U>set background=light\|colo peachpuff<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo unokai<cr>
+nnoremap <space>4 :<C-U>set background=dark\|colo sorbet<cr>
+nnoremap <space>5 :<C-U>set background=dark\|colo retrobox<cr>
+nnoremap <space>6 :<C-U>set background=dark\|colo habamax<cr>
+nnoremap <space>7 :<C-U>set background=light\|colo peachpuff<cr>
+nnoremap <space>8 :<C-U>set background=light\|colo retrobox<cr>
+nnoremap <space>9 :<C-U>set background=light\|colo lunaperche<cr>
+nnoremap <space>0 :<C-U>set background=light\|colo default<cr>
 
 """ Regex """
 cnoremap <C-space> .*
@@ -340,113 +338,62 @@ augroup colors
 augroup END
 
 autocmd colors ColorSchemePre * hi clear
-autocmd colors ColorScheme * hi! link pythonInclude Special
 
-autocmd colors ColorScheme lunaperche call s:Lunaperche()
-function! s:Lunaperche()
+autocmd colors ColorScheme \(default\)\@!\&* call s:ColorschemeOverrides()
+autocmd colors ColorScheme retrobox if &background == "dark" | 
+        \hi Normal guifg=#ebdbb2 guibg=#282828 | endif
+autocmd colors ColorScheme retrobox if &background == "dark" | 
+        \hi String ctermfg=214 guifg=#fabd2f | endif
+autocmd colors ColorScheme retrobox if &background == "dark" | 
+        \hi Identifier cterm=bold ctermfg=142 gui=bold guifg=#b8bb26 | endif
+autocmd colors ColorScheme retrobox if &background == "light" | 
+        \hi Identifier cterm=bold ctermfg=64 gui=bold guifg=#79740e | endif
+autocmd colors ColorScheme lunaperche if &background == "dark" | 
+        \hi Identifier ctermfg=116 guifg=#5fd7d7 | endif
+autocmd colors ColorScheme lunaperche if &background == "light" | 
+        \hi Identifier ctermfg=23 guifg=#005f5f | endif
+autocmd colors ColorScheme slate hi Identifier ctermfg=223 guifg=#ffd7af
+autocmd colors ColorScheme unokai hi Normal guifg=#f8f8f0 guibg=#26292c
+autocmd colors ColorScheme unokai hi Identifier ctermfg=112 guifg=#a6e22e
+" Monokai pro red
+autocmd colors ColorScheme unokai hi Statement guifg=#ff6188 
+
+function! s:ColorschemeOverrides()
+    hi clear PreProc
+    hi clear Type
     hi clear Constant
-    hi Comment guifg=grey
+    hi Constant gui=BOLD
+    hi! link Boolean Constant
+    hi! link Float Constant
+    hi! link Number Constant
+    hi! link Boolean Constant
+    hi! link Operator Statement
     hi! link Special Statement
-    hi! link QuickFixLine Visual
-    hi! link Type Statement
-    hi! link Function PreProc
+    hi! link Structure Function
+    hi! link Function Identifier
+    hi! link Include Statement
+    hi Comment guifg=grey
     if &background == "light"
-        hi Visual guifg=NONE guibg=#9fb7cf
+        hi Visual guifg=NONE gui=NONE guibg=grey75
     else
-        hi Visual guifg=NONE
+        hi Visual guifg=NONE gui=NONE guibg=grey25
     endif
-endfunction
-
-autocmd colors ColorScheme sorbet call s:Sorbet()
-function! s:Sorbet()
-    hi clear Constant
-    hi clear PreProc
-    hi Comment guifg=grey
-    hi! link Special Statement
-    hi! link Type String
-    hi Visual gui=NONE guifg=NONE guibg=#664600
-endfunction
-
-autocmd colors ColorScheme unokai call s:Unokai()
-function! s:Unokai()
-    hi clear Constant
-    hi clear PreProc
-    " Monokai pro red
-    hi Comment guifg=grey
-    hi Statement guifg=#ff6188
-    hi! link Identifier Function
-    hi! link Type String
-    hi! link Special Statement
-    hi Visual gui=NONE guifg=NONE guibg=#40605b
-    hi Normal guifg=#f8f8f0 guibg=#26292c
-endfunction
-
-autocmd colors ColorScheme slate call s:Slate()
-function! s:Slate()
-    hi clear Constant
-    hi clear Define
-    hi clear Structure
-    hi clear PreProc
-    hi! link Type String
-    hi! link Special Statement
-    hi! link Identifier Operator
-    hi! link Function Operator
-    hi Visual guifg=NONE guibg=#395100
-endfunction
-
-autocmd colors ColorScheme peachpuff call s:PeachPuff()
-function! s:PeachPuff()
-    hi clear PreProc
-    hi Comment guifg=grey
-    hi! link Special Statement
-    hi! link Type String
-    hi Visual guifg=NONE
-endfunction
-
-autocmd colors ColorScheme habamax call s:Habamax()
-function! s:Habamax()
-    hi clear Constant
-    hi clear PreProc
-    hi Statement ctermfg=137 guifg=#af875f
-    hi Identifier ctermfg=67 guifg=#5f87af
-    hi! link Type String
-    hi! link Special Statement
-    hi Visual gui=NONE guifg=NONE guibg=#364646
-    hi! link QuickFixLine Visual
-endfunction
-
-autocmd colors ColorScheme retrobox call s:Retrobox()
-function! s:Retrobox()
-    hi clear Constant
-    hi clear Boolean
-    hi clear Number
-    hi clear Float
-    hi clear PreProc
-    hi clear StorageClass
-    hi! link Function Include
-    hi! link Identifier Function
-    hi! link Special Statement
-    hi! link Structure String
-    hi! link Type String
-    if &background == "dark"
-        hi Visual guifg=NONE guibg=#42534c
-        hi Normal guifg=#ebdbb2 guibg=#282828
-    else
-        hi Visual guifg=NONE guibg=#b5d1d7
-    endif
-endfunction
-
-autocmd colors ColorScheme wildcharm call s:Wildcharm()
-function! s:Wildcharm()
-    hi clear Constant
-    hi clear PreProc
-    hi! link Special Statement
-    hi! link Type String
-    if &background == "dark"
-        hi Visual gui=NONE guifg=NONE guibg=#364646
-    else
-        hi Visual gui=NONE guifg=NONE guibg=#b3dbf3
-    endif
+    " typescript
+    hi! link typescriptMember Normal
+    hi! link typescriptObjectLabel Normal
+    hi! link typescriptTypeReference Normal
+    hi! link typescriptVariable Statement
+    hi! link typescriptAssign Operator
+    hi! link typescriptOperator Operator
+    hi! link typescriptObjectColon Operator
+    hi! link typescriptTypeAnnotation Operator
+    hi! link jsxBraces Identifier
+    " python
+    hi! link pythonFunctionCall Normal
+    hi! link pythonClassVar Function
+    hi! link pythonBuiltinType Normal
+    " vim
+    hi! link vimBracket Identifier
 endfunction
 
 autocmd colors ColorScheme * call s:SetDiffHighlights()
