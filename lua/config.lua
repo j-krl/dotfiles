@@ -91,7 +91,7 @@ vim.diagnostic.config({
 		severity = vim.diagnostic.severity.ERROR,
 	},
 	signs = {
-		severity = { min = vim.diagnostic.severity.WARNING },
+		severity = { min = vim.diagnostic.severity.WARN },
 	},
 })
 

@@ -311,6 +311,7 @@ nnoremap yor <cmd>set rnu!<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 nnoremap <leader>u <cmd>undolist<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
+nnoremap <F5> :Obsession<cr>
 " Omni completion
 inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
@@ -355,7 +356,7 @@ function! s:ColorschemeOverrides()
     hi! link Function Identifier
     hi Comment guifg=grey
     if &background == "dark"
-        hi Visual guifg=NONE gui=NONE guibg=grey30
+        hi Visual guifg=NONE gui=NONE guibg=grey35
         hi DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
         hi DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
         hi DiffChange gui=BOLD guifg=NONE guibg=#515f64
