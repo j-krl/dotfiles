@@ -462,12 +462,9 @@ function s:SetupReact()
     iab co const 
 endfunction
 
-augroup ftlua
-    autocmd!
-    if has('nvim')
-        autocmd FileType lua lua vim.treesitter.stop()
-    endif
-augroup END
+if has("nvim")
+    autocmd vimrc FileType lua,help,query lua vim.treesitter.stop()
+endif
 
 augroup ftmarkdown
     autocmd!

@@ -19,6 +19,9 @@ if [ $? != 0 ]; then
     tmux send-keys "cd programming" C-m
     tmux resize-pane -y 15
     tmux select-pane -t "{top}"
+    tmux new-window -t 3
+    tmux rename-window -t 3 "nb"
+    tmux split-window -h
     tmux new-window -t 9
     tmux rename-window -t 9 "cfg"
     tmux send-keys "nvcd" C-m
