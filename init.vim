@@ -10,7 +10,7 @@ function! PackInit() abort
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
-    call minpac#add('webdevel/tabulous')
+    call minpac#add('gcmt/taboo.vim')
     call minpac#add('github/copilot.vim')
     call minpac#add('sheerun/vim-polyglot')
     if has("nvim")
@@ -86,6 +86,7 @@ let g:tmux_navigator_no_mappings = 1
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
+let g:taboo_tab_format = " %N %a "
 
 """ Text manipulation """
 nnoremap <leader>p <cmd>put "<cr>
