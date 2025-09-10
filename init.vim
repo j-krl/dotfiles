@@ -110,6 +110,8 @@ vnoremap <expr> <A-k> ":m '<-" .. (v:count1 + 1) .. "<CR>gv=gv"
 nmap ]o ]<space>j
 nmap [o [<space>k
 inoremap <C-S> <cr><esc>kA
+" Hungry delete
+inoremap <silent> <expr> <bs> !search('\S','nbW',line('.')) ? 
         \(col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"
 inoremap <c-bs> <bs>
 " Vim surround delete surrounding function. Uses text objects defined below
