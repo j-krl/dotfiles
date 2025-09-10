@@ -12,6 +12,7 @@ function! PackInit() abort
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('gcmt/taboo.vim')
     call minpac#add('github/copilot.vim')
+    call minpac#add('dense-analysis/ale')
     call minpac#add('ludovicchabant/vim-gutentags')
     call minpac#add('sheerun/vim-polyglot')
     if has("nvim")
@@ -88,6 +89,11 @@ let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
 let g:taboo_tab_format = " %N %a "
+let g:ale_linters = {"python": ["ruff"]}
+let g:ale_linters_explicit = 1
+let g:ale_use_neovim_diagnostics_api = 0
+let g:ale_virtualtext_cursor = 1
+let g:ale_echo_cursor = 0
 let g:gutentags_add_default_project_roots = 0
 let g:gutentags_project_root = ['package.json', '.git']
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
@@ -174,6 +180,10 @@ if !has("nvim")
     nnoremap [q <cmd>cprev<cr>
     nnoremap ]Q <cmd>clast<cr>
     nnoremap [Q <cmd>cfirst<cr>
+    nnoremap ]l <cmd>lnext<cr>
+    nnoremap [l <cmd>lprev<cr>
+    nnoremap ]L <cmd>llast<cr>
+    nnoremap [L <cmd>lfirst<cr>
 endif
 " Annoying that there's no [count]th next tab command...
 nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
@@ -181,6 +191,8 @@ nnoremap [w gT
 nnoremap [W <cmd>tabfirst<cr>
 nnoremap ]W <cmd>tablast<cr>
 nnoremap <space>w gt
+nnoremap <leader>ll <cmd>lopen<cr>
+nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>cc <cmd>copen<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>ch <cmd>chistory<cr>
@@ -265,6 +277,9 @@ function! NavArglist(count)
     endif
     exe float2nr(next + 1) .. 'argu'
 endfunction
+
+""" ALE """
+nnoremap <C-K> <cmd>ALEDetail<cr>
 
 """ Copilot """
 imap <C-J> <Plug>(copilot-accept-word)

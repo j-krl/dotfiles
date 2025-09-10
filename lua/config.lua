@@ -1,14 +1,14 @@
 local lspconfig = require("lspconfig")
 local lsps = {
-	"lua_ls",
-	"basedpyright",
-	"ruff",
-	"ts_ls",
-	"clangd",
-	"sqlls",
-	"emmet_language_server",
-	"terraformls",
-	"vimls",
+	-- "lua_ls",
+	-- "basedpyright",
+	-- "ruff",
+	-- "ts_ls",
+	-- "clangd",
+	-- "sqlls",
+	-- "emmet_language_server",
+	-- "terraformls",
+	-- "vimls",
 }
 for _, lsp in pairs(lsps) do
 	local setup = {}
