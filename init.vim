@@ -175,6 +175,12 @@ if !has("nvim")
     nnoremap ]Q <cmd>clast<cr>
     nnoremap [Q <cmd>cfirst<cr>
 endif
+" Annoying that there's no [count]th next tab command...
+nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
+nnoremap [w gT
+nnoremap [W <cmd>tabfirst<cr>
+nnoremap ]W <cmd>tablast<cr>
+nnoremap <space>w gt
 nnoremap <leader>cc <cmd>copen<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>ch <cmd>chistory<cr>
