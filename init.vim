@@ -398,6 +398,7 @@ function! s:ColorschemeOverrides()
     elseif g:colors_name == "slate"
         hi Identifier ctermfg=223 guifg=#ffd7af
     elseif g:colors_name == "default" && has("nvim")
+        hi TabLineSel gui=reverse
         if &background == "dark"
             hi Statement ctermfg=14 guifg=NvimLightCyan
         else
