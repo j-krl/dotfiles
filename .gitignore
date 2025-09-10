@@ -3,5 +3,6 @@ lazy-lock.json
 Session.vim
 *.swp
 *~
+tags
 pack/*
 .vimenv

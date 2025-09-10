@@ -95,7 +95,7 @@ let g:gutentags_generate_on_new = 1
 let g:gutentags_generate_on_missing = 1
 let g:gutentags_generate_on_write = 1
 let g:gutentags_generate_on_empty_buffer = 0
-let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 'bin', 'node_modules', 'cache', 'docs', 'example', '*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', '*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', '*.css', '*.scss', '*.swp', ]
+let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', '*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', '*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', '*.css', '*.scss', '*.swp', ]
 
 
 """ Text manipulation """
