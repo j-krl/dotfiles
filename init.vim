@@ -12,6 +12,7 @@ function! PackInit() abort
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('gcmt/taboo.vim')
     call minpac#add('github/copilot.vim')
+    call minpac#add('ludovicchabant/vim-gutentags')
     call minpac#add('sheerun/vim-polyglot')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
@@ -87,6 +88,15 @@ let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
 let g:taboo_tab_format = " %N %a "
+let g:gutentags_add_default_project_roots = 0
+let g:gutentags_project_root = ['package.json', '.git']
+let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 0
+let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 'bin', 'node_modules', 'cache', 'docs', 'example', '*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', '*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', '*.css', '*.scss', '*.swp', ]
+
 
 """ Text manipulation """
 nnoremap <leader>p <cmd>put "<cr>

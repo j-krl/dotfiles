@@ -55,6 +55,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 require("conform").setup({
 	formatters_by_ft = {
 		sh = { "beautysh" },
+		c = { "clang-format" },
+		cpp = { "clang-format" },
 		terraform = { "terraform_fmt" },
 		lua = { "stylua" },
 		python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
