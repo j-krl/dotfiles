@@ -10,6 +10,7 @@ function! PackInit() abort
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
+    call minpac#add('webdevel/tabulous')
     call minpac#add('github/copilot.vim')
     call minpac#add('sheerun/vim-polyglot')
     if has("nvim")
@@ -26,7 +27,6 @@ augroup vimrc
 augroup END
 
 if !has("nvim")
-    syntax on
     " noselect not on stable vim yet
     set wildmode=full:longest:lastused,full
 else
@@ -41,6 +41,7 @@ set expandtab
 set re=0
 set colorcolumn=80,88,120
 set cursorline
+set hidden
 set signcolumn=yes
 set autoread
 set termguicolors
@@ -116,6 +117,8 @@ nmap dsf dib%hviel%p
 """ File navigation """
 noremap / ms/
 noremap ? ms?
+noremap * ms*
+noremap # ms#
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>x <cmd>xa<cr>
@@ -130,6 +133,7 @@ nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
 nnoremap <leader>z :<C-U>Zgrep<space>
 nnoremap <leader>Z :<C-U>Fzfgrep<space>
+nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %<cr>
 nnoremap <leader>t :<C-U>tjump<space>
 nnoremap <leader>T :<C-U>tjump <C-R><C-W><cr>
 nnoremap <backspace> <C-^>
@@ -310,6 +314,8 @@ endfunction
 nnoremap yor <cmd>set rnu!<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 nnoremap <leader>u <cmd>undolist<cr>
+" Expand default zM behaviour to allow specifying a foldlevel with [count]. Without a 
+" [count], the behaviour is unchanged.
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 nnoremap <F5> :Obsession<cr>
 " Omni completion
@@ -493,4 +499,3 @@ command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
-

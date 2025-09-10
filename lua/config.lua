@@ -87,11 +87,9 @@ require("conform").setup({
 
 vim.diagnostic.config({
 	severity_sort = true,
-	virtual_text = {
-		severity = vim.diagnostic.severity.ERROR,
-	},
+	virtual_text = false,
 	signs = {
-		severity = { min = vim.diagnostic.severity.WARN },
+		severity = { min = vim.diagnostic.severity.ERROR },
 	},
 })
 
