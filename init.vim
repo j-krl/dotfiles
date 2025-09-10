@@ -20,6 +20,8 @@ function! PackInit() abort
         call minpac#add('stevearc/conform.nvim')
         "call minpac#add('nvim-lua/plenary.nvim')
         "call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
+    else
+        call minpac#add('tpope/vim-commentary')
     endif
 endfunction
 packadd cfilter
@@ -42,9 +44,9 @@ set mouse=a
 set expandtab
 set re=0
 set colorcolumn=80,88,120
+set signcolumn=yes
 set cursorline
 set hidden
-set signcolumn=yes
 set autoread
 set termguicolors
 set undofile
@@ -89,11 +91,10 @@ let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
 let g:taboo_tab_format = " %N %a "
-let g:ale_linters = {"python": ["ruff"]}
-let g:ale_linters_explicit = 1
-let g:ale_use_neovim_diagnostics_api = 0
-let g:ale_virtualtext_cursor = 1
-let g:ale_echo_cursor = 0
+let g:ale_linters = {
+    \"python": ["ruff"],
+    \"c": ["clangtidy"]
+\}
 let g:gutentags_add_default_project_roots = 0
 let g:gutentags_project_root = ['package.json', '.git']
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
@@ -102,6 +103,14 @@ let g:gutentags_generate_on_missing = 1
 let g:gutentags_generate_on_write = 1
 let g:gutentags_generate_on_empty_buffer = 0
 let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', '*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', '*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', '*.css', '*.scss', '*.swp', ]
+let g:ale_linters_explicit = 1
+let g:ale_use_neovim_diagnostics_api = 0
+let g:ale_virtualtext_cursor = 1
+let g:ale_echo_cursor = 0
+if has("nvim")
+    let g:gutentags_enabled = 0
+    let g:ale_enabled = 0
+endif
 
 
 """ Text manipulation """
@@ -359,6 +368,9 @@ nnoremap <leader>A <cmd>!git add %<cr>
 nnoremap yrc :let @+ = @%<cr>
 " Copy last yank to system register
 nnoremap yrs :let @+ = @0<cr>
+if !has("nvim")
+    nnoremap <silent> <C-L> <cmd>nohl<cr>
+endif
 
 """"""""""""""""
 " Autocommands "
@@ -394,7 +406,10 @@ function! s:ColorschemeOverrides()
     hi! link Special Statement
     hi! link Structure Function
     hi! link Function Identifier
-    hi Comment guifg=grey
+    hi Comment guifg=grey50
+    if !has("nvim")
+        hi! link VertSplit StatusLineNC
+    endif
     if &background == "dark"
         hi Visual guifg=NONE gui=NONE guibg=grey35
         hi DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
