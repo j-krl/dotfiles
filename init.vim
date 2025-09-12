@@ -193,6 +193,8 @@ if !has("nvim")
     nnoremap [l <cmd>lprev<cr>
     nnoremap ]L <cmd>llast<cr>
     nnoremap [L <cmd>lfirst<cr>
+    nnoremap ]<space> mmo<esc>`m<cmd>delm m<cr>
+    nnoremap [<space> mmO<esc>`m<cmd>delm m<cr>
 endif
 " Annoying that there's no [count]th next tab command...
 nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
