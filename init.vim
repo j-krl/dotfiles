@@ -10,7 +10,6 @@ function! PackInit() abort
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
-    call minpac#add('gcmt/taboo.vim')
     call minpac#add('github/copilot.vim')
     call minpac#add('dense-analysis/ale')
     call minpac#add('ludovicchabant/vim-gutentags')
@@ -69,7 +68,11 @@ let g:maplocalleader = "_"
 let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
         \"typescriptreact", "html", "css", "json", "vim", "lua"]
 " Add session status and arglist position to statusline
-set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
+if exists(":Obsession")
+    set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
+else
+    set statusline=%<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
+endif
 
 if exists('&findfunc') && executable('fd') && executable('fzf')
     set findfunc=FuzzyFindFunc
@@ -90,7 +93,6 @@ let g:tmux_navigator_no_mappings = 1
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
-let g:taboo_tab_format = " %N %a "
 let g:ale_linters = {
     \"python": ["ruff"],
     \"c": ["clangtidy"]
@@ -528,7 +530,9 @@ endif
 
 augroup ftmarkdown
     autocmd!
-    autocmd FileType markdown Copilot disable
+    if exists(":Copilot")
+        autocmd FileType markdown Copilot disable
+    endif
     autocmd FileType markdown iab -] - [ ] 
 augroup END
 
