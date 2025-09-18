@@ -11,8 +11,6 @@ function! PackInit() abort
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('github/copilot.vim')
-    call minpac#add('dense-analysis/ale')
-    call minpac#add('ludovicchabant/vim-gutentags')
     call minpac#add('sheerun/vim-polyglot')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
@@ -21,6 +19,8 @@ function! PackInit() abort
         "call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
     else
         call minpac#add('tpope/vim-commentary')
+        call minpac#add('dense-analysis/ale')
+        call minpac#add('ludovicchabant/vim-gutentags')
     endif
 endfunction
 packadd cfilter
