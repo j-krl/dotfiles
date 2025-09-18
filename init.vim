@@ -89,14 +89,18 @@ let g:python_indent = {
         \'closed_paren_align_last_line': v:false
     \}
 let g:vim_indent_cont = shiftwidth() * 2
+let g:vim_markdown_new_list_item_indent = 0
+let g:copilot_filetypes = {
+        \'markdown': v:false
+    \}
 let g:tmux_navigator_no_mappings = 1
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
 let g:ale_linters = {
-    \"python": ["ruff"],
-    \"c": ["clangtidy"]
-\}
+        \"python": ["ruff"],
+        \"c": ["clangtidy"]
+    \}
 let g:gutentags_add_default_project_roots = 0
 let g:gutentags_project_root = ['package.json', '.git']
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
@@ -530,9 +534,6 @@ endif
 
 augroup ftmarkdown
     autocmd!
-    if exists(":Copilot")
-        autocmd FileType markdown Copilot disable
-    endif
     autocmd FileType markdown iab -] - [ ] 
 augroup END
 
