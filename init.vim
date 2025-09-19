@@ -68,11 +68,7 @@ let g:maplocalleader = "_"
 let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
         \"typescriptreact", "html", "css", "json", "vim", "lua"]
 " Add session status and arglist position to statusline
-if exists(":Obsession")
-    set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
-else
-    set statusline=%<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
-endif
+set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 
 if exists('&findfunc') && executable('fd') && executable('fzf')
     set findfunc=FuzzyFindFunc
@@ -141,6 +137,9 @@ vnoremap <expr> <A-k> ":m '<-" .. (v:count1 + 1) .. "<CR>gv=gv"
 nmap ]o ]<space>j
 nmap [o [<space>k
 inoremap <C-S> <cr><esc>kA
+inoremap {<cr> {<cr>}<C-O>O
+inoremap [<cr> [<cr>]<C-O>O
+inoremap (<cr> (<cr>)<C-O>O
 " Hungry delete
 inoremap <silent> <expr> <bs> !search('\S','nbW',line('.')) ? 
         \(col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"

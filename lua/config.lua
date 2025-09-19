@@ -1,4 +1,3 @@
-local lspconfig = require("lspconfig")
 local lsps = {
 	"lua_ls",
 	"basedpyright",
@@ -7,9 +6,11 @@ local lsps = {
 	"clangd",
 	"sqlls",
 	"emmet_language_server",
-	"terraformls",
+	-- "terraformls",
+	"tofu_ls",
 	"vimls",
 }
+local lsp_setup = {}
 for _, lsp in pairs(lsps) do
 	local setup = {}
 	if lsp == "basedpyright" then
@@ -27,8 +28,13 @@ for _, lsp in pairs(lsps) do
 		setup = {
 			root_dir = "~/.config/sql-language-server",
 		}
+	elseif lsp == "tofu_ls" then
+		setup = {
+			filetypes = {"terraform", "opentofu", "opentofu-vars"}
+		}
 	end
-	lspconfig[lsp].setup(setup)
+	vim.lsp.config[lsp] = setup
+	vim.lsp.enable(lsp)
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -57,7 +63,7 @@ require("conform").setup({
 		sh = { "beautysh" },
 		c = { "clang-format" },
 		cpp = { "clang-format" },
-		terraform = { "terraform_fmt" },
+		terraform = { "tofu_fmt" },
 		lua = { "stylua" },
 		python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
 		sql = { "sql_formatter" },
