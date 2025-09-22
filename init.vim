@@ -159,7 +159,6 @@ nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
 nnoremap <leader>b :<C-U>b<space>
-nnoremap <leader>B :<C-U>Git blame<cr>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>vert sf<space>
 nnoremap <leader>d :<C-U>Findqf<space>
@@ -171,6 +170,9 @@ nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %<cr>
 nnoremap <leader>t :<C-U>tjump<space>
 nnoremap <leader>T :<C-U>tjump <C-R><C-W><cr>
 nnoremap <backspace> <C-^>
+" Fugitive
+nnoremap <space>fb :<C-U>Git blame<cr>
+nnoremap <space>fe :<C-U>Gedit<cr>
 " go to definition (not in qflist)
 nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
 " go to definition of next function call
