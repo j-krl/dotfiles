@@ -63,7 +63,7 @@ require("conform").setup({
 		sh = { "beautysh" },
 		c = { "clang-format" },
 		cpp = { "clang-format" },
-		terraform = { "tofu_fmt" },
+		terraform = { "tofu_fmt", "trim_newlines" },
 		lua = { "stylua" },
 		python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
 		sql = { "sql_formatter" },

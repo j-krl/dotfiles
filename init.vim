@@ -34,6 +34,7 @@ if !has("nvim")
     set wildmode=full:longest:lastused,full
 else
     set wildmode=noselect:longest:lastused,full
+    set undofile
 endif
 set relativenumber
 set number
@@ -41,6 +42,7 @@ set tabstop=4
 set shiftwidth=4
 set mouse=a
 set expandtab
+set nofixeol
 set re=0
 set colorcolumn=80,88,120
 set signcolumn=yes
@@ -48,7 +50,6 @@ set cursorline
 set hidden
 set autoread
 set termguicolors
-set undofile
 set hlsearch
 set smartindent
 set laststatus=2
