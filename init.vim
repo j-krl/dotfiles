@@ -25,10 +25,16 @@ function! PackInit() abort
 endfunction
 packadd cfilter
 
+" Global autocmd
 augroup vimrc
     autocmd!
 augroup END
 
+"""""""""""
+" Options "
+"""""""""""
+
+""" Vim options """
 if !has("nvim")
     " noselect not on stable vim yet
     set wildmode=full:longest:lastused,full
@@ -116,6 +122,9 @@ if has("nvim")
     let g:ale_enabled = 0
 endif
 
+""""""""""""
+" Mappings "
+""""""""""""
 
 """ Text manipulation """
 nnoremap <leader>p <cmd>put "<cr>
@@ -191,6 +200,7 @@ nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 nnoremap - <cmd>Explore<cr>
 nnoremap <leader>- <cmd>exe "Explore " .. getcwd()<cr>
+" vim-unimpaired mappings now provided by default in nvim >= 0.11
 if !has("nvim")
     nnoremap ]q <cmd>cnext<cr>
     nnoremap [q <cmd>cprev<cr>
@@ -224,52 +234,6 @@ command! -nargs=+ -complete=file_in_path Findqf call FdSetQuickfix(<f-args>)
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 
-" WARNING: slow!
-function! FzfGrep(query, path=".")
-    let oldgrepprg = &grepprg
-    let &grepprg = "rg --column --hidden -g '!.git/*' . " .. a:path .. 
-            \" \\| fzf --filter='$*' --delimiter : --nth 4.."
-    exe "grep " .. a:query
-    let &grepprg = oldgrepprg
-endfunction
-
-function! FuzzyFilterGrep(query, path=".") abort
-    exe "grep! '" .. a:query .. "' " .. a:path
-    let sort_query = substitute(a:query, '\.\*', '', 'g')
-    let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
-    call FuzzyFilterQf(sort_query)
-    cfirst
-endfunction
-
-function! FuzzyFilterQf(...) abort
-    call setqflist(matchfuzzy(getqflist(), join(a:000, " "), {'key': 'text'}))
-endfunction
-
-function! FdSetQuickfix(...) abort
-    let fdresults = systemlist("fd -t f --hidden " .. join(a:000, " "))
-    if v:shell_error
-        echoerr "Fd error: " .. fdresults[0]
-        return
-    endif
-    call setqflist(map(fdresults, {_, val -> {'filename': val, 'lnum': 1, 'text': val}}))
-    copen
-endfunction
-
-function! RemoveQfEntry() abort
-    let qfData = getqflist({'idx': 0, 'title': 0, 'items': 0})
-    let qfIdx = get(qfData, 'idx', 0)
-    let qfTitle = get(qfData, 'title', 0)
-    let qfItems = get(qfData, 'items', 0)
-    if qfIdx == 0
-        return
-    endif
-    let filteredItems = filter(qfItems, {idx -> idx != qfIdx - 1})
-    call setqflist([], 'r', {'items': filteredItems, 'title': qfTitle})
-    if len(filteredItems) > 0
-        exe qfIdx .. 'cc'
-    endif
-endfunction
-
 """ Fugitive """
 " Git status summary
 nnoremap <space>gg :<C-U>Git<cr>
@@ -297,19 +261,6 @@ nnoremap <leader>ad <cmd>argd %<bar>args<cr>
 nnoremap <leader>ac <cmd>%argd<cr><C-L>
 " Go to arglist file at index [count]
 nnoremap <expr> <space><space> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
-
-" Allows wrapping for nvim ]a and [a arglist mappings
-function! NavArglist(count)
-    let arglen = argc()
-    if arglen == 0
-        return
-    endif
-    let next = fmod(argidx() + a:count, arglen)
-    if next < 0
-        let next += arglen
-    endif
-    exe float2nr(next + 1) .. 'argu'
-endfunction
 
 """ ALE """
 nnoremap <C-K> <cmd>ALEDetail<cr>
@@ -366,18 +317,6 @@ command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
 
-function! s:CloseHiddenBuffers()
-    let open_buffers = []
-    for i in range(tabpagenr('$'))
-        call extend(open_buffers, tabpagebuflist(i + 1))
-    endfor
-    for num in range(1, bufnr("$") + 1)
-        if buflisted(num) && index(open_buffers, num) == -1
-            exec "bdelete ".num
-        endif
-    endfor
-endfunction
-
 """ Misc """
 nnoremap yor <cmd>set rnu!<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
@@ -396,6 +335,79 @@ nnoremap yrs :let @+ = @0<cr>
 if !has("nvim")
     nnoremap <silent> <C-L> <cmd>nohl<cr>
 endif
+
+""" Functions """
+" WARNING: slow!
+function! FzfGrep(query, path=".")
+    let oldgrepprg = &grepprg
+    let &grepprg = "rg --column --hidden -g '!.git/*' . " .. a:path .. 
+            \" \\| fzf --filter='$*' --delimiter : --nth 4.."
+    exe "grep " .. a:query
+    let &grepprg = oldgrepprg
+endfunction
+
+function! FuzzyFilterGrep(query, path=".") abort
+    exe "grep! '" .. a:query .. "' " .. a:path
+    let sort_query = substitute(a:query, '\.\*', '', 'g')
+    let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
+    call FuzzyFilterQf(sort_query)
+    cfirst
+endfunction
+
+function! FuzzyFilterQf(...) abort
+    call setqflist(matchfuzzy(getqflist(), join(a:000, " "), {'key': 'text'}))
+endfunction
+
+function! FdSetQuickfix(...) abort
+    let fdresults = systemlist("fd -t f --hidden " .. join(a:000, " "))
+    if v:shell_error
+        echoerr "Fd error: " .. fdresults[0]
+        return
+    endif
+    call setqflist(map(fdresults, {_, val -> {'filename': val, 'lnum': 1, 'text': val}}))
+    copen
+endfunction
+
+function! RemoveQfEntry() abort
+    let qfData = getqflist({'idx': 0, 'title': 0, 'items': 0})
+    let qfIdx = get(qfData, 'idx', 0)
+    let qfTitle = get(qfData, 'title', 0)
+    let qfItems = get(qfData, 'items', 0)
+    if qfIdx == 0
+        return
+    endif
+    let filteredItems = filter(qfItems, {idx -> idx != qfIdx - 1})
+    call setqflist([], 'r', {'items': filteredItems, 'title': qfTitle})
+    if len(filteredItems) > 0
+        exe qfIdx .. 'cc'
+    endif
+endfunction
+
+" Allows wrapping for nvim ]a and [a arglist mappings
+function! NavArglist(count)
+    let arglen = argc()
+    if arglen == 0
+        return
+    endif
+    let next = fmod(argidx() + a:count, arglen)
+    if next < 0
+        let next += arglen
+    endif
+    exe float2nr(next + 1) .. 'argu'
+endfunction
+
+function! s:CloseHiddenBuffers()
+    let open_buffers = []
+    for i in range(tabpagenr('$'))
+        call extend(open_buffers, tabpagebuflist(i + 1))
+    endfor
+    for num in range(1, bufnr("$") + 1)
+        if buflisted(num) && index(open_buffers, num) == -1
+            exec "bdelete ".num
+        endif
+    endfor
+endfunction
+
 
 """"""""""""""""
 " Autocommands "
