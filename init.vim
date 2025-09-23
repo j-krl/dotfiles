@@ -161,7 +161,7 @@ nnoremap <leader>W <cmd>wa<cr>
 nnoremap <leader>b :<C-U>b<space>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>vert sf<space>
-nnoremap <leader>d :<C-U>Findqf<space>
+nnoremap <leader>d :<C-U>Findqf ''<left>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
 nnoremap <leader>z :<C-U>Zgrep<space>
