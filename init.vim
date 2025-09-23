@@ -6,6 +6,7 @@ function! PackInit() abort
     call minpac#add('christoomey/vim-tmux-navigator')
     call minpac#add('jeetsukumaran/vim-indentwise')
     call minpac#add('jpalardy/vim-slime')
+    call minpac#add('gcmt/taboo.vim')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
@@ -53,6 +54,7 @@ set re=0
 set colorcolumn=80,88,120
 set signcolumn=yes
 set cursorline
+set sessionoptions+=globals
 set hidden
 set autoread
 set termguicolors
@@ -76,7 +78,6 @@ let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "t
         \"typescriptreact", "html", "css", "json", "vim", "lua"]
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
-
 if exists('&findfunc') && executable('fd') && executable('fzf')
     set findfunc=FuzzyFindFunc
 endif
@@ -88,6 +89,7 @@ endfunction
 """ Plugin options """
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:netrw_altv = 1
+let g:netrw_alto = 1
 let g:python_indent = {
         \'open_paren': 'shiftwidth()',
         \'closed_paren_align_last_line': v:false
@@ -98,6 +100,8 @@ let g:copilot_filetypes = {
         \'markdown': v:false
     \}
 let g:tmux_navigator_no_mappings = 1
+let g:taboo_tab_format = " %N %P "
+let g:taboo_renamed_tab_format = " %N %l "
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
@@ -184,9 +188,6 @@ nnoremap <backspace> <C-^>
 nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
 " go to definition of next function call
 nnoremap gl t(<C-]>
-nnoremap <C-W>N <cmd>tabnew<cr>
-nnoremap <C-W>C <cmd>tabcl<cr>
-nnoremap <C-W>Z <cmd>tab split<cr>
 " close opposite horizontal split
 nnoremap <C-W>X <C-W>x<C-W>c
 nnoremap <C-W>v <C-W>v<C-W>w
@@ -199,7 +200,7 @@ nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 nnoremap - <cmd>Explore<cr>
-nnoremap <leader>- <cmd>exe "Explore " .. getcwd()<cr>
+nnoremap <space>- <cmd>exe "Explore " .. getcwd()<cr>
 " vim-unimpaired mappings now provided by default in nvim >= 0.11
 if !has("nvim")
     nnoremap ]q <cmd>cnext<cr>
@@ -218,7 +219,7 @@ nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
 nnoremap [w gT
 nnoremap [W <cmd>tabfirst<cr>
 nnoremap ]W <cmd>tablast<cr>
-nnoremap <space>w gt
+nnoremap <leader><leader> gt
 nnoremap <leader>ll <cmd>lopen<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>cc <cmd>copen<cr>
@@ -233,6 +234,13 @@ command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
 command! -nargs=+ -complete=file_in_path Findqf call FdSetQuickfix(<f-args>)
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
+
+""" Tabs """
+nnoremap <C-W>N <cmd>tabnew\|Explore<cr>
+nnoremap <C-W>C <cmd>tabcl<cr>
+nnoremap <C-W>Z <cmd>tab split<cr>
+nnoremap <C-W>S :<C-U>exe v:count .. "tab split"<cr>
+nnoremap <C-W>M :<C-U>exe (tabpagenr() < v:count ? v:count : (v:count - 1)) .. "tabmove"<cr>
 
 """ Fugitive """
 " Git status summary
@@ -329,7 +337,7 @@ nnoremap <F5> :Obsession<cr>
 inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
 " Copy name of current file to system register
-nnoremap yrc :let @+ = @%<cr>
+nnoremap yrf :let @+ = @%<cr>
 " Copy last yank to system register
 nnoremap yrs :let @+ = @0<cr>
 if !has("nvim")
@@ -483,6 +491,7 @@ function! s:ColorschemeOverrides()
         hi Statement guifg=#ff6188 
     elseif g:colors_name == "slate"
         hi Identifier ctermfg=223 guifg=#ffd7af
+        hi! link Tabline Comment
     elseif g:colors_name == "default" && has("nvim")
         hi TabLineSel gui=reverse
         if &background == "dark"
