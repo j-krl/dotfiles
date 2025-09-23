@@ -10,14 +10,15 @@ function! PackInit() abort
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
+    call minpac#add('tpope/vim-rhubarb')
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('github/copilot.vim')
     call minpac#add('sheerun/vim-polyglot')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
-        "call minpac#add('nvim-lua/plenary.nvim')
-        "call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
+        call minpac#add('nvim-lua/plenary.nvim')
+        call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
     else
         call minpac#add('tpope/vim-commentary')
         call minpac#add('dense-analysis/ale')
@@ -66,6 +67,7 @@ set wildmenu
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set wildoptions=pum,tagfile
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
+set tabclose=left
 set guicursor=
 set fillchars=diff:\
 set foldmethod=indent
@@ -196,10 +198,10 @@ nnoremap <C-W>s <C-W>s<C-W>w
 " go to definition in vertical split
 nmap <C-W>[ <C-W>v<C-]>
 nmap <C-W>V <C-W>o<C-W>v
-nnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
-nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
-nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
-nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
+noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
+noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
+noremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
+noremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 nnoremap - <cmd>Explore<cr>
 nnoremap <leader>- <cmd>Rexplore<cr>
 nnoremap <space>- <cmd>exe "Explore " .. getcwd()<cr>
@@ -217,16 +219,13 @@ if !has("nvim")
     nnoremap [<space> mmO<esc>`m<cmd>delm m<cr>
 endif
 " Annoying that there's no [count]th next tab command...
-nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
-nnoremap [w gT
-nnoremap [W <cmd>tabfirst<cr>
-nnoremap ]W <cmd>tablast<cr>
 nnoremap <leader><leader> gt
 nnoremap <leader>ll <cmd>lopen<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>cc <cmd>copen<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>ch <cmd>chistory<cr>
+nnoremap <leader>cl <cmd>clist<cr>
 nnoremap <expr> <leader>co ":<C-U>colder " .. v:count1 .. "<cr>"
 nnoremap <expr> <leader>cn ":<C-U>cnewer " .. v:count1 .. "<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
@@ -238,16 +237,25 @@ command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 
 """ Tabs """
+nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
+nnoremap [w gT
+nnoremap [W <cmd>tabfirst<cr>
+nnoremap ]W <cmd>tablast<cr>
 nnoremap <C-W>N <cmd>tabnew\|Explore<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W>Z <cmd>tab split<cr>
+nnoremap <C-W><tab> g<tab>
 nnoremap <C-W>S :<C-U>exe v:count .. "tab split"<cr>
-nnoremap <C-W>M :<C-U>exe (tabpagenr() < v:count ? v:count : (v:count - 1)) .. "tabmove"<cr>
+" Move tab to the end without a [count] otherwise move to [count]th index
+nnoremap <C-W>M :<C-U>exe (v:count > 0 ? (tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
+" Change tab's working directory to the current file
+nnoremap <C-w>D :<C-U>exe "tcd " .. (&filetype == "netrw" ? "%" : "%:h")<cr>
 
 """ Fugitive/Git """
 " Git status summary
 nnoremap <space>gg :<C-U>Git<cr>
 nnoremap <space>gb :<C-U>Git blame<cr>
+nnoremap <space>gB :<C-U>GBrowse<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
 nnoremap <space>ge :<C-U>Gedit<space>
@@ -341,8 +349,14 @@ inoremap <C-Space> <C-X><C-O>
 nnoremap <leader>A <cmd>!git add %<cr>
 " Copy name of current file to system register
 nnoremap yrf :let @+ = @%<cr>
+" Copy file path from $HOME to head of file name to system register
+nnoremap yrh :let @+ = expand("%:~:h")<cr>
+" Copy file path up to head of file name to system register
+nnoremap yrH :let @+ = expand("%:p:h")<cr>
 " Copy last yank to system register
 nnoremap yrs :let @+ = @0<cr>
+" Copy name of current branch to system register
+nnoremap yrb :let @+ = system("git branch --show-current")<cr>
 if !has("nvim")
     nnoremap <silent> <C-L> <cmd>nohl<cr>
 endif
@@ -426,7 +440,7 @@ endfunction
 
 autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
-autocmd VimEnter * if argc() == 0 | Explore! | endif
+autocmd VimEnter * if argc() == 0 && empty(v:this_session) | Explore! | endif
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
@@ -571,13 +585,12 @@ endfunction
 
 augroup ftmarkdown
     autocmd!
-    autocmd FileType markdown iab -] - [ ] 
+    autocmd FileType markdown iab -] - [ ]
 augroup END
 
-augroup ftnetrw
+augroup ftcopilot
     autocmd!
-    " Janky workaround for opening netrw tree view faster
-    autocmd FileType netrw nmap <localleader>i iii
+    autocmd FileType copilot-chat Copilot disable
 augroup END
 
 " Filetypes where treesitter is enabled by default in Neovim
