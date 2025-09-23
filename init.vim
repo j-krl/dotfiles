@@ -81,6 +81,7 @@ endfunction
 
 """ Plugin options """
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
+let g:netrw_altv = 1
 let g:python_indent = {
         \'open_paren': 'shiftwidth()',
         \'closed_paren_align_last_line': v:false
@@ -189,6 +190,7 @@ nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 nnoremap - <cmd>Explore<cr>
+nnoremap <leader>- <cmd>exe "Explore " .. getcwd()<cr>
 if !has("nvim")
     nnoremap ]q <cmd>cnext<cr>
     nnoremap [q <cmd>cprev<cr>
