@@ -90,6 +90,7 @@ endfunction
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:netrw_altv = 1
 let g:netrw_alto = 1
+let g:netrw_banner = 0
 let g:python_indent = {
         \'open_paren': 'shiftwidth()',
         \'closed_paren_align_last_line': v:false
@@ -200,6 +201,7 @@ nnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 nnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 nnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 nnoremap - <cmd>Explore<cr>
+nnoremap <leader>- <cmd>Rexplore<cr>
 nnoremap <space>- <cmd>exe "Explore " .. getcwd()<cr>
 " vim-unimpaired mappings now provided by default in nvim >= 0.11
 if !has("nvim")
@@ -242,7 +244,7 @@ nnoremap <C-W>Z <cmd>tab split<cr>
 nnoremap <C-W>S :<C-U>exe v:count .. "tab split"<cr>
 nnoremap <C-W>M :<C-U>exe (tabpagenr() < v:count ? v:count : (v:count - 1)) .. "tabmove"<cr>
 
-""" Fugitive """
+""" Fugitive/Git """
 " Git status summary
 nnoremap <space>gg :<C-U>Git<cr>
 nnoremap <space>gb :<C-U>Git blame<cr>
@@ -252,6 +254,7 @@ nnoremap <space>ge :<C-U>Gedit<space>
 nnoremap <space>gs :<C-U>Git stash<cr>
 nnoremap <space>gp :<C-U>Git stash pop<cr>
 nnoremap <space>gl :<C-U>Git log<cr>
+nnoremap <space>gc :<C-U>!git branch --show-current<cr>
 nnoremap <space>gd :<C-U>Gvdiffsplit<space>
 " Load all past revisions of the current file into the qflist
 nnoremap <space>g0 :<C-U>0Gclog<cr>
@@ -566,14 +569,21 @@ function s:SetupReact()
     iab co const 
 endfunction
 
-if has("nvim")
-    autocmd vimrc FileType lua,help,query lua vim.treesitter.stop()
-endif
-
 augroup ftmarkdown
     autocmd!
     autocmd FileType markdown iab -] - [ ] 
 augroup END
+
+augroup ftnetrw
+    autocmd!
+    " Janky workaround for opening netrw tree view faster
+    autocmd FileType netrw nmap <localleader>i iii
+augroup END
+
+" Filetypes where treesitter is enabled by default in Neovim
+if has("nvim")
+    autocmd vimrc FileType lua,help,query lua vim.treesitter.stop()
+endif
 
 """""""""
 " Final "
