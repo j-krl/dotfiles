@@ -170,9 +170,6 @@ nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %<cr>
 nnoremap <leader>t :<C-U>tjump<space>
 nnoremap <leader>T :<C-U>tjump <C-R><C-W><cr>
 nnoremap <backspace> <C-^>
-" Fugitive
-nnoremap <space>fb :<C-U>Git blame<cr>
-nnoremap <space>fe :<C-U>Gedit<cr>
 " go to definition (not in qflist)
 nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
 " go to definition of next function call
@@ -270,6 +267,21 @@ function! RemoveQfEntry() abort
         exe qfIdx .. 'cc'
     endif
 endfunction
+
+""" Fugitive """
+" Git status summary
+nnoremap <space>gg :<C-U>Git<cr>
+nnoremap <space>gb :<C-U>Git blame<cr>
+" Switch to the working directory version of the current file
+nnoremap <space>ge :<C-U>Gedit<cr>
+nnoremap <space>ge :<C-U>Gedit<space>
+nnoremap <space>gs :<C-U>Git stash<cr>
+nnoremap <space>gp :<C-U>Git stash pop<cr>
+nnoremap <space>gl :<C-U>Git log<cr>
+nnoremap <space>gd :<C-U>Gvdiffsplit<space>
+" Load all past revisions of the current file into the qflist
+nnoremap <space>g0 :<C-U>0Gclog<cr>
+nnoremap <space>gt :<C-U>Git difftool<space>
 
 """ Arglist """
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
@@ -389,6 +401,7 @@ endif
 
 autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
+autocmd VimEnter * if argc() == 0 | Explore! | endif
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif

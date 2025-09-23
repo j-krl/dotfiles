@@ -63,7 +63,7 @@ require("conform").setup({
 		sh = { "beautysh" },
 		c = { "clang-format" },
 		cpp = { "clang-format" },
-		terraform = { "tofu_fmt", "trim_newlines" },
+		terraform = { "tofu_fmt" },
 		lua = { "stylua" },
 		python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
 		sql = { "sql_formatter" },
@@ -100,6 +100,7 @@ vim.diagnostic.config({
 		severity = { min = vim.diagnostic.severity.ERROR },
 	},
 })
+vim.lsp.log.set_level(vim.log.levels.OFF)
 
 vim.keymap.set("n", "<F3>", require("conform").format)
 -- vim.keymap.set({ "n", "v" }, "<leader>.", ":<C-U>CopilotChatOpen<cr><C-W>=", { silent = true })
