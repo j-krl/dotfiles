@@ -356,6 +356,7 @@ cnoremap <A-.> \.
 """ Registers """
 " Copy name of current file to system register
 nnoremap yrf :let @+ = @%<cr>
+nnoremap yr~ :let @+ = expand("%:~")<cr>
 " Copy file path from $HOME to head of file name to system register
 nnoremap yrh :let @+ = expand("%:~:h")<cr>
 " Copy file path up to head of file name to system register
@@ -597,6 +598,18 @@ endfunction
 augroup ftcopilot
     autocmd!
     autocmd FileType copilot-chat Copilot disable
+augroup END
+
+augroup ftnetrw
+    autocmd!
+    " Janky workaround for opening netrw tree view faster
+    autocmd FileType netrw nmap <localleader>i iii
+augroup END
+
+augroup ftjinja2
+    autocmd!
+    autocmd BufRead,BufNewFile *.jinja2 set filetype=jinja2
+    autocmd FileType jinja2 setlocal commentstring={#\ %s\ #}
 augroup END
 
 if has("nvim")
