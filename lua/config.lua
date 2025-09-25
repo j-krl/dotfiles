@@ -30,7 +30,7 @@ for _, lsp in pairs(lsps) do
 		}
 	elseif lsp == "tofu_ls" then
 		setup = {
-			filetypes = {"terraform", "opentofu", "opentofu-vars"}
+			filetypes = { "terraform", "opentofu", "opentofu-vars" },
 		}
 	end
 	vim.lsp.config[lsp] = setup
@@ -61,8 +61,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 require("conform").setup({
 	formatters_by_ft = {
 		sh = { "beautysh" },
-		c = { "clang-format" },
-		cpp = { "clang-format" },
+		-- c = { "clang-format" },
+		-- cpp = { "clang-format" },
 		terraform = { "tofu_fmt" },
 		lua = { "stylua" },
 		python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },

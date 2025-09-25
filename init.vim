@@ -119,7 +119,12 @@ let g:gutentags_generate_on_new = 1
 let g:gutentags_generate_on_missing = 1
 let g:gutentags_generate_on_write = 1
 let g:gutentags_generate_on_empty_buffer = 0
-let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', '*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', '*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', '*.css', '*.scss', '*.swp', ]
+let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 
+        \'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', 
+        \'*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', 
+        \'*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', 
+        \'*.css', '*.scss', '*.swp', 
+    \]
 let g:ale_linters_explicit = 1
 let g:ale_use_neovim_diagnostics_api = 0
 let g:ale_virtualtext_cursor = 1
@@ -134,11 +139,12 @@ endif
 """"""""""""
 
 """ Text manipulation """
-nnoremap <leader>p <cmd>put "<cr>
-nnoremap <leader>P <cmd>put! "<cr>
 noremap <space>y "+y
 noremap <space>p "+p
 noremap <space>P "+P
+" put text linewise
+nnoremap <leader>p <cmd>put "<cr>
+nnoremap <leader>P <cmd>put! "<cr>
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
@@ -152,12 +158,16 @@ nnoremap <expr> <A-j> ":<C-U>m +" .. v:count1 .. " <cr>"
 nnoremap <expr> <A-k> ":<C-U>m -" .. (v:count1 + 1) .. " <cr>"
 vnoremap <expr> <A-j> ":m '>+" .. v:count1 .. "<CR>gv=gv"
 vnoremap <expr> <A-k> ":m '<-" .. (v:count1 + 1) .. "<CR>gv=gv"
-nmap ]o ]<space>j
-nmap [o [<space>k
 inoremap <C-S> <cr><esc>kA
 inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
+if !has("nvim")
+    nnoremap ]<space> mmo<esc>`m<cmd>delm m<cr>
+    nnoremap [<space> mmO<esc>`m<cmd>delm m<cr>
+endif
+nmap ]o ]<space>j
+nmap [o [<space>k
 " Hungry delete
 inoremap <silent> <expr> <bs> !search('\S','nbW',line('.')) ? 
         \(col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"
@@ -165,16 +175,28 @@ inoremap <c-bs> <bs>
 " Vim surround delete surrounding function. Uses text objects defined below
 nmap dsf dib%hviel%p
 
-""" File navigation """
-noremap / ms/
-noremap ? ms?
-noremap * ms*
-noremap # ms#
+""" Save & Quit """
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
+
+""" File navigation """
+noremap / ms/
+noremap ? ms?
+noremap * ms*
+noremap # ms#
+nnoremap <backspace> <C-^>
+" go to definition (not in qflist)
+nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
+" close opposite horizontal split
+nnoremap <C-W>X <C-W>x<C-W>c
+nnoremap <C-W>v <C-W>v<C-W>w
+nnoremap <C-W>s <C-W>s<C-W>w
+" go to definition in vertical split
+nmap <C-W>[ <C-W>v<C-]>
+nmap <C-W>V <C-W>o<C-W>v
 nnoremap <leader>b :<C-U>b<space>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>vert sf<space>
@@ -183,60 +205,56 @@ nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
 nnoremap <leader>z :<C-U>Zgrep<space>
 nnoremap <leader>Z :<C-U>Fzfgrep<space>
-nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %<cr>
+nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lopen<cr><cr>
 nnoremap <leader>t :<C-U>tjump<space>
 nnoremap <leader>T :<C-U>tjump <C-R><C-W><cr>
-nnoremap <backspace> <C-^>
-" go to definition (not in qflist)
-nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
-" go to definition of next function call
-nnoremap gl t(<C-]>
-" close opposite horizontal split
-nnoremap <C-W>X <C-W>x<C-W>c
-nnoremap <C-W>v <C-W>v<C-W>w
-nnoremap <C-W>s <C-W>s<C-W>w
-" go to definition in vertical split
-nmap <C-W>[ <C-W>v<C-]>
-nmap <C-W>V <C-W>o<C-W>v
+command! BOnly %bd|e#|bd#|norm `"
+command! BDelete e#|bd#
+command! BActive call s:CloseHiddenBuffers()
+command! -nargs=+ -complete=file_in_path Findqf call FdSetQuickfix(<f-args>)
+command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
+command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
+
+""" Netrw """
+nnoremap - <cmd>Explore<cr>
+nnoremap <leader>- <cmd>Rexplore<cr>
+nnoremap <space>- <cmd>exe "Explore " .. getcwd()<cr>
+
+""" Tmux """
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 noremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 noremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
-nnoremap - <cmd>Explore<cr>
-nnoremap <leader>- <cmd>Rexplore<cr>
-nnoremap <space>- <cmd>exe "Explore " .. getcwd()<cr>
-" vim-unimpaired mappings now provided by default in nvim >= 0.11
+
+""" Quickfix/Location list """
 if !has("nvim")
-    nnoremap ]q <cmd>cnext<cr>
-    nnoremap [q <cmd>cprev<cr>
-    nnoremap ]Q <cmd>clast<cr>
-    nnoremap [Q <cmd>cfirst<cr>
-    nnoremap ]l <cmd>lnext<cr>
-    nnoremap [l <cmd>lprev<cr>
-    nnoremap ]L <cmd>llast<cr>
-    nnoremap [L <cmd>lfirst<cr>
-    nnoremap ]<space> mmo<esc>`m<cmd>delm m<cr>
-    nnoremap [<space> mmO<esc>`m<cmd>delm m<cr>
+    nnoremap ]q <cmd>exe v:count1 .. "cnext"<cr>
+    nnoremap [q <cmd>exe v:count1 .. "cprev"<cr>
+    nnoremap ]Q <cmd>exe v:count1 .. "clast"<cr>
+    nnoremap [Q <cmd>exe v:count1 .. "cfirst"<cr>
+    nnoremap ]l <cmd>exe v:count1 .. "lnext"<cr>
+    nnoremap [l <cmd>exe v:count1 .. "lprev"<cr>
+    nnoremap ]L <cmd>exe v:count1 .. "llast"<cr>
+    nnoremap [L <cmd>exe v:count1 .. "lfirst"<cr>
 endif
-" Annoying that there's no [count]th next tab command...
-nnoremap <leader><leader> gt
 nnoremap <leader>ll <cmd>lopen<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>cc <cmd>copen<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>ch <cmd>chistory<cr>
 nnoremap <leader>cl <cmd>clist<cr>
+nnoremap <leader>lc <cmd>llist<cr>
+nnoremap <leader>c<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "cc"<cr>
+nnoremap <leader>l<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "ll"<cr>
 nnoremap <expr> <leader>co ":<C-U>colder " .. v:count1 .. "<cr>"
 nnoremap <expr> <leader>cn ":<C-U>cnewer " .. v:count1 .. "<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
 nnoremap <leader>cf :Cfilter<space>
 nnoremap <leader>cz :Cfuzzy<space>
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
-command! -nargs=+ -complete=file_in_path Findqf call FdSetQuickfix(<f-args>)
-command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
-command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 
 """ Tabs """
+nnoremap <leader><leader> gt
 nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
 nnoremap [w gT
 nnoremap [W <cmd>tabfirst<cr>
@@ -247,7 +265,8 @@ nnoremap <C-W>Z <cmd>tab split<cr>
 nnoremap <C-W><tab> g<tab>
 nnoremap <C-W>S :<C-U>exe v:count .. "tab split"<cr>
 " Move tab to the end without a [count] otherwise move to [count]th index
-nnoremap <C-W>M :<C-U>exe (v:count > 0 ? (tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
+nnoremap <C-W>M :<C-U>exe (v:count > 0 ? 
+        \(tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
 " Change tab's working directory to the current file
 nnoremap <C-w>D :<C-U>exe "tcd " .. (&filetype == "netrw" ? "%" : "%:h")<cr>
 
@@ -258,7 +277,7 @@ nnoremap <space>gb :<C-U>Git blame<cr>
 nnoremap <space>gB :<C-U>GBrowse<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
-nnoremap <space>ge :<C-U>Gedit<space>
+nnoremap <space>gE :<C-U>Gedit<space>
 nnoremap <space>gs :<C-U>Git stash<cr>
 nnoremap <space>gp :<C-U>Git stash pop<cr>
 nnoremap <space>gl :<C-U>Git log<cr>
@@ -267,6 +286,7 @@ nnoremap <space>gd :<C-U>Gvdiffsplit<space>
 " Load all past revisions of the current file into the qflist
 nnoremap <space>g0 :<C-U>0Gclog<cr>
 nnoremap <space>gt :<C-U>Git difftool<space>
+nnoremap <space>gA <cmd>!git add %<cr>
 
 """ Arglist """
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
@@ -301,7 +321,7 @@ onoremap <silent> ie :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setloca
 xnoremap <silent> ie :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
 onoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
 xnoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
-" Word including many other chars except brackets and quotes
+" Word including many other special chars except brackets and quotes
 onoremap <silent> iE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>
         \setlocal iskeyword-=.,-,=,:<cr>
 xnoremap <silent> iE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>
@@ -323,6 +343,7 @@ nnoremap <space>6 :<C-U>set background=dark\|colo retrobox<cr>
 nnoremap <space>^ :<C-U>set background=light\|colo retrobox<cr>
 nnoremap <space>7 :<C-U>set background=dark\|colo habamax<cr>
 nnoremap <space>8 :<C-U>set background=light\|colo peachpuff<cr>
+nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 
 """ Regex """
 cnoremap <C-space> .*
@@ -331,22 +352,7 @@ cnoremap <A-0> \)
 cnoremap <A-space> \<space>
 cnoremap <A-.> \.
 
-""" Buffers """
-command! BOnly %bd|e#|bd#|norm `"
-command! BDelete e#|bd#
-command! BActive call s:CloseHiddenBuffers()
-
-""" Misc """
-nnoremap yor <cmd>set rnu!<cr>
-nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
-nnoremap <leader>u <cmd>undolist<cr>
-" Expand default zM behaviour to allow specifying a foldlevel with [count]. Without a 
-" [count], the behaviour is unchanged.
-nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
-nnoremap <F5> :Obsession<cr>
-" Omni completion
-inoremap <C-Space> <C-X><C-O>
-nnoremap <leader>A <cmd>!git add %<cr>
+""" Registers """
 " Copy name of current file to system register
 nnoremap yrf :let @+ = @%<cr>
 " Copy file path from $HOME to head of file name to system register
@@ -357,6 +363,16 @@ nnoremap yrH :let @+ = expand("%:p:h")<cr>
 nnoremap yrs :let @+ = @0<cr>
 " Copy name of current branch to system register
 nnoremap yrb :let @+ = system("git branch --show-current")<cr>
+
+""" Misc """
+nnoremap yor <cmd>set rnu!<cr>
+nnoremap <leader>u <cmd>undolist<cr>
+" Expand default zM behaviour to allow specifying a foldlevel with [count]. Without a 
+" [count], the behaviour is unchanged.
+nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
+nnoremap <F5> :Obsession<cr>
+" Omni completion
+inoremap <C-Space> <C-X><C-O>
 if !has("nvim")
     nnoremap <silent> <C-L> <cmd>nohl<cr>
 endif
@@ -438,6 +454,7 @@ endfunction
 " Autocommands "
 """"""""""""""""
 
+""" Misc """
 autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd VimEnter * if argc() == 0 && empty(v:this_session) | Explore! | endif
@@ -445,10 +462,7 @@ if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
 
-"""""""""""""""""""""""""
-" Colorscheme overrides "
-"""""""""""""""""""""""""
-
+""" Colorscheme overrides """
 augroup colors
     autocmd!
 augroup END
@@ -538,10 +552,7 @@ function! s:ColorschemeOverrides()
     hi! link vimCommentString Comment
 endfunction
 
-"""""""""""""
-" Filetypes "
-"""""""""""""
-
+""" Filetypes """
 augroup ftpython
     autocmd!
     autocmd FileType python call s:SetupPython()
@@ -580,22 +591,15 @@ function s:SetupReact()
             \call search('^\(export \)\=const', 'W')\|endfor<cr>
     noremap <silent> <buffer> [1 <cmd>for i in range(v:count1)\|
             \call search('^\(export \)\=const', 'bW')\|endfor<cr>
-    iab co const 
 endfunction
-
-augroup ftmarkdown
-    autocmd!
-    autocmd FileType markdown iab -] - [ ]
-augroup END
 
 augroup ftcopilot
     autocmd!
     autocmd FileType copilot-chat Copilot disable
 augroup END
 
-" Filetypes where treesitter is enabled by default in Neovim
 if has("nvim")
-    autocmd vimrc FileType lua,help,query lua vim.treesitter.stop()
+    autocmd vimrc FileType * lua vim.treesitter.stop()
 endif
 
 """""""""
