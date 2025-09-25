@@ -79,7 +79,7 @@ let g:maplocalleader = "_"
 let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
         \"typescriptreact", "html", "css", "json", "vim", "lua"]
 " Add session status and arglist position to statusline
-set statusline=%{ObsessionStatus()}\ %<%f\ %h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
+set statusline=%{ObsessionStatus()}\ %<%f\ \ %{FugitiveStatusline()}%h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 if exists('&findfunc') && executable('fd') && executable('fzf')
     set findfunc=FuzzyFindFunc
 endif
@@ -196,6 +196,7 @@ nnoremap <C-W>v <C-W>v<C-W>w
 nnoremap <C-W>s <C-W>s<C-W>w
 " go to definition in vertical split
 nmap <C-W>[ <C-W>v<C-]>
+nmap <C-W>] <C-W>]<C-W>r
 nmap <C-W>V <C-W>o<C-W>v
 nnoremap <leader>b :<C-U>b<space>
 nnoremap <leader>f :<C-U>find<space>
