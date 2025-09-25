@@ -261,14 +261,14 @@ nnoremap [W <cmd>tabfirst<cr>
 nnoremap ]W <cmd>tablast<cr>
 nnoremap <C-W>N <cmd>tabnew\|Explore<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
-nnoremap <C-W>Z <cmd>tab split<cr>
 nnoremap <C-W><tab> g<tab>
-nnoremap <C-W>S :<C-U>exe v:count .. "tab split"<cr>
+" Split to next tab with no [count], otherwise split to [count]th index
+nnoremap <C-W>S :<C-U>exe (v:count > 0 ? v:count - 1 : "") .. "tab split"<cr>
 " Move tab to the end without a [count] otherwise move to [count]th index
 nnoremap <C-W>M :<C-U>exe (v:count > 0 ? 
         \(tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
 " Change tab's working directory to the current file
-nnoremap <C-w>D :<C-U>exe "tcd " .. (&filetype == "netrw" ? "%" : "%:h")<cr>
+nnoremap <C-W>D :<C-U>exe "tcd " .. (&filetype == "netrw" ? "%" : "%:h")<cr>
 
 """ Fugitive/Git """
 " Git status summary
@@ -286,6 +286,7 @@ nnoremap <space>gd :<C-U>Gvdiffsplit<space>
 " Load all past revisions of the current file into the qflist
 nnoremap <space>g0 :<C-U>0Gclog<cr>
 nnoremap <space>gt :<C-U>Git difftool<space>
+nnoremap <space>gT :<C-U>Git difftool<cr>
 nnoremap <space>gA <cmd>!git add %<cr>
 
 """ Arglist """
