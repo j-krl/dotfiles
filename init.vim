@@ -247,6 +247,8 @@ nnoremap <leader>cl <cmd>clist<cr>
 nnoremap <leader>lc <cmd>llist<cr>
 nnoremap <leader>c<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "cc"<cr>
 nnoremap <leader>l<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "ll"<cr>
+nnoremap <leader>cL <cmd>echo len(getqflist())<cr>
+nnoremap <leader>lL <cmd>echo len(getloclist(winnr()))<cr>
 nnoremap <expr> <leader>co ":<C-U>colder " .. v:count1 .. "<cr>"
 nnoremap <expr> <leader>cn ":<C-U>cnewer " .. v:count1 .. "<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
