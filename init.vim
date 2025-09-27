@@ -201,7 +201,6 @@ nmap <C-W>V <C-W>o<C-W>v
 nnoremap <leader>b :<C-U>b<space>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>vert sf<space>
-nnoremap <leader>d :<C-U>Findqf ''<left>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
 nnoremap <leader>z :<C-U>Zgrep<space>
@@ -212,7 +211,7 @@ nnoremap <leader>T :<C-U>tjump <C-R><C-W><cr>
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
-command! -nargs=+ -complete=file_in_path Findqf call FdSetQuickfix(<f-args>)
+command! -nargs=+ -complete=file_in_path Fdqf call FdSetQuickfix(<f-args>)
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 
@@ -265,7 +264,8 @@ nnoremap ]W <cmd>tablast<cr>
 nnoremap <C-W>N <cmd>tabnew\|Explore<cr>
 nnoremap <C-W>C <cmd>tabcl<cr>
 nnoremap <C-W><tab> g<tab>
-" Split to next tab with no [count], otherwise split to [count]th index
+" Split to next tab with no [count], otherwise split to [count]th index. Like
+" `<C-W>T`, but don't close the original window
 nnoremap <C-W>S :<C-U>exe (v:count > 0 ? v:count - 1 : "") .. "tab split"<cr>
 " Move tab to the end without a [count] otherwise move to [count]th index
 nnoremap <C-W>M :<C-U>exe (v:count > 0 ? 
