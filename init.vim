@@ -14,6 +14,7 @@ function! PackInit() abort
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('github/copilot.vim')
     call minpac#add('sheerun/vim-polyglot')
+    call minpac#add('ludovicchabant/vim-gutentags')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
@@ -22,7 +23,6 @@ function! PackInit() abort
     else
         call minpac#add('tpope/vim-commentary')
         call minpac#add('dense-analysis/ale')
-        call minpac#add('ludovicchabant/vim-gutentags')
     endif
 endfunction
 packadd cfilter
@@ -130,7 +130,7 @@ let g:ale_use_neovim_diagnostics_api = 0
 let g:ale_virtualtext_cursor = 1
 let g:ale_echo_cursor = 0
 if has("nvim")
-    let g:gutentags_enabled = 0
+    "let g:gutentags_enabled = 0
     let g:ale_enabled = 0
 endif
 
@@ -462,7 +462,8 @@ endfunction
 """ Misc """
 autocmd vimrc QuickFixCmdPost * norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
-autocmd VimEnter * if argc() == 0 && empty(v:this_session) | Explore! | endif
+autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Explore! | endif
+"autocmd vimrc SessionWritePost * call writefile(["colorscheme " .. g:colors_name], v:this_session, "a")
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
