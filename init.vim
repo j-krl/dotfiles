@@ -93,6 +93,7 @@ let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:netrw_altv = 1
 let g:netrw_alto = 1
 let g:netrw_banner = 0
+let g:netrw_keepj = ""
 let g:python_indent = {
         \'open_paren': 'shiftwidth()',
         \'closed_paren_align_last_line': v:false
