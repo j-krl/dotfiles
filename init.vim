@@ -460,7 +460,7 @@ endfunction
 """"""""""""""""
 
 """ Misc """
-autocmd vimrc QuickFixCmdPost * norm mG
+autocmd vimrc QuickFixCmdPost * cwindow|norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Explore! | endif
 "autocmd vimrc SessionWritePost * call writefile(["colorscheme " .. g:colors_name], v:this_session, "a")
