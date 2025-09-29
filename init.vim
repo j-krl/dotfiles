@@ -7,6 +7,7 @@ function! PackInit() abort
     call minpac#add('jeetsukumaran/vim-indentwise')
     call minpac#add('jpalardy/vim-slime')
     call minpac#add('gcmt/taboo.vim')
+    call minpac#add('justinmk/vim-dirvish')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
     call minpac#add('tpope/vim-fugitive')
@@ -89,6 +90,10 @@ function! FuzzyFindFunc(cmdarg, cmdcomplete)
 endfunction
 
 """ Plugin options """
+" Sort directories above
+let g:dirvish_mode = ':sort ,^.*[\/],'
+" Disable netrw
+let g:loaded_netrwPlugin = 1
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
 let g:netrw_altv = 1
 let g:netrw_alto = 1
@@ -104,6 +109,7 @@ let g:copilot_filetypes = {
         \'markdown': v:false
     \}
 let g:tmux_navigator_no_mappings = 1
+"let g:obsession_no_bufenter = 1
 let g:taboo_tab_format = " %N %P "
 let g:taboo_renamed_tab_format = " %N %l "
 let g:slime_target = "tmux"
@@ -135,9 +141,9 @@ if has("nvim")
     let g:ale_enabled = 0
 endif
 
-""""""""""""
-" Mappings "
-""""""""""""
+"""""""""""""""""""""""
+" Mappings & Commands "
+"""""""""""""""""""""""
 
 """ Text manipulation """
 noremap <space>y "+y
@@ -216,10 +222,14 @@ command! -nargs=+ -complete=file_in_path Fdqf call FdSetQuickfix(<f-args>)
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 
-""" Netrw """
-nnoremap - <cmd>Explore<cr>
-nnoremap <leader>- <cmd>Rexplore<cr>
+""" File explorer """
+" Override calls to netrw with Dirvish
+command! -nargs=? -complete=dir Explore Dirvish <args>
+command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>
+command! -nargs=? -complete=dir Vexplore belowright vsplit | silent Dirvish <args>
+nnoremap <silent> - :<c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>:Explore<cr>
 nnoremap <space>- <cmd>exe "Explore " .. getcwd()<cr>
+"nnoremap <leader>- <cmd>Rexplore<cr>
 
 """ Tmux """
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
@@ -249,8 +259,8 @@ nnoremap <leader>c<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "cc"<cr>
 nnoremap <leader>l<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "ll"<cr>
 nnoremap <leader>cL <cmd>echo len(getqflist())<cr>
 nnoremap <leader>lL <cmd>echo len(getloclist(winnr()))<cr>
-nnoremap <expr> <leader>co ":<C-U>colder " .. v:count1 .. "<cr>"
-nnoremap <expr> <leader>cn ":<C-U>cnewer " .. v:count1 .. "<cr>"
+nnoremap <expr> <leader>co ":<C-U>colder " .. v:count1 .. "\|cwindow<cr>"
+nnoremap <expr> <leader>cn ":<C-U>cnewer " .. v:count1 .. "\|cwindow<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
 nnoremap <leader>cf :Cfilter<space>
 nnoremap <leader>cz :Cfuzzy<space>
@@ -272,7 +282,7 @@ nnoremap <C-W>S :<C-U>exe (v:count > 0 ? v:count - 1 : "") .. "tab split"<cr>
 nnoremap <C-W>M :<C-U>exe (v:count > 0 ? 
         \(tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
 " Change tab's working directory to the current file
-nnoremap <C-W>D :<C-U>exe "tcd " .. (&filetype == "netrw" ? "%" : "%:h")<cr>
+nnoremap <C-W>D :<C-U>exe "tcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" : "%:h")<cr>
 
 """ Fugitive/Git """
 " Git status summary
@@ -463,7 +473,7 @@ endfunction
 """ Misc """
 autocmd vimrc QuickFixCmdPost * cwindow|norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
-autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Explore! | endif
+autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
 "autocmd vimrc SessionWritePost * call writefile(["colorscheme " .. g:colors_name], v:this_session, "a")
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
@@ -605,16 +615,20 @@ augroup ftcopilot
     autocmd FileType copilot-chat Copilot disable
 augroup END
 
-augroup ftnetrw
-    autocmd!
-    " Janky workaround for opening netrw tree view faster
-    autocmd FileType netrw nmap <localleader>i iii
-augroup END
-
 augroup ftjinja2
     autocmd!
     autocmd BufRead,BufNewFile *.jinja2 set filetype=jinja2
     autocmd FileType jinja2 setlocal commentstring={#\ %s\ #}
+augroup END
+
+augroup ftdirvish
+    autocmd!
+    autocmd FileType dirvish nmap <buffer> - <Plug>(dirvish_up)
+    " Change dirvish split behaviour to split right/below and focus split
+    autocmd FileType dirvish nnoremap <silent> <buffer> a <cmd>call dirvish#open("rightbelow vsplit", 0)<cr>
+    autocmd FileType dirvish nnoremap <silent> <buffer> o <cmd>call dirvish#open("rightbelow split", 0)<cr>
+    autocmd FileType dirvish nmap <buffer> v a
+    autocmd FileType dirvish nnoremap <buffer> <C-L> <cmd>nohl\|Explore<cr>
 augroup END
 
 if has("nvim")
