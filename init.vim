@@ -312,7 +312,7 @@ nnoremap <F2> <C-L><cmd>args<cr>
 nnoremap <leader>aa <cmd>$arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ad <cmd>argd %<bar>args<cr>
-nnoremap <leader>ac <cmd>%argd<cr><C-L>
+nnoremap <leader>ac <cmd>%argd<cr><C-L><cmd>echo "arglist cleared"<cr>
 " Go to arglist file at index [count]
 nnoremap <expr> <space><space> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
