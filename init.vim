@@ -250,7 +250,7 @@ if !has("nvim")
 endif
 nnoremap <leader>ll <cmd>lopen<cr>
 nnoremap <leader>L <cmd>lclose<cr>
-nnoremap <leader>cc <cmd>copen<cr>
+nnoremap <leader>cc <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>ch <cmd>chistory<cr>
 nnoremap <leader>cl <cmd>clist<cr>
@@ -265,6 +265,8 @@ nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
 nnoremap <leader>cf :Cfilter<space>
 nnoremap <leader>cz :Cfuzzy<space>
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
+command! -nargs=* Csave call Saveqf(<f-args>)
+command! -bang -nargs=* Cload call Loadqf(<bang>1, <f-args>)
 
 """ Tabs """
 nnoremap <leader><leader> gt
@@ -465,6 +467,41 @@ function! s:CloseHiddenBuffers()
     endfor
 endfunction
 
+function! GetQfname(fnamearg)
+    if a:fnamearg == ""
+        return slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1)
+    else
+        return a:fnamearg
+    endif
+endfunction
+
+function! Saveqf(fname="", qfnr="$")
+    let fname = GetQfname(a:fname)
+    let savelist = getqflist({"nr": a:qfnr, "items": 1}).items
+    for entry in savelist
+        let entry.filename = expand("#" .. entry.bufnr .. ":p")
+        unlet entry.bufnr
+    endfor
+    let savelist = map(savelist, {_, val -> string(val)})
+    let fpath = expand("~") .. "/.vimcache/qf/" .. fname .. ".qf"
+    call writefile(map(savelist, "v:val"), fpath)
+endfunction
+
+function! Loadqf(jump=1, fname="")
+    let fname = GetQfname(a:fname)
+    let fpath = expand("~") .. "/.vimcache/qf/" .. fname .. ".qf"
+    try
+        let loadlist = readfile(fpath)
+    catch
+        echoerr "No qf file " .. fname
+        return
+    endtry
+    call setqflist([], ' ', {"title": fname .. ".qf", "items": map(loadlist, {_, val -> eval(val)})})
+    if a:jump
+        cwindow
+        1cc
+    endif
+endfunction
 
 """"""""""""""""
 " Autocommands "
@@ -474,7 +511,7 @@ endfunction
 autocmd vimrc QuickFixCmdPost * cwindow|norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
-"autocmd vimrc SessionWritePost * call writefile(["colorscheme " .. g:colors_name], v:this_session, "a")
+autocmd vimrc VimLeave * if !empty(v:this_session) | exe 'Csave' | endif
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
