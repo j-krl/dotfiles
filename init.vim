@@ -15,7 +15,6 @@ function! PackInit() abort
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('github/copilot.vim')
     call minpac#add('sheerun/vim-polyglot')
-    call minpac#add('ludovicchabant/vim-gutentags')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
@@ -23,7 +22,6 @@ function! PackInit() abort
         call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
     else
         call minpac#add('tpope/vim-commentary')
-        call minpac#add('dense-analysis/ale')
     endif
 endfunction
 packadd cfilter
@@ -56,6 +54,7 @@ set re=0
 set colorcolumn=80,88,120
 set signcolumn=yes
 set cursorline
+" Required for taboo to persist names in sessions
 set sessionoptions+=globals
 set hidden
 set autoread
@@ -109,49 +108,17 @@ let g:copilot_filetypes = {
         \'markdown': v:false
     \}
 let g:tmux_navigator_no_mappings = 1
-"let g:obsession_no_bufenter = 1
 let g:taboo_tab_format = " %N %P "
 let g:taboo_renamed_tab_format = " %N %l "
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
-let g:ale_linters = {
-        \"python": ["ruff"],
-        \"c": ["clangtidy"]
-    \}
-let g:gutentags_add_default_project_roots = 0
-let g:gutentags_project_root = ['package.json', '.git']
-let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
-let g:gutentags_generate_on_new = 1
-let g:gutentags_generate_on_missing = 1
-let g:gutentags_generate_on_write = 1
-let g:gutentags_generate_on_empty_buffer = 0
-let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 
-        \'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', 
-        \'*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', 
-        \'*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', 
-        \'*.css', '*.scss', '*.swp', 
-    \]
-let g:ale_linters_explicit = 1
-let g:ale_use_neovim_diagnostics_api = 0
-let g:ale_virtualtext_cursor = 1
-let g:ale_echo_cursor = 0
-if has("nvim")
-    "let g:gutentags_enabled = 0
-    let g:ale_enabled = 0
-endif
 
 """""""""""""""""""""""
 " Mappings & Commands "
 """""""""""""""""""""""
 
 """ Text manipulation """
-noremap <space>y "+y
-noremap <space>p "+p
-noremap <space>P "+P
-" put text linewise
-nnoremap <leader>p <cmd>put "<cr>
-nnoremap <leader>P <cmd>put! "<cr>
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
@@ -182,6 +149,13 @@ inoremap <c-bs> <bs>
 " Vim surround delete surrounding function. Uses text objects defined below
 nmap dsf dib%hviel%p
 
+""" System register """
+noremap <space>y "+y
+noremap <space>p "+p
+noremap <space>P "+P
+nnoremap <A-p> <cmd>put +<cr>
+nnoremap <A-P> <cmd>put! +<cr>
+
 """ Save & Quit """
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
@@ -197,7 +171,7 @@ noremap # ms#
 nnoremap <backspace> <C-^>
 " go to definition (not in qflist)
 nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
-" close opposite horizontal split
+" close opposite split
 nnoremap <C-W>X <C-W>x<C-W>c
 nnoremap <C-W>v <C-W>v<C-W>w
 nnoremap <C-W>s <C-W>s<C-W>w
@@ -207,14 +181,10 @@ nmap <C-W>] <C-W>]<C-W>r
 nmap <C-W>V <C-W>o<C-W>v
 nnoremap <leader>b :<C-U>b<space>
 nnoremap <leader>f :<C-U>find<space>
-nnoremap <leader>F :<C-U>vert sf<space>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
-nnoremap <leader>z :<C-U>Zgrep<space>
 nnoremap <leader>Z :<C-U>Fzfgrep<space>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lopen<cr><cr>
-nnoremap <leader>t :<C-U>tjump<space>
-nnoremap <leader>T :<C-U>tjump <C-R><C-W><cr>
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
@@ -229,7 +199,6 @@ command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args
 command! -nargs=? -complete=dir Vexplore belowright vsplit | silent Dirvish <args>
 nnoremap <silent> - :<c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>:Explore<cr>
 nnoremap <space>- <cmd>exe "Explore " .. getcwd()<cr>
-"nnoremap <leader>- <cmd>Rexplore<cr>
 
 """ Tmux """
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
@@ -288,21 +257,13 @@ nnoremap <C-W>D :<C-U>exe "tcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" 
 
 """ Fugitive/Git """
 " Git status summary
-nnoremap <space>gg :<C-U>Git<cr>
 nnoremap <space>gb :<C-U>Git blame<cr>
-nnoremap <space>gB :<C-U>GBrowse<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
-nnoremap <space>gE :<C-U>Gedit<space>
-nnoremap <space>gs :<C-U>Git stash<cr>
-nnoremap <space>gp :<C-U>Git stash pop<cr>
-nnoremap <space>gl :<C-U>Git log<cr>
 nnoremap <space>gc :<C-U>!git branch --show-current<cr>
-nnoremap <space>gd :<C-U>Gvdiffsplit<space>
 " Load all past revisions of the current file into the qflist
 nnoremap <space>g0 :<C-U>0Gclog<cr>
 nnoremap <space>gt :<C-U>Git difftool<space>
-nnoremap <space>gT :<C-U>Git difftool<cr>
 nnoremap <space>gA <cmd>!git add %<cr>
 
 """ Arglist """
@@ -317,9 +278,6 @@ nnoremap <leader>ad <cmd>argd %<bar>args<cr>
 nnoremap <leader>ac <cmd>%argd<cr><C-L><cmd>echo "arglist cleared"<cr>
 " Go to arglist file at index [count]
 nnoremap <expr> <space><space> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
-
-""" ALE """
-nnoremap <C-K> <cmd>ALEDetail<cr>
 
 """ Copilot """
 imap <C-J> <Plug>(copilot-accept-word)
