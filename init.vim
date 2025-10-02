@@ -67,6 +67,7 @@ set completeopt=menuone,popup
 set wildmenu
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set wildoptions=pum,tagfile
+set wildcharm=<tab>
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
 set tabclose=left
 set guicursor=
@@ -193,12 +194,14 @@ nnoremap <C-W>s <C-W>s<C-W>w
 nmap <C-W>[ <C-W>v<C-]>
 nmap <C-W>] <C-W>]<C-W>r
 nmap <C-W>V <C-W>o<C-W>v
-nnoremap <leader>b :<C-U>b<space>
+nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>f :<C-U>find<space>
+nmap <leader>F :<C-U>find <C-H><tab>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
 nnoremap <leader>Z :<C-U>Fzfgrep<space>
-nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lopen<cr><cr>
+nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
+cnoremap <C-H> <C-R>=expand("%:h")<cr>/
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
@@ -574,6 +577,9 @@ function! s:ColorschemeOverrides()
     hi! link pythonClassVar Function
     hi! link pythonBuiltinType Normal
     hi! link pythonBuiltinFunc Normal
+    " markdown
+    hi! link mkdHeading Statement
+    hi! link Title Statement
     " vim
     hi! link vimBracket Identifier
     hi! link vimCommentString Comment
