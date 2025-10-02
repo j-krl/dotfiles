@@ -15,6 +15,7 @@ function! PackInit() abort
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('github/copilot.vim')
     call minpac#add('sheerun/vim-polyglot')
+    call minpac#add('ludovicchabant/vim-gutentags')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
@@ -113,6 +114,19 @@ let g:taboo_renamed_tab_format = " %N %l "
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
+let g:gutentags_add_default_project_roots = 0
+let g:gutentags_project_root = ['package.json', '.git']
+let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 0
+let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 
+        \'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', 
+        \'*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', 
+        \'*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', 
+        \'*.css', '*.scss', '*.swp', 
+    \]
 
 """""""""""""""""""""""
 " Mappings & Commands "
@@ -260,6 +274,7 @@ nnoremap <C-W>D :<C-U>exe "tcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" 
 nnoremap <space>gb :<C-U>Git blame<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
+nnoremap <space>gE :<C-U>Gedit :%<left><left>
 nnoremap <space>gc :<C-U>!git branch --show-current<cr>
 " Load all past revisions of the current file into the qflist
 nnoremap <space>g0 :<C-U>0Gclog<cr>
