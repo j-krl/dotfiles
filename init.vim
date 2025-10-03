@@ -15,7 +15,6 @@ function! PackInit() abort
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('github/copilot.vim')
     call minpac#add('sheerun/vim-polyglot')
-    call minpac#add('ludovicchabant/vim-gutentags')
     if has("nvim")
         call minpac#add('neovim/nvim-lspconfig')
         call minpac#add('stevearc/conform.nvim')
@@ -115,19 +114,6 @@ let g:taboo_renamed_tab_format = " %N %l "
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
-let g:gutentags_add_default_project_roots = 0
-let g:gutentags_project_root = ['package.json', '.git']
-let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
-let g:gutentags_generate_on_new = 1
-let g:gutentags_generate_on_missing = 1
-let g:gutentags_generate_on_write = 1
-let g:gutentags_generate_on_empty_buffer = 0
-let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 
-        \'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', 
-        \'*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', 
-        \'*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', 
-        \'*.css', '*.scss', '*.swp', 
-    \]
 
 """""""""""""""""""""""
 " Mappings & Commands "
@@ -201,11 +187,11 @@ nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
 nnoremap <leader>Z :<C-U>Fzfgrep<space>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
-cnoremap <C-H> <C-R>=expand("%:h")<cr>/
+cnoremap <C-H> <C-R>=expand("%:.:h")<cr>/
 command! BOnly %bd|e#|bd#|norm `"
 command! BDelete e#|bd#
 command! BActive call s:CloseHiddenBuffers()
-command! -nargs=+ -complete=file_in_path Fdqf call FdSetQuickfix(<f-args>)
+command! -nargs=+ -complete=file_in_path Cfind call FdSetQuickfix(<f-args>)
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 
@@ -238,14 +224,16 @@ nnoremap <leader>ll <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>cc <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
-nnoremap <expr> <leader>ch "<cmd>" .. (v:count > 0 ? v:count : "") .. "chistory<cr>"
+nnoremap <expr> <leader>ch "<cmd>" .. (v:count > 0 ? v:count : "")
+        \.. "chistory" .. (v:count > 0 ? "\|cw" : "") .. "<cr>"
 nnoremap <expr> [h ":<C-U>colder " .. v:count1 .. "\|cwindow<cr>"
 nnoremap <expr> ]h ":<C-U>cnewer " .. v:count1 .. "\|cwindow<cr>"
-nnoremap <expr> ]H "<cmd>" .. getqflist({'nr': '$'}).nr .. "chistory<cr>"
-nnoremap [H <cmd>1chistory<cr>
+nnoremap <expr> ]H "<cmd>" .. getqflist({'nr': '$'}).nr .. "chistory\|cw<cr>"
+nnoremap [H <cmd>1chistory\|cw<cr>
 nnoremap <expr> <leader>cb '<cmd>call setqflist([], " ", 
         \{"title": getqflist({"title": 1, "nr": ' .. v:count .. '}).title, 
-        \"items": getqflist({"items": 1, "nr": ' .. v:count .. '}).items})<cr>'
+        \"items": getqflist({"items": 1, "nr": ' .. v:count .. '}).items,
+        \"nr": "$"})<cr>'
 nnoremap <leader>cL <cmd>clist<cr>
 nnoremap <leader>lL <cmd>llist<cr>
 nnoremap <leader>c<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "cc"<cr>
@@ -256,9 +244,12 @@ nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
 nnoremap <leader>cf :Cfilter<space>
 nnoremap <leader>cF :Cfilter!<space>
 nnoremap <leader>cz :Cfuzzy<space>
+nnoremap <expr> <leader>cD "<cmd>Cdelete " .. v:count .. "<cr>"
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
-command! -nargs=* Csave call Saveqf(<f-args>)
-command! -bang -nargs=* Cload call Loadqf(<bang>1, <f-args>)
+command! -nargs=? Csave call Saveqfs(<q-args>)
+command! -bang -nargs=? Cload call Loadqfs(<q-args>, <bang>1)
+command! -nargs=? Cdelete call Deleteqf(<f-args>)
+command! Cclear call setqflist([], 'f')|ccl|chistory
 
 """ Tabs """
 nnoremap <leader><leader> gt
@@ -353,18 +344,14 @@ cnoremap <A-.> \.
 
 """ Registers """
 " Copy name of current file to system register
-nnoremap yrf :let @+ = @%<cr>
+nnoremap yr% :let @+ = @%<cr>
 nnoremap yr~ :let @+ = expand("%:~")<cr>
 nnoremap yr` :let @+ = expand("%:~:h")<cr>
 nnoremap yr. :let @+ = expand("%:.")<cr>
 nnoremap yr> :let @+ = expand("%:.:h")<cr>
-" Copy file path from $HOME to head of file name to system register
 nnoremap yrh :let @+ = expand("%:~:h")<cr>
-" Copy file path up to head of file name to system register
 nnoremap yrH :let @+ = expand("%:p:h")<cr>
-" Copy last yank to system register
 nnoremap yrs :let @+ = @0<cr>
-" Copy name of current branch to system register
 nnoremap yrb :let @+ = system("git branch --show-current")<cr>
 
 """ Misc """
@@ -403,12 +390,14 @@ function! FuzzyFilterQf(...) abort
 endfunction
 
 function! FdSetQuickfix(...) abort
-    let fdresults = systemlist("fd -t f --hidden " .. join(a:000, " "))
+    let args = join(a:000, " ")
+    let fdcmd = "fd -t f --hidden " .. args
+    let fdresults = systemlist(fdcmd)
     if v:shell_error
         echoerr "Fd error: " .. fdresults[0]
         return
     endif
-    call setqflist(map(fdresults, {_, val -> {'filename': val, 'lnum': 1, 'text': val}}))
+    call setqflist([], ' ', {'title': fdcmd, 'items': map(fdresults, {_, val -> {'filename': val, 'lnum': 1, 'text': val}})})
     copen
 endfunction
 
@@ -460,32 +449,79 @@ function! GetQfname(fnamearg)
     endif
 endfunction
 
-function! Saveqf(fname="", qfnr="$")
+function! Saveqfs(fname="")
     let fname = GetQfname(a:fname)
-    let savelist = getqflist({"nr": a:qfnr, "items": 1}).items
-    for entry in savelist
-        let entry.filename = expand("#" .. entry.bufnr .. ":p")
-        unlet entry.bufnr
-    endfor
-    let savelist = map(savelist, {_, val -> string(val)})
     let fpath = expand("~") .. "/.vimcache/qf/" .. fname .. ".qf"
-    call writefile(map(savelist, "v:val"), fpath)
+    let numQfs = getqflist({'nr': '$'}).nr
+    if numQfs == 0
+        call system("rm " .. fpath)
+        return
+    endif
+    let lists = []
+    for idx in range(1, numQfs)
+        let savelist = getqflist({"nr": idx, "items": 1, "title": 1})
+        for entry in savelist.items
+            let entry.filename = expand("#" .. entry.bufnr .. ":p")
+            unlet entry.bufnr
+        endfor
+        call add(lists, string(savelist))
+    endfor
+    call writefile(lists, fpath)
 endfunction
 
-function! Loadqf(jump=1, fname="")
+function! Loadqfs(fname="", replace=1, echo=1)
     let fname = GetQfname(a:fname)
     let fpath = expand("~") .. "/.vimcache/qf/" .. fname .. ".qf"
     try
-        let loadlist = readfile(fpath)
+        let loadlists = readfile(fpath)
     catch
-        echoerr "No qf file " .. fname
+        if a:echo
+            echo "No qf file " .. fname
+        endif
         return
     endtry
-    call setqflist([], ' ', {"title": fname .. ".qf", "items": map(loadlist, {_, val -> eval(val)})})
-    if a:jump
-        cwindow
-        1cc
+    if a:replace
+        call setqflist([], 'f')
     endif
+    for entry in loadlists
+        let currlist = eval(entry)
+        call setqflist([], ' ', {"title": currlist.title, "items": currlist.items})
+    endfor
+    if a:echo
+        chistory
+    endif
+endfunction
+
+function! Deleteqf(idx=0)
+    let delidx = a:idx
+    let curidx = getqflist({'nr': 0}).nr
+    if delidx == 0
+        let delidx = curidx
+    endif
+    let qflen = getqflist({'nr': '$'}).nr
+    if qflen < delidx
+        echoerr "Invalid qf index"
+    endif
+    let qfold = []
+    let qfnew = []
+    for entry in range(1, qflen)
+        call add(qfold, getqflist({'nr': entry, 'items': 1, 'title': 1}))
+    endfor
+    call setqflist([], 'f')
+    let oldidx = 1
+    for entry in qfold
+        if oldidx != delidx
+            call setqflist([], ' ', {'title': entry.title, 'items': entry.items})
+        endif
+        let oldidx += 1
+    endfor
+    if delidx == curidx
+        exe 'sil ' .. (qflen - 1) .. 'chistory'
+        ccl
+    else
+        exe 'sil ' .. (delidx < curidx ? curidx - 1 : curidx) .. 'chistory'
+    endif
+    chistory
 endfunction
 
 """"""""""""""""
@@ -496,6 +532,7 @@ endfunction
 autocmd vimrc QuickFixCmdPost * cwindow|norm mG
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
+autocmd vimrc VimEnter * if !empty(v:this_session) | call Loadqfs("", 1, 0) | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 'Csave' | endif
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
