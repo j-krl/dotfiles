@@ -234,19 +234,21 @@ if !has("nvim")
     nnoremap ]L <cmd>exe v:count1 .. "llast"<cr>
     nnoremap [L <cmd>exe v:count1 .. "lfirst"<cr>
 endif
-nnoremap <leader>ll <cmd>lopen<cr>
+nnoremap <leader>ll <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>cc <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
-nnoremap <leader>ch <cmd>chistory<cr>
+nnoremap <expr> <leader>ch "<cmd>" .. (v:count > 0 ? v:count : "") .. "chistory<cr>"
+nnoremap <expr> [h ":<C-U>colder " .. v:count1 .. "\|cwindow<cr>"
+nnoremap <expr> ]h ":<C-U>cnewer " .. v:count1 .. "\|cwindow<cr>"
+nnoremap <expr> ]H "<cmd>" .. getqflist({'nr': '$'}).nr .. "chistory<cr>"
+nnoremap [H <cmd>1chistory<cr>
 nnoremap <leader>cl <cmd>clist<cr>
 nnoremap <leader>lc <cmd>llist<cr>
 nnoremap <leader>c<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "cc"<cr>
 nnoremap <leader>l<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "ll"<cr>
 nnoremap <leader>cL <cmd>echo len(getqflist())<cr>
 nnoremap <leader>lL <cmd>echo len(getloclist(winnr()))<cr>
-nnoremap <expr> <leader>co ":<C-U>colder " .. v:count1 .. "\|cwindow<cr>"
-nnoremap <expr> <leader>cn ":<C-U>cnewer " .. v:count1 .. "\|cwindow<cr>"
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
 nnoremap <leader>cf :Cfilter<space>
 nnoremap <leader>cz :Cfuzzy<space>
