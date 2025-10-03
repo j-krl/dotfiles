@@ -243,14 +243,18 @@ nnoremap <expr> [h ":<C-U>colder " .. v:count1 .. "\|cwindow<cr>"
 nnoremap <expr> ]h ":<C-U>cnewer " .. v:count1 .. "\|cwindow<cr>"
 nnoremap <expr> ]H "<cmd>" .. getqflist({'nr': '$'}).nr .. "chistory<cr>"
 nnoremap [H <cmd>1chistory<cr>
-nnoremap <leader>cl <cmd>clist<cr>
-nnoremap <leader>lc <cmd>llist<cr>
+nnoremap <expr> <leader>cb '<cmd>call setqflist([], " ", 
+        \{"title": getqflist({"title": 1, "nr": ' .. v:count .. '}).title, 
+        \"items": getqflist({"items": 1, "nr": ' .. v:count .. '}).items})<cr>'
+nnoremap <leader>cL <cmd>clist<cr>
+nnoremap <leader>lL <cmd>llist<cr>
 nnoremap <leader>c<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "cc"<cr>
 nnoremap <leader>l<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "ll"<cr>
-nnoremap <leader>cL <cmd>echo len(getqflist())<cr>
-nnoremap <leader>lL <cmd>echo len(getloclist(winnr()))<cr>
+nnoremap <leader>cl <cmd>echo len(getqflist())<cr>
+nnoremap <leader>lc <cmd>echo len(getloclist(winnr()))<cr>
 nnoremap <silent> <leader>cd :call RemoveQfEntry()<cr>
 nnoremap <leader>cf :Cfilter<space>
+nnoremap <leader>cF :Cfilter!<space>
 nnoremap <leader>cz :Cfuzzy<space>
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
 command! -nargs=* Csave call Saveqf(<f-args>)
