@@ -349,6 +349,9 @@ cnoremap <A-.> \.
 " Copy name of current file to system register
 nnoremap yrf :let @+ = @%<cr>
 nnoremap yr~ :let @+ = expand("%:~")<cr>
+nnoremap yr` :let @+ = expand("%:~:h")<cr>
+nnoremap yr. :let @+ = expand("%:.")<cr>
+nnoremap yr> :let @+ = expand("%:.:h")<cr>
 " Copy file path from $HOME to head of file name to system register
 nnoremap yrh :let @+ = expand("%:~:h")<cr>
 " Copy file path up to head of file name to system register
