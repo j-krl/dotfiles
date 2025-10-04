@@ -78,7 +78,7 @@ require("conform").setup({
 		svelte = { "prettier" },
 		json = { "prettier" },
 		scss = { "prettier" },
-		-- yaml = { "prettier" },
+		yaml = { "yamlfmt" },
 	},
 	format_after_save = {}, -- TODO: remove
 })
