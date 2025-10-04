@@ -186,6 +186,7 @@ nnoremap <leader>f :<C-U>find<space>
 nmap <leader>F :<C-U>find <C-H><tab>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
+nnoremap <leader>z :<C-U>Zgrep<space>
 nnoremap <leader>Z :<C-U>Fzfgrep<space>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 cnoremap <C-H> <C-R>=expand("%:.:h")<cr>/
@@ -346,15 +347,14 @@ cnoremap <A-space> \<space>
 cnoremap <A-.> \.
 
 """ Registers """
-" Copy name of current file to system register
 nnoremap yr% :let @+ = @%<cr>
 nnoremap yr~ :let @+ = expand("%:~")<cr>
 nnoremap yr` :let @+ = expand("%:~:h")<cr>
 nnoremap yr. :let @+ = expand("%:.")<cr>
 nnoremap yr> :let @+ = expand("%:.:h")<cr>
-nnoremap yrh :let @+ = expand("%:~:h")<cr>
-nnoremap yrH :let @+ = expand("%:p:h")<cr>
-nnoremap yrs :let @+ = @0<cr>
+nnoremap yrp :let @+ = expand("%:p")<cr>
+nnoremap yrP :let @+ = expand("%:p:h")<cr>
+nnoremap yr+ :let @+ = @0<cr>
 nnoremap yrb :let @+ = system("git branch --show-current")<cr>
 
 """ Misc """
@@ -536,6 +536,8 @@ autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
 autocmd vimrc VimEnter * if !empty(v:this_session) | call Loadqfs("", 1, 0) | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 'Csave' | endif
+autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
+        \'call writefile(["colorscheme " .. g:colors_name], v:this_session, "a")' | endif
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
@@ -566,7 +568,7 @@ function! s:ColorschemeOverrides()
         hi! link VertSplit StatusLineNC
     endif
     if &background == "dark"
-        hi Visual guifg=NONE gui=NONE guibg=grey35
+        hi Visual guifg=NONE gui=NONE guibg=grey25
         hi DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
         hi DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
         hi DiffChange gui=BOLD guifg=NONE guibg=#515f64
