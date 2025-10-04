@@ -115,6 +115,7 @@ let g:taboo_renamed_tab_format = " %N %l "
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
+let g:qflists = {}
 
 """""""""""""""""""""""
 " Mappings & Commands "
@@ -249,9 +250,15 @@ nnoremap <leader>cz :Cfuzzy<space>
 nnoremap <expr> <leader>cD "<cmd>Cdelete " .. v:count .. "<cr>"
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
 command! -nargs=? Csave call Saveqfs(<q-args>)
-command! -bang -nargs=? Cload call Loadqfs(<q-args>, <bang>1)
-command! -nargs=? Cdelete call Deleteqf(<f-args>)
+command! -nargs=? Cload call Loadqfs(<q-args>)
+command! -count Cdelete call Deleteqf(<count>)
 command! Cclear call setqflist([], 'f')|ccl|chistory
+command! -count -nargs=1 Cnsave call SaveNamedQf(<q-args>, <count>)
+command! -nargs=1 -complete=customlist,NamedQfComp Cnload call setqflist([], ' ', 
+        \{"title": <q-args>, "items": g:qflists[<q-args>].items, "nr": "$"})|cwindow|1cc
+command! -nargs=1 -complete=customlist,NamedQfComp Cndelete unlet g:qflists[<q-args>]
+command! Cnlist echo keys(g:qflists)
+command! Cnclear let g:qflists = {}
 
 """ Tabs """
 nnoremap <leader><leader> gt
@@ -400,7 +407,8 @@ function! FdSetQuickfix(...) abort
         echoerr "Fd error: " .. fdresults[0]
         return
     endif
-    call setqflist([], ' ', {'title': fdcmd, 'items': map(fdresults, {_, val -> {'filename': val, 'lnum': 1, 'text': val}})})
+    call setqflist([], ' ', {'title': fdcmd, 
+            \'items': map(fdresults, {_, val -> {'filename': val, 'lnum': 1, 'text': val}})})
     copen
 endfunction
 
@@ -444,7 +452,7 @@ function! s:CloseHiddenBuffers()
     endfor
 endfunction
 
-function! GetQfname(fnamearg)
+function! GetQfFilename(fnamearg)
     if a:fnamearg == ""
         return slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1)
     else
@@ -453,8 +461,8 @@ function! GetQfname(fnamearg)
 endfunction
 
 function! Saveqfs(fname="")
-    let fname = GetQfname(a:fname)
-    let fpath = expand("~") .. "/.vimcache/qf/" .. fname .. ".qf"
+    let fname = GetQfFilename(a:fname)
+    let fpath = expand("~") .. "/.cache/vim/" .. fname .. ".qf"
     let numQfs = getqflist({'nr': '$'}).nr
     if numQfs == 0
         call system("rm " .. fpath)
@@ -467,14 +475,20 @@ function! Saveqfs(fname="")
             let entry.filename = expand("#" .. entry.bufnr .. ":p")
             unlet entry.bufnr
         endfor
+        let savelist["name"] = ""
+        call add(lists, string(savelist))
+    endfor
+    for key in keys(g:qflists)
+        let entry = g:qflists[key]
+        let savelist = {"items": entry.items, "title": entry.title, "name": key}
         call add(lists, string(savelist))
     endfor
     call writefile(lists, fpath)
 endfunction
 
-function! Loadqfs(fname="", replace=1, echo=1)
-    let fname = GetQfname(a:fname)
-    let fpath = expand("~") .. "/.vimcache/qf/" .. fname .. ".qf"
+function! Loadqfs(fname="", echo=1)
+    let fname = GetQfFilename(a:fname)
+    let fpath = expand("~") .. "/.cache/vim/" .. fname .. ".qf"
     try
         let loadlists = readfile(fpath)
     catch
@@ -483,12 +497,15 @@ function! Loadqfs(fname="", replace=1, echo=1)
         endif
         return
     endtry
-    if a:replace
-        call setqflist([], 'f')
-    endif
+    call setqflist([], 'f')
     for entry in loadlists
         let currlist = eval(entry)
-        call setqflist([], ' ', {"title": currlist.title, "items": currlist.items})
+        let qfdict = {"title": currlist.title, "items": currlist.items}
+        if currlist.name == ""
+            call setqflist([], ' ', qfdict)
+        else
+            let g:qflists[currlist.name] = qfdict
+        endif
     endfor
     if a:echo
         chistory
@@ -526,15 +543,30 @@ function! Deleteqf(idx=0)
     chistory
 endfunction
 
+function! SaveNamedQf(name, idx=0)
+    let qf = getqflist({"nr": a:idx, "title": 1, "items": 1})
+    let g:qflists[a:name] = {"title": qf.title, "items": qf.items}
+endfunction
+
+function NamedQfComp(ArgLead, CmdLine, CursorPos)
+    let completions = []
+    for name in keys(g:qflists)
+        if name =~ a:ArgLead
+            call add(completions, name)
+        endif
+    endfor
+    return completions
+endfunction
+
 """"""""""""""""
 " Autocommands "
 """"""""""""""""
 
 """ Misc """
-autocmd vimrc QuickFixCmdPost * cwindow|norm mG
+autocmd vimrc QuickFixCmdPost * exe "norm mG"|cwindow
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
-autocmd vimrc VimEnter * if !empty(v:this_session) | call Loadqfs("", 1, 0) | endif
+autocmd vimrc VimEnter * if !empty(v:this_session) | call Loadqfs("", 0) | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 'Csave' | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
         \'call writefile(["colorscheme " .. g:colors_name], v:this_session, "a")' | endif
