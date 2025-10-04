@@ -7,6 +7,7 @@ function! PackInit() abort
     call minpac#add('jeetsukumaran/vim-indentwise')
     call minpac#add('jpalardy/vim-slime')
     call minpac#add('gcmt/taboo.vim')
+    "call minpac#add('romainl/vim-qf')
     call minpac#add('justinmk/vim-dirvish')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-obsession')
@@ -271,11 +272,13 @@ nnoremap <C-W>D :<C-U>exe "tcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" 
 
 """ Fugitive/Git """
 " Git status summary
+nnoremap <space>gg :<C-U>G<cr>
 nnoremap <space>gb :<C-U>Git blame<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
 nnoremap <space>gE :<C-U>Gedit :%<left><left>
 nnoremap <space>gc :<C-U>!git branch --show-current<cr>
+nnoremap <space>gv :<C-U>Gvdiffsplit<space>
 " Load all past revisions of the current file into the qflist
 nnoremap <space>g0 :<C-U>0Gclog<cr>
 nnoremap <space>gt :<C-U>Git difftool<space>
@@ -503,7 +506,6 @@ function! Deleteqf(idx=0)
         echoerr "Invalid qf index"
     endif
     let qfold = []
-    let qfnew = []
     for entry in range(1, qflen)
         call add(qfold, getqflist({'nr': entry, 'items': 1, 'title': 1}))
     endfor
