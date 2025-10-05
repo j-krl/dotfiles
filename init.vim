@@ -26,11 +26,6 @@ function! PackInit() abort
 endfunction
 packadd cfilter
 
-" Global autocmd
-augroup vimrc
-    autocmd!
-augroup END
-
 """""""""""
 " Options "
 """""""""""
@@ -107,7 +102,8 @@ let g:polyglot_disabled = ["autoindent"] "Sleuth is making me do this?
 let g:vim_indent_cont = shiftwidth() * 2
 let g:vim_markdown_new_list_item_indent = 0
 let g:copilot_filetypes = {
-        \'markdown': v:false
+        \'markdown': v:false,
+        \'copilot-chat': v:false
     \}
 let g:tmux_navigator_no_mappings = 1
 let g:taboo_tab_format = " %N %P "
@@ -408,7 +404,10 @@ endfunction
 " Autocommands "
 """"""""""""""""
 
-""" Misc """
+augroup vimrc
+    autocmd!
+augroup END
+
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
@@ -416,6 +415,7 @@ autocmd vimrc VimLeave * if !empty(v:this_session) | exe
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
+autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 
 """ Colorscheme overrides """
 augroup colors
@@ -486,95 +486,7 @@ function! s:ColorschemeOverrides()
             hi Statement ctermfg=6 guifg=NvimDarkCyan
         endif
     endif
-    " typescript
-    hi! link typescriptMember Normal
-    hi! link typescriptObjectLabel Normal
-    hi! link typescriptTypeReference Normal
-    hi! link typescriptVariable Statement
-    hi! link typescriptEnumKeyword Statement
-    hi! link typescriptAssign Operator
-    hi! link typescriptOperator Operator
-    hi! link typescriptObjectColon Operator
-    hi! link typescriptTypeAnnotation Operator
-    hi! link jsxBraces Identifier
-    " python
-    hi! link pythonFunctionCall Normal
-    hi! link pythonClassVar Function
-    hi! link pythonBuiltinType Normal
-    hi! link pythonBuiltinFunc Normal
-    " markdown
-    hi! link mkdHeading Statement
-    hi! link Title Statement
-    " vim
-    hi! link vimBracket Identifier
-    hi! link vimCommentString Comment
 endfunction
-
-""" Filetypes """
-augroup ftpython
-    autocmd!
-    autocmd FileType python call s:SetupPython()
-augroup END
-function! s:SetupPython()
-    let b:surround_{char2nr("d")} = "\1dict: \1[\"\r\"]"
-    let b:surround_{char2nr("m")} = "\"\"\"\r\"\"\""
-    let b:surround_{char2nr("p")} = "f\"\r\""
-    let b:surround_{char2nr("P")} = "f\'\r\'"
-    " delete surrounding dict reference
-    nmap <buffer> dsd di]%hviel%p
-    nmap <buffer> dsm ds"ds"ds"
-    " Keyword key-value to dict (cursor on key)
-    nnoremap <buffer> <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
-    " Dict key-value to keyword (cursor on key)
-    nnoremap <buffer> <localleader>D di"a<backspace><backspace><C-R>"<right><right>
-            \<backspace><backspace>=<esc>
-    nnoremap <buffer> <localleader>b obreakpoint()<esc>
-    nnoremap <buffer> <localleader>B Obreakpoint()<esc>
-    " Convert to f-string
-    nnoremap <buffer> <localleader>F mfF"if<esc>`fl
-endfunction
-
-augroup fttypescript
-    autocmd!
-    autocmd FileType javascriptreact,typescriptreact,javascript,typescript call s:SetupReact()
-augroup END
-function s:SetupReact()
-    " JSX comment
-    let b:surround_{char2nr("x")} = "{/* \r */}"
-    " Template string
-    let b:surround_{char2nr("p")} = "${`\r`}"
-    nmap <silent> <buffer> dsx ds/dsB
-    " jump to next const on line with no starting white space
-    noremap <silent> <buffer> ]1 <cmd>for i in range(v:count1)\|
-            \call search('^\(export \)\=const', 'W')\|endfor<cr>
-    noremap <silent> <buffer> [1 <cmd>for i in range(v:count1)\|
-            \call search('^\(export \)\=const', 'bW')\|endfor<cr>
-endfunction
-
-augroup ftcopilot
-    autocmd!
-    autocmd FileType copilot-chat Copilot disable
-augroup END
-
-augroup ftjinja2
-    autocmd!
-    autocmd BufRead,BufNewFile *.jinja2 set filetype=jinja2
-    autocmd FileType jinja2 setlocal commentstring={#\ %s\ #}
-augroup END
-
-augroup ftdirvish
-    autocmd!
-    autocmd FileType dirvish nmap <buffer> - <Plug>(dirvish_up)
-    " Change dirvish split behaviour to split right/below and focus split
-    autocmd FileType dirvish nnoremap <silent> <buffer> a <cmd>call dirvish#open("rightbelow vsplit", 0)<cr>
-    autocmd FileType dirvish nnoremap <silent> <buffer> o <cmd>call dirvish#open("rightbelow split", 0)<cr>
-    autocmd FileType dirvish nmap <buffer> v a
-    autocmd FileType dirvish nnoremap <buffer> <C-L> <cmd>nohl\|Explore<cr>
-augroup END
-
-if has("nvim")
-    autocmd vimrc FileType * lua vim.treesitter.stop()
-endif
 
 """""""""
 " Final "
