@@ -416,7 +416,7 @@ if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
-autocmd vimrc ColorSchemePre * hi clear
+"autocmd vimrc ColorSchemePre * hi clear
 
 """""""""
 " Final "

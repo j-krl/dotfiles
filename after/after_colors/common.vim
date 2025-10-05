@@ -27,3 +27,26 @@ else
     hi DiffChange gui=BOLD guifg=NONE guibg=lightblue
     hi DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
 endif
+
+" vimscript
+hi! link vimBracket Identifier
+hi! link vimCommentString Comment
+" markdown
+hi! link mkdHeading Statement
+hi! link Title Statement
+" python
+hi! link pythonFunctionCall Normal
+hi! link pythonClassVar Function
+hi! link pythonBuiltinType Normal
+hi! link pythonBuiltinFunc Normal
+" typescript
+hi! link typescriptMember Normal
+hi! link typescriptObjectLabel Normal
+hi! link typescriptTypeReference Normal
+hi! link typescriptVariable Statement
+hi! link typescriptEnumKeyword Statement
+hi! link typescriptAssign Operator
+hi! link typescriptOperator Operator
+hi! link typescriptObjectColon Operator
+hi! link typescriptTypeAnnotation Operator
+hi! link jsxBraces Identifier
