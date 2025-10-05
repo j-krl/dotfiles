@@ -65,6 +65,7 @@ set wildcharm=<tab>
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
 set tabclose=left
 set guicursor=
+set iskeyword+=-
 set fillchars=diff:\
 set foldmethod=indent
 set foldopen-=search
@@ -302,14 +303,14 @@ xnoremap <silent> ie :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setloca
 onoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
 xnoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
 " Word including many other special chars except brackets and quotes
-onoremap <silent> iE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>
-        \setlocal iskeyword-=.,-,=,:<cr>
-xnoremap <silent> iE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! viw'<bar>
-        \setlocal iskeyword-=.,-,=,:<cr>
-onoremap <silent> aE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>
-        \setlocal iskeyword-=.,-,=,:<cr>
-xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,-,=,:<bar>exe 'norm! vaw'<bar>
-        \setlocal iskeyword-=.,-,=,:<cr>
+onoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! viw'<bar>
+        \setlocal iskeyword-=.,=,:<cr>
+xnoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! viw'<bar>
+        \setlocal iskeyword-=.,=,:<cr>
+onoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
+        \setlocal iskeyword-=.,=,:<cr>
+xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
+        \setlocal iskeyword-=.,=,:<cr>
 
 """ Colorschemes """
 nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
