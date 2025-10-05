@@ -67,10 +67,7 @@ function! SaveQfFile(filename="", mode=1) abort
     if a:mode == 1
         for nr in range(1, numqfs)
             let curlist = getqflist({"nr": nr, "items": 1, "title": 1})
-            for entry in curlist.items
-                let entry.filename = expand("#" .. entry.bufnr .. ":p")
-                unlet entry.bufnr
-            endfor
+            call s:AddQfFilenames(curlist.items)
             let curlist["name"] = ""
             call add(lists, string(curlist))
         endfor
@@ -79,10 +76,7 @@ function! SaveQfFile(filename="", mode=1) abort
         for key in keys(g:qflists)
             let entry = g:qflists[key]
             let curlist = {"items": entry.items, "title": entry.title, "name": key}
-            for entry in curlist.items
-                let entry.filename = expand("#" .. entry.bufnr .. ":p")
-                unlet entry.bufnr
-            endfor
+            call s:AddQfFilenames(curlist.items)
             call add(lists, string(curlist))
         endfor
     endif
@@ -183,3 +177,9 @@ function! s:GetQfFilename(filename) abort
     return dir .. tail .. ".qf"
 endfunction
 
+function! s:AddQfFilenames(qflist)
+    for entry in qflist
+        let entry.filename = expand("#" .. entry.bufnr .. ":p")
+        unlet entry.bufnr
+    endfor
+endfunction
