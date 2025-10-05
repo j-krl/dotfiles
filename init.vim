@@ -60,7 +60,7 @@ set laststatus=2
 set completeopt=menuone,popup
 set wildmenu
 set list
-set listchars=tab:\|\ ,trail:~,nbsp:+
+set listchars=tab:\|\ 
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set wildoptions=pum,tagfile
 set wildcharm=<tab>
