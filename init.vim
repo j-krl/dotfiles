@@ -60,7 +60,7 @@ set laststatus=2
 set completeopt=menuone,popup
 set wildmenu
 set list
-set listchars=tab:\|\ ,trail:-,nbsp:+
+set listchars=tab:\|\ ,trail:~,nbsp:+
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set wildoptions=pum,tagfile
 set wildcharm=<tab>
@@ -192,9 +192,9 @@ nnoremap <leader>z :<C-U>Zgrep<space>
 nnoremap <leader>Z :<C-U>Fzfgrep<space>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 cnoremap <C-H> <C-R>=expand("%:.:h")<cr>/
-command! BOnly %bd|e#|bd#|norm `"
-command! BDelete e#|bd#
-command! BActive call s:CloseHiddenBuffers()
+command! Bonly %bd|e#|bd#|norm `"
+command! Bdelete e#|bd#
+command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 

@@ -16,7 +16,7 @@ if !has("nvim")
     hi! link VertSplit StatusLineNC
 endif
 if &background == "dark"
-    hi Visual guifg=NONE gui=NONE guibg=grey25
+    hi Visual guifg=NONE gui=NONE guibg=grey35
     hi DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
     hi DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
     hi DiffChange gui=BOLD guifg=NONE guibg=#515f64
