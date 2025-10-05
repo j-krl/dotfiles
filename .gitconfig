@@ -1,13 +1,16 @@
-# This is Git's per-user configuration file.
 [user]
-# Please adapt and uncomment the following lines:
 	name = Jesse Kearl
 	email = jessekearl@gmail.com
 [core]
+	excludesfile = ~/.config/git/ignore
 	editor = nvim
 	pager = diff-so-fancy | less --tabs=4 -RF
 [merge]
 	tool = nvimdiff
+[log]
+	decorate = short
+[push]
+	autoSetupRemote = true
 [alias]
 	ac = "!git add -A && git commit"
 	amend = "!git add -A && git commit --amend --no-edit"
@@ -18,6 +21,7 @@
 	diff-wip = "!git diff $(git nogrep-sha \"^wip\")"
 	reset-aider = "!git reset $(git nogrep-sha \"^aider\")"
 	diff-aider = "!git diff $(git nogrep-sha \"^aider\")"
+	ghclone ="!f() { git clone https://github.com/\"$1\".git; }; f"
 [interactive]
 	diffFilter = diff-so-fancy --patch
 [pull]
