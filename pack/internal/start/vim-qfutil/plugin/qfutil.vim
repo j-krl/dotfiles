@@ -7,6 +7,7 @@ nnoremap [H <cmd>1chistory\|cw<cr>
 
 command! -nargs=? Cfsave call SaveQfFile(<q-args>)
 command! -nargs=? Cfload call LoadQfFile(<q-args>)
+command! -nargs=? Cfdelete call DeleteQfFile(<q-args>)
 command! -count Chdelete call DeleteQf(<count>)
 command! Chclear call setqflist([], 'f')|ccl|chistory
 command! -count -nargs=1 Csave call SaveQf(<q-args>, <count>)
@@ -15,6 +16,7 @@ command! -nargs=1 -complete=customlist,s:CompleteQfNames Cload call setqflist([]
 command! -nargs=1 -complete=customlist,s:CompleteQfNames Cdelete unlet g:qflists[<q-args>]
 command! Clist echo keys(g:qflists)
 command! Cclear let g:qflists = {}
+command! Cwipe Chclear|Cclear
 command! -count=1 Cditem call DeleteQfItems(<count>)
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
 command! -nargs=+ -complete=file_in_path Cfind call FindQf(<f-args>)
@@ -22,8 +24,8 @@ command! -nargs=+ -complete=file_in_path Cfind call FindQf(<f-args>)
 autocmd vimrc QuickFixCmdPost * exe "norm mG"|cwindow
 autocmd vimrc VimEnter * if get(g:, "qf_session_auto_load", 0) && !empty(v:this_session) 
     \| call LoadQfFile("", 0) | endif
-autocmd vimrc VimLeave * if get(g:, "qf_session_auto_cache", 0) && !empty(v:this_session) 
-    \| exe 'Cfsave' | endif
+autocmd vimrc VimLeave * if get(g:, "qf_session_auto_cache", 0) > 0 && !empty(v:this_session) 
+    \| call SaveQfFile("", get(g:, "qf_session_auto_cache", 0)) | endif
 
 function! FuzzyFilterQf(...) abort
     let matchstr = join(a:000, " ")
@@ -58,29 +60,37 @@ function! DeleteQfItems(count) abort
     endif
 endfunction
 
-function! SaveQfFile(filename="") abort
+function! SaveQfFile(filename="", mode=1) abort
     let file = s:GetQfFilename(a:filename)
-    let numqfs = getqflist({'nr': '$'}).nr
-    if numqfs == 0
-        call system("rm " .. file)
-        return
-    endif
     let lists = []
-    for nr in range(1, numqfs)
-        let curlist = getqflist({"nr": nr, "items": 1, "title": 1})
-        for entry in curlist.items
-            let entry.filename = expand("#" .. entry.bufnr .. ":p")
-            unlet entry.bufnr
+    let numqfs = getqflist({'nr': '$'}).nr
+    if a:mode == 1
+        for nr in range(1, numqfs)
+            let curlist = getqflist({"nr": nr, "items": 1, "title": 1})
+            for entry in curlist.items
+                let entry.filename = expand("#" .. entry.bufnr .. ":p")
+                unlet entry.bufnr
+            endfor
+            let curlist["name"] = ""
+            call add(lists, string(curlist))
         endfor
-        let curlist["name"] = ""
-        call add(lists, string(curlist))
-    endfor
-    for key in keys(g:qflists)
-        let entry = g:qflists[key]
-        let curlist = {"items": entry.items, "title": entry.title, "name": key}
-        call add(lists, string(curlist))
-    endfor
-    call writefile(lists, file)
+    endif
+    if a:mode == 1 || a:mode == 2
+        for key in keys(g:qflists)
+            let entry = g:qflists[key]
+            let curlist = {"items": entry.items, "title": entry.title, "name": key}
+            for entry in curlist.items
+                let entry.filename = expand("#" .. entry.bufnr .. ":p")
+                unlet entry.bufnr
+            endfor
+            call add(lists, string(curlist))
+        endfor
+    endif
+    if len(lists) > 0
+        call writefile(lists, file)
+    else
+        call DeleteQfFile(a:filename)
+    endif
 endfunction
 
 function! LoadQfFile(filename="", echo=1) abort
@@ -89,7 +99,7 @@ function! LoadQfFile(filename="", echo=1) abort
         let filelists = readfile(file)
     catch
         if a:echo
-            echo "No qf file " .. file
+            echoerr "No qf file " .. file
         endif
         return
     endtry
@@ -105,6 +115,14 @@ function! LoadQfFile(filename="", echo=1) abort
     endfor
     if a:echo
         chistory
+    endif
+endfunction
+
+function! DeleteQfFile(filename="") abort
+    let file = s:GetQfFilename(a:filename)
+    let delresult = system("rm " .. file)
+    if v:shell_error
+        echoerr delresult
     endif
 endfunction
 

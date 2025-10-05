@@ -112,7 +112,7 @@ let g:taboo_renamed_tab_format = " %N %l "
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
 let g:slime_bracketed_paste = 1
-let g:qf_session_auto_cache = 1
+let g:qf_session_auto_cache = 2
 let g:qf_session_auto_load = 1
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 
