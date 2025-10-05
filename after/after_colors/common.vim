@@ -2,6 +2,7 @@ hi clear PreProc
 hi clear Type
 hi clear Constant
 hi Constant gui=BOLD
+hi! link NonText Comment
 hi! link Boolean Constant
 hi! link Float Constant
 hi! link Number Constant
