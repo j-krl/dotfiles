@@ -4,5 +4,5 @@ Session.vim
 *.swp
 *~
 tags
-pack/
+pack/minpac/
 .vimenv
