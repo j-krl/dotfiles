@@ -107,7 +107,7 @@ let g:python_indent = {
         \'closed_paren_align_last_line': v:false
     \}
 let g:polyglot_disabled = ["autoindent"] "Sleuth is making me do this?
-let g:vim_indent_cont = shiftwidth() * 2
+let g:vim_indent_cont = shiftwidth()
 let g:vim_markdown_new_list_item_indent = 0
 let g:copilot_filetypes = {
         \'markdown': v:false,
@@ -208,8 +208,9 @@ command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 command! -nargs=? -complete=dir Explore Dirvish <args>
 command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>
 command! -nargs=? -complete=dir Vexplore belowright vsplit | silent Dirvish <args>
-nnoremap <silent> - :<c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>:Explore<cr>
-nnoremap <space>- <cmd>exe "Explore " .. getcwd()<cr>
+nnoremap <silent> - :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>:Explore<cr>
+nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
+    \exe "Explore " .. getcwd()<cr>
 
 """ Tmux """
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
