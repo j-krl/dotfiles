@@ -76,10 +76,14 @@ set foldlevelstart=100
 set background=dark
 let g:maplocalleader = "_"
 let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
-        \"typescriptreact", "html", "css", "json", "vim", "lua"]
+    \"typescriptreact", "html", "css", "json", "vim", "lua"]
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ \ %{FugitiveStatusline()}%h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
-let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, stdpath("data") .. "/site,", "", "g")
+if has("nvim")
+    let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, stdpath("data") .. "/site,", "", "g")
+else
+    set packpath^=~/.local/share/vim/site
+endif
 if exists('&findfunc') && executable('fd') && executable('fzf')
     set findfunc=FuzzyFindFunc
 endif
@@ -149,7 +153,7 @@ nmap ]o ]<space>j
 nmap [o [<space>k
 " Hungry delete
 inoremap <silent> <expr> <bs> !search('\S','nbW',line('.')) ? 
-        \(col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"
+    \(col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"
 inoremap <c-bs> <bs>
 " Vim surround delete surrounding function. Uses text objects defined below
 nmap dsf dib%hviel%p
@@ -257,7 +261,7 @@ nnoremap <C-W><tab> g<tab>
 nnoremap <C-W>S :<C-U>exe (v:count > 0 ? v:count - 1 : "") .. "tab split"<cr>
 " Move tab to the end without a [count] otherwise move to [count]th index
 nnoremap <C-W>M :<C-U>exe (v:count > 0 ? 
-        \(tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
+    \(tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
 " Change tab's working directory to the current file
 nnoremap <C-W>D :<C-U>exe "tcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" : "%:h")<cr>
 
@@ -307,13 +311,13 @@ onoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setloca
 xnoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
 " Word including many other special chars except brackets and quotes
 onoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! viw'<bar>
-        \setlocal iskeyword-=.,=,:<cr>
+    \setlocal iskeyword-=.,=,:<cr>
 xnoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! viw'<bar>
-        \setlocal iskeyword-=.,=,:<cr>
+    \setlocal iskeyword-=.,=,:<cr>
 onoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
-        \setlocal iskeyword-=.,=,:<cr>
+    \setlocal iskeyword-=.,=,:<cr>
 xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
-        \setlocal iskeyword-=.,=,:<cr>
+    \setlocal iskeyword-=.,=,:<cr>
 
 """ Colorschemes """
 nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
@@ -415,7 +419,7 @@ augroup END
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
-        \'call writefile(["colorscheme " .. g:colors_name], v:this_session, "a")' | endif
+    \'call writefile(["colorscheme " .. g:colors_name], v:this_session, "a")' | endif
 if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
