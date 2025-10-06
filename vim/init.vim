@@ -349,6 +349,7 @@ nnoremap yr> :let @+ = expand("%:.:h")<cr>
 nnoremap yrp :let @+ = expand("%:p")<cr>
 nnoremap yrP :let @+ = expand("%:p:h")<cr>
 nnoremap yr+ :let @+ = @0<cr>
+nmap yr0 yr+
 nnoremap yrb :let @+ = system("git branch --show-current")<cr>
 
 """ Misc """
