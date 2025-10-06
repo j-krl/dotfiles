@@ -182,7 +182,7 @@ function! s:GetQfFilename(filename) abort
 endfunction
 
 function! s:AddQfFilenames(qflist)
-    for entry in qflist
+    for entry in a:qflist
         let entry.filename = expand("#" .. entry.bufnr .. ":p")
         unlet entry.bufnr
     endfor
