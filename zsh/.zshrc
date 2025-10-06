@@ -16,3 +16,25 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 precmd() { vcs_info }
 PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 
+export CLICOLOR=1
+export LSCOLORS=exfxcxdxbxegedabagacadah
+
+if command -v bat >/dev/null 2>&1; then
+    alias less="bat"
+    export BAT_STYLE=grid
+    export MANPAGER=bat
+fi
+
+alias mux="cd && ~/dotfiles/tmux/tmux-session.sh"
+alias nvs="nvim -S Session.vim"
+alias vs="vim -S Session.vim"
+ghclone() { git clone "https://github.com/$1.git" }
+
+export PATH="$PATH:~/.local/bin"
+
+autoload -U +X bashcompinit && bashcompinit
+
+export TERM="xterm-256color"
+[[ -n $TMUX ]] && export TERM="screen-256color"
+
+bindkey \^U backward-kill-line
