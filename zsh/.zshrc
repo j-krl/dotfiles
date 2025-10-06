@@ -16,6 +16,7 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 precmd() { vcs_info }
 PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 
+export EDITOR=nvim
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacadah
 
