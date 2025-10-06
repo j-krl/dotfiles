@@ -1,5 +1,9 @@
 let g:qflists = {}
 
+augroup qfutil
+    autocmd!
+augroup END
+
 nnoremap <expr> [h "<cmd>colder " .. v:count1 .. "\|cwindow<cr>"
 nnoremap <expr> ]h "<cmd>cnewer " .. v:count1 .. "\|cwindow<cr>"
 nnoremap <expr> ]H "<cmd>" .. getqflist({'nr': '$'}).nr .. "chistory\|cwindow<cr>"
@@ -21,10 +25,10 @@ command! -count=1 Cditem call DeleteQfItems(<count>)
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
 command! -nargs=+ -complete=file_in_path Cfind call FindQf(<f-args>)
 
-autocmd vimrc QuickFixCmdPost * exe "norm mG"|cwindow
-autocmd vimrc VimEnter * if get(g:, "qf_session_auto_load", 0) && !empty(v:this_session) 
+autocmd qfutil QuickFixCmdPost * exe "norm mG"|cwindow
+autocmd qfutil VimEnter * if get(g:, "qf_session_auto_load", 0) && !empty(v:this_session) 
     \| call LoadQfFile("", 0) | endif
-autocmd vimrc VimLeave * if get(g:, "qf_session_auto_cache", 0) > 0 && !empty(v:this_session) 
+autocmd qfutil VimLeave * if get(g:, "qf_session_auto_cache", 0) > 0 && !empty(v:this_session) 
     \| call SaveQfFile("", get(g:, "qf_session_auto_cache", 0)) | endif
 
 function! FuzzyFilterQf(...) abort
