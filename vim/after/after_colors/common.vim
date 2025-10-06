@@ -11,6 +11,7 @@ hi! link Operator Statement
 hi! link Special Statement
 hi! link Structure Function
 hi! link Function Identifier
+hi! link Delimiter Statement
 hi Comment guifg=grey50
 if !has("nvim")
     hi! link VertSplit StatusLineNC
