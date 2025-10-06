@@ -196,6 +196,8 @@ nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
 nnoremap <leader>z :<C-U>Zgrep<space>
 nnoremap <leader>Z :<C-U>Fzfgrep<space>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
+nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
+nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 cnoremap <C-H> <C-R>=expand("%:.:h")<cr>/
 command! Bonly %bd|e#|bd#|norm `"
 command! Bdelete e#|bd#
@@ -409,6 +411,18 @@ function! s:CloseHiddenBuffers()
     endfor
 endfunction
 
+function! NavDirFiles(count) abort
+    let curfile = expand("%:p")
+    let curdir = expand("%:p:h")
+    let files = systemlist("find " .. curdir .. "/ -type f -maxdepth 1")
+    let filelen = len(files)
+    let curidx = index(files, curfile)
+    let newidx = float2nr(fmod(curidx + a:count, filelen))
+    if newidx < 0
+        let newidx += filelen
+    endif
+    exe "e " .. files[newidx]
+endfunction
 
 """"""""""""""""
 " Autocommands "
