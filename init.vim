@@ -79,6 +79,7 @@ let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "t
         \"typescriptreact", "html", "css", "json", "vim", "lua"]
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ \ %{FugitiveStatusline()}%h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
+let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, stdpath("data") .. "/site,", "", "g")
 if exists('&findfunc') && executable('fd') && executable('fzf')
     set findfunc=FuzzyFindFunc
 endif
