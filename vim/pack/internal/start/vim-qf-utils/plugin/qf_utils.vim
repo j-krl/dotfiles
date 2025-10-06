@@ -159,6 +159,7 @@ function! SaveQf(name, nr=0) abort
     let qf = getqflist({"nr": a:nr, "title": 1, "items": 1})
     let g:qflists[a:name] = {"title": qf.title, "items": qf.items}
     echo 'Saved qflist ' .. a:name
+    call setqflist([], 'u', {"nr": a:nr, "title": a:name, "items": qf.items})
 endfunction
 
 function s:CompleteQfNames(ArgLead, CmdLine, CursorPos)
@@ -182,6 +183,9 @@ function! s:GetQfFilename(filename) abort
 endfunction
 
 function! s:AddQfFilenames(qflist)
+    if has_key(a:qflist[0], 'filename')
+        return
+    endif
     for entry in a:qflist
         let entry.filename = expand("#" .. entry.bufnr .. ":p")
         unlet entry.bufnr
