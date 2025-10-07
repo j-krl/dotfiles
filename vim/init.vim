@@ -206,9 +206,6 @@ command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 
-""" Slime """
-nnoremap <expr> <leader>tc '<cmd>SlimeSend1 cd ' .. getcwd() .. '<cr><cmd>TmuxNavigateDown<cr>'
-
 """ Marks """
 nnoremap <leader>mm <cmd>marks ABCDEFHIJKLMNOPQRSTUVWXYZ<cr>
 nnoremap <leader>md :<C-U>delm<space>
@@ -228,6 +225,9 @@ noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 noremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 noremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
+nnoremap <expr> <leader>tc '<cmd>SlimeSend1 cd ' .. getcwd() .. '<cr><cmd>TmuxNavigateDown<cr>'
+nnoremap <expr> <leader>tg '<cmd>SlimeSend1 glow ' .. expand("%:p") .. '<cr><cmd>TmuxNavigateDown<cr>'
+
 
 """ Quickfix/Location list """
 if !has("nvim")
