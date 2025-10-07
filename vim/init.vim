@@ -249,7 +249,6 @@ nnoremap <leader>cF :<C-U>Cfilter!<space>
 nnoremap <leader>cz :<C-U>Cfuzzy<space>
 nnoremap <expr> <leader>cD "<cmd>Chdelete " .. v:count .. "<cr>"
 nnoremap <leader>cn <cmd>Clist<cr>
-nnoremap <leader>cd :<C-U>Cdelete<space><tab>
 nnoremap <leader>cs :<C-U>Csave<space>
 nnoremap <leader>co :<C-U>Cload<space><tab>
 
