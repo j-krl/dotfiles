@@ -205,6 +205,10 @@ command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 
+""" Marks """
+nnoremap <leader>mm <cmd>marks ABCDEFHIJKLMNOPQRSTUVWXYZ<cr>
+nnoremap <leader>md :<C-U>delm<space>
+
 """ File explorer """
 " Override calls to netrw with Dirvish
 command! -nargs=? -complete=dir Explore Dirvish <args>
