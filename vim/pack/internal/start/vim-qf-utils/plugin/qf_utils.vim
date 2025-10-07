@@ -23,7 +23,7 @@ command! Cclear let g:qflists = {}
 command! Cwipe Chclear|Cclear
 command! -count=1 Cditem call DeleteQfItems(<count>)
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
-command! -nargs=+ -complete=file_in_path Cfind call FindQf(<f-args>)
+command! -nargs=+ -complete=file_in_path Cfd call FdQf(<f-args>)
 
 autocmd qfutils QuickFixCmdPost * exe "norm mG"|cwindow
 autocmd qfutils VimEnter * if get(g:, "qf_session_auto_load", 0) && !empty(v:this_session) 
@@ -37,7 +37,7 @@ function! FuzzyFilterQf(...) abort
     call setqflist([], " ", {"nr": "$", "title": ":Cfuzzy /" .. matchstr .. "/", "items": filtered_items})
 endfunction
 
-function! FindQf(...) abort
+function! FdQf(...) abort
     let args = join(a:000, " ")
     let fdcmd = "fd -t f --hidden " .. args
     let fdresults = systemlist(fdcmd)
