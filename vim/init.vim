@@ -208,6 +208,7 @@ command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 """ Marks """
 nnoremap <leader>mm <cmd>marks ABCDEFHIJKLMNOPQRSTUVWXYZ<cr>
 nnoremap <leader>md :<C-U>delm<space>
+nnoremap <leader>mD <cmd>delm ABCDEFHIJKLMNOPQRSTUVWXYZ<bar>echo "global marks cleared"<cr>
 
 """ File explorer """
 " Override calls to netrw with Dirvish
@@ -279,10 +280,11 @@ nnoremap <C-W>D :<C-U>exe "tcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" 
 " Git status summary
 nnoremap <space>gg :<C-U>G<cr>
 nnoremap <space>gb :<C-U>Git blame<cr>
+nnoremap <space>go :<C-U>GBrowse<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
 nnoremap <space>gE :<C-U>Gedit :%<left><left>
-nnoremap <space>gc :<C-U>!git branch --show-current<cr>
+nnoremap <space>gB :<C-U>!git branch --show-current<cr>
 nnoremap <space>gv :<C-U>Gvdiffsplit<space>
 " Load all past revisions of the current file into the qflist
 nnoremap <space>g0 :<C-U>0Gclog<cr>
