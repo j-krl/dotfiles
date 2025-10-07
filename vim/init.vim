@@ -340,7 +340,8 @@ nnoremap <space>5 :<C-U>set background=dark\|colo sorbet<cr>
 nnoremap <space>6 :<C-U>set background=dark\|colo retrobox<cr>
 nnoremap <space>^ :<C-U>set background=light\|colo retrobox<cr>
 nnoremap <space>7 :<C-U>set background=dark\|colo habamax<cr>
-nnoremap <space>8 :<C-U>set background=light\|colo peachpuff<cr>
+nnoremap <space>8 :<C-U>set background=dark\|colo zaibatsu<cr>
+nnoremap <space>9 :<C-U>set background=light\|colo peachpuff<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 
 """ Regex """
@@ -447,7 +448,7 @@ if has("nvim")
     autocmd vimrc TabNewEntered * argl|%argd
 endif
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
-"autocmd vimrc ColorSchemePre * hi clear
+autocmd vimrc ColorSchemePre * hi clear
 
 """""""""
 " Final "
