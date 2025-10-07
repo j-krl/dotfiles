@@ -363,6 +363,12 @@ nnoremap yr+ :let @+ = @0<cr>
 nmap yr0 yr+
 nnoremap yrb :let @+ = system("git branch --show-current")<cr>
 
+""" Which-key """
+nnoremap <space>ww :<C-U>map<space>
+nnoremap <space>wn :<C-U>nmap<space>
+nnoremap <space>wi :<C-U>imap<space>
+nnoremap <space>wc :<C-U>cmap<space>
+
 """ Misc """
 nnoremap yor <cmd>set rnu!<cr>
 nnoremap <leader>u <cmd>undolist<cr>
