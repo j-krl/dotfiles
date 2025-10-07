@@ -43,7 +43,6 @@ set number
 set tabstop=4
 set shiftwidth=4
 set mouse=a
-set expandtab
 set nofixeol
 set re=0
 set colorcolumn=80,88,120
