@@ -89,7 +89,7 @@ if exists('&findfunc') && executable('fd') && executable('fzf')
 endif
 
 function! FuzzyFindFunc(cmdarg, cmdcomplete)
-    return systemlist("fd --hidden -E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
+    return systemlist("fd --hidden --type f -E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
 endfunction
 
 """ Plugin options """
