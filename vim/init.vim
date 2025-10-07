@@ -118,6 +118,7 @@ let g:taboo_tab_format = " %N %P "
 let g:taboo_renamed_tab_format = " %N %l "
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{next}"}
+let g:slime_dont_ask_default = 1
 let g:slime_bracketed_paste = 1
 let g:qf_session_auto_cache = 2
 let g:qf_session_auto_load = 1
@@ -204,6 +205,9 @@ command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
+
+""" Slime """
+nnoremap <expr> <leader>tc '<cmd>SlimeSend1 cd ' .. getcwd() .. '<cr><cmd>TmuxNavigateDown<cr>'
 
 """ Marks """
 nnoremap <leader>mm <cmd>marks ABCDEFHIJKLMNOPQRSTUVWXYZ<cr>
