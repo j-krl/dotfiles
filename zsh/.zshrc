@@ -23,7 +23,6 @@ export LSCOLORS=exfxcxdxbxegedabagacadah
 if command -v bat >/dev/null 2>&1; then
     alias less="bat"
     export BAT_STYLE=grid
-    export BAT_THEME=gruvbox-dark
     export MANPAGER=bat
 fi
 

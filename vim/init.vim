@@ -88,7 +88,8 @@ if exists('&findfunc') && executable('fd') && executable('fzf')
 endif
 
 function! FuzzyFindFunc(cmdarg, cmdcomplete)
-    return systemlist("fd --hidden --type f -E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
+    return systemlist("fd --hidden " .. (a:cmdcomplete ? "--type f " : "") .. 
+        \"-E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
 endfunction
 
 """ Plugin options """
@@ -119,6 +120,7 @@ let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{bottom-left}"}
 let g:slime_dont_ask_default = 1
 let g:slime_bracketed_paste = 1
+let g:slime_no_mappings = 1
 let g:qf_session_auto_cache = 2
 let g:qf_session_auto_load = 1
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
@@ -179,7 +181,7 @@ noremap * ms*
 noremap # ms#
 nnoremap <backspace> <C-^>
 " go to definition (not in qflist)
-nnoremap <expr> <cr> &buftype==# 'quickfix' ? "\<cr>" : "\<C-]>"
+nnoremap <expr> <cr> &buftype ==# 'quickfix' \|\| &buftype ==# 'nofile' ? "\<cr>" : "\<C-]>"
 " close opposite split
 nnoremap <C-W>X <C-W>x<C-W>c
 nnoremap <C-W>v <C-W>v<C-W>w
@@ -219,11 +221,13 @@ nnoremap <silent> - :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>:Ex
 nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
     \exe "Explore " .. getcwd()<cr>
 
-""" Tmux """
+""" Tmux/Slime """
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 noremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 noremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
+nnoremap <leader>tp <Plug>SlimeParagraphSend
+xnoremap <leader>tv <Plug>SlimeRegionSend
 nnoremap <expr> <leader>tc '<cmd>SlimeSend1 cd ' .. getcwd() .. '<cr><cmd>TmuxNavigateDown<cr>'
 nnoremap <expr> <leader>tg '<cmd>SlimeSend1 glow ' .. expand("%:p") .. '<cr><cmd>TmuxNavigateDown<cr>'
 
@@ -349,12 +353,15 @@ nnoremap <space>8 :<C-U>set background=dark\|colo zaibatsu<cr>
 nnoremap <space>9 :<C-U>set background=light\|colo peachpuff<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 
-""" Regex """
+""" Command mode misc """
 cnoremap <C-space> .*
 cnoremap <A-9> \(
 cnoremap <A-0> \)
 cnoremap <A-space> \<space>
 cnoremap <A-.> \.
+" Open parent directory of current :find arg
+cmap <C-E> <C-F>die<C-C><cr>
+
 
 """ Registers """
 nnoremap yr% :let @+ = @%<cr>

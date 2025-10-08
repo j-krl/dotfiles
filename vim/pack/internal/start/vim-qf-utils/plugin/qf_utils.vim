@@ -15,6 +15,7 @@ command! -nargs=? Cfdelete call DeleteQfFile(<q-args>)
 command! -count Chdelete call DeleteQf(<count>)
 command! Chclear call setqflist([], 'f')|ccl|chistory
 command! -count -nargs=1 Csave call SaveQf(<q-args>, <count>)
+" TODO: make argument optional and just grab the latest list if no arg
 command! -nargs=1 -complete=customlist,s:CompleteQfNames Cload call setqflist([], ' ', 
         \{"title": <q-args>, "items": g:qflists[<q-args>].items, "nr": "$"})|cwindow|1cc
 command! -nargs=1 -complete=customlist,s:CompleteQfNames Cdelete unlet g:qflists[<q-args>]
