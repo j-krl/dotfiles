@@ -361,15 +361,14 @@ cnoremap <A-space> \<space>
 cnoremap <A-.> \.
 
 """ Spelling """
-nnoremap <expr> <localleader>s &spell ? "mp[SzG`p" : "<cmd>echoerr 'Spelling not enabled'<cr>"
-nnoremap <expr> <localleader>S &spell ? "mp[Szg`p" : "<cmd>echoerr 'Spelling not enabled'<cr>"
-" TODO: implement these with marks
-"nnoremap [s mp[s
-"nnoremap ]s mp]s
-"nnoremap [S mp[S
-"nnoremap ]S mp]S
-"nnoremap [r mp[r
-"nnoremap ]r mp]r
+nnoremap <silent> <expr> <leader>ps &spell ? "mp[SzG`p<cmd>delm p<cr>" : 
+    \"<cmd>echoerr 'Spelling not enabled'<cr>"
+nnoremap <silent> <expr> <leader>pS &spell ? "mp[Szg`p<cmd>delm p<cr>" : 
+    \"<cmd>echoerr 'Spelling not enabled'<cr>"
+" I'm feeling lucky!
+nnoremap <silent> <expr> <leader>p= &spell ? "mp[Sz=1<cr>`p<cmd> delm p<cr>" : 
+    \"<cmd>echoerr 'Spelling not enabled'<cr>"
+nnoremap <leader>p1 z=1<cr><cr>
 
 """ Registers """
 nnoremap yr% :let @+ = @%<cr>
