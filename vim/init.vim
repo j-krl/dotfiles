@@ -88,8 +88,7 @@ if exists('&findfunc') && executable('fd') && executable('fzf')
 endif
 
 function! FuzzyFindFunc(cmdarg, cmdcomplete)
-    return systemlist("fd --hidden " .. (a:cmdcomplete ? "--type f " : "") .. 
-        \"-E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
+    return systemlist("fd --hidden --type f -E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
 endfunction
 
 """ Plugin options """
@@ -359,9 +358,6 @@ cnoremap <A-9> \(
 cnoremap <A-0> \)
 cnoremap <A-space> \<space>
 cnoremap <A-.> \.
-" Open parent directory of current :find arg
-cmap <C-E> <C-F>die<C-C><cr>
-
 
 """ Registers """
 nnoremap yr% :let @+ = @%<cr>
