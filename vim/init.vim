@@ -67,6 +67,7 @@ set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
 set tabclose=left
 set guicursor=
 set iskeyword+=-
+set spellcapcheck=
 set fillchars=diff:\
 set foldmethod=indent
 set foldopen-=search
