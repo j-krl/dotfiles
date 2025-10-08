@@ -359,6 +359,17 @@ cnoremap <A-0> \)
 cnoremap <A-space> \<space>
 cnoremap <A-.> \.
 
+""" Spelling """
+nnoremap <expr> <localleader>s &spell ? "mp[SzG`p" : "<cmd>echoerr 'Spelling not enabled'<cr>"
+nnoremap <expr> <localleader>S &spell ? "mp[Szg`p" : "<cmd>echoerr 'Spelling not enabled'<cr>"
+" TODO: implement these with marks
+"nnoremap [s mp[s
+"nnoremap ]s mp]s
+"nnoremap [S mp[S
+"nnoremap ]S mp]S
+"nnoremap [r mp[r
+"nnoremap ]r mp]r
+
 """ Registers """
 nnoremap yr% :let @+ = @%<cr>
 nnoremap yr~ :let @+ = expand("%:~")<cr>
