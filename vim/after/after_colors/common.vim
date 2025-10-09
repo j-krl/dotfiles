@@ -13,9 +13,11 @@ hi! link Structure Function
 hi! link Function Identifier
 hi! link Delimiter Statement
 hi Comment guifg=grey50
+
 if !has("nvim")
     hi! link VertSplit StatusLineNC
 endif
+
 if &background == "dark"
     hi Visual guifg=NONE gui=NONE guibg=grey35
     hi DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e
@@ -28,6 +30,9 @@ else
     hi DiffDelete gui=BOLD guifg=NONE guibg=lightred
     hi DiffChange gui=BOLD guifg=NONE guibg=lightblue
     hi DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
+    if has("nvim")
+        hi DiagnosticHint guifg=DarkGrey
+    endif
 endif
 
 " vimscript
