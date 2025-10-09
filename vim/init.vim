@@ -164,8 +164,10 @@ nmap dsf dib%hviel%p
 noremap <space>y "+y
 noremap <space>p "+p
 noremap <space>P "+P
-nnoremap <A-p> <cmd>put +<cr>
-nnoremap <A-P> <cmd>put! +<cr>
+nnoremap <A-p>= <cmd>put +<cr>
+nnoremap <A-P>= <cmd>put! +<cr>
+nnoremap <A-p>0 <cmd>put 0<cr>
+nnoremap <A-P>0 <cmd>put! 0<cr>
 
 """ Save & Quit """
 nnoremap <leader>q <cmd>qa<cr>
@@ -350,7 +352,9 @@ nnoremap <space>6 :<C-U>set background=dark\|colo retrobox<cr>
 nnoremap <space>^ :<C-U>set background=light\|colo retrobox<cr>
 nnoremap <space>7 :<C-U>set background=dark\|colo habamax<cr>
 nnoremap <space>8 :<C-U>set background=dark\|colo zaibatsu<cr>
-nnoremap <space>9 :<C-U>set background=light\|colo peachpuff<cr>
+nnoremap <space>9 :<C-U>set background=dark\|colo wildcharm<cr>
+nnoremap <space>( :<C-U>set background=light\|colo wildcharm<cr>
+nnoremap <space>0 :<C-U>set background=light\|colo peachpuff<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 
 """ Command mode misc """
