@@ -1,3 +1,4 @@
+set formatprg=stylua\ --stdin-filepath\ %
 set iskeyword-=-
 
 if has("nvim")

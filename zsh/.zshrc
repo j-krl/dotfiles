@@ -29,6 +29,7 @@ fi
 alias mux="cd && ~/dotfiles/tmux/tmux-session.sh"
 alias nvs="nvim -S Session.vim"
 alias vs="vim -S Session.vim"
+alias gadc="gcloud auth application-default login"
 ghclone() { git clone "https://github.com/$1.git" }
 
 export PATH="$PATH:~/.local/bin"

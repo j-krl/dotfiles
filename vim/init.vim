@@ -184,14 +184,6 @@ noremap # ms#
 nnoremap <backspace> <C-^>
 " go to definition (not in qflist)
 nnoremap <expr> <cr> &buftype ==# 'quickfix' \|\| &buftype ==# 'nofile' ? "\<cr>" : "\<C-]>"
-" close opposite split
-nnoremap <C-W>X <C-W>x<C-W>c
-nnoremap <C-W>v <C-W>v<C-W>w
-nnoremap <C-W>s <C-W>s<C-W>w
-" go to definition in vertical split
-nmap <C-W>[ <C-W>v<C-]>
-nmap <C-W>] <C-W>]<C-W>r
-nmap <C-W>V <C-W>o<C-W>v
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>f :<C-U>find<space>
 nmap <leader>F :<C-U>find <C-H><tab>
@@ -208,6 +200,17 @@ command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
+
+""" Windows """
+nnoremap <C-W>Z <C-W>_<C-W>\|
+" close opposite split
+nnoremap <C-W>X <C-W>x<C-W>c
+nnoremap <C-W>v <C-W>v<C-W>w
+nnoremap <C-W>s <C-W>s<C-W>w
+" go to definition in vertical split
+nmap <C-W>[ <C-W>v<C-]>
+nmap <C-W>] <C-W>]<C-W>r
+nmap <C-W>V <C-W>o<C-W>v
 
 """ Marks """
 nnoremap <leader>mm <cmd>marks ABCDEFHIJKLMNOPQRSTUVWXYZ<cr>

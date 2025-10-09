@@ -1,3 +1,4 @@
+set formatprg=prettier\ %
 " Template string
 let b:surround_{char2nr("p")} = "${`\r`}"
 " jump to next const on line with no starting white space
