@@ -75,14 +75,16 @@ set foldlevelstart=100
 set background=dark
 let g:maplocalleader = "_"
 let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
-	\"typescriptreact", "html", "css", "json", "vim", "lua"]
+	\"typescriptreact", "html", "css", "json", "vim", "lua", "go"]
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ \ %{FugitiveStatusline()}%h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
+
 if has("nvim")
 	let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, stdpath("data") .. "/site,", "", "g")
 else
 	set packpath^=~/.local/share/vim/site
 endif
+
 if exists('&findfunc') && executable('fd') && executable('fzf')
 	set findfunc=FuzzyFindFunc
 endif
