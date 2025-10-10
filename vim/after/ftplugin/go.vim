@@ -1,1 +1,3 @@
-setlocal formatprg=gofmt
+if executable("gofmt")
+	setlocal formatprg=gofmt
+endif

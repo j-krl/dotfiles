@@ -1,1 +1,3 @@
-setlocal formatprg=prettier\ %
+if executable("prettier")
+	setlocal formatprg=prettier\ %
+endif

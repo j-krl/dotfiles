@@ -1,1 +1,3 @@
-setlocal formatprg=yamlfmt\ -
+if executable("yamlfmt")
+	setlocal formatprg=yamlfmt\ -
+endif

@@ -1,3 +1,3 @@
 if has("nvim")
-    lua vim.treesitter.stop()
+	lua vim.treesitter.stop()
 endif

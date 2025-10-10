@@ -1,4 +1,6 @@
-setlocal formatprg=ruff\ format\ --force-exclude\ --stdin-filename\ %
+if executable("ruff")
+		setlocal formatprg=ruff\ format\ --force-exclude\ --stdin-filename\ %
+endif
 let b:surround_{char2nr("d")} = "\1dict: \1[\"\r\"]"
 let b:surround_{char2nr("m")} = "\"\"\"\r\"\"\""
 let b:surround_{char2nr("p")} = "f\"\r\""
@@ -10,7 +12,7 @@ nmap <buffer> dsm ds"ds"ds"
 nnoremap <buffer> <localleader>d ciw"<C-R>""<right><backspace>:<space><esc>
 " Dict key-value to keyword (cursor on key)
 nnoremap <buffer> <localleader>D di"a<backspace><backspace><C-R>"<right><right>
-        \<backspace><backspace>=<esc>
+		\<backspace><backspace>=<esc>
 nnoremap <buffer> <localleader>b obreakpoint()<esc>
 nnoremap <buffer> <localleader>B Obreakpoint()<esc>
 " Convert to f-string

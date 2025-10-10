@@ -1,1 +1,3 @@
-setlocal formatprg=jq\ --tab
+if executable("jq")
+	setlocal formatprg=jq\ --tab
+endif

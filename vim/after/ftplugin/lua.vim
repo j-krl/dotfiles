@@ -1,7 +1,9 @@
-setlocal formatprg=stylua\ --stdin-filepath\ %\ -
+if executable("stylua")
+	setlocal formatprg=stylua\ --stdin-filepath\ %\ -
+endif
 set iskeyword-=-
 
 if has("nvim")
-    lua vim.treesitter.stop()
+	lua vim.treesitter.stop()
 endif
 

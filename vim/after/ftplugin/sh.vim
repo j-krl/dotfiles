@@ -1,1 +1,3 @@
-setlocal formatprg=shfmt\ --filename\ %
+if executable("shfmt")
+	setlocal formatprg=shfmt\ --filename\ %
+endif
