@@ -1,28 +1,27 @@
 function! PackInit() abort
-    packadd minpac
-    call minpac#init()
-    call minpac#add('k-takata/minpac', {'type': 'opt'})
-    call minpac#add('unblevable/quick-scope')
-    call minpac#add('christoomey/vim-tmux-navigator')
-    call minpac#add('jeetsukumaran/vim-indentwise')
-    call minpac#add('jpalardy/vim-slime')
-    call minpac#add('gcmt/taboo.vim')
-    call minpac#add('justinmk/vim-dirvish')
-    call minpac#add('tpope/vim-surround')
-    call minpac#add('tpope/vim-obsession')
-    call minpac#add('tpope/vim-fugitive')
-    call minpac#add('tpope/vim-rhubarb')
-    call minpac#add('tpope/vim-sleuth')
-    call minpac#add('github/copilot.vim')
-    call minpac#add('sheerun/vim-polyglot')
-    if has("nvim")
-        call minpac#add('neovim/nvim-lspconfig')
-        call minpac#add('stevearc/conform.nvim')
-        call minpac#add('nvim-lua/plenary.nvim')
-        call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
-    else
-        call minpac#add('tpope/vim-commentary')
-    endif
+	packadd minpac
+	call minpac#init()
+	call minpac#add('k-takata/minpac', {'type': 'opt'})
+	call minpac#add('unblevable/quick-scope')
+	call minpac#add('christoomey/vim-tmux-navigator')
+	call minpac#add('jeetsukumaran/vim-indentwise')
+	call minpac#add('jpalardy/vim-slime')
+	call minpac#add('gcmt/taboo.vim')
+	call minpac#add('justinmk/vim-dirvish')
+	call minpac#add('tpope/vim-surround')
+	call minpac#add('tpope/vim-obsession')
+	call minpac#add('tpope/vim-fugitive')
+	call minpac#add('tpope/vim-rhubarb')
+	call minpac#add('tpope/vim-sleuth')
+	call minpac#add('github/copilot.vim')
+	call minpac#add('sheerun/vim-polyglot')
+	if has("nvim")
+		call minpac#add('neovim/nvim-lspconfig')
+		call minpac#add('nvim-lua/plenary.nvim')
+		call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
+	else
+		call minpac#add('tpope/vim-commentary')
+	endif
 endfunction
 packadd cfilter
 
@@ -32,11 +31,11 @@ packadd cfilter
 
 """ Vim options """
 if !has("nvim")
-    " noselect not on stable vim yet
-    set wildmode=full:longest:lastused,full
+	" noselect not on stable vim yet
+	set wildmode=full:longest:lastused,full
 else
-    set wildmode=noselect:longest:lastused,full
-    set undofile
+	set wildmode=noselect:longest:lastused,full
+	set undofile
 endif
 set relativenumber
 set number
@@ -76,20 +75,20 @@ set foldlevelstart=100
 set background=dark
 let g:maplocalleader = "_"
 let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
-    \"typescriptreact", "html", "css", "json", "vim", "lua"]
+	\"typescriptreact", "html", "css", "json", "vim", "lua"]
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ \ %{FugitiveStatusline()}%h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 if has("nvim")
-    let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, stdpath("data") .. "/site,", "", "g")
+	let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, stdpath("data") .. "/site,", "", "g")
 else
-    set packpath^=~/.local/share/vim/site
+	set packpath^=~/.local/share/vim/site
 endif
 if exists('&findfunc') && executable('fd') && executable('fzf')
-    set findfunc=FuzzyFindFunc
+	set findfunc=FuzzyFindFunc
 endif
 
 function! FuzzyFindFunc(cmdarg, cmdcomplete)
-    return systemlist("fd --hidden --type f -E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
+	return systemlist("fd --hidden --type f -E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
 endfunction
 
 """ Plugin options """
@@ -103,16 +102,16 @@ let g:netrw_alto = 1
 let g:netrw_banner = 0
 let g:netrw_keepj = ""
 let g:python_indent = {
-        \'open_paren': 'shiftwidth()',
-        \'closed_paren_align_last_line': v:false
-    \}
+		\'open_paren': 'shiftwidth()',
+		\'closed_paren_align_last_line': v:false
+	\}
 let g:polyglot_disabled = ["autoindent"] "Sleuth is making me do this?
 let g:vim_indent_cont = shiftwidth()
 let g:vim_markdown_new_list_item_indent = 0
 let g:copilot_filetypes = {
-        \'markdown': v:false,
-        \'copilot-chat': v:false
-    \}
+		\'markdown': v:false,
+		\'copilot-chat': v:false
+	\}
 let g:tmux_navigator_no_mappings = 1
 let g:taboo_tab_format = " %N %P "
 let g:taboo_renamed_tab_format = " %N %l "
@@ -124,6 +123,7 @@ let g:slime_no_mappings = 1
 let g:qf_session_auto_cache = 2
 let g:qf_session_auto_load = 1
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
+let g:format_on_save = 1
 
 """""""""""""""""""""""
 " Mappings & Commands "
@@ -137,7 +137,7 @@ nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
 " Join lines like 'J' without space between
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. 
-        \(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
+		\(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
 " Move line or selection of lines [count] lines up or down
 nnoremap <expr> <A-j> ":<C-U>m +" .. v:count1 .. " <cr>"
 nnoremap <expr> <A-k> ":<C-U>m -" .. (v:count1 + 1) .. " <cr>"
@@ -148,17 +148,19 @@ inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
 if !has("nvim")
-    nnoremap ]<space> mmo<esc>`m<cmd>delm m<cr>
-    nnoremap [<space> mmO<esc>`m<cmd>delm m<cr>
+	nnoremap ]<space> mmo<esc>`m<cmd>delm m<cr>
+	nnoremap [<space> mmO<esc>`m<cmd>delm m<cr>
 endif
 nmap ]o ]<space>j
 nmap [o [<space>k
 " Hungry delete
 inoremap <silent> <expr> <bs> !search('\S','nbW',line('.')) ? 
-    \(col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"
+	\(col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"
 inoremap <c-bs> <bs>
 " Vim surround delete surrounding function. Uses text objects defined below
 nmap dsf dib%hviel%p
+command! FmtToggle let g:format_on_save = !g:format_on_save | echo g:format_on_save
+command! -bang Wfmt let g:format_on_save = <bang>1 | w | let g:format_on_save = <bang>0
 
 """ System register """
 noremap <space>y "+y
@@ -224,7 +226,7 @@ command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args
 command! -nargs=? -complete=dir Vexplore belowright vsplit | silent Dirvish <args>
 nnoremap <silent> - :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>:Explore<cr>
 nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
-    \exe "Explore " .. getcwd()<cr>
+	\exe "Explore " .. getcwd()<cr>
 
 """ Tmux/Slime """
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
@@ -239,21 +241,21 @@ nnoremap <expr> <leader>tg '<cmd>SlimeSend1 glow ' .. expand("%:p") .. '<cr><cmd
 
 """ Quickfix/Location list """
 if !has("nvim")
-    nnoremap ]q <cmd>exe v:count1 .. "cnext"<cr>
-    nnoremap [q <cmd>exe v:count1 .. "cprev"<cr>
-    nnoremap ]Q <cmd>exe v:count1 .. "clast"<cr>
-    nnoremap [Q <cmd>exe v:count1 .. "cfirst"<cr>
-    nnoremap ]l <cmd>exe v:count1 .. "lnext"<cr>
-    nnoremap [l <cmd>exe v:count1 .. "lprev"<cr>
-    nnoremap ]L <cmd>exe v:count1 .. "llast"<cr>
-    nnoremap [L <cmd>exe v:count1 .. "lfirst"<cr>
+	nnoremap ]q <cmd>exe v:count1 .. "cnext"<cr>
+	nnoremap [q <cmd>exe v:count1 .. "cprev"<cr>
+	nnoremap ]Q <cmd>exe v:count1 .. "clast"<cr>
+	nnoremap [Q <cmd>exe v:count1 .. "cfirst"<cr>
+	nnoremap ]l <cmd>exe v:count1 .. "lnext"<cr>
+	nnoremap [l <cmd>exe v:count1 .. "lprev"<cr>
+	nnoremap ]L <cmd>exe v:count1 .. "llast"<cr>
+	nnoremap [L <cmd>exe v:count1 .. "lfirst"<cr>
 endif
 nnoremap <leader>ll <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>cc <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <expr> <leader>ch "<cmd>" .. (v:count > 0 ? v:count : "")
-        \.. "chistory" .. (v:count > 0 ? "\|cw" : "") .. "<cr>"
+	\.. "chistory" .. (v:count > 0 ? "\|cw" : "") .. "<cr>"
 nnoremap <leader>cL <cmd>clist<cr>
 nnoremap <leader>lL <cmd>llist<cr>
 nnoremap <leader>c<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "cc"<cr>
@@ -284,7 +286,7 @@ nnoremap <C-W><tab> g<tab>
 nnoremap <C-W>S :<C-U>exe (v:count > 0 ? v:count - 1 : "") .. "tab split"<cr>
 " Move tab to the end without a [count] otherwise move to [count]th index
 nnoremap <C-W>M :<C-U>exe (v:count > 0 ? 
-    \(tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
+	\(tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
 " Change tab's working directory to the current file
 nnoremap <C-W>D :<C-U>exe "tcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" : "%:h")<cr>
 
@@ -335,13 +337,13 @@ onoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setloca
 xnoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
 " Word including many other special chars except brackets and quotes
 onoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! viw'<bar>
-    \setlocal iskeyword-=.,=,:<cr>
+	\setlocal iskeyword-=.,=,:<cr>
 xnoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! viw'<bar>
-    \setlocal iskeyword-=.,=,:<cr>
+	\setlocal iskeyword-=.,=,:<cr>
 onoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
-    \setlocal iskeyword-=.,=,:<cr>
+	\setlocal iskeyword-=.,=,:<cr>
 xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
-    \setlocal iskeyword-=.,=,:<cr>
+	\setlocal iskeyword-=.,=,:<cr>
 
 """ Colorschemes """
 nnoremap <space>1 :<C-U>set background=dark\|colo default<cr>
@@ -366,16 +368,6 @@ cnoremap <A-9> \(
 cnoremap <A-0> \)
 cnoremap <A-space> \<space>
 cnoremap <A-.> \.
-
-""" Spelling """
-nnoremap <silent> <expr> <leader>ps &spell ? "mp[SzG`p<cmd>delm p<cr>" : 
-    \"<cmd>echoerr 'Spelling not enabled'<cr>"
-nnoremap <silent> <expr> <leader>pS &spell ? "mp[Szg`p<cmd>delm p<cr>" : 
-    \"<cmd>echoerr 'Spelling not enabled'<cr>"
-" I'm feeling lucky!
-nnoremap <silent> <expr> <leader>p= &spell ? "mp[Sz=1<cr>`p<cmd> delm p<cr>" : 
-    \"<cmd>echoerr 'Spelling not enabled'<cr>"
-nnoremap <leader>p1 z=1<cr><cr>
 
 """ Registers """
 nnoremap yr% :let @+ = @%<cr>
@@ -405,63 +397,63 @@ nnoremap <F5> :Obsession<cr>
 " Omni completion
 inoremap <C-Space> <C-X><C-O>
 if !has("nvim")
-    nnoremap <silent> <C-L> <cmd>nohl<cr>
+	nnoremap <silent> <C-L> <cmd>nohl<cr>
 endif
 
 """ Functions """
 " WARNING: slow!
 function! FzfGrep(query, path=".")
-    let oldgrepprg = &grepprg
-    let &grepprg = "rg --column --hidden -g '!.git/*' . " .. a:path .. 
-            \" \\| fzf --filter='$*' --delimiter : --nth 4.."
-    exe "grep " .. a:query
-    let &grepprg = oldgrepprg
+	let oldgrepprg = &grepprg
+	let &grepprg = "rg --column --hidden -g '!.git/*' . " .. a:path .. 
+			\" \\| fzf --filter='$*' --delimiter : --nth 4.."
+	exe "grep " .. a:query
+	let &grepprg = oldgrepprg
 endfunction
 
 function! FuzzyFilterGrep(query, path=".") abort
-    exe "grep! '" .. a:query .. "' " .. a:path
-    let sort_query = substitute(a:query, '\.\*', '', 'g')
-    let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
-    call FuzzyFilterQf(sort_query)
-    cfirst
+	exe "grep! '" .. a:query .. "' " .. a:path
+	let sort_query = substitute(a:query, '\.\*', '', 'g')
+	let sort_query = substitute(sort_query, '\\\(.\)', '\1', 'g')
+	call FuzzyFilterQf(sort_query)
+	cfirst
 endfunction
 
 " Allows wrapping for nvim ]a and [a arglist mappings
 function! NavArglist(count)
-    let arglen = argc()
-    if arglen == 0
-        return
-    endif
-    let next = fmod(argidx() + a:count, arglen)
-    if next < 0
-        let next += arglen
-    endif
-    exe float2nr(next + 1) .. 'argu'
+	let arglen = argc()
+	if arglen == 0
+		return
+	endif
+	let next = fmod(argidx() + a:count, arglen)
+	if next < 0
+		let next += arglen
+	endif
+	exe float2nr(next + 1) .. 'argu'
 endfunction
 
 function! s:CloseHiddenBuffers()
-    let open_buffers = []
-    for i in range(tabpagenr('$'))
-        call extend(open_buffers, tabpagebuflist(i + 1))
-    endfor
-    for num in range(1, bufnr("$") + 1)
-        if buflisted(num) && index(open_buffers, num) == -1
-            exec "bdelete ".num
-        endif
-    endfor
+	let open_buffers = []
+	for i in range(tabpagenr('$'))
+		call extend(open_buffers, tabpagebuflist(i + 1))
+	endfor
+	for num in range(1, bufnr("$") + 1)
+		if buflisted(num) && index(open_buffers, num) == -1
+			exec "bdelete ".num
+		endif
+	endfor
 endfunction
 
 function! NavDirFiles(count) abort
-    let curfile = expand("%:p")
-    let curdir = expand("%:p:h")
-    let files = systemlist("find " .. curdir .. "/ -type f -maxdepth 1")
-    let filelen = len(files)
-    let curidx = index(files, curfile)
-    let newidx = float2nr(fmod(curidx + a:count, filelen))
-    if newidx < 0
-        let newidx += filelen
-    endif
-    exe "e " .. files[newidx]
+	let curfile = expand("%:p")
+	let curdir = expand("%:p:h")
+	let files = systemlist("find " .. curdir .. "/ -type f -maxdepth 1")
+	let filelen = len(files)
+	let curidx = index(files, curfile)
+	let newidx = float2nr(fmod(curidx + a:count, filelen))
+	if newidx < 0
+		let newidx += filelen
+	endif
+	exe "e " .. files[newidx]
 endfunction
 
 """"""""""""""""
@@ -469,38 +461,69 @@ endfunction
 """"""""""""""""
 
 augroup vimrc
-    autocmd!
+	autocmd!
 augroup END
 
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
-    \'call writefile(["set background=" .. &background, "colorscheme " .. g:colors_name], v:this_session, "a")' | endif
+	\'call writefile(["set background=" .. &background, "colorscheme " .. g:colors_name], v:this_session, "a")' | endif
 if has("nvim")
-    autocmd vimrc TabNewEntered * argl|%argd
+	autocmd vimrc TabNewEntered * argl|%argd
 endif
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 autocmd vimrc ColorSchemePre * hi clear
+autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
+autocmd vimrc OptionSet formatprg call s:SetFormatMaps()
+autocmd vimrc FileType * call s:SetFormatMaps()
+autocmd vimrc OptionSet spell call s:SetSpellMaps()
+autocmd vimrc FileType * call s:SetSpellMaps()
+
+function! s:SetFormatMaps() abort
+	if &formatprg == ""
+		return
+	endif
+	nnoremap <buffer> <F3> <cmd>call FormatBuf()<cr>
+endfunction
+
+function! s:SetSpellMaps() abort
+	if !&spell
+		return
+	endif
+	nnoremap <silent> <leader>ps mt[SzG`p<cmd>delm t<cr>
+	nnoremap <silent> <leader>pS mt[Szg`p<cmd>delm t<cr>
+	nnoremap <silent> <leader>p1 mt[Sz=1<cr>`p<cmd> delm t<cr>
+	nnoremap <silent> <leader>p= [Sz=
+endfunction
+
+function! FormatBuf() abort
+	if &formatprg == ""
+		return
+	endif
+	let l:view = winsaveview()
+	norm gggqG
+	call winrestview(l:view)
+endfunction
 
 """""""""
 " Final "
 """""""""
 
 if has("nvim")
-    lua require('config')
+	lua require('config')
 endif
 
 if strftime("%H") >= 22 || strftime("%H") < 7
-    colo habamax
+	colo habamax
 else
-    sil! colo unokai
-    if !exists("g:colors_name")
-        colo slate
-    endif
+	sil! colo unokai
+	if !exists("g:colors_name")
+		colo slate
+	endif
 endif
 
 command! PackInstall call PackInit() | call minpac#update(keys(filter(copy(minpac#pluglist), 
-        \{-> !isdirectory(v:val.dir . '/.git')})))
+	\{-> !isdirectory(v:val.dir . '/.git')})))
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")

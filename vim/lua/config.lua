@@ -6,8 +6,7 @@ local lsps = {
 	"gopls",
 	"clangd",
 	"sqlls",
-	"emmet_language_server",
-	-- "terraformls",
+	"emmet_language_server", -- "terraformls",
 	"tofu_ls",
 	"vimls",
 }
@@ -59,38 +58,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
-require("conform").setup({
-	formatters = {
-		prettier = {
-			require_cwd = true,
-		},
-		jq = {
-			args = { "--tab" },
-		},
-	},
-	formatters_by_ft = {
-		css = { "prettier" },
-		go = { "goimports", "gofmt" },
-		html = { "prettier" },
-		javascript = { "prettier" },
-		javascriptreact = { "prettier" },
-		json = { "jq", "prettier" },
-		lua = { "stylua" },
-		python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
-		scss = { "prettier" },
-		sh = { "shfmt" },
-		zsh = { "shfmt" },
-		bash = { "shfmt" },
-		sql = { "sql_formatter" },
-		svelte = { "prettier" },
-		terraform = { "tofu_fmt" },
-		typescript = { "prettier" },
-		typescriptreact = { "prettier" },
-		yaml = { "yamlfmt" },
-	},
-	-- format_after_save = {}, -- TODO: remove
-})
-
 require("CopilotChat").setup({
 	mappings = {
 		complete = { insert = "<S-tab>" },
@@ -99,9 +66,7 @@ require("CopilotChat").setup({
 		show_diff = { full_diff = true },
 		reset = { normal = "grR", insert = false },
 	},
-	window = {
-		width = 0.33,
-	},
+	window = { width = 0.33 },
 })
 
 vim.diagnostic.config({
@@ -113,7 +78,6 @@ vim.diagnostic.config({
 })
 vim.lsp.log.set_level(vim.log.levels.OFF)
 
-vim.keymap.set("n", "<F3>", require("conform").format)
 vim.keymap.set({ "n", "v" }, "<leader>.", ":<C-U>CopilotChatToggle<cr><C-W>=", { silent = true })
 -- vim.keymap.set({ "n", "v" }, "<leader>,", ":<C-U>CopilotChatClose<cr><C-W>=", { silent = true })
 vim.keymap.set("n", "]D", function()
