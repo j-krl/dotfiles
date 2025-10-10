@@ -7,13 +7,14 @@ zstyle ':vcs_info:git:*' unstagedstr '!'
 zstyle ':vcs_info:git:*' stagedstr '?'
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 +vi-git-untracked() {
-  if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
-     git status --porcelain | grep -m 1 '^??' &>/dev/null
-  then
-    hook_com[misc]='*'
-  fi
+	if [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) == 'true' ]] &&
+		git status --porcelain | grep -m 1 '^??' &>/dev/null; then
+		hook_com[misc]='*'
+	fi
 }
-precmd() { vcs_info }
+precmd() {
+	vcs_info
+}
 PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 
 export EDITOR=nvim
@@ -21,16 +22,18 @@ export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacadah
 
 if command -v bat >/dev/null 2>&1; then
-    alias less="bat"
-    export BAT_STYLE=grid
-    export MANPAGER=bat
+	alias less="bat"
+	export BAT_STYLE=grid
+	export MANPAGER=bat
 fi
 
 alias mux="cd && ~/dotfiles/tmux/tmux-session.sh"
 alias nvs="nvim -S Session.vim"
 alias vs="vim -S Session.vim"
 alias gadc="gcloud auth application-default login"
-ghclone() { git clone "https://github.com/$1.git" }
+ghclone() {
+	git clone "https://github.com/$1.git"
+}
 
 export PATH="$PATH:~/.local/bin"
 
