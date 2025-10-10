@@ -14,21 +14,21 @@
 " is an 'after' script. I have sent an email to Bram regarding this
 " bug, but as a work-around, I have made it possible that you can
 " also put your scripts in an 'after_colors' folder:
-"   vimfiles/after_colors/myColorsName.vim
+"	vimfiles/after_colors/myColorsName.vim
 " or
-"   vimfiles/after/after_colors/myColorsName.vim
+"	vimfiles/after/after_colors/myColorsName.vim
 "
 "
 " Note: because you generally choose your colorscheme in
 " _vimrc and plugins are loaded afterwards, the sequence files
 " are loaded on startup may be a little confusing at first:
 " -- Vim Load Sequence --
-" 	1 - _vimrc
-" 	2 - vimfiles/colors/myColorsName.vim
-" 	3 - vimfiles/plugins/[plugins]
-" 	4 - vimfiles/plugins/AfterColors.vim
-" 	5 - vimfiles/plugins/[more plugins]
-" 	6 - vimfiles/after_colors/myColorsName.vim
+"	1 - _vimrc
+"	2 - vimfiles/colors/myColorsName.vim
+"	3 - vimfiles/plugins/[plugins]
+"	4 - vimfiles/plugins/AfterColors.vim
+"	5 - vimfiles/plugins/[more plugins]
+"	6 - vimfiles/after_colors/myColorsName.vim
 
 " requires vim 6 at least
 if version <= 600 || exists('loaded_AfterColors') || ! has("autocmd")

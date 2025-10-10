@@ -137,7 +137,7 @@ nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
 " Join lines like 'J' without space between
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. 
-		\(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
+	\(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
 " Move line or selection of lines [count] lines up or down
 nnoremap <expr> <A-j> ":<C-U>m +" .. v:count1 .. " <cr>"
 nnoremap <expr> <A-k> ":<C-U>m -" .. (v:count1 + 1) .. " <cr>"
@@ -159,6 +159,8 @@ inoremap <silent> <expr> <bs> !search('\S','nbW',line('.')) ?
 inoremap <c-bs> <bs>
 " Vim surround delete surrounding function. Uses text objects defined below
 nmap dsf dib%hviel%p
+
+""" Formatting """
 command! FmtToggle let g:format_on_save = !g:format_on_save | echo g:format_on_save
 command! -bang Wfmt let g:format_on_save = <bang>1 | w | let g:format_on_save = <bang>0
 
@@ -318,7 +320,7 @@ nnoremap <leader>ac <cmd>%argd<cr><C-L><cmd>echo "arglist cleared"<cr>
 " Go to arglist file at index [count]
 nnoremap <expr> <space><space> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
-""" Copilot """
+""" Copilot
 imap <C-J> <Plug>(copilot-accept-word)
 imap <C-L><C-]> <Plug>(copilot-dismiss)
 imap <C-L><C-K> <Plug>(copilot-next)
@@ -468,16 +470,16 @@ autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
 	\'call writefile(["set background=" .. &background, "colorscheme " .. g:colors_name], v:this_session, "a")' | endif
-if has("nvim")
-	autocmd vimrc TabNewEntered * argl|%argd
-endif
-autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 autocmd vimrc ColorSchemePre * hi clear
 autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
 autocmd vimrc OptionSet formatprg call s:SetFormatMaps()
 autocmd vimrc FileType * call s:SetFormatMaps()
 autocmd vimrc OptionSet spell call s:SetSpellMaps()
 autocmd vimrc FileType * call s:SetSpellMaps()
+autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
+if has("nvim")
+	autocmd vimrc TabNewEntered * argl|%argd
+endif
 
 function! s:SetFormatMaps() abort
 	if &formatprg == ""
