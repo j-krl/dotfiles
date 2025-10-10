@@ -495,9 +495,9 @@ function! s:SetSpellMaps() abort
 	if !&spell
 		return
 	endif
-	nnoremap <silent> <leader>ps mt[SzG`p<cmd>delm t<cr>
-	nnoremap <silent> <leader>pS mt[Szg`p<cmd>delm t<cr>
-	nnoremap <silent> <leader>p1 mt[Sz=1<cr>`p<cmd> delm t<cr>
+	nnoremap <silent> <leader>ps mt[Szg`t<cmd>delm t<cr>
+	nnoremap <silent> <leader>pS mt[SzG`t<cmd>delm t<cr>
+	nnoremap <silent> <leader>p1 mt[Sz=1<cr>`t<cmd>delm t<cr>
 	nnoremap <silent> <leader>p= [Sz=
 endfunction
 
