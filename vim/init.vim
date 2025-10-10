@@ -478,6 +478,7 @@ autocmd vimrc OptionSet formatprg call s:SetFormatMaps()
 autocmd vimrc FileType * call s:SetFormatMaps()
 autocmd vimrc OptionSet spell call s:SetSpellMaps()
 autocmd vimrc FileType * call s:SetSpellMaps()
+autocmd vimrc BufRead * call s:SetJumpScopeMaps()
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 if has("nvim")
 	autocmd vimrc TabNewEntered * argl|%argd
@@ -508,6 +509,16 @@ function! FormatBuf() abort
 	norm gggqG
 	call winrestview(l:view)
 endfunction
+
+function! s:SetJumpScopeMaps() abort
+	if &ft == "c" || &ft == "cpp" || &ft == "python" || &ft == "markdown"
+		return
+	endif
+	noremap <silent> <buffer> ]] <cmd>for i in range(v:count1)\|
+			\call search('^[^ \t}#/)\-]', 'W')\|endfor<cr>
+	noremap <silent> <buffer> [[ <cmd>for i in range(v:count1)\|
+			\call search('^[^ \t}#/)\-]', 'bW')\|endfor<cr>
+endfunction	
 
 """""""""
 " Final "
