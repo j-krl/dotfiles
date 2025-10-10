@@ -1,1 +1,1 @@
-set formatprg=shfmt\ --filename\ %
+setlocal formatprg=shfmt\ --filename\ %

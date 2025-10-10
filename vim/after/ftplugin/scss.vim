@@ -1,1 +1,1 @@
-set formatprg=prettier\ %
+setlocal formatprg=prettier\ %

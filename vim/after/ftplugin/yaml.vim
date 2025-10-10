@@ -1,1 +1,1 @@
-set formatprg=yamlfmt\ -
+setlocal formatprg=yamlfmt\ -

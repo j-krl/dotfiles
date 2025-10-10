@@ -11,7 +11,7 @@ local lsps = {
 	"tofu_ls",
 	"vimls",
 }
-local lsp_setup = {}
+
 for _, lsp in pairs(lsps) do
 	local setup = {}
 	if lsp == "basedpyright" then
@@ -88,7 +88,7 @@ require("conform").setup({
 		typescriptreact = { "prettier" },
 		yaml = { "yamlfmt" },
 	},
-	format_after_save = {}, -- TODO: remove
+	-- format_after_save = {}, -- TODO: remove
 })
 
 require("CopilotChat").setup({

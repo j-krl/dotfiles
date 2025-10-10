@@ -1,1 +1,1 @@
-set formatprg=jq\ --tab
+setlocal formatprg=jq\ --tab

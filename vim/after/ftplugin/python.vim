@@ -1,4 +1,4 @@
-set formatprg=ruff\ format\ --force-exclude\ --stdin-filename\ %
+setlocal formatprg=ruff\ format\ --force-exclude\ --stdin-filename\ %
 let b:surround_{char2nr("d")} = "\1dict: \1[\"\r\"]"
 let b:surround_{char2nr("m")} = "\"\"\"\r\"\"\""
 let b:surround_{char2nr("p")} = "f\"\r\""
