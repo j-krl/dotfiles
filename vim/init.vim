@@ -488,7 +488,7 @@ function! s:SetFormatMaps() abort
 	if &formatprg == ""
 		return
 	endif
-	nnoremap <buffer> <F3> <cmd>call FormatBuf()<cr>
+	nnoremap <buffer> <F3> <cmd>call FormatBuf(v:true)<cr>
 endfunction
 
 function! s:SetSpellMaps() abort
