@@ -501,12 +501,17 @@ function! s:SetSpellMaps() abort
 	nnoremap <silent> <leader>p= [Sz=
 endfunction
 
-function! FormatBuf() abort
+function! FormatBuf(preserve_undo=0) abort
 	if &formatprg == ""
 		return
 	endif
 	let l:view = winsaveview()
-	norm gggqG
+	if !a:preserve_undo
+		" Best we can do to prevent mangling the undo history after formatting
+		sil! undojoin | norm gggqG
+	else
+		norm gggqG
+	endif
 	call winrestview(l:view)
 endfunction
 
