@@ -110,6 +110,7 @@ let g:python_indent = {
 let g:polyglot_disabled = ["autoindent"] "Sleuth is making me do this?
 let g:vim_indent_cont = shiftwidth()
 let g:vim_markdown_new_list_item_indent = 0
+let g:copilot_no_tab_map = v:true
 let g:copilot_filetypes = {
 		\'markdown': v:false,
 		\'copilot-chat': v:false
@@ -181,6 +182,7 @@ nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
+nmap <F4> <cmd>Wfmt!<cr>
 
 """ File navigation """
 noremap / ms/
@@ -323,6 +325,7 @@ nnoremap <leader>ac <cmd>%argd<cr><C-L><cmd>echo "arglist cleared"<cr>
 nnoremap <expr> <space><space> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 """ Copilot
+imap <expr> <C-\> copilot#Accept("\<cr>")
 imap <C-J> <Plug>(copilot-accept-word)
 imap <C-L><C-]> <Plug>(copilot-dismiss)
 imap <C-L><C-K> <Plug>(copilot-next)
