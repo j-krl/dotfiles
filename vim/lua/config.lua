@@ -6,7 +6,8 @@ local lsps = {
 	"gopls",
 	"clangd",
 	"sqlls",
-	"emmet_language_server", -- "terraformls",
+	"emmet_language_server",
+	-- "terraformls",
 	"tofu_ls",
 	"vimls",
 }
@@ -31,9 +32,12 @@ for _, lsp in pairs(lsps) do
 	elseif lsp == "tofu_ls" then
 		setup = {
 			filetypes = { "terraform", "opentofu", "opentofu-vars" },
+			settings = {
+				ignoreSingleFileWarning = true, -- FIX: doesn't work
+			},
 		}
 	end
-	vim.lsp.config[lsp] = setup
+	vim.lsp.config(lsp, setup)
 	vim.lsp.enable(lsp)
 end
 
