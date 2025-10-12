@@ -32,8 +32,7 @@ alias nvs="nvim -S Session.vim"
 alias vs="vim -S Session.vim"
 alias prc="gh pr create --fill-first"
 alias prd="gh pr create --fill-first --draft"
-alias ga="gcloud auth login"
-alias gadc="gcloud auth application-default login"
+alias ga="gcloud auth login --update-adc"
 ghclone() {
 	git clone "https://github.com/$1.git"
 }
