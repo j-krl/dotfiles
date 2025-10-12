@@ -7,16 +7,16 @@ if [ $? != 0 ]; then
 	tmux new-session -s $SES -d -x- -y-
 	tmux set-option base-index 1
 	tmux rename-window -t 1 "proj"
-	tmux send-keys "cd programming" C-m
+	tmux send-keys "cd dev" C-m
 	tmux split-window
-	tmux send-keys "cd ~/programming" C-m
+	tmux send-keys "cd ~/dev" C-m
 	tmux resize-pane -y 15
 	tmux select-pane -t "{top}"
 	tmux new-window -t 2
-	tmux send-keys "cd ~/programming" C-m
+	tmux send-keys "cd ~/dev" C-m
 	tmux rename-window -t 2 "proj2"
 	tmux split-window
-	tmux send-keys "cd ~/programming" C-m
+	tmux send-keys "cd ~/dev" C-m
 	tmux resize-pane -y 15
 	tmux select-pane -t "{top}"
 	tmux new-window -t 3
