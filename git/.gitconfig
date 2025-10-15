@@ -10,6 +10,8 @@
 	decorate = short
 [push]
 	autoSetupRemote = true
+[color "diff"]
+	meta = yellow
 [alias]
 	ac = "!git add -A && git commit"
 	amend = "!git add -A && git commit --amend --no-edit"
