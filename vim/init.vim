@@ -305,7 +305,7 @@ nnoremap <space>go :<C-U>GBrowse<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
 nnoremap <space>gE :<C-U>Gedit :%<left><left>
-nnoremap <space>gB :<C-U>!git branch --show-current<cr>
+nnoremap <space>gw :<C-U>windo diffthis\|windo norm zM<cr>
 nnoremap <space>gv :<C-U>Gvdiffsplit<space>
 " Load all past revisions of the current file into the qflist
 nnoremap <space>g0 :<C-U>0Gclog<cr>
