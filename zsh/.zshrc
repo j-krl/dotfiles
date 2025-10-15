@@ -34,7 +34,7 @@ alias vs="vim -S Session.vim"
 alias prc="gh pr create --fill-first"
 alias prd="gh pr create --fill-first --draft"
 alias ga="gcloud auth login --update-adc"
-alias difftool="nvim -c 'Git difftool -y'"
+alias difftool="nvim -c 'let g:taboo_tab_format = \" %N %f \"' -c 'Git difftool -y' -c 'set tabclose='"
 ghclone() {
 	git clone "https://github.com/$1.git"
 }
