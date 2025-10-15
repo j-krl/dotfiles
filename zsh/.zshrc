@@ -34,6 +34,7 @@ alias vs="vim -S Session.vim"
 alias prc="gh pr create --fill-first"
 alias prd="gh pr create --fill-first --draft"
 alias ga="gcloud auth login --update-adc"
+alias difftool="nvim -c 'Git difftool -y'"
 ghclone() {
 	git clone "https://github.com/$1.git"
 }

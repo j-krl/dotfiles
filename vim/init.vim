@@ -473,7 +473,7 @@ augroup vimrc
 augroup END
 
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
-autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
+"autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
 	\'call writefile(["set background=" .. &background, "colorscheme " .. g:colors_name], v:this_session, "a")' | endif
 autocmd vimrc ColorSchemePre * hi clear
