@@ -295,6 +295,7 @@ nnoremap <C-W>M :<C-U>exe (v:count > 0 ?
 	\(tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
 " Change tab's working directory to the current file
 nnoremap <C-W>D :<C-U>exe "tcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" : "%:h")<cr>
+nnoremap <C-W>d :<C-U>exe "lcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" : "%:h")<cr>
 
 """ Fugitive/Git """
 " Git status summary
