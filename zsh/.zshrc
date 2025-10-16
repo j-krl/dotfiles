@@ -18,7 +18,7 @@ precmd() {
 PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 
 export EDITOR=nvim
-export BINDIR=~/.local/bin
+export BINDIR="$HOME/.local/bin"
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacadah
 
@@ -39,7 +39,7 @@ ghclone() {
 	git clone "https://github.com/$1.git"
 }
 
-export PATH="$PATH:~/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 autoload -U +X bashcompinit && bashcompinit
 
