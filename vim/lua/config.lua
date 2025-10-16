@@ -49,15 +49,34 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		if client:supports_method("textDocument/completion") then
 			vim.lsp.completion.enable(true, client.id, args.buf)
 		end
+
 		local function symbol_on_list(options)
-			vim.fn.setqflist({}, " ", options)
+			local title = "LSP"
+			if options.context.method == "textDocument/references" then
+				title = "LSP References: " .. vim.fn.expand("<cword>")
+			elseif options.context.method == "workspace/symbol" then
+				title = "LSP Workspace Symbols: " .. options.context.params.query
+			end
+			vim.fn.setqflist({}, " ", {
+				items = options.items,
+				nr = "$",
+				title = title,
+			})
 			vim.cmd.normal("mG")
+			vim.cmd.cwindow()
 			vim.cmd.cfirst()
-			vim.cmd.cclose()
+			vim.cmd("norm zz")
 		end
+
 		vim.keymap.set("n", "gry", vim.lsp.buf.type_definition, opts)
 		vim.keymap.set("n", "grs", function()
 			vim.lsp.buf.workspace_symbol(nil, { on_list = symbol_on_list })
+		end)
+		vim.keymap.set("n", "grS", function()
+			vim.lsp.buf.workspace_symbol(vim.fn.expand("<cword>"), { on_list = symbol_on_list })
+		end)
+		vim.keymap.set("n", "grr", function()
+			vim.lsp.buf.references({ include_declaration = false }, { on_list = symbol_on_list })
 		end)
 	end,
 })
