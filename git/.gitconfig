@@ -14,10 +14,6 @@
 	diffFilter = diff-highlight
 [color "diff"]
 	meta = yellow
-[pager]
-	diff = diff-highlight | less
-	log = diff-highlight | less
-	show = diff-highlight | less
 [alias]
 	ac = "!git add -A && git commit"
 	amend = "!git add -A && git commit --amend --no-edit"

@@ -21,6 +21,7 @@ export EDITOR=nvim
 export BINDIR="$HOME/.local/bin"
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacadah
+export GIT_PAGER="diff-highlight | less"
 
 if command -v bat >/dev/null 2>&1; then
 	alias less="bat"
