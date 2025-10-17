@@ -35,6 +35,7 @@ alias vs="vim -S Session.vim"
 alias prc="gh pr create --fill-first"
 alias prd="gh pr create --fill-first --draft"
 alias ga="gcloud auth login --update-adc"
+alias co="copilot"
 
 difftool() {
 	nvim -c "let g:taboo_tab_format = \" %N %R \"" -c "Git difftool -y $1" \
