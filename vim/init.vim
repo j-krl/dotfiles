@@ -281,7 +281,7 @@ nnoremap [w gT
 nnoremap [W <cmd>tabfirst<cr>
 nnoremap ]W <cmd>tablast<cr>
 nnoremap <C-W>N <cmd>tabnew\|Explore<cr>
-nnoremap <C-W>C <cmd>tabcl<cr>
+nnoremap <expr> <C-W>C "<cmd>" .. repeat("tabcl\|", v:count1) .. "<cr>"
 nnoremap <C-W><tab> g<tab>
 " Split to next tab with no [count], otherwise split to [count]th index. Like
 " `<C-W>T`, but don't close the original window
