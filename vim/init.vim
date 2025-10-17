@@ -523,9 +523,9 @@ function! s:SetJumpScopeMaps() abort
 	if &ft == "c" || &ft == "cpp" || &ft == "python" || &ft == "markdown"
 		return
 	endif
-	noremap <silent> <buffer> ]] <cmd>for i in range(v:count1)\|
+	noremap <silent> <buffer> ]] m'<cmd>for i in range(v:count1)\|
 			\call search('^[^ \t}#/)\-]', 'W')\|endfor<cr>
-	noremap <silent> <buffer> [[ <cmd>for i in range(v:count1)\|
+	noremap <silent> <buffer> [[ m'<cmd>for i in range(v:count1)\|
 			\call search('^[^ \t}#/)\-]', 'bW')\|endfor<cr>
 endfunction	
 
