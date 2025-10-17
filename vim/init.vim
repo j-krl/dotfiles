@@ -69,9 +69,8 @@ set iskeyword+=-
 set spellcapcheck=
 set fillchars=diff:\
 set foldmethod=indent
-set foldopen-=search
-set foldlevel=100
-set foldlevelstart=100
+set foldlevel=99
+set foldlevelstart=99
 set background=dark
 let g:maplocalleader = "_"
 let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
@@ -213,8 +212,6 @@ command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 nnoremap <C-W>Z <C-W>_<C-W>\|
 " close opposite split
 nnoremap <C-W>X <C-W>x<C-W>c
-nnoremap <C-W>v <C-W>v<C-W>w
-nnoremap <C-W>s <C-W>s<C-W>w
 " go to definition in vertical split
 nmap <C-W>[ <C-W>v<C-]>
 nmap <C-W>] <C-W>]<C-W>r
