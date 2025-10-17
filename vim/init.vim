@@ -69,7 +69,6 @@ set iskeyword+=-
 set spellcapcheck=
 set fillchars=diff:\
 set foldmethod=indent
-set foldlevel=99
 set foldlevelstart=99
 set background=dark
 let g:maplocalleader = "_"
