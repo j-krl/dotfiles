@@ -192,7 +192,7 @@ nnoremap <backspace> <C-^>
 nnoremap <expr> <cr> &buftype ==# 'quickfix' \|\| &buftype ==# 'nofile' ? "\<cr>" : "\<C-]>"
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>f :<C-U>find<space>
-nmap <leader>F :<C-U>find <C-H><tab>
+nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
 nnoremap <leader>z :<C-U>Zgrep<space>
@@ -200,7 +200,7 @@ nnoremap <leader>Z :<C-U>Fzfgrep<space>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
-cnoremap <C-H> <C-R>=expand("%:.:h")<cr>/
+cnoremap <C-H> <C-R>=expand("%:p:h")<cr>/
 command! Bonly %bd|e#|bd#|norm `"
 command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
