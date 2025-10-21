@@ -29,13 +29,14 @@ if command -v bat >/dev/null 2>&1; then
 	export MANPAGER=bat
 fi
 
+alias ga="gcloud auth login --update-adc"
+alias co="copilot"
+alias k="kubectl"
 alias mux="cd && ~/dotfiles/tmux/tmux-session.sh"
 alias nvs="nvim -S Session.vim"
 alias vs="vim -S Session.vim"
 alias prc="gh pr create --fill-first"
 alias prd="gh pr create --fill-first --draft"
-alias ga="gcloud auth login --update-adc"
-alias co="copilot"
 
 difftool() {
 	nvim -c "let g:taboo_tab_format = \" %N %R \"" -c "Git difftool -y $1" \
