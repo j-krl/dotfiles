@@ -4,8 +4,7 @@ mkdir -p ~/.config
 
 # zsh
 touch ~/.zshrc
-sed -i.old '1s;^;source ~/dotfiles/zsh/.zshrc\n;' ~/.zshrc
-git clone https://github.com/Aloxaf/fzf-tab ~/.fzf-tab
+sed -i.old '1s;^;source ~/dotfiles/zsh/zshrc\n;' ~/.zshrc
 
 # tmux
 ln -s ~/dotfiles/tmux/.tmux.conf ~/.tmux.conf
@@ -23,3 +22,22 @@ git clone https://github.com/k-takata/minpac.git ~/.local/share/vim/site/pack/mi
 ln -s ~/dotfiles/vim ~/.config/nvim
 ln -s ~/dotfiles/vim ~/.vim
 mkdir -p ~/.cache/vim/
+
+# brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install neovim \
+	vim \
+	git \
+	tmux \
+	tree \
+	colima \
+	bash \
+	docker \
+	kubectl \
+	fd \
+	bat \
+	ripgrep \
+	fzf
+
+# other
+git clone https://github.com/Aloxaf/fzf-tab ~/.fzf-tab
