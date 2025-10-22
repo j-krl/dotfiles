@@ -1,6 +1,7 @@
 nnoremap <buffer> % :<C-U>e <C-R>%
 nnoremap <buffer> D :<C-U>!mkdir -p <C-R>%
 nnoremap <buffer> dd :<C-U>!rm <C-R>=isdirectory(getline(".")) ? "-r " : ""<cr><C-R>=getline(".")<cr>
+nnoremap <buffer> cc :<C-U>!mv <C-R>=getline(".")<cr><space>
 nmap <buffer> <leader><cr> <cr><C-W>D
 nmap <buffer> - <Plug>(dirvish_up)
 nnoremap <silent> <buffer> a <cmd>call dirvish#open("rightbelow vsplit", 0)<cr>

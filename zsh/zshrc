@@ -44,9 +44,9 @@ alias vs="vim -S Session.vim"
 alias prc="gh pr create --fill-first"
 alias prd="gh pr create --fill-first --draft"
 alias k="kubectl"
-alias kn="kubectl config set-context --current --namespace"
-alias kx="kubectl config use-context"
-alias kl="kubectl config get-contexts"
+alias kn="k config set-context --current --namespace"
+alias kx="k config use-context"
+alias kl="k config get-contexts"
 
 difftool() {
 	nvim -c "let g:taboo_tab_format = \" %N %R \"" -c "Git difftool -y $1" \

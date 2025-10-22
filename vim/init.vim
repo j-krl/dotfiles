@@ -201,6 +201,7 @@ nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 cnoremap <C-H> <C-R>=expand("%:p:h")<cr>/
+cnoremap <C-L> <C-R>=getline(".")<cr>
 command! Bonly %bd|e#|bd#|norm `"
 command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
@@ -372,6 +373,7 @@ cnoremap <A-9> \(
 cnoremap <A-0> \)
 cnoremap <A-space> \<space>
 cnoremap <A-.> \.
+cnoremap <A-/> \/
 
 """ Registers """
 nnoremap yr% :let @+ = @%<cr>
