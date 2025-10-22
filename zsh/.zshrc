@@ -61,6 +61,7 @@ ghclone() {
 source ~/.fzf-tab/fzf-tab.plugin.zsh
 bindkey '^\' fzf-tab-complete
 bindkey "^I" expand-or-complete
+zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
 
 export TERM="xterm-256color"
 [[ -n $TMUX ]] && export TERM="screen-256color"
