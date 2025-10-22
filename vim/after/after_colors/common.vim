@@ -58,3 +58,5 @@ hi! link typescriptOperator Operator
 hi! link typescriptObjectColon Operator
 hi! link typescriptTypeAnnotation Operator
 hi! link jsxBraces Identifier
+" json
+hi! link jsonKeyword Statement

@@ -72,8 +72,6 @@ set foldmethod=indent
 set foldlevelstart=99
 set background=dark
 let g:maplocalleader = "_"
-let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
-	\"typescriptreact", "html", "css", "json", "vim", "lua", "go"]
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ \ %{FugitiveStatusline()}%h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
 
@@ -106,8 +104,12 @@ let g:python_indent = {
 		\'closed_paren_align_last_line': v:false
 	\}
 let g:polyglot_disabled = ["autoindent"] "Sleuth is making me do this?
+let g:vim_markdown_no_default_key_mappings = 1
+let g:vim_markdown_follow_anchor = 1
 let g:vim_indent_cont = shiftwidth()
 let g:vim_markdown_new_list_item_indent = 0
+let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
+	\"typescriptreact", "html", "css", "json", "vim", "lua", "go"]
 let g:copilot_no_tab_map = v:true
 let g:copilot_filetypes = {
 		\'markdown': v:false,
@@ -178,6 +180,7 @@ nnoremap <A-P>0 <cmd>put! 0<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>x <cmd>xa<cr>
+nnoremap <leader>X <cmd>x<cr>
 nnoremap <leader>w <cmd>w<cr>
 nnoremap <leader>W <cmd>wa<cr>
 nmap <F4> <cmd>Wfmt!<cr>
