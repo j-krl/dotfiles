@@ -41,6 +41,7 @@ hi! link vimCommentString Comment
 " markdown
 hi! link mkdHeading Statement
 hi! link Title Statement
+hi! link mkdLineBreak Normal
 " python
 hi! link pythonFunctionCall Normal
 hi! link pythonClassVar Function

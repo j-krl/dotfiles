@@ -9,5 +9,5 @@ function! terraform#GoToModuleDefinition() abort
 		echoerr "Invalid module path"
 		return
 	endif
-	exe "e " .. $TERRAFORM_MODULES_DIR .. "/" .. paths[-1] .. "/main.tf"
+	exe "e " .. $TERRAFORM_MODULES_DIR .. "/" .. paths[-1] .. "/"
 endfunction
