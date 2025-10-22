@@ -5,6 +5,7 @@ mkdir -p ~/.config
 # zsh
 touch ~/.zshrc
 sed -i.old '1s;^;source ~/dotfiles/zsh/.zshrc\n;' ~/.zshrc
+git clone https://github.com/Aloxaf/fzf-tab ~/.fzf-tab
 
 # tmux
 ln -s ~/dotfiles/tmux/.tmux.conf ~/.tmux.conf
