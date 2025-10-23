@@ -15,6 +15,7 @@ function! PackInit() abort
 	call minpac#add('tpope/vim-sleuth')
 	call minpac#add('github/copilot.vim')
 	call minpac#add('sheerun/vim-polyglot')
+	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	if has("nvim")
 		call minpac#add('neovim/nvim-lspconfig')
 		call minpac#add('nvim-lua/plenary.nvim')

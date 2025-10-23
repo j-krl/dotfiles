@@ -94,7 +94,9 @@ require("CopilotChat").setup({
 
 vim.diagnostic.config({
 	severity_sort = true,
-	virtual_text = false,
+	virtual_text = {
+		current_line = true,
+	},
 	signs = {
 		severity = { min = vim.diagnostic.severity.ERROR },
 	},

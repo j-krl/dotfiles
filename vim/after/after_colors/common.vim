@@ -13,6 +13,8 @@ hi! link Structure Function
 hi! link Function Identifier
 hi! link Delimiter Statement
 hi Comment guifg=grey50
+hi! link diffAdded DiffAdd
+hi! link diffRemoved DiffDelete
 
 if !has("nvim")
 	hi! link VertSplit StatusLineNC
