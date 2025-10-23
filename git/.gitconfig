@@ -16,6 +16,7 @@
 	meta = yellow
 [alias]
 	ac = "!git add -A && git commit"
+	acp = "!f() { git add -A && git commit -m \"$1\" && git push; }; f"
 	amend = "!git add -A && git commit --amend --no-edit"
 	nuke = "checkout -- ."
 	force-amend = "!git add -A && git commit --amend --no-edit && git push --force"
