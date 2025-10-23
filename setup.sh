@@ -39,7 +39,8 @@ brew install neovim \
 	ripgrep \
 	fzf \
 	jq \
-	yq
+	yq \
+	pipx
 
 # other
 git clone https://github.com/Aloxaf/fzf-tab ~/.fzf-tab
