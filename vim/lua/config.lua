@@ -7,8 +7,8 @@ local lsps = {
 	"clangd",
 	"sqlls",
 	"emmet_language_server",
-	-- "terraformls",
-	"tofu_ls",
+	"terraformls",
+	-- "tofu_ls",
 	"vimls",
 }
 
@@ -29,11 +29,11 @@ for _, lsp in pairs(lsps) do
 		setup = {
 			root_dir = "~/.config/sql-language-server",
 		}
-	elseif lsp == "tofu_ls" then
+	elseif lsp == "tofu_ls" or lsp == "terraformls" then
 		setup = {
 			filetypes = { "terraform", "opentofu", "opentofu-vars" },
 			settings = {
-				ignoreSingleFileWarning = true, -- FIX: doesn't work
+				ignoreSingleFileWarning = true,
 			},
 		}
 	end
@@ -59,7 +59,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			end
 			vim.fn.setqflist({}, " ", {
 				items = options.items,
-				nr = "$",
+				-- nr = "$",
 				title = title,
 			})
 			vim.cmd.normal("mG")
