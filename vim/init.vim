@@ -280,7 +280,7 @@ nnoremap <leader>cs :<C-U>Csave<space>
 nnoremap <leader>co :<C-U>Cload<space><tab>
 
 """ Tabs """
-nnoremap <leader><leader> gt
+nnoremap <space><space> gt
 nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
 nnoremap [w gT
 nnoremap [W <cmd>tabfirst<cr>
@@ -323,8 +323,9 @@ nnoremap <leader>aa <cmd>$arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ad <cmd>argd %<bar>args<cr>
 nnoremap <leader>ac <cmd>%argd<cr><C-L><cmd>echo "arglist cleared"<cr>
+nnoremap <leader>al <cmd>argl\|%argd\|echo "local arglist created"<cr>
 " Go to arglist file at index [count]
-nnoremap <expr> <space><space> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
+nnoremap <expr> <leader><leader> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 """ Copilot
 imap <expr> <C-\> copilot#Accept("\<cr>")
