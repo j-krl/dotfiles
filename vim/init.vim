@@ -197,10 +197,12 @@ nnoremap <expr> <cr> &buftype ==# 'quickfix' \|\| &buftype ==# 'nofile' ? "\<cr>
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
-nnoremap <leader>g :<C-U>grep ''<left>
+nnoremap <leader>gg :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
-nnoremap <leader>z :<C-U>Zgrep<space>
-nnoremap <leader>Z :<C-U>Fzfgrep<space>
+nnoremap <leader>gz :<C-U>Zgrep<space>
+nnoremap <leader>gZ :<C-U>Fzfgrep<space>
+nnoremap <leader>gp :<C-U>Pgrep ''<left>
+nnoremap <leader>gP :<C-U>Pgrep <C-R><C-W><cr>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
@@ -211,6 +213,7 @@ command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
+command! -nargs=* Pgrep grep <args> %:p:h
 
 """ Windows """
 nnoremap <C-W>Z <C-W>_<C-W>\|
