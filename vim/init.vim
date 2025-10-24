@@ -214,6 +214,20 @@ command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 command! -nargs=* Pgrep grep <args> %:p:h
+command! -nargs=1 Prjopen call GoToProj(<f-args>)
+command! -nargs=1 Prjnew call NewProj(<f-args>)
+
+"function s:CustCompl(ArgLead, CmdLine, CursorPos) abort
+"	let cwd = getcwd(-1, -1)
+"	let dirs = []
+"	for f in globpath(cwd, "*", 0, 1)
+"		if isdirectory(f)
+"			call add(dirs, fnamemodify(f, ":t"))
+"		endif
+"	endfor
+"	return dirs
+"endfunction
+
 
 """ Windows """
 nnoremap <C-W>Z <C-W>_<C-W>\|
@@ -469,6 +483,37 @@ function! NavDirFiles(count) abort
 		let newidx += filelen
 	endif
 	exe "e " .. files[newidx]
+endfunction
+
+function GoToProj(query) abort
+	let numtabs = tabpagenr('$')
+	let projs = []
+	for i in range(1, numtabs)
+		let proj = TabooTabName(i)
+		if proj == ""
+			let proj = split(getcwd(-1, i), "/")[-1]
+		endif
+		call add(projs, {"name": proj, "nr": i})
+	endfor
+	let matchlist = matchfuzzy(projs, a:query, {"key": "name"})
+	if len(matchlist) == 0
+		echoerr "No matching projects"
+		return
+	endif
+	exe "tabnext " .. matchlist[0].nr
+endfunction
+
+function NewProj(dirname) abort
+	let cwd = getcwd(-1, -1)
+	let parent = fnamemodify(cwd, ":h")
+	let proj = parent .. "/" .. a:dirname
+	if !isdirectory(proj)
+		echoerr dirname .. " not a directory"
+		return
+	endif
+	tabnew
+	exe "tcd " .. proj
+	Explore
 endfunction
 
 """"""""""""""""
