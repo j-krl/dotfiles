@@ -204,6 +204,8 @@ nnoremap <leader>gZ :<C-U>Fzfgrep<space>
 nnoremap <leader>gp :<C-U>Pgrep ''<left>
 nnoremap <leader>gP :<C-U>Pgrep <C-R><C-W><cr>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
+nnoremap <leader>pn :<C-U>Prjnew<space><tab>
+nnoremap <leader>po :<C-U>Prjopen<space>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 cnoremap <C-H> <C-R>=expand("%:p:h")<cr>/
@@ -214,7 +216,7 @@ command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 command! -nargs=* Pgrep grep <args> %:p:h
-command! -nargs=1 Prjopen call GoToProj(<f-args>)
+command! -nargs=1 -complete=customlist,s:CompleteOpenProjFuzzy Prjopen call GoToProj(<f-args>)
 command! -nargs=1 -complete=customlist,s:CompleteNewProj Prjnew call NewProj(<f-args>)
 
 
@@ -475,9 +477,8 @@ function! NavDirFiles(count) abort
 endfunction
 
 function GoToProj(query) abort
-	let numtabs = tabpagenr('$')
 	let projs = []
-	for i in range(1, numtabs)
+	for i in range(1, tabpagenr('$'))
 		let proj = TabooTabName(i)
 		if proj == ""
 			let proj = split(getcwd(-1, i), "/")[-1]
@@ -493,15 +494,31 @@ function GoToProj(query) abort
 endfunction
 
 function NewProj(dirname) abort
+	for i in range(1, tabpagenr('$'))
+		let tabproj = split(getcwd(-1, i), "/")[-1]
+		if tabproj == a:dirname
+			exe "tabnext " .. i
+			return
+		endif
+	endfor
 	let cwd = getcwd(-1, -1)
 	let proj = cwd .. "/" .. a:dirname
 	if !isdirectory(proj)
-		echoerr a:dirname .. " not a directory"
+		echoerr a:dirname .. " is not a directory"
 		return
 	endif
 	tabnew
 	exe "tcd " .. proj
 	Explore
+endfunction
+
+function s:CompleteOpenProjFuzzy(ArgLead, CmdLine, CursorPos) abort
+	let items = map(range(1, tabpagenr('$')), {_, val -> split(getcwd(-1, val), "/")[-1]})
+	if a:ArgLead == ""
+		return items
+	endif
+	let matchlist = matchfuzzy(items, a:ArgLead)
+	return matchlist
 endfunction
 
 function s:CompleteNewProj(ArgLead, CmdLine, CursorPos) abort
@@ -551,10 +568,10 @@ function! s:SetSpellMaps() abort
 	if !&spell
 		return
 	endif
-	nnoremap <silent> <leader>ps mt[Szg`t<cmd>delm t<cr>
-	nnoremap <silent> <leader>pS mt[SzG`t<cmd>delm t<cr>
-	nnoremap <silent> <leader>p1 mt[Sz=1<cr>`t<cmd>delm t<cr>
-	nnoremap <silent> <leader>p= [Sz=
+	nnoremap <silent> <localleader>ps mt[Szg`t<cmd>delm t<cr>
+	nnoremap <silent> <localleader>pS mt[SzG`t<cmd>delm t<cr>
+	nnoremap <silent> <localleader>p1 mt[Sz=1<cr>`t<cmd>delm t<cr>
+	nnoremap <silent> <localleader>p= [Sz=
 endfunction
 
 function! FormatBuf(preserve_undo=0) abort
