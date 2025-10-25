@@ -215,18 +215,7 @@ command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 command! -nargs=* Pgrep grep <args> %:p:h
 command! -nargs=1 Prjopen call GoToProj(<f-args>)
-command! -nargs=1 Prjnew call NewProj(<f-args>)
-
-"function s:CustCompl(ArgLead, CmdLine, CursorPos) abort
-"	let cwd = getcwd(-1, -1)
-"	let dirs = []
-"	for f in globpath(cwd, "*", 0, 1)
-"		if isdirectory(f)
-"			call add(dirs, fnamemodify(f, ":t"))
-"		endif
-"	endfor
-"	return dirs
-"endfunction
+command! -nargs=1 -complete=customlist,s:CompleteNewProj Prjnew call NewProj(<f-args>)
 
 
 """ Windows """
@@ -505,15 +494,26 @@ endfunction
 
 function NewProj(dirname) abort
 	let cwd = getcwd(-1, -1)
-	let parent = fnamemodify(cwd, ":h")
-	let proj = parent .. "/" .. a:dirname
+	let proj = cwd .. "/" .. a:dirname
 	if !isdirectory(proj)
-		echoerr dirname .. " not a directory"
+		echoerr a:dirname .. " not a directory"
 		return
 	endif
 	tabnew
 	exe "tcd " .. proj
 	Explore
+endfunction
+
+function s:CompleteNewProj(ArgLead, CmdLine, CursorPos) abort
+	let cwd = getcwd(-1, -1)
+	let dirs = []
+	for f in globpath(cwd, "*", 0, 1)
+		let tail = fnamemodify(f, ":t")
+		if isdirectory(f) && tail =~ a:ArgLead
+			call add(dirs, tail)
+		endif
+	endfor
+	return dirs
 endfunction
 
 """"""""""""""""
