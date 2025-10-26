@@ -206,6 +206,7 @@ nnoremap <leader>gP :<C-U>Pgrep <C-R><C-W><cr>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 nnoremap <leader>pn :<C-U>Prjnew<space><tab>
 nnoremap <leader>po :<C-U>Prjopen<space>
+nnoremap <leader>pO <cmd>Prjonly<cr>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 cnoremap <C-H> <C-R>=expand("%:p:h")<cr>/
@@ -218,6 +219,7 @@ command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 command! -nargs=* Pgrep grep <args> %:p:h
 command! -nargs=1 -complete=customlist,s:CompleteOpenProjFuzzy Prjopen call GoToProj(<f-args>)
 command! -nargs=1 -complete=customlist,s:CompleteNewProj Prjnew call NewProj(<f-args>)
+command! -nargs=0 Prjonly call OnlyProj()
 
 
 """ Windows """
@@ -310,6 +312,7 @@ nnoremap <C-W>d :<C-U>exe "lcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" 
 " Git status summary
 nnoremap <space>gg :<C-U>G<cr>
 nnoremap <space>gb :<C-U>Git blame<cr>
+nnoremap <space>gd :<C-U>Git diff<cr>
 nnoremap <space>go :<C-U>GBrowse<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
@@ -510,6 +513,19 @@ function NewProj(dirname) abort
 	tabnew
 	exe "tcd " .. proj
 	Explore
+endfunction
+
+function OnlyProj() abort
+	$tabmove 
+	0tabnew
+	exe "tcd " .. getcwd(-1, -1)
+	if tabpagenr('$') == 2
+		return
+	endif
+	for i in range(2, tabpagenr('$') - 1)
+		2tabclose
+	endfor
+	$tabnext
 endfunction
 
 function s:CompleteOpenProjFuzzy(ArgLead, CmdLine, CursorPos) abort
