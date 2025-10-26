@@ -70,6 +70,7 @@ set iskeyword+=-
 set spellcapcheck=
 set fillchars=diff:\
 set foldmethod=indent
+set foldlevel=99
 set foldlevelstart=99
 set background=dark
 let g:maplocalleader = "_"
@@ -322,7 +323,9 @@ nnoremap <space>gv :<C-U>Gvdiffsplit<space>
 " Load all past revisions of the current file into the qflist
 nnoremap <space>g0 :<C-U>0Gclog<cr>
 nnoremap <space>gt :<C-U>Git difftool<space>
-nnoremap <space>gA <cmd>!git add %<cr>
+nnoremap <space>gT :<C-U>Git difftool -y<space>
+nnoremap <space>ga <cmd>!git add %<cr>
+nnoremap <space>gA <cmd>!git add .<cr>
 
 """ Arglist """
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
@@ -516,12 +519,10 @@ function NewProj(dirname) abort
 endfunction
 
 function OnlyProj() abort
-	$tabmove 
-	0tabnew
-	exe "tcd " .. getcwd(-1, -1)
-	if tabpagenr('$') == 2
+	if tabpagenr() == 1 || tabpagenr('$') <= 2
 		return
 	endif
+	$tabmove 
 	for i in range(2, tabpagenr('$') - 1)
 		2tabclose
 	endfor
