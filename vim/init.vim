@@ -203,7 +203,7 @@ nnoremap <leader>gp :<C-U>Pgrep ''<left>
 nnoremap <leader>gP :<C-U>Pgrep <C-R><C-W><cr>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 nnoremap <leader>pn :<C-U>Prjnew<space><tab>
-nnoremap <leader>po :<C-U>Prjopen<space>
+nnoremap <leader>pp :<C-U>Prjopen<space>
 nnoremap <leader>pO <cmd>Prjonly<cr>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
@@ -366,7 +366,8 @@ xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
 """ Colorschemes """
 nnoremap <space>1 :<C-U>set background=dark\|colo soup-contrast<cr>
 nnoremap <space>2 :<C-U>set background=dark\|colo allure<cr>
-nnoremap <space>3 :<C-U>set background=light\|colo default<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo default<cr>
+nnoremap <space>4 :<C-U>set background=light\|colo default<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 command! -nargs=1 -complete=customlist,s:ComplColors Colorscheme colorscheme <args>
 
@@ -550,7 +551,7 @@ if has("nvim")
 	lua require('config')
 endif
 
-colo hive
+colo allure
 
 command! PackInstall call PackInit() | call minpac#update(keys(filter(copy(minpac#pluglist), 
 	\{-> !isdirectory(v:val.dir . '/.git')})))
