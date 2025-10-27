@@ -20,6 +20,7 @@ function! PackInit() abort
 		call minpac#add('neovim/nvim-lspconfig')
 		call minpac#add('nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'})
 		call minpac#add('nvim-lua/plenary.nvim')
+		call minpac#add('HiPhish/rainbow-delimiters.nvim')
 		call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
 	else
 		call minpac#add('tpope/vim-commentary')
@@ -67,7 +68,7 @@ set wildcharm=<tab>
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
 set tabclose=left
 set guicursor=n-v-c-sm:block,i-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor
-set iskeyword+=-
+"set iskeyword+=-
 set spellcapcheck=
 set fillchars=diff:\
 set foldmethod=indent
