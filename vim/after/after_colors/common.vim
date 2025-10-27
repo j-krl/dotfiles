@@ -1,4 +1,5 @@
 hi Comment guifg=grey50
+hi TablineSel gui=REVERSE
 
 if !has("nvim")
 	hi! link VertSplit StatusLineNC
@@ -10,16 +11,16 @@ if &background == "dark"
 	hi DiffDelete gui=BOLD guifg=NONE guibg=#4c1e15
 	hi DiffChange gui=BOLD guifg=NONE guibg=#515f64
 	hi DiffText gui=BOLD guifg=NONE guibg=#5c4306
-	"hi diffAdded guifg=lawngreen
-	"hi diffRemoved guifg=tomato
+	hi diffAdded guifg=lawngreen
+	hi diffRemoved guifg=tomato
 else
 	hi Visual guifg=NONE gui=NONE guibg=grey75
 	hi DiffAdd gui=BOLD guifg=NONE guibg=palegreen
 	hi DiffDelete gui=BOLD guifg=NONE guibg=lightred
 	hi DiffChange gui=BOLD guifg=NONE guibg=lightblue
 	hi DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
-	"hi diffAdded guifg=darkgreen
-	"hi diffRemoved guifg=darkred
+	hi diffAdded guifg=darkgreen
+	hi diffRemoved guifg=darkred
 	"if has("nvim")
 	"	hi DiagnosticHint guifg=DarkGrey
 	"endif
