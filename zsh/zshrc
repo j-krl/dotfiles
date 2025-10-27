@@ -36,6 +36,7 @@ if command -v bat >/dev/null 2>&1; then
 fi
 
 alias soz="source ~/.zshrc"
+alias sov="source venv/bin/activate || source .venv/bin/activate"
 alias sed="sed -E"
 alias ga="gcloud auth login --update-adc"
 alias co="copilot"
