@@ -206,11 +206,15 @@ nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>gg :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
+nnoremap <leader>22 :<C-U>lgrep ''<left>
+nnoremap <leader>@ :<C-U>lgrep <C-R><C-W><cr>
 nnoremap <leader>gz :<C-U>Zgrep<space>
 nnoremap <leader>gZ :<C-U>Fzfgrep<space>
 nnoremap <leader>gp :<C-U>Pgrep ''<left>
 nnoremap <leader>gP :<C-U>Pgrep <C-R><C-W><cr>
-nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
+nnoremap <leader>2p :<C-U>Plgrep ''<left>
+nnoremap <leader>2P :<C-U>Plgrep <C-R><C-W><cr>
+nnoremap <leader>2v ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 nnoremap <leader>pn :<C-U>Prjnew<space><tab>
 nnoremap <leader>pp :<C-U>Prjgoto<space>
 nnoremap <leader>pO <cmd>Prjonly<cr>
@@ -222,6 +226,7 @@ command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
 command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 command! -nargs=* Pgrep grep <args> %:p:h
+command! -nargs=* Plgrep lgrep <args> %:p:h
 
 """ Windows """
 nnoremap <C-W>Z <C-W>_<C-W>\|
@@ -264,6 +269,10 @@ if !has("nvim")
 	nnoremap ]L <cmd>exe v:count1 .. "llast"<cr>
 	nnoremap [L <cmd>exe v:count1 .. "lfirst"<cr>
 endif
+nmap ]2 ]l
+nmap [2 [l
+nmap ]@ ]L
+nmap [@ [L
 nnoremap <leader>ll <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>cc <cmd>cwindow<cr>
