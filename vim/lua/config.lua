@@ -137,21 +137,25 @@ require("nvim-treesitter.configs").setup({
 				["]m"] = "@function.outer",
 				["]]"] = "@class.outer",
 				["]/"] = "@conditional.outer",
+				["]x"] = "@block.outer",
 			},
 			goto_next_end = {
 				["]M"] = "@function.outer",
 				["]["] = "@class.outer",
 				["]?"] = "@conditional.outer",
+				["]X"] = "@block.outer",
 			},
 			goto_previous_start = {
 				["[m"] = "@function.outer",
 				["[["] = "@class.outer",
 				["[/"] = "@conditional.outer",
+				["[x"] = "@block.outer",
 			},
 			goto_previous_end = {
 				["[M"] = "@function.outer",
 				["[]"] = "@class.outer",
 				["[?"] = "@conditional.outer",
+				["[X"] = "@block.outer",
 			},
 		},
 		swap = {
