@@ -18,11 +18,14 @@ function! PackInit() abort
 	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	if has("nvim")
 		call minpac#add('neovim/nvim-lspconfig')
+		call minpac#add('nvim-lua/plenary.nvim')
+		call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
+		" treesitter
 		call minpac#add('nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'})
 		call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'master'})
-		call minpac#add('nvim-lua/plenary.nvim')
+		call minpac#add('nvim-treesitter/nvim-treesitter-context')
 		call minpac#add('HiPhish/rainbow-delimiters.nvim')
-		call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
+		call minpac#add('Wansmer/treesj')
 	else
 		call minpac#add('tpope/vim-commentary')
 	endif
@@ -207,7 +210,7 @@ nnoremap <leader>gp :<C-U>Pgrep ''<left>
 nnoremap <leader>gP :<C-U>Pgrep <C-R><C-W><cr>
 nnoremap <leader>V ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 nnoremap <leader>pn :<C-U>Prjnew<space><tab>
-nnoremap <leader>pp :<C-U>Prjopen<space>
+nnoremap <leader>pp :<C-U>Prjgoto<space>
 nnoremap <leader>pO <cmd>Prjonly<cr>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
@@ -354,13 +357,13 @@ xnoremap <silent> ie :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setloca
 onoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
 xnoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
 " Word including many other special chars except brackets and quotes
-onoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! viw'<bar>
+onoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! viw'<bar>
 	\setlocal iskeyword-=.,=,:<cr>
-xnoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! viw'<bar>
+xnoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! viw'<bar>
 	\setlocal iskeyword-=.,=,:<cr>
-onoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
+onoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! vaw'<bar>
 	\setlocal iskeyword-=.,=,:<cr>
-xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
+xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! vaw'<bar>
 	\setlocal iskeyword-=.,=,:<cr>
 
 """ Colorschemes """
@@ -489,7 +492,8 @@ augroup END
 autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 "autocmd vimrc VimEnter * if argc() == 0 && empty(v:this_session) | Dirvish | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
-	\'call writefile(["set background=" .. &background, "colorscheme " .. g:colors_name], v:this_session, "a")' | endif
+	\'call writefile(["set background=" .. &background, "colorscheme " ..
+	\g:colors_name], v:this_session, "a")' | endif
 autocmd vimrc ColorSchemePre * hi clear
 autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
 autocmd vimrc OptionSet formatprg call s:SetFormatMaps()
@@ -538,9 +542,9 @@ function! s:SetJumpScopeMaps() abort
 		return
 	endif
 	noremap <silent> <buffer> ]1 m'<cmd>for i in range(v:count1)\|
-			\call search('^[^ \t}#/)\-]', 'W')\|endfor<cr>
+			\call search('^[^ \t}#/\")\-]', 'W')\|endfor<cr>
 	noremap <silent> <buffer> [1 m'<cmd>for i in range(v:count1)\|
-			\call search('^[^ \t}#/)\-]', 'bW')\|endfor<cr>
+			\call search('^[^ \t}#/\")\-]', 'bW')\|endfor<cr>
 endfunction	
 
 """""""""

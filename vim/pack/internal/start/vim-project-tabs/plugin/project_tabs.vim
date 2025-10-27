@@ -1,4 +1,4 @@
-command! -nargs=1 -complete=customlist,s:CompleteOpenProjFuzzy Prjopen call s:GoToProj(<f-args>)
+command! -nargs=1 -complete=customlist,s:CompleteOpenProjFuzzy Prjgoto call s:GoToProj(<f-args>)
 command! -nargs=1 -complete=customlist,s:CompleteNewProj Prjnew call s:NewProj(<f-args>)
 command! -nargs=0 Prjonly call s:OnlyProj()
 

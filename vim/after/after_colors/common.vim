@@ -1,5 +1,7 @@
 hi Comment guifg=grey50
 hi TablineSel gui=REVERSE
+hi TreesitterContextBottom gui=underline guisp=Grey
+
 
 if !has("nvim")
 	hi! link VertSplit StatusLineNC
@@ -21,8 +23,8 @@ else
 	hi DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
 	hi diffAdded guifg=darkgreen
 	hi diffRemoved guifg=darkred
-	"if has("nvim")
-	"	hi DiagnosticHint guifg=DarkGrey
-	"endif
+	if has("nvim")
+		hi DiagnosticHint guifg=DarkGrey
+	endif
 endif
 

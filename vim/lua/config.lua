@@ -157,14 +157,14 @@ require("nvim-treesitter.configs").setup({
 		swap = {
 			enable = true,
 			swap_next = {
-				["<leader>ta"] = "@parameter.inner",
-				["<leader>tf"] = "@function.outer",
-				["<leader>t/"] = "@conditional.outer",
+				["<leader>tta"] = "@parameter.inner",
+				["<leader>ttf"] = "@function.outer",
+				["<leader>tt/"] = "@conditional.outer",
 			},
 			swap_previous = {
-				["<leader>tA"] = "@parameter.inner",
-				["<leader>tF"] = "@function.outer",
-				["<leader>t?"] = "@conditional.outer",
+				["<leader>ttA"] = "@parameter.inner",
+				["<leader>ttF"] = "@function.outer",
+				["<leader>tt?"] = "@conditional.outer",
 			},
 		},
 		lsp_interop = {
@@ -188,6 +188,16 @@ require("CopilotChat").setup({
 	window = { width = 0.33 },
 })
 
+require("treesj").setup({
+	use_default_keymaps = false,
+})
+
+require("treesitter-context").setup({
+	enable = true,
+	max_lines = 2,
+	trim_scope = "inner",
+})
+
 vim.diagnostic.config({
 	severity_sort = true,
 	virtual_text = {
@@ -199,6 +209,7 @@ vim.diagnostic.config({
 })
 vim.lsp.log.set_level(vim.log.levels.OFF)
 
+vim.keymap.set("n", "<leader>ts", "<cmd>TSJToggle<cr>")
 vim.keymap.set({ "n", "v" }, "<leader>.", ":<C-U>CopilotChatToggle<cr><C-W>=", { silent = true })
 -- vim.keymap.set({ "n", "v" }, "<leader>,", ":<C-U>CopilotChatClose<cr><C-W>=", { silent = true })
 vim.keymap.set("n", "]D", function()
