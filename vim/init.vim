@@ -13,6 +13,7 @@ function! PackInit() abort
 	call minpac#add('tpope/vim-fugitive')
 	call minpac#add('tpope/vim-rhubarb')
 	call minpac#add('tpope/vim-sleuth')
+	call minpac#add('tpope/vim-repeat')
 	call minpac#add('github/copilot.vim')
 	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	if has("nvim")
@@ -65,7 +66,7 @@ set wildoptions=pum,tagfile
 set wildcharm=<tab>
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
 set tabclose=left
-set guicursor=
+set guicursor=n-v-c-sm:block,i-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor
 set iskeyword+=-
 set spellcapcheck=
 set fillchars=diff:\
@@ -363,10 +364,10 @@ xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
 	\setlocal iskeyword-=.,=,:<cr>
 
 """ Colorschemes """
-nnoremap <space>1 :<C-U>set background=dark\|colo hive<cr>
-nnoremap <space>! :<C-U>set background=dark\|colo soup-contrast<cr>
-nnoremap <space>2 :<C-U>set background=dark\|colo default<cr>
-nnoremap <space>@ :<C-U>set background=light\|colo default<cr>
+nnoremap <space>1 :<C-U>set background=dark\|colo soup-contrast<cr>
+nnoremap <space>2 :<C-U>set background=dark\|colo allure<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo glance<cr>
+nnoremap <space>4 :<C-U>set background=light\|colo default<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 
 """ Command mode misc """
