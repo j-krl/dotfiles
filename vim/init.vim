@@ -200,6 +200,8 @@ nnoremap <backspace> <C-^>
 " go to definition (not in qflist)
 nnoremap <expr> <cr> &buftype ==# 'quickfix' \|\| &buftype ==# 'nofile' ? "\<cr>" : "\<C-]>"
 nnoremap <leader>b :<C-U>b<space><tab>
+nnoremap <leader>e :<C-U>edit<space>
+nnoremap <leader>E :<C-U>edit <C-H>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>gg :<C-U>grep ''<left>
@@ -214,8 +216,6 @@ nnoremap <leader>pp :<C-U>Prjgoto<space>
 nnoremap <leader>pO <cmd>Prjonly<cr>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
-cnoremap <C-H> <C-R>=expand("%:p:h")<cr>/
-cnoremap <C-L> <C-R>=getline(".")<cr>
 command! Bonly %bd|e#|bd#|norm `"
 command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
@@ -374,13 +374,21 @@ nnoremap <space>4 :<C-U>set background=light\|colo default<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 command! -nargs=1 -complete=customlist,s:ComplColors Colorscheme colorscheme <args>
 
-""" Command mode misc """
+""" Command mode """
+cnoremap <C-H> <C-R>=expand("%:p:h")<cr>/
+cnoremap <C-L> <C-R>=getline(".")<cr>
 cnoremap <C-space> .*
 cnoremap <A-9> \(
 cnoremap <A-0> \)
 cnoremap <A-space> \<space>
 cnoremap <A-.> \.
 cnoremap <A-/> \/
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
 
 """ Registers """
 nnoremap yr% :let @+ = @%<cr>
