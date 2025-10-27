@@ -81,6 +81,41 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
+require("nvim-treesitter.configs").setup({
+	auto_install = true,
+	ensure_installed = {
+		"bash",
+		"c",
+		"css",
+		"go",
+		"html",
+		"javascript",
+		"jinja",
+		"json",
+		"jsonnet",
+		"lua",
+		"markdown",
+		"python",
+		"query",
+		"scss",
+		"svelte",
+		"terraform",
+		"typescript",
+		"vim",
+		"vimdoc",
+		"yaml",
+	},
+	highlight = {
+		enable = true,
+	},
+	incremental_selection = {
+		enable = true,
+	},
+	indent = {
+		enable = true,
+	},
+})
+
 require("CopilotChat").setup({
 	mappings = {
 		complete = { insert = "<S-tab>" },

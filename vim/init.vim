@@ -14,10 +14,10 @@ function! PackInit() abort
 	call minpac#add('tpope/vim-rhubarb')
 	call minpac#add('tpope/vim-sleuth')
 	call minpac#add('github/copilot.vim')
-	call minpac#add('sheerun/vim-polyglot')
 	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	if has("nvim")
 		call minpac#add('neovim/nvim-lspconfig')
+		call minpac#add('nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'})
 		call minpac#add('nvim-lua/plenary.nvim')
 		call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
 	else
@@ -54,7 +54,7 @@ set hidden
 set autoread
 set termguicolors
 set hlsearch
-set smartindent
+"set smartindent
 set laststatus=2
 set completeopt=menuone,popup
 set wildmenu
@@ -105,11 +105,7 @@ let g:python_indent = {
 		\'open_paren': 'shiftwidth()',
 		\'closed_paren_align_last_line': v:false
 	\}
-let g:polyglot_disabled = ["autoindent"] "Sleuth is making me do this?
-let g:vim_markdown_no_default_key_mappings = 1
-let g:vim_markdown_follow_anchor = 1
 let g:vim_indent_cont = shiftwidth()
-let g:vim_markdown_new_list_item_indent = 0
 let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
 	\"typescriptreact", "html", "css", "json", "vim", "lua", "go"]
 let g:copilot_no_tab_map = v:true
