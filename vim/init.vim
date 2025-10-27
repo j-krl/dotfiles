@@ -366,9 +366,9 @@ xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
 """ Colorschemes """
 nnoremap <space>1 :<C-U>set background=dark\|colo soup-contrast<cr>
 nnoremap <space>2 :<C-U>set background=dark\|colo allure<cr>
-nnoremap <space>3 :<C-U>set background=dark\|colo glance<cr>
-nnoremap <space>4 :<C-U>set background=light\|colo default<cr>
+nnoremap <space>3 :<C-U>set background=light\|colo default<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
+command! -nargs=1 -complete=customlist,s:ComplColors Colorscheme colorscheme <args>
 
 """ Command mode misc """
 cnoremap <C-space> .*
@@ -463,6 +463,18 @@ function! NavDirFiles(count) abort
 		let newidx += filelen
 	endif
 	exe "e " .. files[newidx]
+endfunction
+
+function! s:ComplColors(ArgLead, CmdLine, CursorPos) abort
+	let preferred = []
+	let installed = map(readdir(stdpath("config") .. "/colors"), {_, val -> fnamemodify(val, ":t:r")})
+	let candidates = []
+	for item in preferred + installed
+		if item =~ '^' . a:ArgLead
+			call add(candidates, item)
+		endif
+	endfor
+	return candidates
 endfunction
 
 """"""""""""""""
