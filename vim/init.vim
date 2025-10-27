@@ -547,14 +547,7 @@ if has("nvim")
 	lua require('config')
 endif
 
-if strftime("%H") >= 22 || strftime("%H") < 7
-	colo habamax
-else
-	sil! colo unokai
-	if !exists("g:colors_name")
-		colo slate
-	endif
-endif
+colo hive
 
 command! PackInstall call PackInit() | call minpac#update(keys(filter(copy(minpac#pluglist), 
 	\{-> !isdirectory(v:val.dir . '/.git')})))
