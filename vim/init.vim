@@ -19,6 +19,7 @@ function! PackInit() abort
 	if has("nvim")
 		call minpac#add('neovim/nvim-lspconfig')
 		call minpac#add('nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'})
+		call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'master'})
 		call minpac#add('nvim-lua/plenary.nvim')
 		call minpac#add('HiPhish/rainbow-delimiters.nvim')
 		call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
@@ -175,6 +176,8 @@ nnoremap <A-p>= <cmd>put +<cr>
 nnoremap <A-P>= <cmd>put! +<cr>
 nnoremap <A-p>0 <cmd>put 0<cr>
 nnoremap <A-P>0 <cmd>put! 0<cr>
+nnoremap <A-p>" <cmd>put \"<cr>
+nnoremap <A-P>" <cmd>put! \"<cr>
 
 """ Save & Quit """
 nnoremap <leader>q <cmd>qa<cr>
@@ -240,15 +243,11 @@ nnoremap <silent> - :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>:Ex
 nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
 	\exe "Explore " .. getcwd()<cr>
 
-""" Tmux/Slime """
+""" Tmux """
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 noremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 noremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
-nnoremap <leader>tp <Plug>SlimeParagraphSend
-xnoremap <leader>tv <Plug>SlimeRegionSend
-nnoremap <expr> <leader>tc '<cmd>SlimeSend1 cd ' .. getcwd() .. '<cr><cmd>TmuxNavigateDown<cr>'
-nnoremap <expr> <leader>tg '<cmd>SlimeSend1 glow ' .. expand("%:p") .. '<cr><cmd>TmuxNavigateDown<cr>'
 
 
 """ Quickfix/Location list """
@@ -496,8 +495,8 @@ autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
 autocmd vimrc OptionSet formatprg call s:SetFormatMaps()
 autocmd vimrc FileType * call s:SetFormatMaps()
 autocmd vimrc OptionSet spell call s:SetSpellMaps()
-autocmd vimrc FileType * call s:SetSpellMaps()
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
+autocmd vimrc FileType * call s:SetSpellMaps()
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 if has("nvim")
 	autocmd vimrc TabNewEntered * argl|%argd
@@ -538,9 +537,9 @@ function! s:SetJumpScopeMaps() abort
 	if &ft == "c" || &ft == "cpp" || &ft == "python" || &ft == "markdown"
 		return
 	endif
-	noremap <silent> <buffer> ]] m'<cmd>for i in range(v:count1)\|
+	noremap <silent> <buffer> ]1 m'<cmd>for i in range(v:count1)\|
 			\call search('^[^ \t}#/)\-]', 'W')\|endfor<cr>
-	noremap <silent> <buffer> [[ m'<cmd>for i in range(v:count1)\|
+	noremap <silent> <buffer> [1 m'<cmd>for i in range(v:count1)\|
 			\call search('^[^ \t}#/)\-]', 'bW')\|endfor<cr>
 endfunction	
 

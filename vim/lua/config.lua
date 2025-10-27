@@ -114,6 +114,67 @@ require("nvim-treesitter.configs").setup({
 	indent = {
 		enable = true,
 	},
+	textobjects = {
+		enable = true,
+		select = {
+			enable = true,
+			-- lookahead = true,
+			keymaps = {
+				["af"] = "@function.outer",
+				["if"] = "@function.inner",
+				["ac"] = "@class.outer",
+				["ic"] = "@class.inner",
+				["aa"] = "@parameter.outer",
+				["ia"] = "@parameter.inner",
+				["a?"] = "@conditional.outer",
+				["i?"] = "@conditional.inner",
+			},
+		},
+		move = {
+			enable = true,
+			set_jumps = true,
+			goto_next_start = {
+				["]m"] = "@function.outer",
+				["]]"] = "@class.outer",
+				["]/"] = "@conditional.outer",
+			},
+			goto_next_end = {
+				["]M"] = "@function.outer",
+				["]["] = "@class.outer",
+				["]?"] = "@conditional.outer",
+			},
+			goto_previous_start = {
+				["[m"] = "@function.outer",
+				["[["] = "@class.outer",
+				["[/"] = "@conditional.outer",
+			},
+			goto_previous_end = {
+				["[M"] = "@function.outer",
+				["[]"] = "@class.outer",
+				["[?"] = "@conditional.outer",
+			},
+		},
+		swap = {
+			enable = true,
+			swap_next = {
+				["<leader>ta"] = "@parameter.inner",
+				["<leader>tf"] = "@function.outer",
+				["<leader>t/"] = "@conditional.outer",
+			},
+			swap_previous = {
+				["<leader>tA"] = "@parameter.inner",
+				["<leader>tF"] = "@function.outer",
+				["<leader>t?"] = "@conditional.outer",
+			},
+		},
+		lsp_interop = {
+			enable = true,
+			peek_definition_code = {
+				["<leader>tk"] = "@function.outer",
+				["<leader>tK"] = "@class.outer",
+			},
+		},
+	},
 })
 
 require("CopilotChat").setup({
