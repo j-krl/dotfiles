@@ -21,8 +21,8 @@ else
 	hi DiffDelete gui=BOLD guifg=NONE guibg=lightred
 	hi DiffChange gui=BOLD guifg=NONE guibg=lightblue
 	hi DiffText gui=BOLD guifg=NONE guibg=palegoldenrod
-	hi diffAdded guifg=darkgreen
-	hi diffRemoved guifg=darkred
+	hi diffAdded guifg=green
+	hi diffRemoved guifg=red
 	if has("nvim")
 		hi DiagnosticHint guifg=DarkGrey
 	endif
