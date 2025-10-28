@@ -27,6 +27,7 @@ command! Clist echo keys(g:qflists)
 command! Cclear let g:qflists = {}
 command! Cwipe Chclear|Cclear
 command! -count=1 Cditem call DeleteQfItems(<count>)
+command! -count=1 Lditem call DeleteQfItems(<count>, 1)
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
 command! -nargs=+ -complete=file_in_path Cfind call FdQf(<f-args>)
 
@@ -56,17 +57,25 @@ function! FdQf(...) abort
 	cwindow
 endfunction
 
-function! DeleteQfItems(count) abort
-	let qf = getqflist({'nr': 0, 'idx': 0, 'title': 0, 'items': 0})
+function! DeleteQfItems(count, loc=0) abort
+	if !a:loc
+		let qf = getqflist({'nr': 0, 'idx': 0, 'title': 0, 'items': 0})
+	else
+		let qf = getloclist(0, {'nr': 0, 'idx': 0, 'title': 0, 'items': 0})
+	endif
 	if qf.idx == 0
 		echoerr "No errors"
 		return
 	endif
 	let idx_list = range(qf.idx - 1, qf.idx + a:count - 2)
 	let filtered_items = filter(qf.items, {idx -> index(idx_list, idx) == -1})
-	call setqflist([], 'r', {'items': filtered_items, 'title': qf.title})
+	if !a:loc
+		call setqflist([], 'r', {'items': filtered_items, 'title': qf.title})
+	else
+		call setloclist(0, [], 'r', {'items': filtered_items, 'title': qf.title})
+	endif
 	if len(filtered_items) > 0
-		exe qf.idx .. 'cc'
+		exe qf.idx .. (!a:loc ? 'cc' : 'll')
 	endif
 endfunction
 

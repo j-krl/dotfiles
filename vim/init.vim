@@ -285,6 +285,7 @@ nnoremap <leader>l<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "ll"<cr>
 nnoremap <leader>cL <cmd>echo len(getqflist())<cr>
 nnoremap <leader>lL <cmd>echo len(getloclist(winnr()))<cr>
 nnoremap <expr> <silent> <leader>cd "<cmd>" .. v:count1 .. "Cditem<cr>"
+nnoremap <expr> <silent> <leader>ld "<cmd>" .. v:count1 .. "Lditem<cr>"
 nnoremap <leader>cf :<C-U>Cfilter<space>
 nnoremap <leader>cF :<C-U>Cfilter!<space>
 nnoremap <leader>cz :<C-U>Cfuzzy<space>
