@@ -318,7 +318,7 @@ nnoremap <C-W>d :<C-U>exe "lcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" 
 nnoremap <space>gg :<C-U>G<cr>
 nnoremap <space>gb :<C-U>Git blame<cr>
 nnoremap <space>gD :<C-U>Git diff<cr>
-nnoremap <space>go :<C-U>GBrowse<cr>
+nnoremap <space>gB :<C-U>GBrowse<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
 nnoremap <space>gE :<C-U>Gedit :%<left><left>
@@ -421,6 +421,7 @@ cnoremap <M-f> <S-Right>
 
 """ Registers """
 nnoremap yr% :let @+ = @%<cr>
+nnoremap yr5 :let @+ = expand("%:h")<cr>
 nnoremap yr~ :let @+ = expand("%:~")<cr>
 nnoremap yr` :let @+ = expand("%:~:h")<cr>
 nnoremap yr. :let @+ = expand("%:.")<cr>

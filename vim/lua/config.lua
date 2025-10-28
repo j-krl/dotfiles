@@ -50,7 +50,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.lsp.completion.enable(true, client.id, args.buf)
 		end
 
-		local function symbol_on_list(options)
+		-- TODO: DRY list functions
+		local function lsp_on_list(options)
 			local title = "LSP"
 			if options.context.method == "textDocument/references" then
 				title = "LSP References: " .. vim.fn.expand("<cword>")
@@ -68,15 +69,42 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.cmd("norm zz")
 		end
 
+		local function lsp_on_loc_list(options)
+			local title = "LSP"
+			if options.context.method == "textDocument/references" then
+				title = "LSP References: " .. vim.fn.expand("<cword>")
+			elseif options.context.method == "workspace/symbol" then
+				title = "LSP Workspace Symbols: " .. options.context.params.query
+			end
+			vim.fn.setloclist(0, {}, " ", {
+				items = options.items,
+				-- nr = "$",
+				title = title,
+			})
+			vim.cmd.normal("mG")
+			vim.cmd.lwindow()
+			vim.cmd.lfirst()
+			vim.cmd("norm zz")
+		end
+
 		vim.keymap.set("n", "gry", vim.lsp.buf.type_definition, opts)
 		vim.keymap.set("n", "grs", function()
-			vim.lsp.buf.workspace_symbol(nil, { on_list = symbol_on_list })
+			vim.lsp.buf.workspace_symbol(nil, { on_list = lsp_on_list })
 		end)
 		vim.keymap.set("n", "grS", function()
-			vim.lsp.buf.workspace_symbol(vim.fn.expand("<cword>"), { on_list = symbol_on_list })
+			vim.lsp.buf.workspace_symbol(vim.fn.expand("<cword>"), { on_list = lsp_on_list })
 		end)
 		vim.keymap.set("n", "grr", function()
-			vim.lsp.buf.references({ include_declaration = false }, { on_list = symbol_on_list })
+			vim.lsp.buf.references({ include_declaration = false }, { on_list = lsp_on_list })
+		end)
+		vim.keymap.set("n", "gls", function()
+			vim.lsp.buf.workspace_symbol(nil, { on_list = lsp_on_loc_list })
+		end)
+		vim.keymap.set("n", "glS", function()
+			vim.lsp.buf.workspace_symbol(vim.fn.expand("<cword>"), { on_list = lsp_on_loc_list })
+		end)
+		vim.keymap.set("n", "glr", function()
+			vim.lsp.buf.references({ include_declaration = false }, { on_list = lsp_on_loc_list })
 		end)
 	end,
 })
