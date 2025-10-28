@@ -81,7 +81,7 @@ set foldlevelstart=99
 set background=dark
 let g:maplocalleader = "_"
 " Add session status and arglist position to statusline
-set statusline=%{ObsessionStatus()}\ %<%f\ \ %{FugitiveStatusline()}%h%m%r%=%-13a%-13.(%l,%c%V%)\ %P
+set statusline=%{ObsessionStatus()}\ %<%f\ \ %{FugitiveStatusline()}%h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
 
 if has("nvim")
 	let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, stdpath("data") .. "/site,", "", "g")
