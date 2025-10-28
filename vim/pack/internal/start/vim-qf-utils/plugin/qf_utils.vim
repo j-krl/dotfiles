@@ -26,6 +26,7 @@ command! -nargs=1 -complete=customlist,s:CompleteQfNames Cdelete unlet g:qflists
 command! Clist echo keys(g:qflists)
 command! Cclear let g:qflists = {}
 command! Cwipe Chclear|Cclear
+command! -nargs=1 Crename call RenameQf(<q-args>)
 command! -count=1 Cditem call DeleteQfItems(<count>)
 command! -count=1 Lditem call DeleteQfItems(<count>, 1)
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
@@ -168,6 +169,11 @@ function! DeleteQf(nr=0) abort
 		exe 'sil ' .. (delnr < curnr ? curnr - 1 : curnr) .. 'chistory'
 	endif
 	chistory
+endfunction
+
+function! RenameQf(title) abort
+	let qf = getqflist({"nr": 0, "items": 0})
+	call setqflist([], 'u', {"nr": 0, "title": a:title, "items": qf.items})
 endfunction
 
 function! SaveQf(name, nr=0) abort
