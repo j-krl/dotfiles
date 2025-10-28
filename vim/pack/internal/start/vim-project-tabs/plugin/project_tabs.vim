@@ -1,5 +1,5 @@
 command! -nargs=1 -complete=customlist,s:CompleteOpenProjFuzzy Prjgoto call s:GoToProj(<f-args>)
-command! -nargs=1 -complete=customlist,s:CompleteNewProj Prjnew call s:NewProj(<f-args>)
+command! -bang -nargs=1 -complete=customlist,s:CompleteNewProj Prjnew call s:NewProj(<f-args>, <bang>0)
 command! -nargs=0 Prjonly call s:OnlyProj()
 
 function s:GoToProj(query) abort
@@ -19,7 +19,7 @@ function s:GoToProj(query) abort
 	exe "tabnext " .. matchlist[0].nr
 endfunction
 
-function s:NewProj(dirname) abort
+function s:NewProj(dirname, only=0) abort
 	for i in range(1, tabpagenr('$'))
 		let tabproj = split(getcwd(-1, i), "/")[-1]
 		if tabproj == a:dirname
@@ -36,6 +36,9 @@ function s:NewProj(dirname) abort
 	tabnew
 	exe "tcd " .. proj
 	Explore
+	if a:only
+		call s:OnlyProj()
+	endif
 endfunction
 
 function s:OnlyProj() abort

@@ -216,6 +216,7 @@ nnoremap <leader>2p :<C-U>Plgrep ''<left>
 nnoremap <leader>2P :<C-U>Plgrep <C-R><C-W><cr>
 nnoremap <leader>2v ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 nnoremap <leader>pn :<C-U>Prjnew<space><tab>
+nnoremap <leader>pN :<C-U>Prjnew!<space><tab>
 nnoremap <leader>pp :<C-U>Prjgoto<space>
 nnoremap <leader>pO <cmd>Prjonly<cr>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
@@ -318,13 +319,14 @@ nnoremap <C-W>d :<C-U>exe "lcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" 
 " Git status summary
 nnoremap <space>gg :<C-U>G<cr>
 nnoremap <space>gb :<C-U>Git blame<cr>
-nnoremap <space>gd :<C-U>Git diff<cr>
+nnoremap <space>gD :<C-U>Git diff<cr>
 nnoremap <space>go :<C-U>GBrowse<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
 nnoremap <space>gE :<C-U>Gedit :%<left><left>
 nnoremap <space>gw :<C-U>windo diffthis\|windo norm zM<cr>
 nnoremap <space>gv :<C-U>Gvdiffsplit<space>
+nnoremap <space>gV :<C-U>tab Gvdiffsplit<space>
 " Load all past revisions of the current file into the qflist
 nnoremap <space>g0 :<C-U>0Gclog<cr>
 nnoremap <space>gt :<C-U>Git difftool<space>
