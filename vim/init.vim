@@ -501,6 +501,9 @@ endfunction
 
 function! s:ComplColors(ArgLead, CmdLine, CursorPos) abort
 	let preferred = []
+	if has("nvim")
+		call add(preferred, "default")
+	endif
 	let installed = map(readdir(stdpath("config") .. "/colors"), {_, val -> fnamemodify(val, ":t:r")})
 	let candidates = []
 	for item in preferred + installed
