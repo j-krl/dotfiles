@@ -288,6 +288,8 @@ nnoremap <expr> <silent> <leader>cd "<cmd>" .. v:count1 .. "Cditem<cr>"
 nnoremap <expr> <silent> <leader>ld "<cmd>" .. v:count1 .. "Lditem<cr>"
 nnoremap <leader>cf :<C-U>Cfilter<space>
 nnoremap <leader>cF :<C-U>Cfilter!<space>
+nnoremap <leader>lf :<C-U>Lfilter<space>
+nnoremap <leader>lF :<C-U>Lfilter!<space>
 nnoremap <leader>cz :<C-U>Cfuzzy<space>
 nnoremap <expr> <leader>cD "<cmd>Chdelete " .. v:count .. "<cr>"
 nnoremap <leader>cn <cmd>Clist<cr>
