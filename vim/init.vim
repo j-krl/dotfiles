@@ -336,14 +336,20 @@ nnoremap <space>gmv :<C-U>Gvdiffsplit master<cr>
 nnoremap <space>gmV :<C-U>tab Gvdiffsplit master<cr>
 nnoremap <space>gmD :<C-U>Git diff master<cr>
 nnoremap <space>gmE :<C-U>Gedit master:%<cr>
+nnoremap <space>gmt :<C-U>Git difftool master<cr>
+nnoremap <space>gmT :<C-U>Git difftool master -y<cr>
 nnoremap <space>gMv :<C-U>Gvdiffsplit main<cr>
 nnoremap <space>gMV :<C-U>tab Gvdiffsplit main<cr>
 nnoremap <space>gMD :<C-U>Git diff main<cr>
 nnoremap <space>gME :<C-U>Gedit main:%<cr>
+nnoremap <space>gMt :<C-U>Git difftool @~1<cr>
+nnoremap <space>gMT :<C-U>Git difftool main -y<cr>
 nnoremap <space>g1v :<C-U>Gvdiffsplit @~1<cr>
 nnoremap <space>g1V :<C-U>tab Gvdiffsplit @~1<cr>
 nnoremap <space>g1D :<C-U>Git diff @~1<cr>
 nnoremap <space>g1E :<C-U>Gedit @~1:%<cr>
+nnoremap <space>g1t :<C-U>Git difftool @~1<cr>
+nnoremap <space>g1T :<C-U>Git difftool @~1 -y<cr>
 
 """ Arglist """
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
