@@ -270,16 +270,14 @@ if !has("nvim")
 	nnoremap ]L <cmd>exe v:count1 .. "llast"<cr>
 	nnoremap [L <cmd>exe v:count1 .. "lfirst"<cr>
 endif
-nmap ]2 ]l
-nmap [2 [l
-nmap ]@ ]L
-nmap [@ [L
 nnoremap <leader>ll <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>cc <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <expr> <leader>ch "<cmd>" .. (v:count > 0 ? v:count : "")
 	\.. "chistory" .. (v:count > 0 ? "\|cw" : "") .. "<cr>"
+nnoremap <expr> <leader>lh "<cmd>" .. (v:count > 0 ? v:count : "")
+	\.. "lhistory" .. (v:count > 0 ? "\|cw" : "") .. "<cr>"
 nnoremap <leader>cl <cmd>clist<cr>
 nnoremap <leader>lc <cmd>llist<cr>
 nnoremap <leader>c<leader> <cmd>exe (v:count > 0 ? v:count : ".") .. "cc"<cr>
