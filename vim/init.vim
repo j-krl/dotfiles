@@ -103,8 +103,6 @@ let g:dirvish_mode = ':sort ,^.*[\/],'
 " Disable netrw
 let g:loaded_netrwPlugin = 1
 let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
-let g:netrw_altv = 1
-let g:netrw_alto = 1
 let g:netrw_banner = 0
 let g:netrw_keepj = ""
 let g:python_indent = {
@@ -112,8 +110,9 @@ let g:python_indent = {
 		\'closed_paren_align_last_line': v:false
 	\}
 let g:vim_indent_cont = shiftwidth()
-let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact", "typescript",
-	\"typescriptreact", "html", "css", "json", "vim", "lua", "go"]
+let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact",
+	\"typescript", "typescriptreact", "html", "css", "json", "vim", "lua",
+	\"go"]
 let g:copilot_no_tab_map = v:true
 let g:copilot_filetypes = {
 		\'markdown': v:false,
@@ -170,6 +169,7 @@ nmap dsf dib%hviel%p
 """ Formatting """
 command! FmtToggle let g:format_on_save = !g:format_on_save | echo g:format_on_save
 command! -bang Wfmt let g:format_on_save = <bang>1 | w | let g:format_on_save = <bang>0
+command! -bang Wfmtall let g:format_on_save = <bang>1 | wa | let g:format_on_save = <bang>0
 
 """ System register """
 noremap <space>y "+y
