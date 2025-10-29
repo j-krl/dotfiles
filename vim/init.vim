@@ -130,6 +130,7 @@ let g:qf_session_auto_cache = 1
 let g:qf_session_auto_load = 1
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
+let g:compare_branch = ""
 
 """""""""""""""""""""""
 " Mappings & Commands "
@@ -320,6 +321,7 @@ nnoremap <C-W>D :<C-U>exe "tcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" 
 nnoremap <C-W>d :<C-U>exe "lcd " .. (&ft == "netrw" \|\| &ft == "dirvish" ? "%" : "%:h")<cr>
 
 """ Fugitive/Git """
+command -nargs=? Gcompbranch let g:compare_branch = <q-args>
 " Git status summary
 nnoremap <space>gg :<C-U>G<cr>
 nnoremap <space>gb :<C-U>Git blame<cr>
@@ -337,25 +339,22 @@ nnoremap <space>gt :<C-U>Git difftool<space>
 nnoremap <space>gT :<C-U>Git difftool -y<space>
 nnoremap <space>ga <cmd>!git add %<cr>
 nnoremap <space>gA <cmd>!git add .<cr>
+" qf/loc list split navigation
+nmap ]vv <cmd>cclose<bar>wincmd l<bar>only<bar>exe v:count1 .. "cnext"<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch<cr>
+nmap [vv <cmd>cclose<bar>wincmd l<bar>only<bar>exe v:count1 .. "cprev"<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch<cr>
+nmap ]VV <cmd>cclose<bar>wincmd l<bar>only<bar>clast<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch<cr>
+nmap [VV <cmd>cclose<bar>wincmd l<bar>only<bar>cfirst<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch<cr>
+nmap ]vl <cmd>cclose<bar>wincmd l<bar>only<bar>exe v:count1 .. "lnext"<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch<cr>
+nmap [vl <cmd>cclose<bar>wincmd l<bar>only<bar>exe v:count1 .. "lprev"<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch<cr>
+nmap ]VL <cmd>cclose<bar>wincmd l<bar>only<bar>llast<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch<cr>
+nmap [VL <cmd>cclose<bar>wincmd l<bar>only<bar>lfirst<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch<cr>
 " common branches
-nnoremap <space>gmv :<C-U>Gvdiffsplit master<cr>
-nnoremap <space>gmV :<C-U>tab Gvdiffsplit master<cr>
-nnoremap <space>gmD :<C-U>Git diff master<cr>
-nnoremap <space>gmE :<C-U>Gedit master:%<cr>
-nnoremap <space>gmt :<C-U>Git difftool master<cr>
-nnoremap <space>gmT :<C-U>Git difftool master -y<cr>
-nnoremap <space>gMv :<C-U>Gvdiffsplit main<cr>
-nnoremap <space>gMV :<C-U>tab Gvdiffsplit main<cr>
-nnoremap <space>gMD :<C-U>Git diff main<cr>
-nnoremap <space>gME :<C-U>Gedit main:%<cr>
-nnoremap <space>gMt :<C-U>Git difftool @~1<cr>
-nnoremap <space>gMT :<C-U>Git difftool main -y<cr>
-nnoremap <space>g1v :<C-U>Gvdiffsplit @~1<cr>
-nnoremap <space>g1V :<C-U>tab Gvdiffsplit @~1<cr>
-nnoremap <space>g1D :<C-U>Git diff @~1<cr>
-nnoremap <space>g1E :<C-U>Gedit @~1:%<cr>
-nnoremap <space>g1t :<C-U>Git difftool @~1<cr>
-nnoremap <space>g1T :<C-U>Git difftool @~1 -y<cr>
+nnoremap <space>gcv <cmd>exe "Gvdiffsplit " .. g:compare_branch<cr>
+nnoremap <space>gcV <cmd>exe "tab Gvdiffsplit " .. g:compare_branch<cr>
+nnoremap <space>gcD <cmd>exe "Git diff " .. g:compare_branch<cr>
+nnoremap <space>gcE <cmd>exe "Gedit " .. g:compare_branch .. ":%"<cr>
+nnoremap <space>gct <cmd>exe "Git difftool " .. g:compare_branch<cr>
+nnoremap <space>gcT <cmd>exe "Git difftool -y " .. g:compare_branch<cr>
 
 """ Arglist """
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
