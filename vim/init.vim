@@ -153,6 +153,9 @@ inoremap <C-S> <cr><esc>kA
 inoremap {<cr> {<cr>}<C-O>O
 inoremap [<cr> [<cr>]<C-O>O
 inoremap (<cr> (<cr>)<C-O>O
+inoremap {<tab> {}<C-O>i
+inoremap [<tab> []<C-O>i
+inoremap (<tab> ()<C-O>i
 if !has("nvim")
 	nnoremap ]<space> mmo<esc>`m<cmd>delm m<cr>
 	nnoremap [<space> mmO<esc>`m<cmd>delm m<cr>
