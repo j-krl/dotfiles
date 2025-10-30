@@ -133,7 +133,7 @@ let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
 let g:compare_branch = ""
 let g:gutentags_add_default_project_roots = 0
-let g:gutentags_project_root = ['package.json', '.git']
+let g:gutentags_project_root = ['.git', 'main.tf'] " TODO: need better tf root
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
 let g:gutentags_generate_on_new = 1
 let g:gutentags_generate_on_missing = 1
@@ -451,6 +451,7 @@ nnoremap yrP :let @+ = expand("%:p:h")<cr>
 nnoremap yr+ :let @+ = @0<cr>
 nmap yr0 yr+
 nnoremap yrb :let @+ = system("git branch --show-current")<cr>
+nnoremap yrt :let @+ = substitute(@+, "[^\/]*\/", "", "")<cr>
 
 """ Which-key """
 nnoremap <space>ww :<C-U>map<space>
