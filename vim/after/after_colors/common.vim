@@ -7,7 +7,7 @@ if !has("nvim")
 endif
 
 if &background == "dark"
-	hi QuickScopeSecondary guifg=yellow
+	hi QuickScopeSecondary guifg=orange
 	hi QuickScopePrimary guifg=orchid
 	hi Visual guifg=NONE gui=NONE guibg=grey35
 	hi DiffAdd gui=BOLD guifg=NONE guibg=#2e4b2e

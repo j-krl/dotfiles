@@ -9,3 +9,4 @@ if executable("glow")
 		\set ft=markdown \| setlocal buftype=nofile \| 
 		\exe "TabooRename md-preview" \| norm gg<cr>
 endif
+iab -] - [ ]

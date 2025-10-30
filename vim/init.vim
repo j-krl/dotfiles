@@ -341,6 +341,7 @@ nnoremap <space>gg :<C-U>G<cr>
 nnoremap <space>gb :<C-U>Git blame<cr>
 nnoremap <space>gD :<C-U>Git diff<cr>
 nnoremap <space>gB :<C-U>GBrowse<cr>
+nnoremap <space>gl :<C-U>Git log<cr>
 " Switch to the working directory version of the current file
 nnoremap <space>ge :<C-U>Gedit<cr>
 nnoremap <space>gE :<C-U>Gedit :%<left><left>
@@ -471,6 +472,17 @@ inoremap <C-Space> <C-X><C-O>
 if !has("nvim")
 	nnoremap <silent> <C-L> <cmd>nohl<cr>
 endif
+nnoremap <space>0 <cmd>call OpenTODO(4)<cr>
+nnoremap <space>) <cmd>call OpenTODO(25)<cr>
+
+function! OpenTODO(size) abort
+	pclose
+	exe "pedit +1 " .. getcwd(-1, -1) .. "/TODO.md"
+	wincmd k
+	wincmd K
+	exe "resize " .. a:size
+	wincmd p
+endfunction
 
 """ Functions """
 " WARNING: slow!
