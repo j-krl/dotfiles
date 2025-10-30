@@ -16,6 +16,7 @@ function! PackInit() abort
 	call minpac#add('tpope/vim-repeat')
 	call minpac#add('github/copilot.vim')
 	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
+    call minpac#add('ludovicchabant/vim-gutentags')
 	if has("nvim")
 		call minpac#add('neovim/nvim-lspconfig')
 		call minpac#add('nvim-lua/plenary.nvim')
@@ -131,6 +132,19 @@ let g:qf_session_auto_load = 1
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
 let g:compare_branch = ""
+let g:gutentags_add_default_project_roots = 0
+let g:gutentags_project_root = ['package.json', '.git']
+let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 0
+let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 
+        \'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', 
+        \'*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', 
+        \'*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', 
+        \'*.css', '*.scss', '*.swp', '.terraform'
+    \]
 
 """""""""""""""""""""""
 " Mappings & Commands "
