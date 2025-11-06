@@ -9,5 +9,9 @@ function! terraform#GoToModuleDefinition() abort
 		echoerr "Invalid module path"
 		return
 	endif
+	let tagstack = gettagstack()
+	let tagentry = {"bufnr": bufnr("%"), "tagname": paths[-1], "from": [bufnr("%"), line("."), col("."), 0], "matchnr": 1}
+	call add(tagstack["items"], tagentry)
+	call settagstack(win_getid(), tagstack, 'r')
 	exe "e " .. $TERRAFORM_MODULES_DIR .. "/" .. paths[-1] .. "/"
 endfunction
