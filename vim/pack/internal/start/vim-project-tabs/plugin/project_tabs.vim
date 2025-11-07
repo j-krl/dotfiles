@@ -1,5 +1,4 @@
 command! -nargs=1 -complete=customlist,s:CompleteOpenProjFuzzy Prjgoto call s:GoToProj(<f-args>)
-command! -bang -nargs=1 -complete=customlist,s:CompleteNewProj Prjnew call s:NewProj(<f-args>, <bang>0)
 command! -nargs=0 Prjonly call s:OnlyProj()
 
 function s:GoToProj(query) abort
@@ -11,33 +10,24 @@ function s:GoToProj(query) abort
 		endif
 		call add(projs, {"name": proj, "nr": i})
 	endfor
+	for f in globpath(getcwd(-1, -1), "*", 0, 1)
+		let tail = fnamemodify(f, ":t")
+		if isdirectory(f)
+			call add(projs, {"name": tail, "nr": -1})
+		endif
+	endfor
 	let matchlist = matchfuzzy(projs, a:query, {"key": "name"})
 	if len(matchlist) == 0
 		echoerr "No matching projects"
 		return
 	endif
-	exe "tabnext " .. matchlist[0].nr
-endfunction
-
-function s:NewProj(dirname, only=0) abort
-	for i in range(1, tabpagenr('$'))
-		let tabproj = split(getcwd(-1, i), "/")[-1]
-		if tabproj == a:dirname
-			exe "tabnext " .. i
-			return
-		endif
-	endfor
-	let cwd = getcwd(-1, -1)
-	let proj = cwd .. "/" .. a:dirname
-	if !isdirectory(proj)
-		echoerr a:dirname .. " is not a directory"
-		return
-	endif
-	tabnew
-	exe "tcd " .. proj
-	Explore
-	if a:only
-		call s:OnlyProj()
+	if matchlist[0].nr == -1
+		let path = getcwd(-1, -1) .. "/" .. matchlist[0].name
+		tabnew
+		exe "tcd " .. path
+		Explore
+	else
+		exe "tabnext " .. matchlist[0].nr
 	endif
 endfunction
 
@@ -53,23 +43,20 @@ function s:OnlyProj() abort
 endfunction
 
 function s:CompleteOpenProjFuzzy(ArgLead, CmdLine, CursorPos) abort
-	let items = map(range(1, tabpagenr('$')), {_, val -> split(getcwd(-1, val), "/")[-1]})
-	if a:ArgLead == ""
-		return items
-	endif
-	let matchlist = matchfuzzy(items, a:ArgLead)
-	return matchlist
-endfunction
-
-function s:CompleteNewProj(ArgLead, CmdLine, CursorPos) abort
 	let cwd = getcwd(-1, -1)
+	let items = map(range(1, tabpagenr('$')), {_, val -> split(getcwd(-1, val), "/")[-1]})
 	let dirs = []
 	for f in globpath(cwd, "*", 0, 1)
 		let tail = fnamemodify(f, ":t")
-		if isdirectory(f) && tail =~ a:ArgLead
+		if isdirectory(f)
 			call add(dirs, tail)
 		endif
 	endfor
-	return dirs
+	let all = uniq(sort(items + dirs))
+	if a:ArgLead == ""
+		return all
+	endif
+	let matchlist = matchfuzzy(all, a:ArgLead)
+	return matchlist
 endfunction
 
