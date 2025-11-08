@@ -16,7 +16,7 @@ function! PackInit() abort
 	call minpac#add('tpope/vim-repeat')
 	call minpac#add('github/copilot.vim')
 	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
-    call minpac#add('ludovicchabant/vim-gutentags')
+	call minpac#add('ludovicchabant/vim-gutentags')
 	if has("nvim")
 		call minpac#add('neovim/nvim-lspconfig')
 		call minpac#add('nvim-lua/plenary.nvim')
@@ -66,7 +66,7 @@ set laststatus=2
 set completeopt=menuone,popup
 set wildmenu
 set list
-set listchars=tab:\|\ ,precedes:>,extends:<
+set listchars=tab:\│\ ,precedes:>,extends:<
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set wildoptions=pum,tagfile
 set wildcharm=<tab>
@@ -140,11 +140,11 @@ let g:gutentags_generate_on_missing = 1
 let g:gutentags_generate_on_write = 1
 let g:gutentags_generate_on_empty_buffer = 0
 let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 
-        \'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', 
-        \'*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', 
-        \'*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', 
-        \'*.css', '*.scss', '*.swp', '.terraform'
-    \]
+	\'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', 
+	\'*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', 
+	\'*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', 
+	\'*.css', '*.scss', '*.swp', '.terraform'
+	\]
 
 """""""""""""""""""""""
 " Mappings & Commands "
@@ -569,6 +569,8 @@ autocmd vimrc VimLeave * if !empty(v:this_session) | exe
 autocmd vimrc ColorSchemePre * hi clear
 autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
 autocmd vimrc OptionSet formatprg call s:SetFormatMaps()
+autocmd vimrc OptionSet shiftwidth call s:SetSpaceIndentGuides(v:option_new)
+autocmd vimrc BufWinEnter * call s:SetSpaceIndentGuides(&l:shiftwidth)
 autocmd vimrc FileType * call s:SetFormatMaps()
 autocmd vimrc OptionSet spell call s:SetSpellMaps()
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
@@ -577,6 +579,23 @@ autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 if has("nvim")
 	autocmd vimrc TabNewEntered * argl|%argd
 endif
+
+function! s:SetSpaceIndentGuides(sw) abort
+	let indent = a:sw
+	if indent == 0
+		let indent = &tabstop
+	endif
+	if &l:listchars == ""
+		let &l:listchars = &listchars
+	endif
+	let listchars = substitute(&listchars, 'leadmultispace:.\{-},', '', 'g')
+	let newlead = "\┆"
+	for i in range(indent - 1)
+		let newlead .= "\ "
+	endfor
+	let newlistchars = "leadmultispace:" .. newlead .. "," .. listchars
+	let &l:listchars = newlistchars
+endfunction
 
 function! s:SetFormatMaps() abort
 	if &formatprg == ""
