@@ -2,6 +2,7 @@ bindkey '^U' backward-kill-line
 bindkey '^[[Z' reverse-menu-complete
 autoload -U +X bashcompinit && bashcompinit
 
+setopt autopushd
 setopt prompt_subst
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git
