@@ -1,14 +1,15 @@
 local lsps = {
-	"lua_ls",
 	"basedpyright",
-	"ruff",
-	"ts_ls",
-	"gopls",
+	"bashls",
 	"clangd",
-	"sqlls",
 	"emmet_language_server",
+	"gopls",
+	"lua_ls",
+	"ruff",
+	"sqlls",
 	"terraformls",
 	-- "tofu_ls",
+	"ts_ls",
 	"vimls",
 }
 

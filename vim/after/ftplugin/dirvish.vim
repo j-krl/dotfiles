@@ -1,5 +1,5 @@
 nnoremap <buffer> % :<C-U>e <C-R>%
-nnoremap <buffer> D :<C-U>!mkdir -p <C-R>%
+nnoremap <buffer> mk :<C-U>!mkdir -p <C-R>%
 nnoremap <buffer> dd :<C-U>!rm <C-R>=isdirectory(getline(".")) ? "-r " : ""<cr><C-R>=getline(".")<cr>
 nnoremap <buffer> cc :<C-U>!mv <C-R>=getline(".")<cr><space>
 nnoremap <buffer> cp :<C-U>!cp <C-R>=getline(".")<cr><space>
