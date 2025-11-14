@@ -243,8 +243,13 @@ vim.diagnostic.config({
 vim.lsp.log.set_level(vim.log.levels.OFF)
 
 vim.keymap.set("n", "<leader>ts", "<cmd>TSJToggle<cr>")
-vim.keymap.set({ "n", "v" }, "<leader>.", ":<C-U>CopilotChatToggle<cr><C-W>=", { silent = true })
--- vim.keymap.set({ "n", "v" }, "<leader>,", ":<C-U>CopilotChatClose<cr><C-W>=", { silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>.", ":<C-U>CopilotChatOpen<cr><C-W>=", { silent = true })
+vim.keymap.set(
+	{ "n", "v" },
+	"<leader>>",
+	':<C-U>if expand("%") =~ "copilot-chat" | wincmd p | endif | CopilotChatClose<cr>',
+	{ silent = true }
+)
 vim.keymap.set("n", "]D", function()
 	vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
 end)
