@@ -157,6 +157,8 @@ require("nvim-treesitter.configs").setup({
 				["ia"] = "@parameter.inner",
 				["a?"] = "@conditional.outer",
 				["i?"] = "@conditional.inner",
+				["ai"] = "@call.outer",
+				["ii"] = "@call.inner",
 			},
 		},
 		move = {
@@ -167,24 +169,28 @@ require("nvim-treesitter.configs").setup({
 				["]]"] = "@class.outer",
 				["]/"] = "@conditional.outer",
 				["]x"] = "@block.outer",
+				["]e"] = "@call.outer",
 			},
 			goto_next_end = {
 				["]M"] = "@function.outer",
 				["]["] = "@class.outer",
 				["]?"] = "@conditional.outer",
 				["]X"] = "@block.outer",
+				["]E"] = "@call.outer",
 			},
 			goto_previous_start = {
 				["[m"] = "@function.outer",
 				["[["] = "@class.outer",
 				["[/"] = "@conditional.outer",
 				["[x"] = "@block.outer",
+				["[e"] = "@call.outer",
 			},
 			goto_previous_end = {
 				["[M"] = "@function.outer",
 				["[]"] = "@class.outer",
 				["[?"] = "@conditional.outer",
 				["[X"] = "@block.outer",
+				["[E"] = "@call.outer",
 			},
 		},
 		swap = {
