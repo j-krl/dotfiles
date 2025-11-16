@@ -567,6 +567,8 @@ autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
 	\'call writefile(["set background=" .. &background, "colorscheme " ..
 	\g:colors_name], v:this_session, "a")' | endif
+autocmd vimrc VimLeave * if !empty(v:this_session) | exe "CopilotChatSave " .. slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
+autocmd vimrc VimEnter * if !empty(v:this_session) | exe "CopilotChatLoad " .. slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
 autocmd vimrc ColorSchemePre * hi clear
 autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
 autocmd vimrc OptionSet formatprg call s:SetFormatMaps()

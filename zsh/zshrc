@@ -41,6 +41,7 @@ alias sov="source venv/bin/activate || source .venv/bin/activate"
 alias sed="sed -E"
 alias ga="gcloud auth login --update-adc"
 alias co="copilot"
+alias nvco='nvim -c "CopilotChatOpen" -c "wincmd o" -c "startinsert"'
 alias mux="cd && ~/dotfiles/tmux/tmux-session.sh"
 alias nvs="nvim -S Session.vim"
 alias vs="vim -S Session.vim"
