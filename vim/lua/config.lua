@@ -157,6 +157,8 @@ require("nvim-treesitter.configs").setup({
 				["ia"] = "@parameter.inner",
 				["a?"] = "@conditional.outer",
 				["i?"] = "@conditional.inner",
+				["ax"] = "@block.outer",
+				["ix"] = "@block.inner",
 				["ai"] = "@call.outer",
 				["ii"] = "@call.inner",
 			},
@@ -249,7 +251,7 @@ vim.diagnostic.config({
 vim.lsp.log.set_level(vim.log.levels.OFF)
 
 vim.keymap.set("n", "<leader>ts", "<cmd>TSJToggle<cr>")
-vim.keymap.set({ "n", "v" }, "<F9>", ":<C-U>CopilotChatOpen<cr><C-W>=", { silent = true })
+vim.keymap.set({ "n", "v" }, "<F9>", ":<C-U>CopilotChatOpen<cr><C-W>=i", { silent = true })
 vim.keymap.set(
 	{ "n", "v" },
 	"<F10>",
