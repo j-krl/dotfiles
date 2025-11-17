@@ -55,6 +55,7 @@ set re=0
 set colorcolumn=80,88,120
 set signcolumn=yes
 set cursorline
+set iskeyword+=-
 " Required for taboo to persist names in sessions
 set sessionoptions+=globals
 set hidden
@@ -317,7 +318,7 @@ nnoremap <leader>cs :<C-U>Csave<space>
 nnoremap <leader>co :<C-U>Cload<space><tab>
 
 """ Tabs """
-nnoremap <space><space> gt
+nnoremap <leader><leader> gt
 nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
 nnoremap [w gT
 nnoremap [W <cmd>tabfirst<cr>
@@ -385,7 +386,7 @@ nnoremap <leader>ac <cmd>%argd<cr><C-L><cmd>echo "arglist cleared"<cr>
 nnoremap <leader>al <cmd>argl\|%argd\|echo "local arglist created"<cr>
 nnoremap <leader>af :<C-U>arga `fd --hidden --type f -E '.git' --full-path ''`<left><left>
 " Go to arglist file at index [count]
-nnoremap <expr> <leader><leader> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
+nnoremap <expr> <space><space> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 
 """ Copilot
 imap <expr> <C-\> copilot#Accept("\<cr>")
