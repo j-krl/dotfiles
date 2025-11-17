@@ -194,6 +194,8 @@ command! -bang Wfmtall let g:format_on_save = <bang>1 | wa | let g:format_on_sav
 noremap <space>y "+y
 noremap <space>p "+p
 noremap <space>P "+P
+nnoremap <A-0> "0p
+nnoremap <A-)> "0P
 nnoremap <A-p>= <cmd>put +<cr>
 nnoremap <A-P>= <cmd>put! +<cr>
 nnoremap <A-p>0 <cmd>put 0<cr>
