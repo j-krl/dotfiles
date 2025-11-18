@@ -56,6 +56,7 @@ set colorcolumn=80,88,120
 set signcolumn=yes
 set cursorline
 set iskeyword+=-
+set exrc
 " Required for taboo to persist names in sessions
 set sessionoptions+=globals
 set hidden
@@ -209,9 +210,10 @@ nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>X <cmd>x<cr>
-nnoremap <leader>w <cmd>w<cr>
-nnoremap <leader>W <cmd>wa<cr>
-nmap <F4> <cmd>Wfmt!<cr>
+nnoremap <leader>ww <cmd>w<cr>
+nnoremap <leader>W <cmd>Wfmt!<cr>
+nnoremap <leader>wa <cmd>wa<cr>
+nnoremap <leader>wA <cmd>Wfmtall!<cr>
 
 """ File navigation """
 noremap / ms/
