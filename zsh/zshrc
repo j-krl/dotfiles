@@ -61,12 +61,12 @@ ghclone() {
 	git clone "https://github.com/$1.git"
 }
 
+export TERM="xterm-256color"
+[[ -n $TMUX ]] && export TERM="screen-256color"
+
 source ~/.fzf-tab/fzf-tab.plugin.zsh
 zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
 
-bindkey '^\' fzf-tab-complete
-bindkey "^I" expand-or-complete
 bindkey '^X^D' vi-find-prev-char
-
-export TERM="xterm-256color"
-[[ -n $TMUX ]] && export TERM="screen-256color"
+bindkey "^I" expand-or-complete
+bindkey '^\' fzf-tab-complete
