@@ -580,6 +580,7 @@ autocmd vimrc OptionSet formatprg call s:SetFormatMaps()
 autocmd vimrc OptionSet shiftwidth call s:SetSpaceIndentGuides(v:option_new)
 autocmd vimrc BufWinEnter * call s:SetSpaceIndentGuides(&l:shiftwidth)
 autocmd vimrc FileType * call s:SetFormatMaps()
+autocmd vimrc FileType * set include=
 autocmd vimrc OptionSet spell call s:SetSpellMaps()
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
 autocmd vimrc FileType * call s:SetSpellMaps()
