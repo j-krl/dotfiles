@@ -172,6 +172,7 @@ require("nvim-treesitter.configs").setup({
 				["]/"] = "@conditional.outer",
 				["]x"] = "@block.outer",
 				["]e"] = "@call.outer",
+				["]r"] = "@parameter.inner",
 			},
 			goto_next_end = {
 				["]M"] = "@function.outer",
@@ -179,6 +180,7 @@ require("nvim-treesitter.configs").setup({
 				["]?"] = "@conditional.outer",
 				["]X"] = "@block.outer",
 				["]E"] = "@call.outer",
+				["]R"] = "@parameter.inner",
 			},
 			goto_previous_start = {
 				["[m"] = "@function.outer",
@@ -186,6 +188,7 @@ require("nvim-treesitter.configs").setup({
 				["[/"] = "@conditional.outer",
 				["[x"] = "@block.outer",
 				["[e"] = "@call.outer",
+				["[r"] = "@parameter.inner",
 			},
 			goto_previous_end = {
 				["[M"] = "@function.outer",
@@ -193,6 +196,7 @@ require("nvim-treesitter.configs").setup({
 				["[?"] = "@conditional.outer",
 				["[X"] = "@block.outer",
 				["[E"] = "@call.outer",
+				["[R"] = "@parameter.inner",
 			},
 		},
 		swap = {
