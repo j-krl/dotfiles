@@ -50,6 +50,7 @@ alias k="kubectl"
 alias kn="k config set-context --current --namespace"
 alias kx="k config use-context"
 alias kl="k config get-contexts"
+alias bd=". bd -si"
 
 difftool() {
 	nvim -c "let g:taboo_tab_format = \" %N %R \"" -c "Git difftool -y $1" \

@@ -76,7 +76,6 @@ set wildcharm=<tab>
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
 set tabclose=left
 set guicursor=n-v-c-sm:block,i-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor
-"set iskeyword+=-
 set spellcapcheck=
 set fillchars=diff:\
 set foldmethod=indent
@@ -404,18 +403,18 @@ onoremap <silent> il :normal vil<CR>
 xnoremap <silent> al $o0
 onoremap <silent> al :normal val<CR>
 " Word including "."
-onoremap <silent> ie :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
-xnoremap <silent> ie :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
-onoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
-xnoremap <silent> ae :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
+onoremap <silent> iq :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
+xnoremap <silent> iq :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
+onoremap <silent> aq :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
+xnoremap <silent> aq :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
 " Word including many other special chars except brackets and quotes
-onoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! viw'<bar>
+onoremap <silent> iQ :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! viw'<bar>
 	\setlocal iskeyword-=.,=,:<cr>
-xnoremap <silent> iE :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! viw'<bar>
+xnoremap <silent> iQ :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! viw'<bar>
 	\setlocal iskeyword-=.,=,:<cr>
-onoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! vaw'<bar>
+onoremap <silent> aQ :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! vaw'<bar>
 	\setlocal iskeyword-=.,=,:<cr>
-xnoremap <silent> aE :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! vaw'<bar>
+xnoremap <silent> aQ :<C-U>setlocal iskeyword+=.,=,-,:<bar>exe 'norm! vaw'<bar>
 	\setlocal iskeyword-=.,=,:<cr>
 
 """ Colorschemes """
@@ -583,6 +582,7 @@ autocmd vimrc FileType * call s:SetFormatMaps()
 autocmd vimrc FileType * set include=
 autocmd vimrc OptionSet spell call s:SetSpellMaps()
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
+autocmd vimrc BufRead * set iskeyword+=-
 autocmd vimrc FileType * call s:SetSpellMaps()
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 if has("nvim")
