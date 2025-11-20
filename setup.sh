@@ -16,11 +16,10 @@ ln -s ~/.dotfiles/git/.gitconfig ~/.gitconfig
 
 # vim/neovim
 mkdir -p ~/.local/share/nvim/site
-mkdir -p ~/.local/share/vim/site
 git clone https://github.com/k-takata/minpac.git ~/.local/share/nvim/site/pack/minpac/opt/minpac
 git clone https://github.com/k-takata/minpac.git ~/.local/share/vim/site/pack/minpac/opt/minpac
 ln -s ~/dotfiles/vim ~/.config/nvim
-ln -s ~/dotfiles/vim ~/.vim
+ln -s ~/dotfiles/vim/vimrc ~/.vimrc
 mkdir -p ~/.cache/vim/
 
 # brew

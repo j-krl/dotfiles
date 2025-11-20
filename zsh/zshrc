@@ -29,6 +29,7 @@ export BINDIR="$HOME/.local/bin"
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacadah
 export GIT_PAGER="diff-highlight | less"
+export FZF_DEFAULT_OPTS="--bind ctrl-b:half-page-up,ctrl-f:half-page-down"
 
 if command -v bat >/dev/null 2>&1; then
 	alias less="bat"

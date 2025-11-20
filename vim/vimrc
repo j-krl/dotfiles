@@ -1,1 +1,43 @@
-init.vim
+set nocompatible
+
+syntax on
+set relativenumber
+set number
+set tabstop=4
+set shiftwidth=4
+set autoread
+set wildmenu
+set hlsearch
+set smartindent
+set cursorline
+set ttimeoutlen=50
+set laststatus=2
+set signcolumn=yes
+set colorcolumn=80,88,120
+set background=dark
+set foldmethod=indent
+set foldlevel=100
+set foldlevelstart=101
+set wildmode=list:longest,full
+set mouse=a
+
+let g:netrw_bufsettings = "noma nomod nu rnu ro nobl"
+
+nnoremap <leader>q <cmd>qa<cr>
+nnoremap <leader>Q <cmd>qa!<cr>
+nnoremap <leader>x <cmd>xa<cr>
+nnoremap <leader>X <cmd>x<cr>
+nnoremap <leader>ww <cmd>w<cr>
+nnoremap <leader>wa <cmd>wa<cr>
+noremap <space>y "+y
+noremap <space>p "+p
+noremap <space>P "+P
+nnoremap <C-L> <cmd>nohlsearch<bar>diffupdate<bar>normal! <C-L><CR>
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
+
+colo lunaperche
