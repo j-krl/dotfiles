@@ -20,10 +20,10 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 precmd() {
 	vcs_info
 }
+
 PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 
 export PATH="$PATH:$HOME/.local/bin"
-
 export EDITOR=nvim
 export BINDIR="$HOME/.local/bin"
 export CLICOLOR=1
@@ -62,12 +62,11 @@ ghclone() {
 	git clone "https://github.com/$1.git"
 }
 
+source <(fzf --zsh)
+
 export TERM="xterm-256color"
 [[ -n $TMUX ]] && export TERM="screen-256color"
 
 source ~/.fzf-tab/fzf-tab.plugin.zsh
-zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
-
-bindkey '^X^D' vi-find-prev-char
 bindkey "^I" expand-or-complete
 bindkey '^\' fzf-tab-complete
