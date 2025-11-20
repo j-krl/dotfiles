@@ -17,6 +17,8 @@ function! PackInit() abort
 	call minpac#add('github/copilot.vim')
 	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	call minpac#add('ludovicchabant/vim-gutentags')
+	call minpac#add('junegunn/fzf')
+	call minpac#add('junegunn/fzf.vim')
 	if has("nvim")
 		call minpac#add('neovim/nvim-lspconfig')
 		call minpac#add('nvim-lua/plenary.nvim')
@@ -134,6 +136,7 @@ let g:qf_session_auto_load = 1
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
 let g:compare_branch = ""
+let g:fzf_layout = { 'down': '30%' }
 let g:gutentags_add_default_project_roots = 0
 let g:gutentags_project_root = ['.git', 'main.tf'] " TODO: need better tf root
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
@@ -273,12 +276,29 @@ nnoremap <silent> - :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>:Ex
 nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
 	\exe "Explore " .. getcwd()<cr>
 
+""" FZF """
+nnoremap <leader>zz <cmd>RG<cr>
+nnoremap <leader>zf <cmd>Files<cr>
+nnoremap <leader>zl <cmd>BLines<cr>
+nnoremap <leader>zt <cmd>Tags<cr>
+nnoremap <leader>zo <cmd>History<cr>
+nnoremap <leader>zh <cmd>History:<cr>
+nnoremap <leader>z/ <cmd>History/<cr>
+nnoremap <leader>zg <cmd>Commits<cr>
+
 """ Tmux """
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 noremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 noremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
-
+tnoremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
+tnoremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
+tnoremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
+tnoremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
+tnoremap <C-w>h <C-\><C-n><C-w>h
+tnoremap <C-w>j <C-\><C-n><C-w>j
+tnoremap <C-w>k <C-\><C-n><C-w>k
+tnoremap <C-w>l <C-\><C-n><C-w>l
 
 """ Quickfix/Location list """
 if !has("nvim")
