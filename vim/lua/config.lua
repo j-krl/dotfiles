@@ -222,6 +222,10 @@ require("nvim-treesitter.configs").setup({
 	},
 })
 
+require("nvim-surround").setup()
+
+require("guess-indent").setup()
+
 require("CopilotChat").setup({
 	mappings = {
 		complete = { insert = "<S-tab>" },
@@ -254,7 +258,8 @@ vim.diagnostic.config({
 })
 vim.lsp.log.set_level(vim.log.levels.OFF)
 
-vim.keymap.set("n", "<leader>ts", "<cmd>TSJToggle<cr>")
+vim.keymap.set("n", "<leader>tj", "<cmd>TSJJoin<cr>")
+vim.keymap.set("n", "<leader>ts", "<cmd>TSJSplit<cr>")
 vim.keymap.set({ "n", "v" }, "<F9>", ":<C-U>CopilotChatOpen<cr><C-W>=i", { silent = true })
 vim.keymap.set(
 	{ "n", "v" },

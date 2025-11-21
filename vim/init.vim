@@ -5,15 +5,14 @@ function! PackInit() abort
 	call minpac#add('unblevable/quick-scope')
 	call minpac#add('christoomey/vim-tmux-navigator')
 	call minpac#add('jeetsukumaran/vim-indentwise')
+	call minpac#add('NMAC427/guess-indent.nvim')
 	call minpac#add('jpalardy/vim-slime')
 	call minpac#add('gcmt/taboo.vim')
 	call minpac#add('justinmk/vim-dirvish')
-	call minpac#add('tpope/vim-surround')
+	call minpac#add('kylechui/nvim-surround')
 	call minpac#add('tpope/vim-obsession')
 	call minpac#add('tpope/vim-fugitive')
 	call minpac#add('tpope/vim-rhubarb')
-	call minpac#add('tpope/vim-sleuth')
-	call minpac#add('tpope/vim-repeat')
 	call minpac#add('github/copilot.vim')
 	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	call minpac#add('ludovicchabant/vim-gutentags')
@@ -22,7 +21,6 @@ function! PackInit() abort
 	call minpac#add('neovim/nvim-lspconfig')
 	call minpac#add('nvim-lua/plenary.nvim')
 	call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
-	" treesitter
 	call minpac#add('nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'})
 	call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'master'})
 	call minpac#add('nvim-treesitter/nvim-treesitter-context')
@@ -31,7 +29,7 @@ function! PackInit() abort
 endfunction
 packadd cfilter
 
-exe "source " stdpath("config") .. "/vimrc"
+exe "source " .. stdpath("config") .. "/vimrc"
 
 """""""""""
 " Options "
@@ -147,8 +145,6 @@ nmap [o [<space>k
 inoremap <silent> <expr> <bs> !search('\S','nbW',line('.')) ? 
 	\(col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"
 inoremap <c-bs> <bs>
-" Vim surround delete surrounding function. Uses text objects defined below
-nmap dsf dib%hviel%p
 
 """ File navigation """
 noremap / ms/
@@ -225,6 +221,10 @@ noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 noremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
 noremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
+
+""" Slime """
+xmap <leader>3 <Plug>SlimeRegionSend
+nmap <leader>3 <Plug>SlimeParagraphSend
 
 """ Marks """
 nnoremap <leader>mm <cmd>marks ABCDEFHIJKLMNOPQRSTUVWXYZ<cr>

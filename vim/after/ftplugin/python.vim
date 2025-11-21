@@ -1,10 +1,6 @@
 if executable("ruff")
 		setlocal formatprg=ruff\ format\ --force-exclude\ --stdin-filename\ %
 endif
-let b:surround_{char2nr("d")} = "\1dict: \1[\"\r\"]"
-let b:surround_{char2nr("m")} = "\"\"\"\r\"\"\""
-let b:surround_{char2nr("p")} = "f\"\r\""
-let b:surround_{char2nr("P")} = "f\'\r\'"
 " delete surrounding dict reference
 nmap <buffer> dsd di]%hviel%p
 nmap <buffer> dsm ds"ds"ds"
