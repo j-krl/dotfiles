@@ -39,7 +39,6 @@ fi
 
 alias soz="source ~/.zshrc"
 alias sov="source venv/bin/activate || source .venv/bin/activate"
-alias sed="sed -E"
 alias ga="gcloud auth login --update-adc"
 alias co="copilot"
 alias nvco='nvim -c "CopilotChatOpen" -c "wincmd o" -c "startinsert"'
@@ -62,6 +61,8 @@ difftool() {
 ghclone() {
 	git clone "https://github.com/$1.git"
 }
+
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 source <(fzf --zsh)
 fpath=(~/.zsh/completion $fpath)

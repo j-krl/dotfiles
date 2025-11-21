@@ -448,6 +448,7 @@ nnoremap <leader>u <cmd>undolist<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 nnoremap <F5> :<C-U>Obsession<cr>
 inoremap <C-Space> <C-X><C-O>
+nnoremap <expr> <space>0 "<cmd>pedit +1 " .. getcwd(-1, -1) .. "/TODO.md<bar>wincmd p<cr>"
 
 """"""""""""""""
 " Autocommands "
