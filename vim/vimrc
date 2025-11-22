@@ -6,7 +6,6 @@ set number
 set tabstop=4
 set shiftwidth=4
 set autoread
-set wildmenu
 set hlsearch
 set incsearch
 set smartindent
