@@ -1,5 +1,7 @@
+bindkey -e
+
 bindkey '^U' backward-kill-line
-bindkey '^[[Z' reverse-menu-complete
+# bindkey '^[[Z' reverse-menu-complete
 autoload -U +X bashcompinit && bashcompinit
 
 setopt autopushd
