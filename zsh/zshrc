@@ -6,6 +6,8 @@ autoload -U +X bashcompinit && bashcompinit
 
 setopt autopushd
 setopt prompt_subst
+setopt inc_append_history
+
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:git:*' formats '%F{yellow}(%f%F{red}%b%f%F{yellow})%u%c%m %f'
