@@ -7,6 +7,7 @@ autoload -U +X bashcompinit && bashcompinit
 setopt autopushd
 setopt prompt_subst
 setopt share_history
+setopt hist_ignore_dups
 
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git
