@@ -8,6 +8,7 @@ sed -i.old '1s;^;source ~/dotfiles/zsh/zshrc\n;' ~/.zshrc
 
 # tmux
 ln -s ~/dotfiles/tmux/.tmux.conf ~/.tmux.conf
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # git
 mkdir -p ~/.config/git

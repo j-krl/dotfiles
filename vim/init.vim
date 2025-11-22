@@ -37,7 +37,6 @@ exe "source " .. stdpath("config") .. "/vimrc"
 
 set termguicolors
 set wildmode=noselect:longest:lastused,full
-set undofile
 set nofixeol
 " Required for taboo to persist names in sessions
 set sessionoptions+=globals
@@ -118,7 +117,22 @@ let $BAT_THEME = "ansi"
 " Mappings & Commands "
 """""""""""""""""""""""
 
+""" Save & quit """
+nnoremap <leader>q <cmd>qa<cr>
+nnoremap <leader>Q <cmd>qa!<cr>
+nnoremap <leader>x <cmd>xa<cr>
+nnoremap <leader>X <cmd>x<cr>
+nnoremap <leader>ww <cmd>w<cr>
+nnoremap <leader>wa <cmd>wa<cr>
+nnoremap <leader>W <cmd>Wfmt!<cr>
+nnoremap <leader>wA <cmd>Wfmtall!<cr>
+command! -bang Wfmt let g:format_on_save = <bang>1 | w | let g:format_on_save = <bang>0
+command! -bang Wfmtall let g:format_on_save = <bang>1 | wa | let g:format_on_save = <bang>0
+
 """ Text manipulation """
+noremap <space>y "+y
+noremap <space>p "+p
+noremap <space>P "+P
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
@@ -279,12 +293,6 @@ nnoremap <leader>cn <cmd>Clist<cr>
 nnoremap <leader>cr :<C-U>Cdelete<space><tab>
 nnoremap <leader>cs :<C-U>Csave<space>
 nnoremap <leader>co :<C-U>Cload<space><tab>
-
-""" Formatting """
-nnoremap <leader>W <cmd>Wfmt!<cr>
-nnoremap <leader>wA <cmd>Wfmtall!<cr>
-command! -bang Wfmt let g:format_on_save = <bang>1 | w | let g:format_on_save = <bang>0
-command! -bang Wfmtall let g:format_on_save = <bang>1 | wa | let g:format_on_save = <bang>0
 
 """ Block paste """
 nnoremap <A-p>= <cmd>put +<cr>
