@@ -8,6 +8,7 @@ setopt autopushd
 setopt prompt_subst
 setopt share_history
 setopt hist_ignore_dups
+setopt auto_cd
 
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git
@@ -27,6 +28,8 @@ precmd() {
 }
 
 PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
+HISTSIZE=100000
+SAVEHIST=100000
 
 export PATH="$PATH:$HOME/.local/bin"
 export EDITOR=nvim
