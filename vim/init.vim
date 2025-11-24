@@ -36,6 +36,7 @@ exe "source " .. stdpath("config") .. "/vimrc"
 """""""""""
 
 set termguicolors
+set wildmenu
 set wildmode=noselect:longest:lastused,full
 set nofixeol
 " Required for taboo to persist names in sessions

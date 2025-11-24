@@ -3,11 +3,13 @@ bindkey -e
 bindkey '^U' backward-kill-line
 # bindkey '^[[Z' reverse-menu-complete
 autoload -U +X bashcompinit && bashcompinit
+autoload -Uz pushd
 
-setopt autopushd
+setopt auto_pushd
 setopt prompt_subst
 setopt share_history
 setopt hist_ignore_dups
+setopt pushd_ignore_dups
 setopt auto_cd
 
 autoload -Uz vcs_info
@@ -80,4 +82,4 @@ export TERM="xterm-256color"
 
 source ~/.fzf-tab/fzf-tab.plugin.zsh
 bindkey "^I" expand-or-complete
-bindkey '^\' fzf-tab-complete
+bindkey '^]' fzf-tab-complete
