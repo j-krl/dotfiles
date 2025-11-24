@@ -3,3 +3,4 @@ tags
 TODO.md
 .exrc
 .netrwhist
+**/.terraform/*
