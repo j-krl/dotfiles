@@ -1,7 +1,7 @@
 bindkey -e
 
 bindkey '^U' backward-kill-line
-# bindkey '^[[Z' reverse-menu-complete
+bindkey '^[[Z' reverse-menu-complete
 autoload -U +X bashcompinit && bashcompinit
 autoload -Uz pushd
 
@@ -49,17 +49,21 @@ fi
 
 alias soz="source ~/.zshrc"
 alias sov="source venv/bin/activate || source .venv/bin/activate"
-alias ga="gcloud auth login --update-adc"
-alias co="copilot"
-alias nvco='nvim -c "CopilotChatOpen" -c "wincmd o" -c "startinsert"'
+
 alias mux="cd && ~/dotfiles/tmux/tmux-session.sh"
 alias nvs="nvim -S Session.vim"
 alias vs="vim -S Session.vim"
-alias jq="jq --indent 4"
+alias nvco='nvim -c "CopilotChatOpen" -c "wincmd o" -c "startinsert"'
+alias nvz='nvim ~/.zshrc'
+
 alias k="kubectl"
 alias kn="k config set-context --current --namespace"
 alias kx="k config use-context"
 alias kl="k config get-contexts"
+
+alias ga="gcloud auth login --update-adc"
+alias co="copilot"
+alias jq="jq --indent 4"
 alias bd=". bd -si"
 
 difftool() {
