@@ -30,8 +30,8 @@ precmd() {
 }
 
 PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
-HISTSIZE=100000
-SAVEHIST=100000
+HISTSIZE=9999
+SAVEHIST=9999
 
 export PATH="$PATH:$HOME/.local/bin"
 export EDITOR=nvim

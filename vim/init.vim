@@ -540,7 +540,7 @@ endfunction
 
 lua require('config')
 
-colo allure
+colo default
 
 command! PackInstall call PackInit() | call minpac#update(keys(filter(copy(minpac#pluglist), 
 	\{-> !isdirectory(v:val.dir . '/.git')})))
