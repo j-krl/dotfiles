@@ -59,7 +59,7 @@ alias nvz='nvim ~/.zshrc'
 alias k="kubectl"
 alias kn="k config set-context --current --namespace"
 alias kx="k config use-context"
-alias kl="k config get-contexts"
+alias kl="k config get-contexts | sed 's/(^\*.*)/\x1b\[7m\1\x1b\[0m/'"
 
 alias ga="gcloud auth login --update-adc"
 alias co="copilot"
