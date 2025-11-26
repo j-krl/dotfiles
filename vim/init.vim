@@ -429,8 +429,6 @@ cnoremap <A-"> \"
 cnoremap <A-'> \'
 
 """ Registers """
-nnoremap yr% :let @+ = @%<cr>
-nnoremap yr5 :let @+ = expand("%:h")<cr>
 nnoremap yr~ :let @+ = expand("%:~")<cr>
 nnoremap yr` :let @+ = expand("%:~:h")<cr>
 nnoremap yr. :let @+ = expand("%:.")<cr>
