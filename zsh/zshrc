@@ -63,8 +63,11 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # ZSH OPTIONS
 
+autoload -Uz compinit && compinit
+autoload -U bashcompinit && bashcompinit
+
 bindkey -e
-autoload -U +X bashcompinit && bashcompinit
+
 autoload -Uz pushd
 setopt auto_pushd
 setopt prompt_subst
