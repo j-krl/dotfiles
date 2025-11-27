@@ -1,33 +1,4 @@
-bindkey -e
-
-bindkey '^U' backward-kill-line
-bindkey '^[[Z' reverse-menu-complete
-autoload -U +X bashcompinit && bashcompinit
-autoload -Uz pushd
-
-setopt auto_pushd
-setopt prompt_subst
-setopt share_history
-setopt hist_ignore_dups
-setopt pushd_ignore_dups
-setopt auto_cd
-
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:git:*' formats '%F{yellow}(%f%F{red}%b%f%F{yellow})%u%c%m %f'
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' unstagedstr '*'
-zstyle ':vcs_info:git:*' stagedstr '+'
-zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
-+vi-git-untracked() {
-	if [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) == 'true' ]] &&
-		git status --porcelain | grep -m 1 '^??' &>/dev/null; then
-		hook_com[misc]='?'
-	fi
-}
-precmd() {
-	vcs_info
-}
+# VARS
 
 PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 HISTSIZE=9999
@@ -46,6 +17,14 @@ if command -v bat >/dev/null 2>&1; then
 	export BAT_STYLE=grid
 	export MANPAGER=bat
 fi
+
+source <(fzf --zsh)
+fpath=(~/.zsh/completion $fpath)
+
+export TERM="xterm-256color"
+[[ -n $TMUX ]] && export TERM="screen-256color"
+
+# ALIASES
 
 alias soz="source ~/.zshrc"
 alias sov="source venv/bin/activate || source .venv/bin/activate"
@@ -66,6 +45,8 @@ alias co="copilot"
 alias jq="jq --indent 4"
 alias bd=". bd -si"
 
+# FUNCTIONS
+
 difftool() {
 	nvim -c "let g:taboo_tab_format = \" %N %R \"" -c "Git difftool -y $1" \
 		-c "set showtabline=2" -c "set tabclose=" -c "exe 'cd ' .. getcwd()" \
@@ -76,14 +57,31 @@ ghclone() {
 	git clone "https://github.com/$1.git"
 }
 
+# PATH
+
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-source <(fzf --zsh)
-fpath=(~/.zsh/completion $fpath)
+# ZSH OPTIONS
 
-export TERM="xterm-256color"
-[[ -n $TMUX ]] && export TERM="screen-256color"
+bindkey -e
+autoload -U +X bashcompinit && bashcompinit
+autoload -Uz pushd
+setopt auto_pushd
+setopt prompt_subst
+setopt share_history
+setopt hist_ignore_dups
+setopt pushd_ignore_dups
+setopt auto_cd
+
+# ZLE WIDGETS
+
+jobs_widget() { jobs; }
+zle -N jobs_widget
+
+# ZSH KEYMAPS
 
 source ~/.fzf-tab/fzf-tab.plugin.zsh
 bindkey "^I" expand-or-complete
 bindkey '^]' fzf-tab-complete
+bindkey '^U' backward-kill-line
+bindkey '^[[Z' reverse-menu-complete
