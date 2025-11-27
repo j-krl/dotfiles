@@ -16,12 +16,46 @@ setopt auto_cd
 
 # ZLE WIDGETS
 
-jobs_widget() { jobs; }
+jobs_widget() {
+	echo ""
+	jobs
+	zle reset-prompt
+}
+fg_1_widget() { fg %1; }
+fg_2_widget() { fg %2; }
+fg_3_widget() { fg %3; }
+fg_4_widget() { fg %4; }
+fg_5_widget() { fg %5; }
+fg_6_widget() { fg %6; }
+fg_7_widget() { fg %7; }
+fg_8_widget() { fg %8; }
+fg_9_widget() { fg %9; }
+
 zle -N jobs_widget
+zle -N fg_1_widget
+zle -N fg_2_widget
+zle -N fg_3_widget
+zle -N fg_4_widget
+zle -N fg_5_widget
+zle -N fg_6_widget
+zle -N fg_7_widget
+zle -N fg_8_widget
+zle -N fg_9_widget
 
 # ZSH KEYMAPS
 
-bindkey "^I" expand-or-complete
+bindkey '^J^J' jobs_widget
+bindkey '^Jj' jobs_widget
+bindkey '^J1' fg_1_widget
+bindkey '^J2' fg_2_widget
+bindkey '^J3' fg_3_widget
+bindkey '^J4' fg_4_widget
+bindkey '^J5' fg_5_widget
+bindkey '^J6' fg_6_widget
+bindkey '^J7' fg_7_widget
+bindkey '^J8' fg_8_widget
+bindkey '^J9' fg_9_widget
+bindkey '^I' expand-or-complete
 bindkey '^]' fzf-tab-complete
 bindkey '^U' backward-kill-line
 bindkey '^[[Z' reverse-menu-complete
