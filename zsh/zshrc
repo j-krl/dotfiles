@@ -1,28 +1,30 @@
-# VARS
+# ZSH OPTIONS
 
-PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
-HISTSIZE=9999
-SAVEHIST=9999
+source ~/.fzf-tab/fzf-tab.plugin.zsh
+autoload -Uz compinit && compinit
+autoload -U bashcompinit && bashcompinit
 
-export PATH="$PATH:$HOME/.local/bin"
-export EDITOR=nvim
-export BINDIR="$HOME/.local/bin"
-export CLICOLOR=1
-export LSCOLORS=exfxcxdxbxegedabagacadah
-export GIT_PAGER="diff-highlight | less"
-export FZF_DEFAULT_OPTS="--bind ctrl-b:half-page-up,ctrl-f:half-page-down"
+bindkey -e
 
-if command -v bat >/dev/null 2>&1; then
-	alias less="bat"
-	export BAT_STYLE=grid
-	export MANPAGER=bat
-fi
+autoload -Uz pushd
+setopt auto_pushd
+setopt prompt_subst
+setopt share_history
+setopt hist_ignore_dups
+setopt pushd_ignore_dups
+setopt auto_cd
 
-source <(fzf --zsh)
-fpath=(~/.zsh/completion $fpath)
+# ZLE WIDGETS
 
-export TERM="xterm-256color"
-[[ -n $TMUX ]] && export TERM="screen-256color"
+jobs_widget() { jobs; }
+zle -N jobs_widget
+
+# ZSH KEYMAPS
+
+bindkey "^I" expand-or-complete
+bindkey '^]' fzf-tab-complete
+bindkey '^U' backward-kill-line
+bindkey '^[[Z' reverse-menu-complete
 
 # ALIASES
 
@@ -57,34 +59,29 @@ ghclone() {
 	git clone "https://github.com/$1.git"
 }
 
-# PATH
+# VARS
+
+PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
+HISTSIZE=9999
+SAVEHIST=9999
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH="$PATH:$HOME/.local/bin"
+export EDITOR=nvim
+export BINDIR="$HOME/.local/bin"
+export CLICOLOR=1
+export LSCOLORS=exfxcxdxbxegedabagacadah
+export GIT_PAGER="diff-highlight | less"
+export FZF_DEFAULT_OPTS="--bind ctrl-b:half-page-up,ctrl-f:half-page-down"
 
-# ZSH OPTIONS
+if command -v bat >/dev/null 2>&1; then
+	alias less="bat"
+	export BAT_STYLE=grid
+	export MANPAGER=bat
+fi
 
-autoload -Uz compinit && compinit
-autoload -U bashcompinit && bashcompinit
+source <(fzf --zsh)
+fpath=(~/.zsh/completion $fpath)
 
-bindkey -e
-
-autoload -Uz pushd
-setopt auto_pushd
-setopt prompt_subst
-setopt share_history
-setopt hist_ignore_dups
-setopt pushd_ignore_dups
-setopt auto_cd
-
-# ZLE WIDGETS
-
-jobs_widget() { jobs; }
-zle -N jobs_widget
-
-# ZSH KEYMAPS
-
-source ~/.fzf-tab/fzf-tab.plugin.zsh
-bindkey "^I" expand-or-complete
-bindkey '^]' fzf-tab-complete
-bindkey '^U' backward-kill-line
-bindkey '^[[Z' reverse-menu-complete
+export TERM="xterm-256color"
+[[ -n $TMUX ]] && export TERM="screen-256color"
