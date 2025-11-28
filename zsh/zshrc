@@ -30,6 +30,15 @@ fg_6_widget() { fg %6; }
 fg_7_widget() { fg %7; }
 fg_8_widget() { fg %8; }
 fg_9_widget() { fg %9; }
+kill_job_1_widget() { kill %1 && fg %1; }
+kill_job_2_widget() { kill %2 && fg %2; }
+kill_job_3_widget() { kill %3 && fg %3; }
+kill_job_4_widget() { kill %4 && fg %4; }
+kill_job_5_widget() { kill %5 && fg %5; }
+kill_job_6_widget() { kill %6 && fg %6; }
+kill_job_7_widget() { kill %7 && fg %7; }
+kill_job_8_widget() { kill %8 && fg %8; }
+kill_job_9_widget() { kill %9 && fg %9; }
 
 zle -N jobs_widget
 zle -N fg_1_widget
@@ -41,6 +50,15 @@ zle -N fg_6_widget
 zle -N fg_7_widget
 zle -N fg_8_widget
 zle -N fg_9_widget
+zle -N kill_job_1_widget
+zle -N kill_job_2_widget
+zle -N kill_job_3_widget
+zle -N kill_job_4_widget
+zle -N kill_job_5_widget
+zle -N kill_job_6_widget
+zle -N kill_job_7_widget
+zle -N kill_job_8_widget
+zle -N kill_job_9_widget
 
 # ZSH KEYMAPS
 
@@ -55,6 +73,15 @@ bindkey '^J6' fg_6_widget
 bindkey '^J7' fg_7_widget
 bindkey '^J8' fg_8_widget
 bindkey '^J9' fg_9_widget
+bindkey '^J^K1' kill_job_1_widget
+bindkey '^J^K2' kill_job_2_widget
+bindkey '^J^K3' kill_job_3_widget
+bindkey '^J^K4' kill_job_4_widget
+bindkey '^J^K5' kill_job_5_widget
+bindkey '^J^K6' kill_job_6_widget
+bindkey '^J^K7' kill_job_7_widget
+bindkey '^J^K8' kill_job_8_widget
+bindkey '^J^K9' kill_job_9_widget
 bindkey '^I' expand-or-complete
 bindkey '^]' fzf-tab-complete
 bindkey '^U' backward-kill-line
