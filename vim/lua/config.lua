@@ -237,9 +237,9 @@ require("CopilotChat").setup({
 	window = { width = 0.33 },
 })
 
-require("treesj").setup({
-	use_default_keymaps = false,
-})
+-- require("treesj").setup({
+-- 	use_default_keymaps = false,
+-- })
 
 require("treesitter-context").setup({
 	enable = true,
@@ -258,8 +258,8 @@ vim.diagnostic.config({
 })
 vim.lsp.log.set_level(vim.log.levels.OFF)
 
-vim.keymap.set("n", "<leader>tj", "<cmd>TSJJoin<cr>")
-vim.keymap.set("n", "<leader>ts", "<cmd>TSJSplit<cr>")
+-- vim.keymap.set("n", "<leader>tj", "<cmd>TSJJoin<cr>")
+-- vim.keymap.set("n", "<leader>ts", "<cmd>TSJSplit<cr>")
 vim.keymap.set({ "n", "v" }, "<F9>", "<F10>:<C-U>CopilotChatOpen<cr><C-W>=i", {
 	silent = true,
 	remap = true,

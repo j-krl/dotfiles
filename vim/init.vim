@@ -25,7 +25,7 @@ function! PackInit() abort
 	call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'master'})
 	call minpac#add('nvim-treesitter/nvim-treesitter-context')
 	call minpac#add('HiPhish/rainbow-delimiters.nvim')
-	call minpac#add('Wansmer/treesj')
+	"call minpac#add('Wansmer/treesj')
 endfunction
 packadd cfilter
 
