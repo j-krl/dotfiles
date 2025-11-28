@@ -69,12 +69,13 @@ alias mux="cd && ~/dotfiles/tmux/tmux-session.sh"
 alias nvs="nvim -S Session.vim"
 alias vs="vim -S Session.vim"
 alias nvco='nvim -c "CopilotChatOpen" -c "wincmd o" -c "startinsert"'
-alias nvz='nvim ~/.zshrc'
+alias nvz="nvim -c 'cd' ~/.zshrc"
+alias nvd="nvim -c 'cd %:h' ~/dotfiles"
 
 alias k="kubectl"
 alias kn="k config set-context --current --namespace"
 alias kx="k config use-context"
-alias kl="k config get-contexts | sed 's/(^\*.*)/\x1b\[7m\1\x1b\[0m/'"
+alias kl="k config get-contexts | sed -E 's/(^\*.*)/\x1b\[7m\1\x1b\[0m/'"
 
 alias ga="gcloud auth login --update-adc"
 alias co="copilot"
