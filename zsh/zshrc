@@ -22,7 +22,7 @@ jobs_widget() {
 	zle reset-prompt
 }
 for i in {1..9}; do
-	eval "fg_${i}_widget() { fg %${i}; }"
+	eval "fg_${i}_widget() { zle -I; fg %${i}; zle -I; }"
 	eval "kill_job_${i}_widget() { kill %${i} && fg %${i}; }"
 	eval "zle -N fg_${i}_widget"
 	eval "zle -N kill_job_${i}_widget"

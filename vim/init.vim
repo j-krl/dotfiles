@@ -449,6 +449,8 @@ nnoremap <space>wi :<C-U>imap<space>
 nnoremap <space>wc :<C-U>cmap<space>
 
 """ Misc """
+nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap yor <cmd>set rnu!<cr>
 nnoremap <leader>u <cmd>undolist<cr>
 " Expand default zM behaviour to allow specifying a foldlevel with [count]. Without a 
