@@ -21,6 +21,23 @@ jobs_widget() {
 	jobs
 	zle reset-prompt
 }
+fg_plus_widget() {
+	zle -I
+	fg %+
+	zle -I
+}
+fg_minus_widget() {
+	zle -I
+	fg %-
+	zle -I
+}
+kill_job_plus_widget() { kill %+ && fg %+; }
+kill_job_minus_widget() { kill %+ && fg %+; }
+zle -N jobs_widget
+zle -N fg_plus_widget
+zle -N fg_minus_widget
+zle -N kill_job_plus_widget
+zle -N kill_job_minus_widget
 for i in {1..9}; do
 	eval "fg_${i}_widget() { zle -I; fg %${i}; zle -I; }"
 	eval "kill_job_${i}_widget() { kill %${i} && fg %${i}; }"
@@ -31,11 +48,14 @@ done
 # ZSH KEYMAPS
 
 bindkey '^J^J' jobs_widget
-bindkey '^Jj' jobs_widget
 bindkey '^I' expand-or-complete
 bindkey '^]' fzf-tab-complete
 bindkey '^U' backward-kill-line
 bindkey '^[[Z' reverse-menu-complete
+bindkey '^J^M' fg_plus_widget
+bindkey '^J^N' fg_minus_widget
+bindkey '^J^K^M' kill_job_plus_widget
+bindkey '^J^K^N' kill_job_minus_widget
 for i in {1..9}; do
 	eval "bindkey '^J${i}' fg_${i}_widget"
 	eval "bindkey '^J^K${i}' kill_job_${i}_widget"
