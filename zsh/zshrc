@@ -48,14 +48,19 @@ done
 # ZSH KEYMAPS
 
 bindkey '^J^J' jobs_widget
+bindkey '^Jj' jobs_widget
 bindkey '^I' expand-or-complete
 bindkey '^]' fzf-tab-complete
 bindkey '^U' backward-kill-line
 bindkey '^[[Z' reverse-menu-complete
 bindkey '^J^M' fg_plus_widget
+bindkey '^Jm' fg_plus_widget
 bindkey '^J^N' fg_minus_widget
+bindkey '^Jn' fg_minus_widget
 bindkey '^J^K^M' kill_job_plus_widget
+bindkey '^J^Km' kill_job_plus_widget
 bindkey '^J^K^N' kill_job_minus_widget
+bindkey '^J^Kn' kill_job_minus_widget
 for i in {1..9}; do
 	eval "bindkey '^J${i}' fg_${i}_widget"
 	eval "bindkey '^J^K${i}' kill_job_${i}_widget"
@@ -101,6 +106,7 @@ ghclone() {
 PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 HISTSIZE=9999
 SAVEHIST=9999
+KEYTIMEOUT=200
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$PATH:$HOME/.local/bin"
