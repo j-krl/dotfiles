@@ -3,10 +3,8 @@ function! PackInit() abort
 	call minpac#init()
 	call minpac#add('k-takata/minpac', {'type': 'opt'})
 	call minpac#add('unblevable/quick-scope')
-	call minpac#add('christoomey/vim-tmux-navigator')
 	call minpac#add('jeetsukumaran/vim-indentwise')
 	call minpac#add('NMAC427/guess-indent.nvim')
-	call minpac#add('jpalardy/vim-slime')
 	call minpac#add('gcmt/taboo.vim')
 	call minpac#add('justinmk/vim-dirvish')
 	call minpac#add('kylechui/nvim-surround')
@@ -23,9 +21,7 @@ function! PackInit() abort
 	call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
 	call minpac#add('nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'})
 	call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'master'})
-	call minpac#add('nvim-treesitter/nvim-treesitter-context')
 	call minpac#add('HiPhish/rainbow-delimiters.nvim')
-	"call minpac#add('Wansmer/treesj')
 endfunction
 packadd cfilter
 
@@ -88,11 +84,6 @@ let g:copilot_filetypes = {
 let g:tmux_navigator_no_mappings = 1
 let g:taboo_tab_format = " %N %P "
 let g:taboo_renamed_tab_format = " %N %l "
-let g:slime_target = "tmux"
-let g:slime_default_config = {"socket_name": "default", "target_pane": "{bottom-left}"}
-let g:slime_dont_ask_default = 1
-let g:slime_bracketed_paste = 1
-let g:slime_no_mappings = 1
 let g:qf_session_auto_cache = 1
 let g:qf_session_auto_load = 1
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
@@ -472,8 +463,10 @@ autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
 	\'call writefile(["set background=" .. &background, "colorscheme " ..
 	\g:colors_name], v:this_session, "a")' | endif
-autocmd vimrc VimLeave * if !empty(v:this_session) | exe "CopilotChatSave " .. slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
-autocmd vimrc VimEnter * if !empty(v:this_session) | exe "CopilotChatLoad " .. slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
+autocmd vimrc VimLeave * if !empty(v:this_session) | exe "CopilotChatSave " ..
+	\slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
+autocmd vimrc VimEnter * if !empty(v:this_session) | exe "CopilotChatLoad " ..
+	\slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
 autocmd vimrc ColorSchemePre * hi clear
 autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
 autocmd vimrc OptionSet formatprg call s:SetFormatMaps()
