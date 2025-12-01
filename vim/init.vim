@@ -401,10 +401,11 @@ xnoremap <silent> aQ :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
 
 """ Colorschemes """
 nnoremap <space>1 :<C-U>set background=dark\|colo soup-contrast<cr>
-nnoremap <space>2 :<C-U>set background=dark\|colo lunaperche<cr>
-nnoremap <space>3 :<C-U>set background=dark\|colo default<cr>
-nnoremap <space>4 :<C-U>set background=light\|colo default<cr>
-nnoremap <space>5 :<C-U>set background=light\|colo lunaperche<cr>
+nnoremap <space>2 :<C-U>set background=dark\|colo allure<cr>
+nnoremap <space>3 :<C-U>set background=dark\|colo lunaperche<cr>
+nnoremap <space>4 :<C-U>set background=dark\|colo default<cr>
+nnoremap <space>5 :<C-U>set background=light\|colo default<cr>
+nnoremap <space>6 :<C-U>set background=light\|colo lunaperche<cr>
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 
 """ Command mode """
