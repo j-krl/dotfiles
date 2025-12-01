@@ -1,5 +1,5 @@
 setlocal spell
-set iskeyword-=-
+"set iskeyword-=-
 " md sources the html which sets this, so unset
 setlocal formatprg=
 noremap ge <Plug>Markdown_EditUrlUnderCursor

@@ -47,6 +47,7 @@ done
 
 # ZSH KEYMAPS
 
+bindkey -r '^J' # redundant -- same as ^M
 bindkey '^J^J' jobs_widget
 bindkey '^Jj' jobs_widget
 bindkey '^I' expand-or-complete
