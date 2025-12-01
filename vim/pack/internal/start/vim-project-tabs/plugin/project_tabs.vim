@@ -31,15 +31,23 @@ function s:GoToProj(query) abort
 	endif
 endfunction
 
+" The common pattern is to open nvim from some parent folder containing many
+" projects, and then open those projects in their own tabs. This function
+" closes all tabs which are projects with the same parent directory as the
+" global cwd, except the currently focused tab.
 function s:OnlyProj() abort
-	if tabpagenr() == 1 || tabpagenr('$') <= 2
-		return
-	endif
-	$tabmove 
-	for i in range(2, tabpagenr('$') - 1)
-		2tabclose
-	endfor
-	$tabnext
+	let i = 1
+	let currproj = getcwd(-1)
+	while i <= tabpagenr('$')
+		let tabcwd = getcwd(-1, i)
+		let globcwd = getcwd(-1, -1)
+		if tabcwd != currproj && tabcwd != globcwd && 
+			\fnamemodify(tabcwd, ":h") == globcwd
+			exe "tabclose " .. i
+		else
+			let i += 1
+		endif
+	endwhile
 endfunction
 
 function s:CompleteOpenProjFuzzy(ArgLead, CmdLine, CursorPos) abort
