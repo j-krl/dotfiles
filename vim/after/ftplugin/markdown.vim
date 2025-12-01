@@ -2,7 +2,6 @@ setlocal spell
 set iskeyword-=-
 " md sources the html which sets this, so unset
 setlocal formatprg=
-noremap ge <Plug>Markdown_EditUrlUnderCursor
 inoremap <expr> <tab> getline(".") =~# "^[ \t]*[\-\*]" ? "<C-T>" : "<tab>"
 if executable("glow")
 	nnoremap <localleader>p :<C-U>tabnew \| exe 'r !glow # -w 120' \|
@@ -10,3 +9,7 @@ if executable("glow")
 		\exe "TabooRename md-preview" \| norm gg<cr>
 endif
 iab -] - [ ]
+if executable("prettier")
+	command! Tabulate :!prettier --parser markdown
+endif
+
