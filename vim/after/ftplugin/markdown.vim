@@ -10,6 +10,6 @@ if executable("glow")
 endif
 iab -] - [ ]
 if executable("prettier")
-	command! Tabulate :!prettier --parser markdown
+	command! -range Tabulate :<line1>,<line2>!prettier --parser markdown
 endif
 

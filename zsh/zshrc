@@ -24,22 +24,20 @@ jobs_widget() {
 fg_plus_widget() {
 	zle -I
 	fg %+
-	zle -I
 }
 fg_minus_widget() {
 	zle -I
 	fg %-
-	zle -I
 }
 kill_job_plus_widget() { kill %+ && fg %+; }
-kill_job_minus_widget() { kill %+ && fg %+; }
+kill_job_minus_widget() { kill %- && fg %-; }
 zle -N jobs_widget
 zle -N fg_plus_widget
 zle -N fg_minus_widget
 zle -N kill_job_plus_widget
 zle -N kill_job_minus_widget
 for i in {1..9}; do
-	eval "fg_${i}_widget() { zle -I; fg %${i}; zle -I; }"
+	eval "fg_${i}_widget() { zle -I; fg %${i}; }"
 	eval "kill_job_${i}_widget() { kill %${i} && fg %${i}; }"
 	eval "zle -N fg_${i}_widget"
 	eval "zle -N kill_job_${i}_widget"
