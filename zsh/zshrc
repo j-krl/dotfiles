@@ -77,6 +77,7 @@ alias ga="gcloud auth login --update-adc"
 alias co="copilot"
 alias jq="jq --indent 4"
 alias bd=". bd -si"
+alias null="/dev/null"
 
 # FUNCTIONS
 
