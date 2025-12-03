@@ -4,6 +4,7 @@ function! PackInit() abort
 	call minpac#add('k-takata/minpac', {'type': 'opt'})
 	call minpac#add('unblevable/quick-scope')
 	call minpac#add('jeetsukumaran/vim-indentwise')
+	call minpac#add('christoomey/vim-tmux-navigator')
 	call minpac#add('NMAC427/guess-indent.nvim')
 	call minpac#add('gcmt/taboo.vim')
 	call minpac#add('justinmk/vim-dirvish')
