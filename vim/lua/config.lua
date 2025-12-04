@@ -222,9 +222,18 @@ require("nvim-treesitter.configs").setup({
 	},
 })
 
+require("fzf-lua").setup({ winopts = {
+	split = "belowright new",
+	preview = { layout = "horizontal" },
+} })
+
 require("nvim-surround").setup()
 
 require("guess-indent").setup()
+
+require("treesj").setup({
+	use_default_keymaps = false,
+})
 
 require("CopilotChat").setup({
 	mappings = {
@@ -248,6 +257,8 @@ vim.diagnostic.config({
 })
 vim.lsp.log.set_level(vim.log.levels.OFF)
 
+vim.keymap.set("n", "<leader>tj", "<cmd>TSJJoin<cr>")
+vim.keymap.set("n", "<leader>ts", "<cmd>TSJSplit<cr>")
 vim.keymap.set({ "n", "v" }, "<F9>", "<F10>:<C-U>CopilotChatOpen<cr><C-W>=i", {
 	silent = true,
 	remap = true,

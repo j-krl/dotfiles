@@ -15,13 +15,13 @@ function! PackInit() abort
 	call minpac#add('github/copilot.vim')
 	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	call minpac#add('ludovicchabant/vim-gutentags')
-	call minpac#add('junegunn/fzf')
-	call minpac#add('junegunn/fzf.vim')
+	call minpac#add('ibhagwan/fzf-lua')
 	call minpac#add('neovim/nvim-lspconfig')
 	call minpac#add('nvim-lua/plenary.nvim')
 	call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
 	call minpac#add('nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'})
 	call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'master'})
+	call minpac#add('Wansmer/treesj')
 	call minpac#add('HiPhish/rainbow-delimiters.nvim')
 endfunction
 packadd cfilter
@@ -250,15 +250,14 @@ nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
 	\exe "Explore " .. getcwd()<cr>
 
 """ FZF """
-nnoremap <leader>zz <cmd>RG<cr>
-nnoremap <leader>zf <cmd>Files<cr>
-nnoremap <leader>zl <cmd>BLines<cr>
-nnoremap <leader>zt <cmd>Tags<cr>
-nnoremap <leader>zo <cmd>History<cr>
-nnoremap <leader>zc <cmd>History:<cr>
-nnoremap <leader>z/ <cmd>History/<cr>
-nnoremap <leader>zg <cmd>Commits<cr>
-nnoremap <leader>zh <cmd>Helptags<cr>
+nnoremap <leader>zz mZ<cmd>FzfLua live_grep_native<cr>
+nnoremap <leader>zZ mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd = vim.fn.expand("%:h:.") })<cr>
+nnoremap <leader>zc mZ<cmd>FzfLua grep_cword<cr>
+nnoremap <leader>zC mZ<cmd>lua require("fzf-lua").grep_cword({ cwd = vim.fn.expand("%:h:.") })<cr>
+nnoremap <leader>zf mZ<cmd>FzfLua grep<cr><cr>
+nnoremap <leader>zF mZ<cmd>lua require("fzf-lua").grep({ cwd = vim.fn.expand("%:h:.") })<cr><cr>
+nnoremap <leader>zs mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
+nnoremap <leader>zr mZ<cmd>FzfLua lsp_references<cr>
 
 """ Quickfix/Location list """
 nnoremap <leader>ll <cmd>lwindow<cr>
@@ -477,7 +476,7 @@ autocmd vimrc BufWinEnter * call s:SetSpaceIndentGuides(&l:shiftwidth)
 autocmd vimrc FileType * call s:SetFormatMaps()
 autocmd vimrc FileType * set include=
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
-autocmd vimrc BufRead * set iskeyword+=-
+"autocmd vimrc BufRead * set iskeyword+=-
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 autocmd vimrc TabNewEntered * argl|%argd
 

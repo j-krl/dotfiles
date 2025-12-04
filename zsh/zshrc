@@ -10,8 +10,6 @@ autoload -Uz pushd
 setopt auto_pushd
 setopt prompt_subst
 setopt share_history
-setopt hist_ignore_dups
-setopt pushd_ignore_dups
 setopt auto_cd
 
 # ZLE WIDGETS
@@ -74,7 +72,6 @@ alias kx="k config use-context"
 alias kl="k config get-contexts | sed -E 's/(^\*.*)/\x1b\[7m\1\x1b\[0m/'"
 
 alias ga="gcloud auth login --update-adc"
-alias co="copilot"
 alias batj="bat -l json"
 alias baty="bat -l yaml"
 alias jq="jq --indent 4"
@@ -99,6 +96,9 @@ PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 HISTSIZE=9999
 SAVEHIST=9999
 KEYTIMEOUT=200
+# better less highlighting within tmux
+export LESS_TERMCAP_so=$'\E[30;43m'
+export LESS_TERMCAP_se=$'\E[39;49m'
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$PATH:$HOME/.local/bin"
