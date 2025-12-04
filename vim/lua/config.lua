@@ -234,7 +234,7 @@ require("CopilotChat").setup({
 		show_diff = { full_diff = true },
 		reset = { normal = "grR", insert = false },
 	},
-	window = { width = 0.33 },
+	window = { layout = "horizontal" },
 })
 
 vim.diagnostic.config({
