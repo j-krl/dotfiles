@@ -178,7 +178,7 @@ nnoremap <leader>2p :<C-U>Plgrep ''<left>
 nnoremap <leader>2P :<C-U>Plgrep <C-R><C-W><cr>
 nnoremap <leader>2v ml:<C-U>lvim <C-R><C-W> %\|lwindow<cr><cr>
 nnoremap <leader>pp :<C-U>Prjgoto<space><tab>
-nnoremap <leader>pO <cmd>Prjonly<cr>
+nnoremap <leader>po <cmd>Prjonly<cr>
 nnoremap <leader>o <cmd>browse oldfiles<cr>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>

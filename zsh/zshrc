@@ -75,6 +75,8 @@ alias kl="k config get-contexts | sed -E 's/(^\*.*)/\x1b\[7m\1\x1b\[0m/'"
 
 alias ga="gcloud auth login --update-adc"
 alias co="copilot"
+alias batj="bat -l json"
+alias baty="bat -l yaml"
 alias jq="jq --indent 4"
 alias bd=". bd -si"
 alias null="/dev/null"
