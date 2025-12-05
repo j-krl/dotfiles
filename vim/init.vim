@@ -258,6 +258,7 @@ nnoremap <leader>zf mZ<cmd>FzfLua grep<cr><cr>
 nnoremap <leader>zF mZ<cmd>lua require("fzf-lua").grep({ cwd = vim.fn.expand("%:h:.") })<cr><cr>
 nnoremap <leader>zs mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
 nnoremap <leader>zr mZ<cmd>FzfLua lsp_references<cr>
+nnoremap <leader>z- mZ<cmd>FzfLua resume<cr>
 
 """ Quickfix/Location list """
 nnoremap <leader>ll <cmd>lwindow<cr>
