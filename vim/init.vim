@@ -185,8 +185,6 @@ nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 command! Bonly %bd|e#|bd#|norm `"
 command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
-command! -nargs=+ -complete=file_in_path Fzfgrep call FzfGrep(<f-args>)
-command! -nargs=+ -complete=file_in_path Zgrep call FuzzyFilterGrep(<f-args>)
 command! -nargs=* Pgrep grep <args> %:p:h
 command! -nargs=* Plgrep lgrep <args> %:p:h
 
