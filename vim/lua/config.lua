@@ -1,3 +1,17 @@
+vim.diagnostic.config({
+	severity_sort = true,
+	virtual_text = { current_line = true },
+	signs = {
+		severity = { min = vim.diagnostic.severity.ERROR },
+	},
+})
+vim.lsp.log.set_level(vim.log.levels.OFF)
+
+vim.keymap.set("n", "<C-K>", vim.diagnostic.open_float)
+vim.keymap.set("n", "gL", function()
+	vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR })
+end)
+
 local lsps = {
 	"basedpyright",
 	"bashls",
@@ -229,11 +243,7 @@ require("fzf-lua").setup({ winopts = {
 
 require("nvim-surround").setup()
 
-require("guess-indent").setup()
-
-require("treesj").setup({
-	use_default_keymaps = false,
-})
+require("treesj").setup({ use_default_keymaps = false })
 
 require("CopilotChat").setup({
 	mappings = {
@@ -245,37 +255,3 @@ require("CopilotChat").setup({
 	},
 	window = { layout = "horizontal" },
 })
-
-vim.diagnostic.config({
-	severity_sort = true,
-	virtual_text = {
-		current_line = true,
-	},
-	signs = {
-		severity = { min = vim.diagnostic.severity.ERROR },
-	},
-})
-vim.lsp.log.set_level(vim.log.levels.OFF)
-
-vim.keymap.set("n", "<leader>tj", "<cmd>TSJJoin<cr>")
-vim.keymap.set("n", "<leader>ts", "<cmd>TSJSplit<cr>")
-vim.keymap.set({ "n", "v" }, "<F9>", "<F10>:<C-U>CopilotChatOpen<cr><C-W>=i", {
-	silent = true,
-	remap = true,
-})
-vim.keymap.set(
-	{ "n", "v" },
-	"<F10>",
-	':<C-U>if expand("%") =~ "copilot-chat" | wincmd p | endif | CopilotChatClose<cr>',
-	{ silent = true }
-)
-vim.keymap.set("n", "]D", function()
-	vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
-end)
-vim.keymap.set("n", "[D", function()
-	vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
-end)
-vim.keymap.set("n", "<C-K>", vim.diagnostic.open_float)
-vim.keymap.set("n", "gL", function()
-	vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR })
-end)
