@@ -36,6 +36,7 @@ lua require('config')
 colo default
 let g:maplocalleader = "_"
 set termguicolors
+set wildmenu
 set wildmode=noselect:longest:lastused,full
 set nofixeol
 " Required for taboo to persist names in sessions
