@@ -139,6 +139,7 @@ nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
 nnoremap [w gT
 nnoremap [W <cmd>tabfirst<cr>
 nnoremap ]W <cmd>tablast<cr>
+nnoremap <F2> <C-L><cmd>args<cr>
 noremap <F9> <cmd>CopilotChatToggle<cr>
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
@@ -179,6 +180,7 @@ nnoremap <leader>ac <cmd>%argd<cr><C-L><cmd>echo "arglist cleared"<cr>
 nnoremap <leader>aC <cmd>argl\|%argd\|echo "local arglist created"<cr>
 " TODO: switch to command
 nnoremap <leader>af :<C-U>arga `fd --hidden --type f -E '.git' --full-path ''`<left><left>
+nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>cc <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <expr> <leader>ch "<cmd>" .. (v:count > 0 ? v:count : "")
@@ -232,6 +234,9 @@ inoremap [<cr> [<cr>]<C-O>O
 inoremap [<tab> []<esc>i
 inoremap (<cr> (<cr>)<C-O>O
 inoremap (<tab> ()<esc>i
+inoremap "<tab> ""<esc>i
+inoremap '<tab> ''<esc>i
+inoremap `<tab> ``<esc>i
 imap <expr> <C-\> copilot#Accept("\<cr>")
 imap <C-J> <Plug>(copilot-accept-word)
 imap <C-L><C-]> <Plug>(copilot-dismiss)
