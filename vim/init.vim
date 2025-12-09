@@ -129,12 +129,20 @@ nnoremap yrc :let @+ = system("git branch --show-current")<cr>
 " opposite of :h
 nnoremap yrt :let @+ = substitute(@+, "[^\/]*\/", "", "")<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
+nnoremap [@ <cmd>1lhistory\|cw<cr>
+nnoremap <expr> ]@ "<cmd>" .. getloclist(0, {'nr': '$'}).nr .. "lhistory\|lwindow<cr>"
+nnoremap <expr> [2 "<cmd>lolder " .. v:count1 .. "\|lwindow<cr>"
+nnoremap <expr> ]2 "<cmd>lnewer " .. v:count1 .. "\|lwindow<cr>"
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
 nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
 nnoremap ]A <cmd>last<bar>args<cr><esc>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
+nnoremap <expr> [h "<cmd>colder " .. v:count1 .. "\|cwindow<cr>"
+nnoremap <expr> ]h "<cmd>cnewer " .. v:count1 .. "\|cwindow<cr>"
+nnoremap [H <cmd>1chistory\|cw<cr>
+nnoremap <expr> ]H "<cmd>" .. getqflist({'nr': '$'}).nr .. "chistory\|cwindow<cr>"
 nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
 nnoremap [w gT
 nnoremap [W <cmd>tabfirst<cr>
@@ -149,7 +157,7 @@ noremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. 
 	\(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
 nnoremap <expr> <C-W>C "<cmd>" .. repeat("tabcl\|", v:count1) .. "<cr>"
-nnoremap <C-W>D <cmd>tcd %<cr>
+nnoremap <C-W>D <cmd>tcd %:h<cr>
 " Move tab to the end without a [count] otherwise move to [count]th index
 nnoremap <C-W>M :<C-U>exe (v:count > 0 ? 
 	\(tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>

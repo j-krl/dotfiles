@@ -4,15 +4,6 @@ augroup qfutils
 	autocmd!
 augroup END
 
-nnoremap <expr> [h "<cmd>colder " .. v:count1 .. "\|cwindow<cr>"
-nnoremap <expr> ]h "<cmd>cnewer " .. v:count1 .. "\|cwindow<cr>"
-nnoremap [H <cmd>1chistory\|cw<cr>
-nnoremap <expr> ]H "<cmd>" .. getqflist({'nr': '$'}).nr .. "chistory\|cwindow<cr>"
-nnoremap <expr> [2 "<cmd>lolder " .. v:count1 .. "\|lwindow<cr>"
-nnoremap <expr> ]2 "<cmd>lnewer " .. v:count1 .. "\|lwindow<cr>"
-nnoremap [@ <cmd>1lhistory\|cw<cr>
-nnoremap <expr> ]@ "<cmd>" .. getloclist(0, {'nr': '$'}).nr .. "lhistory\|lwindow<cr>"
-
 command! -nargs=? Cfsave call SaveQfFile(<q-args>)
 command! -nargs=? Cfload call LoadQfFile(<q-args>)
 command! -nargs=? Cfdelete call DeleteQfFile(<q-args>)
