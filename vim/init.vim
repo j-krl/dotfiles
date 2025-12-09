@@ -143,10 +143,6 @@ nnoremap <expr> [h "<cmd>colder " .. v:count1 .. "\|cwindow<cr>"
 nnoremap <expr> ]h "<cmd>cnewer " .. v:count1 .. "\|cwindow<cr>"
 nnoremap [H <cmd>1chistory\|cw<cr>
 nnoremap <expr> ]H "<cmd>" .. getqflist({'nr': '$'}).nr .. "chistory\|cwindow<cr>"
-nnoremap <expr> ]w "<cmd>norm " .. repeat("gt", v:count1) .. "<cr>"
-nnoremap [w gT
-nnoremap [W <cmd>tabfirst<cr>
-nnoremap ]W <cmd>tablast<cr>
 nnoremap <F2> <C-L><cmd>args<cr>
 noremap <F9> <cmd>CopilotChatToggle<cr>
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
@@ -158,9 +154,6 @@ nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' ..
 	\(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
 nnoremap <expr> <C-W>C "<cmd>" .. repeat("tabcl\|", v:count1) .. "<cr>"
 nnoremap <C-W>D <cmd>tcd %:h<cr>
-" Move tab to the end without a [count] otherwise move to [count]th index
-nnoremap <C-W>M :<C-U>exe (v:count > 0 ? 
-	\(tabpagenr() < v:count ? v:count : (v:count - 1)) : "$") .. "tabmove"<cr>
 nnoremap <C-W>N <cmd>tabnew\|Explore<cr>
 nnoremap <C-W>X <C-W>x<C-W>c
 nnoremap <C-W>Z <C-W>_<C-W>\|
@@ -174,12 +167,6 @@ noremap <space>P "+P
 noremap <space>y "+y
 nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
-nnoremap <space>1 :<C-U>set background=dark\|colo soup-contrast<cr>
-nnoremap <space>2 :<C-U>set background=dark\|colo allure<cr>
-nnoremap <space>3 :<C-U>set background=dark\|colo lunaperche<cr>
-nnoremap <space>4 :<C-U>set background=dark\|colo default<cr>
-nnoremap <space>5 :<C-U>set background=light\|colo default<cr>
-nnoremap <space>6 :<C-U>set background=light\|colo lunaperche<cr>
 nnoremap <expr> <space><space> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
 nnoremap <leader>aa <cmd>$arge %<bar>argded<bar>args<cr>
 nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
