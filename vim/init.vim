@@ -133,10 +133,6 @@ nnoremap [@ <cmd>1lhistory\|cw<cr>
 nnoremap <expr> ]@ "<cmd>" .. getloclist(0, {'nr': '$'}).nr .. "lhistory\|lwindow<cr>"
 nnoremap <expr> [2 "<cmd>lolder " .. v:count1 .. "\|lwindow<cr>"
 nnoremap <expr> ]2 "<cmd>lnewer " .. v:count1 .. "\|lwindow<cr>"
-nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
-nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
-nnoremap [A <cmd>first<bar>args<cr><esc>
-nnoremap ]A <cmd>last<bar>args<cr><esc>
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 nnoremap <expr> [h "<cmd>colder " .. v:count1 .. "\|cwindow<cr>"
@@ -167,14 +163,11 @@ noremap <space>P "+P
 noremap <space>y "+y
 nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
-nnoremap <expr> <space><space> ":<C-U>" .. (v:count > 0 ? v:count : "") .. "argu\|args<cr><esc>"
-nnoremap <leader>aa <cmd>$arge %<bar>argded<bar>args<cr>
-nnoremap <leader>ap <cmd>0arge %<bar>argded<bar>args<cr>
-nnoremap <leader>ad <cmd>argd %<bar>args<cr>
-nnoremap <leader>ac <cmd>%argd<cr><C-L><cmd>echo "arglist cleared"<cr>
-nnoremap <leader>aC <cmd>argl\|%argd\|echo "local arglist created"<cr>
-" TODO: switch to command
-nnoremap <leader>af :<C-U>arga `fd --hidden --type f -E '.git' --full-path ''`<left><left>
+nnoremap <leader>aa <cmd>Argappend<cr>
+nnoremap <leader>ap <cmd>Argprepend<cr>
+nnoremap <leader>ad <cmd>Argrm<cr>
+nnoremap <leader>ac <cmd>Argclear<cr>
+nnoremap <leader>aC <cmd>Arglclear<cr>
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>cc <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
@@ -208,6 +201,7 @@ nnoremap <leader>zF mZ<cmd>lua require("fzf-lua").grep({ cwd = vim.fn.expand("%:
 nnoremap <leader>zs mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
 nnoremap <leader>zr mZ<cmd>FzfLua lsp_references<cr>
 nnoremap <leader>z- mZ<cmd>FzfLua resume<cr>
+nnoremap <expr> <leader><leader> "<cmd>" .. v:count .. "Argu<cr>"
 
 xnoremap <silent> il g_o^
 xnoremap <silent> al $o0
@@ -277,18 +271,6 @@ function! NavDirFiles(count) abort
 	exe "e " .. files[newidx]
 endfunction
 
-" Allows wrapping for nvim ]a and [a arglist mappings
-function! NavArglist(count)
-	let arglen = argc()
-	if arglen == 0
-		return
-	endif
-	let next = fmod(argidx() + a:count, arglen)
-	if next < 0
-		let next += arglen
-	endif
-	exe float2nr(next + 1) .. 'argu'
-endfunction
 
 """"""""""""
 " Commands "
