@@ -180,7 +180,6 @@ nnoremap <leader>gg :<C-U>grep ''<left>
 nnoremap <leader>gG :<C-U>Pgrep ''<left>
 nnoremap <leader>gl :<C-U>lgrep ''<left>
 nnoremap <leader>gL :<C-U>Plgrep ''<left>
-nnoremap <leader>p :<C-U>Prjopen<space><tab>
 nnoremap <leader>ll <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <expr> <leader>lh "<cmd>" .. (v:count > 0 ? v:count : "")
@@ -281,6 +280,7 @@ command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=? Gcompbranch let g:compare_branch = <q-args>
 command! Grediff windo diffthis\|windo norm zM
+command! Cdreset exe "cd " .. getcwd(-1, -1)
 command! -count=1 Cgnext cclose<bar>wincmd l<bar>only<bar><count>cnext<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
 command! -count=1 Cgprevious cclose<bar>wincmd l<bar>only<bar><count>cprev<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
 command! -count=1 Cglast cclose<bar>wincmd l<bar>only<bar>clast<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
