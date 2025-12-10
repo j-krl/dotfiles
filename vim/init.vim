@@ -163,8 +163,8 @@ nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>dr <cmd>Rooter<cr>
-nnoremap <leader>dh <cmd>tcd %:h<cr>
-nnoremap <leader>dp <cmd>tcd ..<cr>
+nnoremap <leader>d% <cmd>tcd %:h<bar>pwd<cr>
+nnoremap <leader>dp <cmd>tcd ..<bar>pwd<cr>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>g :<C-U>grep ''<left>
