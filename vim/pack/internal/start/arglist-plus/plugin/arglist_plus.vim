@@ -6,10 +6,10 @@ command! Arglclear argl|%argd|echo "local arglist created"
 command! -count -addr=arguments Argu exe (<count> > 0 ? <count> : "") .. "argu"|args
 command! -nargs=+ Argfind exe "arga `fd --hidden --type f -E '.git' --full-path '" .. <q-args> .. "'`"
 
-nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr>
-nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr>
-nnoremap [A <cmd>first<bar>args<cr>
-nnoremap ]A <cmd>last<bar>args<cr>
+nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
+nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
+nnoremap [A <cmd>first<bar>args<cr><esc>
+nnoremap ]A <cmd>last<bar>args<cr><esc>
 
 " Allows wrapping for ]a and [a arglist mappings
 function! NavArglist(count)
