@@ -8,8 +8,8 @@ command! -nargs=+ Argfind exe "arga `fd --hidden --type f -E '.git' --full-path 
 
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr>
 nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr>
-nnoremap [A <cmd>first<bar>args<cr><esc>
-nnoremap ]A <cmd>last<bar>args<cr><esc>
+nnoremap [A <cmd>first<bar>args<cr>
+nnoremap ]A <cmd>last<bar>args<cr>
 
 " Allows wrapping for ]a and [a arglist mappings
 function! NavArglist(count)

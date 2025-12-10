@@ -6,6 +6,7 @@ function! PackInit() abort
 	call minpac#add('jeetsukumaran/vim-indentwise')
 	call minpac#add('christoomey/vim-tmux-navigator')
 	call minpac#add('gcmt/taboo.vim')
+	call minpac#add('airblade/vim-rooter')
 	call minpac#add('justinmk/vim-dirvish')
 	call minpac#add('kylechui/nvim-surround')
 	call minpac#add('tpope/vim-obsession')
@@ -86,11 +87,10 @@ let g:copilot_filetypes = {
 let g:tmux_navigator_no_mappings = 1
 let g:taboo_tab_format = " %N %P "
 let g:taboo_renamed_tab_format = " %N %l "
-let g:qf_session_auto_cache = 1
-let g:qf_session_auto_load = 1
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
 let g:compare_branch = "master"
+let g:rooter_cd_cmd = 'tcd'
 let g:gutentags_add_default_project_roots = 0
 let g:gutentags_project_root = ['.git', 'main.tf'] " TODO: need better tf root
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
@@ -169,22 +169,16 @@ nnoremap <leader>ad <cmd>Argrm<cr>
 nnoremap <leader>ac <cmd>Argclear<cr>
 nnoremap <leader>aC <cmd>Arglclear<cr>
 nnoremap <leader>b :<C-U>b<space><tab>
-nnoremap <leader>cc <cmd>cwindow<cr>
+nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
-nnoremap <expr> <leader>ch "<cmd>" .. (v:count > 0 ? v:count : "")
-	\.. "chistory" .. (v:count > 0 ? "\|cw" : "") .. "<cr>"
-nnoremap <leader>cL <cmd>echo len(getqflist())<cr>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
-nnoremap <leader>gg :<C-U>grep ''<left>
-nnoremap <leader>gG :<C-U>Pgrep ''<left>
-nnoremap <leader>gl :<C-U>lgrep ''<left>
-nnoremap <leader>gL :<C-U>Plgrep ''<left>
-nnoremap <leader>ll <cmd>lwindow<cr>
+nnoremap <leader>g :<C-U>grep ''<left>
+nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
+nnoremap <leader>l <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
-nnoremap <expr> <leader>lh "<cmd>" .. (v:count > 0 ? v:count : "")
-	\.. "lhistory" .. (v:count > 0 ? "\|cw" : "") .. "<cr>"
-nnoremap <leader>lL <cmd>echo len(getloclist(winnr()))<cr>
+nnoremap <leader>p :<C-U>Pgrep ''<left>
+nnoremap <leader>P :<C-U>Pgrep <C-R><C-W><cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>tj <cmd>TSJJoin<cr>
 nnoremap <leader>ts <cmd>TSJSplit<cr>
@@ -278,20 +272,18 @@ endfunction
 command! Bonly %bd|e#|bd#|norm `"
 command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
+command! Clen echo len(getqflist())
+command! Cwdreset exe "cd " .. getcwd(-1, -1)
+command! -count=1 Cgdiffnext cclose<bar>wincmd l<bar>only<bar><count>cnext<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 Cgdiffprevious cclose<bar>wincmd l<bar>only<bar><count>cprev<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 Cgdifflast cclose<bar>wincmd l<bar>only<bar>clast<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 Cgdifffirst cclose<bar>wincmd l<bar>only<bar>cfirst<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
 command! -nargs=? Gcompbranch let g:compare_branch = <q-args>
 command! Grediff windo diffthis\|windo norm zM
-command! Cdreset exe "cd " .. getcwd(-1, -1)
-command! -count=1 Cgnext cclose<bar>wincmd l<bar>only<bar><count>cnext<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Cgprevious cclose<bar>wincmd l<bar>only<bar><count>cprev<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Cglast cclose<bar>wincmd l<bar>only<bar>clast<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Cgfirst cclose<bar>wincmd l<bar>only<bar>cfirst<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Lgnext cclose<bar>wincmd l<bar>only<bar><count>lnext<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Lgprevious cclose<bar>wincmd l<bar>only<bar><count>lprev<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Lglast cclose<bar>wincmd l<bar>only<bar>llast<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Lgfirst cclose<bar>wincmd l<bar>only<bar>lfirst<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
 command! -nargs=? -complete=dir Explore Dirvish <args>
 command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>
 command! -nargs=? -complete=dir Vexplore belowright vsplit | silent Dirvish <args>
+command! Llen echo len(getloclist(winnr()))
 command! PackInstall call PackInit() | call minpac#update(keys(filter(copy(minpac#pluglist), 
 	\{-> !isdirectory(v:val.dir . '/.git')})))
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
