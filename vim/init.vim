@@ -129,16 +129,8 @@ nnoremap yrc :let @+ = system("git branch --show-current")<cr>
 " opposite of :h
 nnoremap yrt :let @+ = substitute(@+, "[^\/]*\/", "", "")<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
-nnoremap [@ <cmd>1lhistory\|cw<cr>
-nnoremap <expr> ]@ "<cmd>" .. getloclist(0, {'nr': '$'}).nr .. "lhistory\|lwindow<cr>"
-nnoremap <expr> [2 "<cmd>lolder " .. v:count1 .. "\|lwindow<cr>"
-nnoremap <expr> ]2 "<cmd>lnewer " .. v:count1 .. "\|lwindow<cr>"
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
-nnoremap <expr> [h "<cmd>colder " .. v:count1 .. "\|cwindow<cr>"
-nnoremap <expr> ]h "<cmd>cnewer " .. v:count1 .. "\|cwindow<cr>"
-nnoremap [H <cmd>1chistory\|cw<cr>
-nnoremap <expr> ]H "<cmd>" .. getqflist({'nr': '$'}).nr .. "chistory\|cwindow<cr>"
 nnoremap <F2> <C-L><cmd>args<cr>
 noremap <F9> <cmd>CopilotChatToggle<cr>
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
@@ -149,9 +141,7 @@ noremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. 
 	\(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
 nnoremap <expr> <C-W>C "<cmd>" .. repeat("tabcl\|", v:count1) .. "<cr>"
-nnoremap <C-W>D <cmd>tcd %:h<cr>
 nnoremap <C-W>N <cmd>tabnew\|Explore<cr>
-nnoremap <C-W>X <C-W>x<C-W>c
 nnoremap <C-W>Z <C-W>_<C-W>\|
 nnoremap <expr> <A-j> ":<C-U>m +" .. v:count1 .. " <cr>"
 nnoremap <expr> <A-k> ":<C-U>m -" .. (v:count1 + 1) .. " <cr>"
@@ -272,12 +262,12 @@ endfunction
 command! Bonly %bd|e#|bd#|norm `"
 command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
+command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
-command! Cwdreset exe "cd " .. getcwd(-1, -1)
-command! -count=1 Cgdiffnext cclose<bar>wincmd l<bar>only<bar><count>cnext<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Cgdiffprevious cclose<bar>wincmd l<bar>only<bar><count>cprev<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Cgdifflast cclose<bar>wincmd l<bar>only<bar>clast<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Cgdifffirst cclose<bar>wincmd l<bar>only<bar>cfirst<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffNext cclose<bar>wincmd l<bar>only<bar><count>cnext<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffPrevious cclose<bar>wincmd l<bar>only<bar><count>cprev<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffLast cclose<bar>wincmd l<bar>only<bar>clast<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffFirst cclose<bar>wincmd l<bar>only<bar>cfirst<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
 command! -nargs=? Gcompbranch let g:compare_branch = <q-args>
 command! Grediff windo diffthis\|windo norm zM
 command! -nargs=? -complete=dir Explore Dirvish <args>
@@ -294,6 +284,12 @@ command! -nargs=* Pgrep grep <args> %:p:h
 command! -nargs=* Plgrep lgrep <args> %:p:h
 command! -bang Wfmt let g:format_on_save = <bang>1 | w | let g:format_on_save = <bang>0
 command! -bang Wafmt let g:format_on_save = <bang>1 | wa | let g:format_on_save = <bang>0
+
+function! FuzzyFilterQf(...) abort
+	let matchstr = join(a:000, " ")
+	let filtered_items = matchfuzzy(getqflist(), matchstr, {'key': 'text'})
+	call setqflist([], " ", {"nr": "$", "title": ":Cfuzzy /" .. matchstr .. "/", "items": filtered_items})
+endfunction
 
 function! s:CloseHiddenBuffers()
 	let open_buffers = []

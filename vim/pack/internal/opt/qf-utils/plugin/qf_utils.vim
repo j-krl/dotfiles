@@ -9,18 +9,17 @@ command! -nargs=? Cfload call LoadQfFile(<q-args>)
 command! -nargs=? Cfdelete call DeleteQfFile(<q-args>)
 command! -count Chdelete call DeleteQf(<count>)
 command! Chclear call setqflist([], 'f')|ccl|chistory
-command! -count -nargs=1 Csave call SaveQf(<q-args>, <count>)
+command! -count -nargs=1 CnameSave call SaveQf(<q-args>, <count>)
 " TODO: make argument optional and just grab the latest list if no arg
-command! -nargs=1 -complete=customlist,s:CompleteQfNames Cload call setqflist([], ' ', 
+command! -nargs=1 -complete=customlist,s:CompleteQfNames CnameLoad call setqflist([], ' ', 
 		\{"title": <q-args>, "items": g:qflists[<q-args>].items, "nr": "$"})|cwindow|1cc
-command! -nargs=1 -complete=customlist,s:CompleteQfNames Cdelete unlet g:qflists[<q-args>]
-command! Clist echo keys(g:qflists)
-command! Cclear let g:qflists = {}
-command! Cwipe Chclear|Cclear
+command! -nargs=1 -complete=customlist,s:CompleteQfNames CnameDelete unlet g:qflists[<q-args>]
+command! CnameList echo keys(g:qflists)
+command! CnameClear let g:qflists = {}
+command! Cwipe Chclear|CnameClear
 command! -nargs=1 Crename call RenameQf(<q-args>)
-command! -count=1 Cditem call DeleteQfItems(<count>)
-command! -count=1 Lditem call DeleteQfItems(<count>, 1)
-command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
+command! -count=1 Cdelitem call DeleteQfItems(<count>)
+command! -count=1 Ldelitem call DeleteQfItems(<count>, 1)
 command! -nargs=+ -complete=file_in_path Cfind call FdQf(<f-args>)
 
 autocmd qfutils QuickFixCmdPost [^l]* exe "norm mG"|cwindow
@@ -29,12 +28,6 @@ autocmd qfutils VimEnter * if get(g:, "qf_session_auto_load", 0) && !empty(v:thi
 	\| call LoadQfFile("", 0) | endif
 autocmd qfutils VimLeave * if get(g:, "qf_session_auto_cache", 0) > 0 && !empty(v:this_session) 
 	\| call SaveQfFile("", get(g:, "qf_session_auto_cache", 0)) | endif
-
-function! FuzzyFilterQf(...) abort
-	let matchstr = join(a:000, " ")
-	let filtered_items = matchfuzzy(getqflist(), matchstr, {'key': 'text'})
-	call setqflist([], " ", {"nr": "$", "title": ":Cfuzzy /" .. matchstr .. "/", "items": filtered_items})
-endfunction
 
 function! FdQf(...) abort
 	let args = join(a:000, " ")
