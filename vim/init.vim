@@ -340,7 +340,6 @@ autocmd vimrc BufWinEnter * call s:SetSpaceIndentGuides(&l:shiftwidth)
 autocmd vimrc FileType * call s:SetFormatMaps()
 autocmd vimrc FileType * set include=
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
-"autocmd vimrc BufRead * set iskeyword+=-
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 autocmd vimrc TabNewEntered * argl|%argd
 
