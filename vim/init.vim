@@ -62,11 +62,7 @@ if exists('&findfunc') && executable('fd') && executable('fzf')
 endif
 
 function! FuzzyFindFunc(cmdarg, cmdcomplete)
-	let oldwildmode = &wildmode
-	let &wildmode = "noselect,full"
-	let results = systemlist("fd --hidden --type f -E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
-	let &wildmode = oldwildmode
-	return results
+	return systemlist("fd --hidden --type f -E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
 endfunction
 
 """ Plugin options """
