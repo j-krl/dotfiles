@@ -189,12 +189,6 @@ nnoremap <expr> <leader><leader> "<cmd>" .. v:count .. "Argu<cr>"
 
 xnoremap <silent> il g_o^
 xnoremap <silent> al $o0
-xnoremap <silent> iq :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
-xnoremap <silent> aq :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
-xnoremap <silent> iQ :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! viw'<bar>
-	\setlocal iskeyword-=.,=,:<cr>
-xnoremap <silent> aQ :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
-	\setlocal iskeyword-=.,=,:<cr>
 xnoremap <expr> <A-j> ":m '>+" .. v:count1 .. "<CR>gv=gv"
 xnoremap <expr> <A-k> ":m '<-" .. (v:count1 + 1) .. "<CR>gv=gv"
 
@@ -235,12 +229,6 @@ tmap <C-a> <C-\><C-n><C-a>
 
 onoremap <silent> il :normal vil<CR>
 onoremap <silent> al :normal val<CR>
-onoremap <silent> iq :<C-U>setlocal iskeyword+=.<bar>exe 'norm! viw'<bar>setlocal iskeyword-=.<cr>
-onoremap <silent> aq :<C-U>setlocal iskeyword+=.<bar>exe 'norm! vaw'<bar>setlocal iskeyword-=.<cr>
-onoremap <silent> iQ :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! viw'<bar>
-	\setlocal iskeyword-=.,=,:<cr>
-onoremap <silent> aQ :<C-U>setlocal iskeyword+=.,=,:<bar>exe 'norm! vaw'<bar>
-	\setlocal iskeyword-=.,=,:<cr>
 
 function! NavDirFiles(count) abort
 	let curfile = expand("%:p")
@@ -264,10 +252,10 @@ command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
-command! -count=1 CgdiffNext cclose<bar>wincmd l<bar>only<bar><count>cnext<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 CgdiffPrevious cclose<bar>wincmd l<bar>only<bar><count>cprev<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 CgdiffLast cclose<bar>wincmd l<bar>only<bar>clast<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 CgdiffFirst cclose<bar>wincmd l<bar>only<bar>cfirst<bar>cwindow<bar>wincmd p<bar>exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffNext ccl|wincmd l|only|<count>cnext|cw|wincmd p|exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffPrevious ccl|wincmd l|only|<count>cprev|cw|wincmd p|exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffLast ccl|wincmd l|only|clast|cw|wincmd p|exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffFirst ccl|wincmd l|only|cfirst|cw|wincmd p|exe "Gvdiffsplit " .. g:compare_branch
 command! -nargs=? Gcompbranch let g:compare_branch = <q-args>
 command! Grediff windo diffthis\|windo norm zM
 command! -nargs=? -complete=dir Explore Dirvish <args>
