@@ -91,6 +91,7 @@ let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
 let g:compare_branch = "master"
 let g:rooter_cd_cmd = 'tcd'
+let g:rooter_manual_only = 1
 let g:gutentags_add_default_project_roots = 0
 let g:gutentags_project_root = ['.git', 'main.tf'] " TODO: need better tf root
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
@@ -161,14 +162,17 @@ nnoremap <leader>aC <cmd>Arglclear<cr>
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
+nnoremap <leader>dr <cmd>Rooter<cr>
+nnoremap <leader>dh <cmd>tcd %:h<cr>
+nnoremap <leader>dp <cmd>tcd ..<cr>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
+nnoremap <leader>h :<C-U>Hgrep ''<left>
+nnoremap <leader>H :<C-U>Hgrep <C-R><C-W><cr>
 nnoremap <leader>l <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
-nnoremap <leader>p :<C-U>Pgrep ''<left>
-nnoremap <leader>P :<C-U>Pgrep <C-R><C-W><cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>tj <cmd>TSJJoin<cr>
 nnoremap <leader>ts <cmd>TSJSplit<cr>
@@ -176,11 +180,8 @@ nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
 nnoremap <leader>x <cmd>xa<cr>
 nnoremap <leader>zz mZ<cmd>FzfLua live_grep_native<cr>
-nnoremap <leader>zZ mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd = vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>zc mZ<cmd>FzfLua grep_cword<cr>
-nnoremap <leader>zC mZ<cmd>lua require("fzf-lua").grep_cword({ cwd = vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>zf mZ<cmd>FzfLua grep<cr><cr>
-nnoremap <leader>zF mZ<cmd>lua require("fzf-lua").grep({ cwd = vim.fn.expand("%:h:.") })<cr><cr>
 nnoremap <leader>zs mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
 nnoremap <leader>zr mZ<cmd>FzfLua lsp_references<cr>
 nnoremap <leader>z- mZ<cmd>FzfLua resume<cr>
@@ -254,7 +255,6 @@ function! NavDirFiles(count) abort
 	exe "e " .. files[newidx]
 endfunction
 
-
 """"""""""""
 " Commands "
 """"""""""""
@@ -280,8 +280,7 @@ command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
-command! -nargs=* Pgrep grep <args> %:p:h
-command! -nargs=* Plgrep lgrep <args> %:p:h
+command! -nargs=* Hgrep grep <args> %:p:h
 command! -bang Wfmt let g:format_on_save = <bang>1 | w | let g:format_on_save = <bang>0
 command! -bang Wafmt let g:format_on_save = <bang>1 | wa | let g:format_on_save = <bang>0
 
@@ -320,13 +319,11 @@ autocmd vimrc VimLeave * if !empty(v:this_session) | exe "CopilotChatSave " ..
 	\slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
 autocmd vimrc VimEnter * if !empty(v:this_session) | exe "CopilotChatLoad " ..
 	\slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
-autocmd vimrc ColorSchemePre * hi clear
 autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
 autocmd vimrc OptionSet formatprg call s:SetFormatMaps()
 autocmd vimrc OptionSet shiftwidth call s:SetSpaceIndentGuides(v:option_new)
 autocmd vimrc BufWinEnter * call s:SetSpaceIndentGuides(&l:shiftwidth)
 autocmd vimrc FileType * call s:SetFormatMaps()
-autocmd vimrc FileType * set include=
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 autocmd vimrc TabNewEntered * argl|%argd
