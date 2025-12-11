@@ -134,6 +134,7 @@ nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 nnoremap <bs> <C-^>
 nnoremap <F2> <C-L><cmd>args<cr>
+nnoremap <F3> <cmd>call FormatBuf(v:true)<cr>
 noremap <F9> <cmd>CopilotChatToggle<cr>
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
@@ -244,6 +245,20 @@ function! NavDirFiles(count) abort
 	exe "e " .. files[newidx]
 endfunction
 
+function! FormatBuf(preserve_undo=0) abort
+	if &formatprg == ""
+		return
+	endif
+	let l:view = winsaveview()
+	if !a:preserve_undo
+		" Best we can do to prevent mangling the undo history after formatting
+		sil! undojoin | norm gggqG
+	else
+		norm gggqG
+	endif
+	call winrestview(l:view)
+endfunction
+
 """"""""""""
 " Commands "
 """"""""""""
@@ -309,10 +324,8 @@ autocmd vimrc VimLeave * if !empty(v:this_session) | exe "CopilotChatSave " ..
 autocmd vimrc VimEnter * if !empty(v:this_session) | exe "CopilotChatLoad " ..
 	\slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
 autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
-autocmd vimrc OptionSet formatprg call s:SetFormatMaps()
 autocmd vimrc OptionSet shiftwidth call s:SetSpaceIndentGuides(v:option_new)
 autocmd vimrc BufWinEnter * call s:SetSpaceIndentGuides(&l:shiftwidth)
-autocmd vimrc FileType * call s:SetFormatMaps()
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 autocmd vimrc TabNewEntered * argl|%argd
@@ -332,27 +345,6 @@ function! s:SetSpaceIndentGuides(sw) abort
 	endfor
 	let newlistchars = "leadmultispace:" .. newlead .. "," .. listchars
 	let &l:listchars = newlistchars
-endfunction
-
-function! s:SetFormatMaps() abort
-	if &formatprg == ""
-		return
-	endif
-	nnoremap <buffer> <F3> <cmd>call FormatBuf(v:true)<cr>
-endfunction
-
-function! FormatBuf(preserve_undo=0) abort
-	if &formatprg == ""
-		return
-	endif
-	let l:view = winsaveview()
-	if !a:preserve_undo
-		" Best we can do to prevent mangling the undo history after formatting
-		sil! undojoin | norm gggqG
-	else
-		norm gggqG
-	endif
-	call winrestview(l:view)
 endfunction
 
 function! s:SetJumpScopeMaps() abort
