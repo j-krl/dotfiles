@@ -134,7 +134,7 @@ nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 nnoremap <bs> <C-^>
 nnoremap <F2> <C-L><cmd>args<cr>
-nnoremap <F3> <cmd>call FormatBuf(v:true)<cr>
+nnoremap <F3> <cmd>FmtBuf<cr>
 noremap <F9> <cmd>CopilotChatToggle<cr>
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
@@ -245,20 +245,6 @@ function! NavDirFiles(count) abort
 	exe "e " .. files[newidx]
 endfunction
 
-function! FormatBuf(preserve_undo=0) abort
-	if &formatprg == ""
-		return
-	endif
-	let l:view = winsaveview()
-	if !a:preserve_undo
-		" Best we can do to prevent mangling the undo history after formatting
-		sil! undojoin | norm gggqG
-	else
-		norm gggqG
-	endif
-	call winrestview(l:view)
-endfunction
-
 """"""""""""
 " Commands "
 """"""""""""
@@ -285,8 +271,6 @@ command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
 command! -nargs=* Hgrep grep <args> %:p:h
-command! -bang Wfmt let g:format_on_save = <bang>1 | w | let g:format_on_save = <bang>0
-command! -bang Wafmt let g:format_on_save = <bang>1 | wa | let g:format_on_save = <bang>0
 
 function! FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
@@ -314,6 +298,7 @@ augroup vimrc
 	autocmd!
 augroup END
 
+autocmd vimrc TabNewEntered * argl|%argd
 autocmd vimrc WinEnter * if &buftype ==# 'terminal' && mode() !=# 't' | startinsert | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
 	\'call writefile(["set background=" .. &background, "colorscheme " ..
@@ -322,10 +307,8 @@ autocmd vimrc VimLeave * if !empty(v:this_session) | exe "CopilotChatSave " ..
 	\slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
 autocmd vimrc VimEnter * if !empty(v:this_session) | exe "CopilotChatLoad " ..
 	\slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
-autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
-autocmd vimrc TabNewEntered * argl|%argd
 
 function! s:SetJumpScopeMaps() abort
 	if &ft == "c" || &ft == "cpp" || &ft == "python" || &ft == "markdown"
