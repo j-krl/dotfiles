@@ -315,7 +315,6 @@ augroup vimrc
 augroup END
 
 autocmd vimrc WinEnter * if &buftype ==# 'terminal' && mode() !=# 't' | startinsert | endif
-autocmd vimrc BufEnter * let b:workspace_folder = getcwd() "Copilot
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
 	\'call writefile(["set background=" .. &background, "colorscheme " ..
 	\g:colors_name], v:this_session, "a")' | endif
@@ -324,28 +323,9 @@ autocmd vimrc VimLeave * if !empty(v:this_session) | exe "CopilotChatSave " ..
 autocmd vimrc VimEnter * if !empty(v:this_session) | exe "CopilotChatLoad " ..
 	\slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
 autocmd vimrc BufWritePre * if g:format_on_save | call FormatBuf() | endif
-autocmd vimrc OptionSet shiftwidth call s:SetSpaceIndentGuides(v:option_new)
-autocmd vimrc BufWinEnter * call s:SetSpaceIndentGuides(&l:shiftwidth)
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 autocmd vimrc TabNewEntered * argl|%argd
-
-function! s:SetSpaceIndentGuides(sw) abort
-	let indent = a:sw
-	if indent == 0
-		let indent = &tabstop
-	endif
-	if &l:listchars == ""
-		let &l:listchars = &listchars
-	endif
-	let listchars = substitute(&listchars, 'leadmultispace:.\{-},', '', 'g')
-	let newlead = "\┆"
-	for i in range(indent - 1)
-		let newlead .= "\ "
-	endfor
-	let newlistchars = "leadmultispace:" .. newlead .. "," .. listchars
-	let &l:listchars = newlistchars
-endfunction
 
 function! s:SetJumpScopeMaps() abort
 	if &ft == "c" || &ft == "cpp" || &ft == "python" || &ft == "markdown"
