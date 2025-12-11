@@ -1,4 +1,4 @@
-let g:space_indent_char = "┆"
+let g:space_indent_char = "\┆"
 
 augroup indentguides
 	autocmd!
@@ -15,7 +15,7 @@ function! s:SetSpaceIndentGuides(sw) abort
 		let &l:listchars = &listchars
 	endif
 	let listchars = substitute(&listchars, 'leadmultispace:.\{-},', '', 'g')
-	let newlead = '\' .. g:space_indent_char
+	let newlead = g:space_indent_char
 	for i in range(indent - 1)
 		let newlead .= "\ "
 	endfor
