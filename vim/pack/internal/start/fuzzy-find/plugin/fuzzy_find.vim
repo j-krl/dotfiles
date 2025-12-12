@@ -12,6 +12,7 @@ endif
 
 let s:TMP_WILDMODE = "noselect:lastused,full"
 let s:CMD_PATT = '^find\? \|^b\(uffer\)\? '
+let s:FMD_CMD = "fd --hidden --type f -E '.git' ."
 let s:find_cache = ""
 
 set wildmenu
@@ -35,8 +36,7 @@ augroup fuzzyfind
 	" optional as the first completion trigger will also populate an empty
 	" cache
 	autocmd CmdlineChanged : if getcmdline() =~# '^fin'
-		\&& s:find_cache == "" | let s:find_cache =
-		\system("fd --hidden --type f -E '.g' .") | endif
+		\&& s:find_cache == "" | let s:find_cache = system(s:FD_CMD) | endif
 	" Set wildmode and wildoptions back to original values
 	autocmd CmdlineLeave : if &wildmode != s:wildmode_start ||
 		\&wildoptions =~# 'fuzzy' | let &wildmode = s:wildmode_start |
@@ -48,7 +48,7 @@ augroup END
 
 function! FuzzyFindFunc(cmdarg, cmdcomplete)
 	if s:find_cache == ""
-		let s:find_cache = system("fd --hidden --type f -E '.git' .") 
+		let s:find_cache = system(s:FD_CMD) 
 	endif
 	return systemlist("fzf --filter='" .. a:cmdarg .. "'", s:find_cache)
 endfunction
