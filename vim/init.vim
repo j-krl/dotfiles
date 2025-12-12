@@ -168,8 +168,6 @@ nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
-nnoremap <leader>h :<C-U>Hgrep ''<left>
-nnoremap <leader>H :<C-U>Hgrep <C-R><C-W><cr>
 nnoremap <leader>l <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>q <cmd>qa<cr>
@@ -267,7 +265,7 @@ command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
-command! -nargs=* Hgrep grep <args> %:p:h
+command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
