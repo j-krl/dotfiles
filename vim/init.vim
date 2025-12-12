@@ -130,8 +130,8 @@ nnoremap yrc :let @+ = system("git branch --show-current")<cr>
 " opposite of :h
 nnoremap yrt :let @+ = substitute(@+, "[^\/]*\/", "", "")<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
-nnoremap ]f <cmd>call s:NavDirFiles(v:count1)<cr>
-nnoremap [f <cmd>call s:NavDirFiles(v:count1 * -1)<cr>
+nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
+nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 nnoremap <bs> <C-^>
 nnoremap <F2> <C-L><cmd>args<cr>
 nnoremap <F3> <cmd>FmtBuf<cr>
@@ -229,7 +229,7 @@ tmap <C-a> <C-\><C-n><C-a>
 onoremap <silent> il :normal vil<CR>
 onoremap <silent> al :normal val<CR>
 
-function! s:NavDirFiles(count) abort
+function! NavDirFiles(count) abort
 	let curfile = expand("%:p")
 	let curdir = expand("%:p:h")
 	let files = systemlist("find " .. curdir .. "/ -type f -maxdepth 1")
