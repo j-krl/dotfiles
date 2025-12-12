@@ -13,13 +13,14 @@ function! PackInit() abort
 	call minpac#add('tpope/vim-fugitive')
 	call minpac#add('tpope/vim-rhubarb')
 	call minpac#add('tpope/vim-sleuth')
-	call minpac#add('github/copilot.vim')
-	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	call minpac#add('ludovicchabant/vim-gutentags')
-	call minpac#add('ibhagwan/fzf-lua')
 	call minpac#add('neovim/nvim-lspconfig')
+	call minpac#add('ibhagwan/fzf-lua')
+	" Copilot
+	call minpac#add('github/copilot.vim')
 	call minpac#add('nvim-lua/plenary.nvim')
 	call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
+	" Treesitter dependent
 	call minpac#add('nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'})
 	call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'master'})
 	call minpac#add('Wansmer/treesj')
