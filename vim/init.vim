@@ -58,14 +58,6 @@ set fillchars=diff:\
 set statusline=%{ObsessionStatus()}\ %<%f\ \ %{FugitiveStatusline()}%h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
 let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, stdpath("data") .. "/site,", "", "g")
 
-if exists('&findfunc') && executable('fd') && executable('fzf')
-	set findfunc=FuzzyFindFunc
-endif
-
-function! FuzzyFindFunc(cmdarg, cmdcomplete)
-	return systemlist("fd --hidden --type f -E '.git' . | fzf --filter='" .. a:cmdarg .. "'")
-endfunction
-
 """ Plugin options """
 " Sort directories above
 let g:dirvish_mode = ':sort ,^.*[\/],'
