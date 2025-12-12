@@ -1,18 +1,18 @@
 let g:format_on_save = 0
 
-command! FmtBuf call FormatBuf()
+command! FmtBuf call s:FormatBuf()
 command! -bang Wfmt call FormatSave(<bang>1, v:false)
 command! -bang Wafmt call FormatSave(<bang>1, v:true)
 command! -bang FmtSaveSet let g:format_on_save = <bang>0
 
 augroup format
 	autocmd!
-	autocmd BufWritePre * if g:format_on_save | call FormatBuf() | endif
+	autocmd BufWritePre * if g:format_on_save | call s:FormatBuf() | endif
 augroup END
 
 " Save and specify if buffer(s) should be formatted regardless of current
 " g:format_on_save setting
-function! FormatSave(fmt, all) abort
+function! s:FormatSave(fmt, all) abort
 	let orig_setting = g:format_on_save
 	let g:format_on_save = a:fmt
 	if a:all
@@ -23,7 +23,7 @@ function! FormatSave(fmt, all) abort
 	let g:format_on_save = orig_setting
 endfunction
 
-function! FormatBuf() abort
+function! s:FormatBuf() abort
 	if &formatprg == ""
 		return
 	endif

@@ -4,12 +4,12 @@ augroup qfutils
 	autocmd!
 augroup END
 
-command! -nargs=? Cfsave call SaveQfFile(<q-args>)
-command! -nargs=? Cfload call LoadQfFile(<q-args>)
-command! -nargs=? Cfdelete call DeleteQfFile(<q-args>)
-command! -count Chdelete call DeleteQf(<count>)
+command! -nargs=? Cfsave call s:SaveQfFile(<q-args>)
+command! -nargs=? Cfload call s:LoadQfFile(<q-args>)
+command! -nargs=? Cfdelete call s:DeleteQfFile(<q-args>)
+command! -count Chdelete call s:DeleteQf(<count>)
 command! Chclear call setqflist([], 'f')|ccl|chistory
-command! -count -nargs=1 CnameSave call SaveQf(<q-args>, <count>)
+command! -count -nargs=1 CnameSave call s:SaveQf(<q-args>, <count>)
 " TODO: make argument optional and just grab the latest list if no arg
 command! -nargs=1 -complete=customlist,s:CompleteQfNames CnameLoad call setqflist([], ' ', 
 		\{"title": <q-args>, "items": g:qflists[<q-args>].items, "nr": "$"})|cwindow|1cc
@@ -17,19 +17,19 @@ command! -nargs=1 -complete=customlist,s:CompleteQfNames CnameDelete unlet g:qfl
 command! CnameList echo keys(g:qflists)
 command! CnameClear let g:qflists = {}
 command! Cwipe Chclear|CnameClear
-command! -nargs=1 Crename call RenameQf(<q-args>)
-command! -count=1 Cdelitem call DeleteQfItems(<count>)
-command! -count=1 Ldelitem call DeleteQfItems(<count>, 1)
-command! -nargs=+ -complete=file_in_path Cfind call FdQf(<f-args>)
+command! -nargs=1 Crename call s:RenameQf(<q-args>)
+command! -count=1 Cdelitem call s:DeleteQfItems(<count>)
+command! -count=1 Ldelitem call s:DeleteQfItems(<count>, 1)
+command! -nargs=+ -complete=file_in_path Cfind call s:FdQf(<f-args>)
 
 autocmd qfutils QuickFixCmdPost [^l]* exe "norm mG"|cwindow
 autocmd qfutils QuickFixCmdPost l* exe "norm mG"|lwindow
 autocmd qfutils VimEnter * if get(g:, "qf_session_auto_load", 0) && !empty(v:this_session) 
-	\| call LoadQfFile("", 0) | endif
+	\| call s:LoadQfFile("", 0) | endif
 autocmd qfutils VimLeave * if get(g:, "qf_session_auto_cache", 0) > 0 && !empty(v:this_session) 
-	\| call SaveQfFile("", get(g:, "qf_session_auto_cache", 0)) | endif
+	\| call s:SaveQfFile("", get(g:, "qf_session_auto_cache", 0)) | endif
 
-function! FdQf(...) abort
+function! s:FdQf(...) abort
 	let args = join(a:000, " ")
 	let fdcmd = "fd -t f --hidden " .. args
 	let fdresults = systemlist(fdcmd)
@@ -42,7 +42,7 @@ function! FdQf(...) abort
 	cwindow
 endfunction
 
-function! DeleteQfItems(count, loc=0) abort
+function! s:DeleteQfItems(count, loc=0) abort
 	if !a:loc
 		let qf = getqflist({'nr': 0, 'idx': 0, 'title': 0, 'items': 0})
 	else
@@ -64,7 +64,7 @@ function! DeleteQfItems(count, loc=0) abort
 	endif
 endfunction
 
-function! SaveQfFile(filename="", mode=1) abort
+function! s:SaveQfFile(filename="", mode=1) abort
 	let file = s:GetQfFilename(a:filename)
 	let lists = []
 	let numqfs = getqflist({'nr': '$'}).nr
@@ -91,7 +91,7 @@ function! SaveQfFile(filename="", mode=1) abort
 	endif
 endfunction
 
-function! LoadQfFile(filename="", echo=1) abort
+function! s:LoadQfFile(filename="", echo=1) abort
 	let file = s:GetQfFilename(a:filename)
 	try
 		let filelists = readfile(file)
@@ -116,7 +116,7 @@ function! LoadQfFile(filename="", echo=1) abort
 	endif
 endfunction
 
-function! DeleteQfFile(filename="") abort
+function! s:DeleteQfFile(filename="") abort
 	let file = s:GetQfFilename(a:filename)
 	let delresult = system("rm " .. file)
 	if v:shell_error
@@ -124,7 +124,7 @@ function! DeleteQfFile(filename="") abort
 	endif
 endfunction
 
-function! DeleteQf(nr=0) abort
+function! s:DeleteQf(nr=0) abort
 	let delnr = a:nr
 	let curnr = getqflist({'nr': 0}).nr
 	if delnr == 0
@@ -155,12 +155,12 @@ function! DeleteQf(nr=0) abort
 	chistory
 endfunction
 
-function! RenameQf(title) abort
+function! s:RenameQf(title) abort
 	let qf = getqflist({"nr": 0, "items": 0})
 	call setqflist([], 'u', {"nr": 0, "title": a:title, "items": qf.items})
 endfunction
 
-function! SaveQf(name, nr=0) abort
+function! s:SaveQf(name, nr=0) abort
 	let qf = getqflist({"nr": a:nr, "title": 1, "items": 1})
 	let g:qflists[a:name] = {"title": qf.title, "items": qf.items}
 	echo 'Saved qflist ' .. a:name

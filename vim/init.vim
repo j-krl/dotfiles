@@ -130,8 +130,8 @@ nnoremap yrc :let @+ = system("git branch --show-current")<cr>
 " opposite of :h
 nnoremap yrt :let @+ = substitute(@+, "[^\/]*\/", "", "")<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
-nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
-nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
+nnoremap ]f <cmd>call s:NavDirFiles(v:count1)<cr>
+nnoremap [f <cmd>call s:NavDirFiles(v:count1 * -1)<cr>
 nnoremap <bs> <C-^>
 nnoremap <F2> <C-L><cmd>args<cr>
 nnoremap <F3> <cmd>FmtBuf<cr>
@@ -229,7 +229,7 @@ tmap <C-a> <C-\><C-n><C-a>
 onoremap <silent> il :normal vil<CR>
 onoremap <silent> al :normal val<CR>
 
-function! NavDirFiles(count) abort
+function! s:NavDirFiles(count) abort
 	let curfile = expand("%:p")
 	let curdir = expand("%:p:h")
 	let files = systemlist("find " .. curdir .. "/ -type f -maxdepth 1")
@@ -249,7 +249,7 @@ endfunction
 command! Bonly %bd|e#|bd#|norm `"
 command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
-command! -nargs=+ Cfuzzy call FuzzyFilterQf(<f-args>)
+command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
 command! -count=1 CgdiffNext ccl|wincmd l|only|<count>cnext|cw|wincmd p|exe "Gvdiffsplit " .. g:compare_branch
 command! -count=1 CgdiffPrevious ccl|wincmd l|only|<count>cprev|cw|wincmd p|exe "Gvdiffsplit " .. g:compare_branch
@@ -269,7 +269,7 @@ command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), 
 command! PackStatus packadd minpac | call minpac#status()
 command! -nargs=* Hgrep grep <args> %:p:h
 
-function! FuzzyFilterQf(...) abort
+function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
 	let filtered_items = matchfuzzy(getqflist(), matchstr, {'key': 'text'})
 	call setqflist([], " ", {"nr": "$", "title": ":Cfuzzy /" .. matchstr .. "/", "items": filtered_items})
