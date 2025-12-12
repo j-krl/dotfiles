@@ -56,16 +56,21 @@ set guicursor=n-v-c-sm:block,i-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff
 set spellcapcheck=
 set fillchars=diff:\
 " Add session status and arglist position to statusline
-set statusline=%{ObsessionStatus()}\ %<%f\ \ %{FugitiveStatuslineTrunc()}%h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
+set statusline=%{ObsessionStatus()}\ %<%f\ \ %<%{CwdStatusline()}\ \ %{FugitiveStatuslineTruncRight()}\ %h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
 let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, stdpath("data") .. "/site,", "", "g")
 
-function! FugitiveStatuslineTrunc() abort
+function! FugitiveStatuslineTruncRight() abort
 	let status = FugitiveStatusline()
 	if strwidth(status) > 20
 		return strpart(status, 0, 20) .. ">"
 	else
 		return status
 	endif
+endfunction
+
+function! CwdStatusline() abort
+	let cwd = fnamemodify(getcwd(), ":t")
+	return '(cwd: ' .. cwd .. ')'
 endfunction
 
 """ Plugin options """
