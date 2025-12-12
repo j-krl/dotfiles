@@ -125,6 +125,7 @@ nnoremap <silent> - :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>:Ex
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
+nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
 nnoremap yr~ :let @+ = expand("%:~")<cr>
 nnoremap yr` :let @+ = expand("%:~:h")<cr>
 nnoremap yr. :let @+ = expand("%:.")<cr>
