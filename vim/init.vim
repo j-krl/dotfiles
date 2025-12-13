@@ -276,6 +276,8 @@ command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
 command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
+command! -count Tree exe "Scratch" | exe "r !tree" .. 
+	\(!<count> ? "" : " -L " .. <count>)
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
