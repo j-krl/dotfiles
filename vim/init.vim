@@ -57,7 +57,8 @@ set spellcapcheck=
 set fillchars=diff:\
 " Add session status and arglist position to statusline
 set statusline=%{ObsessionStatus()}\ %<%f\ \ %<%{CwdStatusline()}\ \ %{FugitiveStatuslineTruncRight()}\ %h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
-let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, stdpath("data") .. "/site,", "", "g")
+let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, 
+	\stdpath("data") .. "/site,", "", "g")
 
 function! FugitiveStatuslineTruncRight() abort
 	let status = FugitiveStatusline()
@@ -121,11 +122,13 @@ noremap / ms/
 noremap ? ms?
 noremap * ms*
 noremap # ms#
-nnoremap <silent> - :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>:Explore<cr>
+nnoremap <silent> - :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" :
+	\""<cr>:Explore<cr>
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
-nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"<cr><cr>
+nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"
+	\<cr><cr>
 nnoremap yr~ :let @+ = expand("%:~")<cr>
 nnoremap yr` :let @+ = expand("%:~:h")<cr>
 nnoremap yr. :let @+ = expand("%:.")<cr>
@@ -258,22 +261,30 @@ command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
-command! -count=1 CgdiffNext ccl|wincmd l|only|<count>cnext|cw|wincmd p|exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 CgdiffPrevious ccl|wincmd l|only|<count>cprev|cw|wincmd p|exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 CgdiffLast ccl|wincmd l|only|clast|cw|wincmd p|exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 CgdiffFirst ccl|wincmd l|only|cfirst|cw|wincmd p|exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffNext ccl|wincmd l|only|<count>cnext|cw|
+	\wincmd p|exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffPrevious ccl|wincmd l|only|<count>cprev|cw|wincmd p|
+	\exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffLast ccl|wincmd l|only|clast|cw|wincmd p|
+	\exe "Gvdiffsplit " .. g:compare_branch
+command! -count=1 CgdiffFirst ccl|wincmd l|only|cfirst|cw|wincmd p|
+	\exe "Gvdiffsplit " .. g:compare_branch
 command! Gclipbranch let @+ = system("git branch --show-current")
 command! -nargs=? Gcompbranch let g:compare_branch = <q-args>
 command! Grediff windo diffthis\|windo norm zM
 command! -nargs=? -complete=dir Explore Dirvish <args>
-command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish <args>
-command! -nargs=? -complete=dir Vexplore belowright vsplit | silent Dirvish <args>
+command! -nargs=? -complete=dir Sexplore belowright split |
+	\silent Dirvish <args>
+command! -nargs=? -complete=dir Vexplore belowright vsplit |
+	\silent Dirvish <args>
 command! Llen echo len(getloclist(winnr()))
-command! PackInstall call PackInit() | call minpac#update(keys(filter(copy(minpac#pluglist), 
+command! PackInstall call PackInit() 
+	\| call minpac#update(keys(filter(copy(minpac#pluglist), 
 	\{-> !isdirectory(v:val.dir . '/.git')})))
 command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
 command! PackClean call PackInit() | call minpac#clean()
-command! PackList call PackInit() | echo join(sort(keys(minpac#getpluglist())), "\n")
+command! PackList call PackInit() 
+	\| echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
 command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
 command! -count Tree exe "Scratch" | exe "r !tree" .. 
@@ -282,7 +293,8 @@ command! -count Tree exe "Scratch" | exe "r !tree" ..
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
 	let filtered_items = matchfuzzy(getqflist(), matchstr, {'key': 'text'})
-	call setqflist([], " ", {"nr": "$", "title": ":Cfuzzy /" .. matchstr .. "/", "items": filtered_items})
+	call setqflist([], " ", {"nr": "$", "title": ":Cfuzzy /" .. matchstr .. 
+		\"/", "items": filtered_items})
 endfunction
 
 function! s:CloseHiddenBuffers()
@@ -306,7 +318,8 @@ augroup vimrc
 augroup END
 
 autocmd vimrc TabNewEntered * argl|%argd
-autocmd vimrc WinEnter * if &buftype ==# 'terminal' && mode() !=# 't' | startinsert | endif
+autocmd vimrc WinEnter * if &buftype ==# 'terminal' && mode() !=# 't' |
+	\startinsert | endif
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
 	\'call writefile(["set background=" .. &background, "colorscheme " ..
 	\g:colors_name], v:this_session, "a")' | endif
