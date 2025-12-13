@@ -15,7 +15,7 @@ if !executable('fzf') || !executable('fd')
 endif
 
 let s:TMP_WILDMODE = "noselect:lastused,full"
-let s:CMD_PATT = '^find\? \|^b\(uffer\)\? '
+let s:CMD_PATT = '^s\?find\? \|^b\(uffer\)\? '
 let s:FD_CMD = "fd --hidden --type f -E '.git' ."
 let s:find_cache = ""
 
@@ -39,7 +39,7 @@ augroup fuzzyfind
 	" Populate filename cache for :find once 'fin' is entered. This is
 	" optional as the first completion trigger will also populate an empty
 	" cache
-	autocmd CmdlineChanged : if getcmdline() =~# '^fin'
+	autocmd CmdlineChanged : if getcmdline() =~# 's\?fin'
 		\&& s:find_cache == "" | let s:find_cache = system(s:FD_CMD) | endif
 	" Set wildmode and wildoptions back to original values
 	autocmd CmdlineLeave : if &wildmode != s:wildmode_start ||

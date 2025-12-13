@@ -1,10 +1,11 @@
+hi clear Boolean
 hi clear Constant
-hi clear Number
-hi clear Macro
-hi clear PreProc
-hi clear Operator
-hi clear Label
 hi clear Delimiter
+hi clear Label
+hi clear Macro
+hi clear Number
+hi clear Operator
+hi clear PreProc
 hi! link SpecialChar Special
 hi! link Special Identifier
 
