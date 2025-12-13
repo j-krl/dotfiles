@@ -12,7 +12,7 @@ endif
 
 let s:TMP_WILDMODE = "noselect:lastused,full"
 let s:CMD_PATT = '^find\? \|^b\(uffer\)\? '
-let s:FMD_CMD = "fd --hidden --type f -E '.git' ."
+let s:FD_CMD = "fd --hidden --type f -E '.git' ."
 let s:find_cache = ""
 
 set wildmenu
