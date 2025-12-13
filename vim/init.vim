@@ -158,7 +158,9 @@ nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
 	\exe "Explore " .. getcwd()<cr>
 noremap <space>p "+p
 noremap <space>P "+P
-noremap <space>y "+ynnoremap <space>s a<cr><esc>k$
+noremap <space>y "+y
+noremap <space>Y "+Y
+nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
 nnoremap <leader>aa <cmd>Argappend<cr>
 nnoremap <leader>ap <cmd>Argprepend<cr>
