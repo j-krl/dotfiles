@@ -1,3 +1,13 @@
+hi clear Constant
+hi clear Number
+hi clear Macro
+hi clear PreProc
+hi clear Operator
+hi clear Label
+hi clear Delimiter
+hi! link SpecialChar Special
+hi! link Special Identifier
+
 if &background == "dark"
 	hi Normal guifg=#ebdbb2 guibg=#282828
 	hi String ctermfg=214 guifg=#fabd2f
