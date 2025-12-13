@@ -129,12 +129,6 @@ nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"
 	\<cr><cr>
-nnoremap yr~ :let @+ = expand("%:~")<cr>
-nnoremap yr` :let @+ = expand("%:~:h")<cr>
-nnoremap yr. :let @+ = expand("%:.")<cr>
-nnoremap yr> :let @+ = expand("%:.:h")<cr>
-nnoremap yrp :let @+ = expand("%:p")<cr>
-nnoremap yrP :let @+ = expand("%:p:h")<cr>
 nnoremap yr+ :let @+ = @0<cr>
 nmap yr0 yr+
 nnoremap yrc :let @+ = system("git branch --show-current")<cr>
@@ -164,8 +158,7 @@ nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
 	\exe "Explore " .. getcwd()<cr>
 noremap <space>p "+p
 noremap <space>P "+P
-noremap <space>y "+y
-nnoremap <space>s a<cr><esc>k$
+noremap <space>y "+ynnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
 nnoremap <leader>aa <cmd>Argappend<cr>
 nnoremap <leader>ap <cmd>Argprepend<cr>
@@ -261,6 +254,9 @@ command! Bdelete e#|bd#
 command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
+command! ClipBranch let @+ = system("git branch --show-current")
+command! -nargs=1 -bang ClipPath exe "let @+ = expand('%:" .. <q-args> ..
+	\(<bang>0 ? ":h" : "") .. "')"
 command! -count=1 CgdiffNext ccl|wincmd l|only|<count>cnext|cw|
 	\wincmd p|exe "Gvdiffsplit " .. g:compare_branch
 command! -count=1 CgdiffPrevious ccl|wincmd l|only|<count>cprev|cw|wincmd p|
@@ -269,7 +265,6 @@ command! -count=1 CgdiffLast ccl|wincmd l|only|clast|cw|wincmd p|
 	\exe "Gvdiffsplit " .. g:compare_branch
 command! -count=1 CgdiffFirst ccl|wincmd l|only|cfirst|cw|wincmd p|
 	\exe "Gvdiffsplit " .. g:compare_branch
-command! Gclipbranch let @+ = system("git branch --show-current")
 command! -nargs=? Gcompbranch let g:compare_branch = <q-args>
 command! Grediff windo diffthis\|windo norm zM
 command! -nargs=? -complete=dir Explore Dirvish <args>
