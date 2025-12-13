@@ -4,8 +4,8 @@ hi clear Delimiter
 hi clear Label
 hi clear Macro
 hi clear Number
-hi clear Operator
 hi clear PreProc
+hi! link Operator Normal
 hi! link SpecialChar Special
 hi! link Special Identifier
 
