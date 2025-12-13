@@ -110,7 +110,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.lsp.buf.workspace_symbol(vim.fn.expand("<cword>"), { on_list = lsp_on_list })
 		end)
 		vim.keymap.set("n", "grr", function()
-			vim.lsp.buf.references({ include_declaration = false }, { on_list = lsp_on_list })
+			vim.lsp.buf.references(nil, { on_list = lsp_on_list })
 		end)
 		vim.keymap.set("n", "gls", function()
 			vim.lsp.buf.workspace_symbol(nil, { on_list = lsp_on_loc_list })
