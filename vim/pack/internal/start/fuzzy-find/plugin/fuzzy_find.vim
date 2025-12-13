@@ -2,8 +2,12 @@
 "
 " Caches find files for better performance on subsequent completion triggers.
 " Triggering :buffer completion with no pattern also sorts by MRU.
+" 
+" WARNING: The :find command is synchronous to using this in a working
+" directory with many files may be slow, though I've found it to have solid
+" performance even in $HOME with a simple fd .ignore file
 "
-" TODO: Broken if wildoptions=fuzzy is already set
+" TODO: Mangles config if wildoptions=fuzzy is already set
 " TODO: Look into adding wildtrigger() once upgraded to nvim >= 0.12
 
 if !executable('fzf') || !executable('fd')
