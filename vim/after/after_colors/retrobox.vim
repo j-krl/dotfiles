@@ -6,6 +6,7 @@ hi clear Macro
 hi clear Number
 hi clear PreProc
 hi! link Operator Normal
+hi! link Include Statement
 hi! link SpecialChar Special
 hi! link Special Identifier
 
