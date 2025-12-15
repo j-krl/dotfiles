@@ -11,6 +11,7 @@ hi! link PreProc Function
 hi! link Special Function
 hi! link SpecialChar Special
 hi! link String Type
+hi! link Structure Statement
 
 if &background == "dark"
 	" Gruvbox background color
