@@ -1,14 +1,12 @@
-setlocal spell
-"set iskeyword-=-
 " md sources the html which sets this, so unset
 setlocal formatprg=
+setlocal spell
+iab -] - [ ]
 inoremap <expr> <tab> getline(".") =~# "^[ \t]*[\-\*]" ? "<C-T>" : "<tab>"
 if executable("glow")
-	nnoremap <localleader>p :<C-U>tabnew \| exe 'r !glow # -w 120' \|
-		\set ft=markdown \| setlocal buftype=nofile \| 
-		\exe "TabooRename [preview]" \| norm gg<cr>
+	command! Glow tabnew | exe 'r !glow # -w 120' | set ft=markdown |
+		\setlocal buftype=nofile | exe "TabooRename [preview]" | 1
 endif
-iab -] - [ ]
 if executable("prettier")
 	command! -range Tabulate :<line1>,<line2>!prettier --parser markdown
 endif
