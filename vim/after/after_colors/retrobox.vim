@@ -1,20 +1,18 @@
 hi clear Boolean
 hi clear Constant
 hi clear Delimiter
+hi clear Identifier
 hi clear Label
 hi clear Macro
 hi clear Number
-hi clear PreProc
-hi! link Operator Normal
 hi! link Include Statement
+hi! link Operator Normal
+hi! link PreProc Function
+hi! link Special Function
 hi! link SpecialChar Special
-hi! link Special Identifier
+hi! link String Type
 
 if &background == "dark"
+	" Gruvbox background color
 	hi Normal guifg=#ebdbb2 guibg=#282828
-	hi String ctermfg=214 guifg=#fabd2f
-	hi Identifier cterm=bold ctermfg=142 gui=bold guifg=#b8bb26
-else
-	hi String ctermfg=172 guifg=#b57614
-	hi Identifier cterm=bold ctermfg=64 gui=bold guifg=#79740e
 endif
