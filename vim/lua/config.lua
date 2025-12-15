@@ -215,30 +215,19 @@ require("nvim-treesitter.configs").setup({
 		},
 		swap = {
 			enable = true,
-			swap_next = {
-				["<leader>tta"] = "@parameter.inner",
-				["<leader>ttf"] = "@function.outer",
-				["<leader>tt/"] = "@conditional.outer",
-			},
-			swap_previous = {
-				["<leader>ttA"] = "@parameter.inner",
-				["<leader>ttF"] = "@function.outer",
-				["<leader>tt?"] = "@conditional.outer",
-			},
 		},
 		lsp_interop = {
 			enable = true,
-			peek_definition_code = {
-				["<leader>tk"] = "@function.outer",
-				["<leader>tK"] = "@class.outer",
-			},
 		},
 	},
 })
 
 require("fzf-lua").setup({ winopts = {
-	split = "belowright new",
-	preview = { layout = "horizontal" },
+	split = "belowright new|resize 20",
+	preview = {
+		horizontal = "right:50%",
+		layout = "horizontal",
+	},
 } })
 
 require("nvim-surround").setup()
@@ -253,5 +242,8 @@ require("CopilotChat").setup({
 		show_diff = { full_diff = true },
 		reset = { normal = "grR", insert = false },
 	},
-	window = { layout = "horizontal" },
+	window = {
+		layout = "horizontal",
+		height = 25,
+	},
 })

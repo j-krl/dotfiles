@@ -179,8 +179,6 @@ nnoremap <leader>l <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
-nnoremap <leader>tj <cmd>TSJJoin<cr>
-nnoremap <leader>ts <cmd>TSJSplit<cr>
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
 nnoremap <leader>x <cmd>xa<cr>
