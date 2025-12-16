@@ -283,6 +283,7 @@ command! PackList call PackInit()
 	\| echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
 command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
+command! Todo exe "pedit +1 " .. getcwd(-1, -1) .. "/TODO.md"|wincmd p"
 command! -count Tree exe "Scratch" | exe "r !tree" .. 
 	\(!<count> ? "" : " -L " .. <count>)
 
