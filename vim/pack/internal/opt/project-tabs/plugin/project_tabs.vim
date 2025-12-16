@@ -1,6 +1,5 @@
 command! -nargs=1 -complete=customlist,s:CompleteOpenProjFuzzy Prjopen call s:GoToProj(<f-args>)
 command! Prjonly call s:OnlyProj()
-command! Prjtodo exe "pedit +1 " .. getcwd(-1, -1) .. "/TODO.md"|wincmd p"
 
 function s:GoToProj(query) abort
 	let projs = []

@@ -164,10 +164,7 @@ noremap <space>Y "+Y
 nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
 nnoremap <leader>aa <cmd>Argappend<cr>
-nnoremap <leader>ap <cmd>Argprepend<cr>
 nnoremap <leader>ad <cmd>Argrm<cr>
-nnoremap <leader>ac <cmd>Argclear<cr>
-nnoremap <leader>aC <cmd>Arglclear<cr>
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
