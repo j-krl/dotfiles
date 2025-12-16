@@ -88,9 +88,13 @@ alias nvz="nvim -c 'cd' ~/.zshrc"
 alias nvd="nvim -c 'cd %:h' ~/dotfiles"
 
 alias k="kubectl"
-alias kn="k config set-context --current --namespace"
-alias kx="k config use-context"
-alias kl="k config get-contexts | sed -E 's/(^\*.*)/\x1b\[7m\1\x1b\[0m/'"
+alias kn="kubectl config set-context --current --namespace"
+alias kx="kubectl config use-context"
+alias kl="kubectl config view --minify -o json | jq -r '
+	[\"NAME\", \"NAMESPACE\"],
+	[.\"current-context\", .contexts[0].context.namespace // \"\"]
+	| @tsv' | column -t"
+alias kla='kubectl config get-contexts | sed -E "s/(^\*.*)/\x1b\[7m\1\x1b\[0m/"'
 
 alias ga="gcloud auth login --update-adc"
 alias batj="bat -l json"
