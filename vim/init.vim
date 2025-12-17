@@ -278,10 +278,11 @@ command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() 
 	\| echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
+command! RooterParent sil Rooter|tcd ..|echo "cwd: " .. getcwd(-1)
 command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
 command! Todo exe "pedit +1 " .. getcwd(-1, -1) .. "/TODO.md"|wincmd p"
 command! -count -bang Tree exe "Scratch" | exe "r !tree " ..
-	\(<bang>0 ? expand("#:h") : ".") .. \(!<count> ? "" : " -L " .. <count>)
+	\(<bang>0 ? expand("#:h") : ".") .. (!<count> ? "" : " -L " .. <count>)
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
