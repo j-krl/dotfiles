@@ -252,8 +252,8 @@ command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
 command! ClipBranch let @+ = system("git branch --show-current")
-command! -nargs=1 -bang ClipPath exe "let @+ = expand('%:" .. <q-args> ..
-	\(<bang>0 ? ":h" : "") .. "')"
+command! -nargs=? -bang ClipPath exe "let @+ = expand('%" .. 
+	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
 command! -count=1 CgdiffNext ccl|wincmd l|only|<count>cnext|cw|
 	\wincmd p|exe "Gvdiffsplit " .. g:compare_branch
 command! -count=1 CgdiffPrevious ccl|wincmd l|only|<count>cprev|cw|wincmd p|
