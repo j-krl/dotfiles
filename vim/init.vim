@@ -131,7 +131,6 @@ nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"
 	\<cr><cr>
 nnoremap yr+ :let @+ = @0<cr>
-nmap yr0 yr+
 nnoremap yrc :let @+ = system("git branch --show-current")<cr>
 " opposite of :h
 nnoremap yrt :let @+ = substitute(@+, "[^\/]*\/", "", "")<cr>
@@ -281,8 +280,8 @@ command! PackList call PackInit()
 command! PackStatus packadd minpac | call minpac#status()
 command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
 command! Todo exe "pedit +1 " .. getcwd(-1, -1) .. "/TODO.md"|wincmd p"
-command! -count Tree exe "Scratch" | exe "r !tree" .. 
-	\(!<count> ? "" : " -L " .. <count>)
+command! -count -bang Tree exe "Scratch" | exe "r !tree " ..
+	\(<bang>0 ? expand("#:h") : ".") .. \(!<count> ? "" : " -L " .. <count>)
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
