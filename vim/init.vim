@@ -184,7 +184,7 @@ nnoremap <leader>zf mZ<cmd>FzfLua grep<cr><cr>
 nnoremap <leader>zs mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
 nnoremap <leader>zr mZ<cmd>FzfLua lsp_references<cr>
 nnoremap <leader>z- mZ<cmd>FzfLua resume<cr>
-nnoremap <expr> <leader><leader> "<cmd>" .. v:count .. "Argu<cr>"
+nnoremap <expr> <leader><leader> "<cmd>" .. v:count .. "Argu<cr><esc>"
 
 xnoremap <silent> il g_o^
 xnoremap <silent> al $o0
