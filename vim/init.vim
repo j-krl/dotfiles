@@ -214,7 +214,6 @@ inoremap <C-Space> <C-X><C-O>
 inoremap <c-bs> <bs>
 
 cnoremap <C-H> <C-R>=expand("%:p:h")<cr>/
-cnoremap <C-L> <C-R>=getline(".")<cr>
 cnoremap <C-space> .*
 cnoremap <A-9> \(
 cnoremap <A-0> \)
@@ -281,8 +280,7 @@ command! PackStatus packadd minpac | call minpac#status()
 command! RooterParent sil Rooter|tcd ..|echo "cwd: " .. getcwd(-1)
 command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
 command! Todo exe "pedit +1 " .. getcwd(-1, -1) .. "/TODO.md"|wincmd p"
-command! -count -bang Tree exe "Scratch" | exe "r !tree " ..
-	\(<bang>0 ? expand("#:h") : ".") .. (!<count> ? "" : " -L " .. <count>)
+command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " .. <q-args>
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
