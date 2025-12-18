@@ -115,6 +115,10 @@ ghclone() {
 	git clone "https://github.com/$1.git"
 }
 
+kj() {
+	eval "kubectl $* -o json | bat -l json"
+}
+
 # VARS
 
 HISTSIZE=9999
