@@ -167,6 +167,10 @@ nnoremap <leader>ad <cmd>Argrm<cr>
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
+nnoremap <leader>d% <cmd>tcd %:h<cr>
+nnoremap <leader>dr <cmd>Rooter<cr>
+nnoremap <leader>dR <cmd>sil Rooter<bar>tcd ..<bar>echo "cwd: " .. getcwd(-1)<cr>
+nnoremap <leader>dp <cmd>tcd ..<cr>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>g :<C-U>grep ''<left>
@@ -277,7 +281,6 @@ command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() 
 	\| echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
-command! RooterParent sil Rooter|tcd ..|echo "cwd: " .. getcwd(-1)
 command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
 command! Todo exe "pedit +1 " .. getcwd(-1, -1) .. "/TODO.md"|wincmd p"
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " .. <q-args>
