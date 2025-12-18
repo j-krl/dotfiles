@@ -257,6 +257,7 @@ command! Clen echo len(getqflist())
 command! ClipBranch let @+ = system("git branch --show-current")
 command! -nargs=? -bang ClipPath exe "let @+ = expand('%" .. 
 	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
+command! ClipCwd let @+ = getcwd(-1)
 command! -count=1 CgdiffNext ccl|wincmd l|only|<count>cnext|cw|
 	\wincmd p|exe "Gvdiffsplit " .. g:compare_branch
 command! -count=1 CgdiffPrevious ccl|wincmd l|only|<count>cprev|cw|wincmd p|
