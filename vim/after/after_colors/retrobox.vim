@@ -11,9 +11,7 @@ hi! link Operator Normal
 hi! link PreProc Function
 hi! link Special Function
 hi! link SpecialChar Special
-hi! link String Type
 hi! link Structure Statement
-hi! link @variable Normal
 
 if &background == "dark"
 	hi Normal guifg=#ebdbb2 guibg=#282828

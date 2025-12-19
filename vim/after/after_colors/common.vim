@@ -2,9 +2,12 @@ hi Comment guifg=grey50
 hi TablineSel gui=REVERSE
 hi TreesitterContextBottom gui=underline guisp=Grey
 
-if !has("nvim")
-	hi! link VertSplit StatusLineNC
-endif
+" Treesitter
+hi! link @function.macro Function
+hi! link @variable Normal
+hi! link @variable.member Normal
+" Languages
+ hi! link @property.lua Normal
 
 if &background == "dark"
 	hi QuickScopeSecondary guifg=orange
