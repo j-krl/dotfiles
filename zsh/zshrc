@@ -119,6 +119,10 @@ kj() {
 	eval "kubectl $* -o json | bat -l json"
 }
 
+ky() {
+	eval "kubectl $* -o yaml | bat -l yaml"
+}
+
 # VARS
 
 HISTSIZE=9999
