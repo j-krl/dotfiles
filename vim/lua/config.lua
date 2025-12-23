@@ -222,28 +222,34 @@ require("nvim-treesitter.configs").setup({
 	},
 })
 
-require("fzf-lua").setup({ winopts = {
-	split = "belowright new|resize 20",
-	preview = {
-		horizontal = "right:50%",
-		layout = "horizontal",
+require("fzf-lua").setup({
+	winopts = {
+		split = "belowright new|resize 20",
+		preview = {
+			horizontal = "right:50%",
+			layout = "horizontal",
+		},
 	},
-} })
+})
 
 require("nvim-surround").setup()
 
 require("treesj").setup({ use_default_keymaps = false })
 
-require("CopilotChat").setup({
-	mappings = {
-		complete = { insert = "<S-tab>" },
-		submit_prompt = { insert = "<C-y>" },
-		accept_diff = { normal = "yd", insert = false },
-		show_diff = { full_diff = true },
-		reset = { normal = "grR", insert = false },
-	},
-	window = {
-		layout = "horizontal",
-		height = 25,
+require("codecompanion").setup({
+	display = {
+		chat = {
+			show_settings = true,
+			show_header_separator = true,
+			auto_scroll = true,
+			opts = {
+				completion_provider = "default",
+			},
+			window = {
+				height = 0.5,
+				sticky = true,
+				layout = "horizontal",
+			}
+		},
 	},
 })

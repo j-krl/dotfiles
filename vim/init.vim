@@ -17,10 +17,10 @@ function! PackInit() abort
 	call minpac#add('tpope/vim-rhubarb')
 	call minpac#add('tpope/vim-sleuth')
 	call minpac#add('unblevable/quick-scope')
-	" Copilot
+	" AI
 	call minpac#add('github/copilot.vim')
 	call minpac#add('nvim-lua/plenary.nvim')
-	call minpac#add('CopilotC-Nvim/CopilotChat.nvim')
+	call minpac#add('olimorris/codecompanion.nvim')
 	" Treesitter dependent
 	call minpac#add('nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'})
 	call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'master'})
@@ -140,7 +140,7 @@ nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 nnoremap <bs> <C-^>
 nnoremap <F2> <C-L><cmd>args<cr>
 nnoremap <F3> <cmd>FmtBuf<cr>
-noremap <F9> <cmd>CopilotChatToggle<cr>
+nnoremap <F9> <cmd>CodeCompanionChat toggle<cr>
 noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
 noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
 noremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
@@ -319,10 +319,6 @@ autocmd vimrc WinEnter * if &buftype ==# 'terminal' && mode() !=# 't' |
 autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
 	\'call writefile(["set background=" .. &background, "colorscheme " ..
 	\g:colors_name], v:this_session, "a")' | endif
-autocmd vimrc VimLeave * if !empty(v:this_session) | exe "CopilotChatSave " ..
-	\slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
-autocmd vimrc VimEnter * if !empty(v:this_session) | exe "CopilotChatLoad " ..
-	\slice(substitute(getcwd(-1, -1), '/', '-', 'g'), 1) | endif
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 
