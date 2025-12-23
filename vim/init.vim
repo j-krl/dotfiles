@@ -190,6 +190,7 @@ nnoremap <leader>zr mZ<cmd>FzfLua lsp_references<cr>
 nnoremap <leader>z- mZ<cmd>FzfLua resume<cr>
 nnoremap <expr> <leader><leader> "<cmd>" .. v:count .. "Argu<cr><esc>"
 
+xnoremap <F9> :CodeCompanionChat<cr>
 xnoremap <silent> il g_o^
 xnoremap <silent> al $o0
 xnoremap <expr> <A-j> ":m '>+" .. v:count1 .. "<CR>gv=gv"
