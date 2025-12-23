@@ -237,6 +237,23 @@ require("nvim-surround").setup()
 require("treesj").setup({ use_default_keymaps = false })
 
 require("codecompanion").setup({
+	interactions = {
+		chat = {
+			keymaps = {
+				clear = {
+					modes = { n = "gR" },
+				},
+				close = {
+					modes = { n = "q" },
+				},
+				stop = {
+					modes = { n = "<esc>" },
+				},
+				next_chat = false,
+				previous_chat = false,
+			},
+		},
+	},
 	display = {
 		chat = {
 			show_settings = true,
