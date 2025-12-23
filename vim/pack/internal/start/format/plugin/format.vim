@@ -1,4 +1,4 @@
-let g:format_on_save = 0
+let g:format_on_save = get(g:, 'format_on_save', 0)
 
 command! FmtBuf call s:FormatBuf()
 command! -bang Wfmt call FormatSave(<bang>1, v:false)

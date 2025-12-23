@@ -249,7 +249,7 @@ require("codecompanion").setup({
 				height = 0.5,
 				sticky = true,
 				layout = "horizontal",
-			}
+			},
 		},
 	},
 })
