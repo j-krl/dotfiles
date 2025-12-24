@@ -9,7 +9,6 @@ function! PackInit() abort
 	call minpac#add('jeetsukumaran/vim-indentwise')
 	call minpac#add('justinmk/vim-dirvish')
 	call minpac#add('kylechui/nvim-surround')
-	call minpac#add('ludovicchabant/vim-gutentags')
 	call minpac#add('neovim/nvim-lspconfig')
 	call minpac#add('tpope/vim-fugitive')
 	call minpac#add('tpope/vim-obsession')
@@ -100,19 +99,6 @@ let g:format_on_save = 1
 let g:compare_branch = "master"
 let g:rooter_cd_cmd = 'tcd'
 let g:rooter_manual_only = 1
-let g:gutentags_add_default_project_roots = 0
-let g:gutentags_project_root = ['.git', 'main.tf'] " TODO: need better tf root
-let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
-let g:gutentags_generate_on_new = 1
-let g:gutentags_generate_on_missing = 1
-let g:gutentags_generate_on_write = 1
-let g:gutentags_generate_on_empty_buffer = 0
-let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 
-	\'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', 
-	\'*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', 
-	\'*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', 
-	\'*.css', '*.scss', '*.swp', '.terraform'
-	\]
 
 """"""""""""
 " Mappings "
