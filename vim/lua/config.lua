@@ -241,7 +241,7 @@ require("codecompanion").setup({
 		chat = {
 			keymaps = {
 				clear = {
-					modes = { n = "gR" },
+					modes = { n = "gQ" },
 				},
 				close = {
 					modes = { n = "q" },
