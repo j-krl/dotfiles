@@ -249,8 +249,12 @@ require("codecompanion").setup({
 				stop = {
 					modes = { n = "<esc>" },
 				},
-				next_chat = false,
-				previous_chat = false,
+				next_chat = {
+					modes = { n = "gn" },
+				},
+				previous_chat = {
+					modes = { n = "gp" },
+				},
 			},
 		},
 	},
