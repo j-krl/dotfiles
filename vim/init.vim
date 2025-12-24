@@ -3,7 +3,6 @@ function! PackInit() abort
 	call minpac#init()
 	call minpac#add('k-takata/minpac', {'type': 'opt'})
 	call minpac#add('airblade/vim-rooter')
-	call minpac#add('christoomey/vim-tmux-navigator')
 	call minpac#add('gcmt/taboo.vim')
 	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	call minpac#add('ibhagwan/fzf-lua')
@@ -141,10 +140,6 @@ nnoremap <bs> <C-^>
 nnoremap <F2> <C-L><cmd>args<cr>
 nnoremap <F3> <cmd>FmtBuf<cr>
 nnoremap <F9> <cmd>CodeCompanionChat toggle<cr>
-noremap <silent> <C-a>h <cmd>TmuxNavigateLeft<cr>
-noremap <silent> <C-a>j <cmd>TmuxNavigateDown<cr>
-noremap <silent> <C-a>k <cmd>TmuxNavigateUp<cr>
-noremap <silent> <C-a>l <cmd>TmuxNavigateRight<cr>
 " Join lines like 'J' without space between
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. 
 	\(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
