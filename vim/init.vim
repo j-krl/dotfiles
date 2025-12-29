@@ -240,13 +240,14 @@ command! ClipBranch let @+ = system("git branch --show-current")
 command! -nargs=? -bang ClipPath exe "let @+ = expand('%" .. 
 	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
 command! ClipCwd let @+ = getcwd(-1)
-command! -count=1 CgdiffNext ccl|wincmd l|only|<count>cnext|cw|
+command! Gcurr !git branch --show-current
+command! -count=1 Gnextdiff ccl|wincmd l|only|<count>cnext|cw|
 	\wincmd p|exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 CgdiffPrevious ccl|wincmd l|only|<count>cprev|cw|wincmd p|
+command! -count=1 Gprevdiff ccl|wincmd l|only|<count>cprev|cw|wincmd p|
 	\exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 CgdiffLast ccl|wincmd l|only|clast|cw|wincmd p|
+command! -count=1 Glastdiff ccl|wincmd l|only|clast|cw|wincmd p|
 	\exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 CgdiffFirst ccl|wincmd l|only|cfirst|cw|wincmd p|
+command! -count=1 Gfirstdiff ccl|wincmd l|only|cfirst|cw|wincmd p|
 	\exe "Gvdiffsplit " .. g:compare_branch
 command! -nargs=? Gcompbranch let g:compare_branch = <q-args>
 command! Grediff windo diffthis\|windo norm zM
