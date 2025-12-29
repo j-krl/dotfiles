@@ -1,8 +1,8 @@
 let g:format_on_save = get(g:, 'format_on_save', 0)
 
 command! FmtBuf call s:FormatBuf()
-command! -bang Wfmt call FormatSave(<bang>1, v:false)
-command! -bang Wafmt call FormatSave(<bang>1, v:true)
+command! -bang Wfmt call s:FormatSave(<bang>1, v:false)
+command! -bang Wafmt call s:FormatSave(<bang>1, v:true)
 command! -bang FmtSaveSet let g:format_on_save = <bang>0
 
 augroup format
