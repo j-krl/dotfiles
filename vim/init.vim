@@ -237,7 +237,7 @@ command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
 command! ClipBranch let @+ = system("git branch --show-current")
-command! -nargs=? -bang ClipPath exe "let @+ = expand('%" .. 
+command! -nargs=? -bang ClipPath exe "let @+ = expand('%:p" .. 
 	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
 command! ClipCwd let @+ = getcwd(-1)
 command! Gcurr !git branch --show-current
