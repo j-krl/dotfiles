@@ -116,11 +116,11 @@ ghclone() {
 }
 
 kj() {
-	eval "kubectl $* -o json | bat -l json"
+	bat -l json < <(eval "kubectl $* -o json")
 }
 
 ky() {
-	eval "kubectl $* -o yaml | bat -l yaml"
+	bat -l yaml < <(eval "kubectl $* -o yaml")
 }
 
 # VARS
