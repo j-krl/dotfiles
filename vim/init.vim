@@ -296,6 +296,8 @@ augroup vimrc
 	autocmd!
 augroup END
 
+autocmd vimrc QuickFixCmdPost [^l]* exe "norm mG"|cwindow
+autocmd vimrc QuickFixCmdPost l* exe "norm mG"|lwindow
 autocmd vimrc TabNewEntered * argl|%argd
 autocmd vimrc WinEnter * if &buftype ==# 'terminal' && mode() !=# 't' |
 	\startinsert | endif
