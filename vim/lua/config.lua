@@ -241,10 +241,10 @@ require("codecompanion").setup({
 		chat = {
 			keymaps = {
 				clear = {
-					modes = { n = "gQ" },
+					modes = { n = "gq" },
 				},
 				close = {
-					modes = { n = "q" },
+					modes = { n = "gQ" },
 				},
 				stop = {
 					modes = { n = "<esc>" },
