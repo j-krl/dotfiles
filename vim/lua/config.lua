@@ -250,10 +250,10 @@ require("codecompanion").setup({
 					modes = { n = "<esc>" },
 				},
 				next_chat = {
-					modes = { n = "gn" },
+					modes = { n = "gN" },
 				},
 				previous_chat = {
-					modes = { n = "gp" },
+					modes = { n = "gP" },
 				},
 			},
 		},

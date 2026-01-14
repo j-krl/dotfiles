@@ -158,6 +158,7 @@ nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
 nnoremap <leader>l <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
+nnoremap <leader>o <cmd>browse oldfiles<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
