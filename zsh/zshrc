@@ -105,11 +105,11 @@ alias null="/dev/null"
 
 # FUNCTIONS
 
-difftool() {
-	nvim -c "let g:taboo_tab_format = \" %N %R \"" -c "Git difftool -y $1" \
-		-c "set showtabline=2" -c "set tabclose=" -c "exe 'cd ' .. getcwd()" \
-		-c "1tabcl"
-}
+# difftool() {
+# 	nvim -c "let g:taboo_tab_format = \" %N %R \"" -c "Git difftool -y $1" \
+# 		-c "set showtabline=2" -c "set tabclose=" -c "exe 'cd ' .. getcwd()" \
+# 		-c "1tabcl"
+# }
 
 ghclone() {
 	git clone "https://github.com/$1.git"

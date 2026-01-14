@@ -3,7 +3,6 @@ function! PackInit() abort
 	call minpac#init()
 	call minpac#add('k-takata/minpac', {'type': 'opt'})
 	call minpac#add('airblade/vim-rooter')
-	call minpac#add('gcmt/taboo.vim')
 	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	call minpac#add('ibhagwan/fzf-lua')
 	call minpac#add('jeetsukumaran/vim-indentwise')
@@ -11,7 +10,6 @@ function! PackInit() abort
 	call minpac#add('kylechui/nvim-surround')
 	call minpac#add('neovim/nvim-lspconfig')
 	call minpac#add('tpope/vim-fugitive')
-	call minpac#add('tpope/vim-obsession')
 	call minpac#add('tpope/vim-rhubarb')
 	call minpac#add('tpope/vim-sleuth')
 	call minpac#add('unblevable/quick-scope')
@@ -40,8 +38,6 @@ set termguicolors
 set wildmenu
 set wildmode=noselect:longest:lastused,full
 set nofixeol
-" Required for taboo to persist names in sessions
-set sessionoptions+=globals
 set completeopt=menuone,popup
 set foldopen-=search
 set list
@@ -54,24 +50,9 @@ set tabclose=left
 set guicursor=n-v-c-sm:block,i-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor
 set spellcapcheck=
 set fillchars=diff:\
-" Add session status and arglist position to statusline
-set statusline=%{ObsessionStatus()}\ %<%f\ \ %<%{CwdStatusline()}\ \ %{FugitiveStatuslineTruncRight()}\ %h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
+set statusline=%<%f\ \ %{FugitiveStatusline()}\ %h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
 let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, 
 	\stdpath("data") .. "/site,", "", "g")
-
-function! FugitiveStatuslineTruncRight() abort
-	let status = FugitiveStatusline()
-	if strwidth(status) > 20
-		return strpart(status, 0, 20) .. ">"
-	else
-		return status
-	endif
-endfunction
-
-function! CwdStatusline() abort
-	let cwd = fnamemodify(getcwd(), ":t")
-	return '(cwd: ' .. cwd .. ')'
-endfunction
 
 """ Plugin options """
 " Sort directories above
@@ -92,13 +73,10 @@ let g:copilot_filetypes = {
 		\'copilot-chat': v:false
 	\}
 let g:tmux_navigator_no_mappings = 1
-let g:taboo_tab_format = " %N %P "
-let g:taboo_renamed_tab_format = " %N %l "
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
 let g:compare_branch = "master"
-let g:rooter_cd_cmd = 'tcd'
-let g:rooter_manual_only = 1
+let g:rooter_change_directory_for_non_project_files = 'current'
 
 """"""""""""
 " Mappings "
@@ -117,8 +95,6 @@ nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"
 	\<cr><cr>
 nnoremap yr+ :let @+ = @0<cr>
 nnoremap yrc :let @+ = system("git branch --show-current")<cr>
-" opposite of :h
-nnoremap yrt :let @+ = substitute(@+, "[^\/]*\/", "", "")<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
@@ -143,36 +119,27 @@ noremap <space>y "+y
 noremap <space>Y "+Y
 nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
-nnoremap <leader>aa <cmd>Argappend<cr>
-nnoremap <leader>ad <cmd>Argrm<cr>
+nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
-nnoremap <leader>d% <cmd>tcd %:h<cr>
-nnoremap <leader>dr <cmd>Rooter<cr>
-nnoremap <leader>dR <cmd>sil Rooter<bar>tcd ..<bar>echo "cwd: " .. getcwd(-1)<cr>
-nnoremap <leader>dp <cmd>tcd ..<cr>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>g :<C-U>grep ''<left>
-nnoremap <leader>G :<C-U>grep <C-R><C-W><cr>
+nnoremap <leader>G :<C-U>grep '' %:p:h<tab><S-left><left><left>
 nnoremap <leader>l <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>o <cmd>browse oldfiles<cr>
+nnoremap <leader>O <cmd>FzfLua oldfiles<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <leader>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
 nnoremap <leader>x <cmd>xa<cr>
-nnoremap <leader>zz mZ<cmd>FzfLua live_grep_native<cr>
-nnoremap <leader>zc mZ<cmd>FzfLua grep_cword<cr>
-nnoremap <leader>zf mZ<cmd>FzfLua grep<cr><cr>
-nnoremap <leader>zs mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
-nnoremap <leader>zr mZ<cmd>FzfLua lsp_references<cr>
-nnoremap <leader>z- mZ<cmd>FzfLua resume<cr>
-nnoremap <expr> <leader><leader> "<cmd>" .. v:count .. "Argu<cr><esc>"
+nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
+nnoremap <leader>Z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd = vim.fn.expand("%:h:.") })<cr>
 
-xnoremap <F9> :CodeCompanionChat<cr>
+xnoremap <F9> <cmd>CodeCompanionChat Add<cr>
 xnoremap <silent> il g_o^
 xnoremap <silent> al $o0
 xnoremap <expr> <A-j> ":m '>+" .. v:count1 .. "<CR>gv=gv"
@@ -302,9 +269,6 @@ autocmd vimrc QuickFixCmdPost l* exe "norm mG"|lwindow
 autocmd vimrc TabNewEntered * argl|%argd
 autocmd vimrc WinEnter * if &buftype ==# 'terminal' && mode() !=# 't' |
 	\startinsert | endif
-autocmd vimrc VimLeave * if !empty(v:this_session) | exe 
-	\'call writefile(["set background=" .. &background, "colorscheme " ..
-	\g:colors_name], v:this_session, "a")' | endif
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
 
