@@ -119,10 +119,13 @@ noremap <space>y "+y
 noremap <space>Y "+Y
 nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
+nnoremap <leader>% <cmd>cd %:h<cr>
 nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
+nnoremap <leader>d :<C-U>cd ../<tab>
+nnoremap <leader>D :<C-U>Zpcd<space><tab>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>g :<C-U>grep ''<left>
@@ -199,15 +202,12 @@ endfunction
 " Commands "
 """"""""""""
 
-command! Bonly %bd|e#|bd#|norm `"
-command! Bdelete e#|bd#
-command! Bactive call s:CloseHiddenBuffers()
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
-command! ClipBranch let @+ = system("git branch --show-current")
+command! Ybranch let @+ = system("git branch --show-current")
 command! -nargs=? -bang ClipPath exe "let @+ = expand('%:p" .. 
 	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
-command! ClipCwd let @+ = getcwd(-1)
+command! Ycwd let @+ = getcwd(-1)
 command! Gcurr !git branch --show-current
 command! -count=1 Gnextdiff ccl|wincmd l|only|<count>cnext|cw|
 	\wincmd p|exe "Gvdiffsplit " .. g:compare_branch
@@ -234,8 +234,11 @@ command! PackList call PackInit()
 	\| echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
 command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
-command! Todo exe "pedit +1 " .. getcwd(-1, -1) .. "/TODO.md"|wincmd p"
-command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " .. <q-args>
+command! Todo exe "pedit +1 " .. getcwd() .. "/../TODO.md"|wincmd p"
+command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
+	\<q-args>
+command! -nargs=1 -complete=customlist,s:CompleteFuzzyParentCd Zpcd call
+	\ s:FuzzyParentCd(<f-args>)
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
@@ -244,16 +247,36 @@ function! s:FuzzyFilterQf(...) abort
 		\"/", "items": filtered_items})
 endfunction
 
-function! s:CloseHiddenBuffers()
-	let open_buffers = []
-	for i in range(tabpagenr('$'))
-		call extend(open_buffers, tabpagebuflist(i + 1))
-	endfor
-	for num in range(1, bufnr("$") + 1)
-		if buflisted(num) && index(open_buffers, num) == -1
-			exec "bdelete ".num
+function s:FuzzyParentCd(query) abort
+	let cwd = getcwd()
+	let dirs = []
+	for f in globpath(cwd .. "/../", "*", 0, 1)
+		let tail = fnamemodify(f, ":t")
+		if isdirectory(f)
+			call add(dirs, tail)
 		endif
 	endfor
+	let matchlist = matchfuzzy(dirs, a:query)
+	if len(matchlist) == 0
+		echoerr "No matching dirs"
+		return
+	endif
+	exe "cd " .. "../" .. matchlist[0]
+endfunction
+
+function s:CompleteFuzzyParentCd(ArgLead, CmdLine, CursorPos) abort
+	let dirs = []
+	for f in globpath(getcwd() .. "/../", "*", 0, 1)
+		let tail = fnamemodify(f, ":t")
+		if isdirectory(f)
+			call add(dirs, tail)
+		endif
+	endfor
+	if a:ArgLead == ""
+		return dirs
+	endif
+	let matchlist = matchfuzzy(dirs, a:ArgLead)
+	return matchlist
 endfunction
 
 """"""""""""""""
