@@ -22,10 +22,8 @@
 	force-amend = "!git add -A && git commit --amend --no-edit && git push --force"
 	wip = "!f() { git add -A && git commit -m \"wip: $1\"; }; f"
 	nogrep-sha = "!f() { git log --grep=\"$1\" --invert-grep -n 1 --format=%h; }; f"
-	reset-wip = "!git reset $(git nogrep-sha \"^wip\")"
-	diff-wip = "!git diff $(git nogrep-sha \"^wip\")"
-	reset-aider = "!git reset $(git nogrep-sha \"^aider\")"
-	diff-aider = "!git diff $(git nogrep-sha \"^aider\")"
 	ghclone ="!f() { git clone https://github.com/\"$1\".git; }; f"
+	dcheckout = "!f() { git checkout \"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\"; }; f"
+	dfetch = "!f() { git pull origin \"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\":\"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\"; }; f"
 [pull]
 	ff = only
