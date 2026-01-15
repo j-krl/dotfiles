@@ -50,9 +50,14 @@ set tabclose=left
 set guicursor=n-v-c-sm:block,i-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor
 set spellcapcheck=
 set fillchars=diff:\
-set statusline=%<%f\ \ %{FugitiveStatusline()}\ %h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
+set statusline=%<%f\ \ %<%{CwdStatusline()}\ \ %{FugitiveStatusline()}\ %h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
 let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, 
 	\stdpath("data") .. "/site,", "", "g")
+
+function! CwdStatusline() abort
+	let cwd = fnamemodify(getcwd(), ":t")
+	return '(cwd: ' .. cwd .. ')'
+endfunction
 
 """ Plugin options """
 " Sort directories above
@@ -77,6 +82,7 @@ let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
 let g:compare_branch = "master"
 let g:rooter_change_directory_for_non_project_files = 'current'
+let g:rooter_silent_chdir = 1
 
 """"""""""""
 " Mappings "
@@ -119,21 +125,18 @@ noremap <space>y "+y
 noremap <space>Y "+Y
 nnoremap <space>s a<cr><esc>k$
 nnoremap <space>S i<cr><esc>k$
-nnoremap <leader>% <cmd>cd %:h<cr>
 nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
-nnoremap <leader>d :<C-U>cd ../<tab>
-nnoremap <leader>D :<C-U>Zpcd<space><tab>
+nnoremap <leader>d :<C-U>Zpcd<space><tab>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep '' %:p:h<tab><S-left><left><left>
 nnoremap <leader>l <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
-nnoremap <leader>o <cmd>browse oldfiles<cr>
-nnoremap <leader>O <cmd>FzfLua oldfiles<cr>
+nnoremap <leader>o <cmd>FzfLua oldfiles<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
@@ -237,8 +240,8 @@ command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
 command! Todo exe "pedit +1 " .. getcwd() .. "/../TODO.md"|wincmd p"
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
-command! -nargs=1 -complete=customlist,s:CompleteFuzzyParentCd Zpcd call
-	\ s:FuzzyParentCd(<f-args>)
+command! -bang -nargs=1 -complete=customlist,s:CompleteFuzzyParentCd Zpcd call
+	\ s:FuzzyParentCd(<f-args>, <bang>1)
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
@@ -247,7 +250,7 @@ function! s:FuzzyFilterQf(...) abort
 		\"/", "items": filtered_items})
 endfunction
 
-function s:FuzzyParentCd(query) abort
+function s:FuzzyParentCd(query, edit) abort
 	let cwd = getcwd()
 	let dirs = []
 	for f in globpath(cwd .. "/../", "*", 0, 1)
@@ -262,6 +265,9 @@ function s:FuzzyParentCd(query) abort
 		return
 	endif
 	exe "cd " .. "../" .. matchlist[0]
+	if a:edit
+		exe "e " .. getcwd()
+	endif
 endfunction
 
 function s:CompleteFuzzyParentCd(ArgLead, CmdLine, CursorPos) abort
