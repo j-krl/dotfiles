@@ -1,11 +1,9 @@
 nnoremap <buffer> % :<C-U>e <C-R>%
 nnoremap <buffer> mk :<C-U>!mkdir -p <C-R>%
-nnoremap <buffer> dd :<C-U>!rm <C-R>=isdirectory(getline(".")) ? "-r " : ""<cr><C-R>=getline(".")<cr>
-nnoremap <buffer> cc :<C-U>!mv <C-R>=getline(".")<cr><space>
-nnoremap <buffer> cp :<C-U>!cp <C-R>=getline(".")<cr><space>
-nnoremap <buffer> mv :<C-U>!mv <C-R>=getline(".")<cr><space>
-nmap <buffer> <leader><cr> <cr><C-W>D
+nnoremap <buffer> rm :<C-U>!rm <C-R>=isdirectory(getline(".")) ? "-r " : ""<cr><C-R>=getline(".")<cr>
+nnoremap <buffer> cp :<C-U>!cp <C-R>=getline(".")<cr><space><C-R>=expand("%:p:h")<cr>/
+nnoremap <buffer> CP :<C-U>!cp <C-R>=getline(".")<cr><space>
+nnoremap <buffer> mv :<C-U>!mv <C-R>=getline(".")<cr><space><C-R>=expand("%:p:h")<cr>/
+nnoremap <buffer> MV :<C-U>!mv <C-R>=getline(".")<cr><space>
 nmap <buffer> - <Plug>(dirvish_up)
-nnoremap <silent> <buffer> a <cmd>call dirvish#open("rightbelow vsplit", 0)<cr>
-nnoremap <silent> <buffer> o <cmd>call dirvish#open("rightbelow split", 0)<cr>
 nnoremap <buffer> <C-L> <cmd>nohl\|Explore<cr>

@@ -105,7 +105,6 @@ nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 nnoremap <bs> <C-^>
-nnoremap <F2> <C-L><cmd>args<cr>
 nnoremap <F3> <cmd>FmtBuf<cr>
 nnoremap <F9> <cmd>CodeCompanionChat toggle<cr>
 " Join lines like 'J' without space between
@@ -136,7 +135,7 @@ nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep '' %:p:h<tab><S-left><left><left>
 nnoremap <leader>l <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
-nnoremap <leader>o <cmd>FzfLua oldfiles<cr>
+nnoremap <leader>o mZ<cmd>FzfLua oldfiles<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <expr> <leader>s v:count >= 1 ? ":s/" : ":%s/"
