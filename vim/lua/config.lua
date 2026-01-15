@@ -21,8 +21,8 @@ local lsps = {
 	"lua_ls",
 	"ruff",
 	"sqlls",
-	-- "terraformls",
-	"tofu_ls",
+	"terraformls",
+	-- "tofu_ls",
 	"ts_ls",
 	"vimls",
 }
