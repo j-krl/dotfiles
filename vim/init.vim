@@ -222,9 +222,9 @@ endfunction
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
 command! Ybranch let @+ = system("git branch --show-current")
-command! -nargs=? -bang ClipPath exe "let @+ = expand('%:p" .. 
+command! -nargs=? -bang Ypath exe "let @+ = expand('%:p" .. 
 	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
-command! Ycwd let @+ = getcwd(-1)
+command! Ycwd let @+ = getcwd()
 command! Gcurr !git branch --show-current
 command! -count=1 Gnextdiff ccl|wincmd l|only|<count>cnext|cw|
 	\wincmd p|exe "Gvdiffsplit " .. g:compare_branch
