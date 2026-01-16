@@ -122,7 +122,6 @@ nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 nnoremap <bs> <C-^>
 nnoremap <F3> <cmd>FmtBuf<cr>
-nnoremap <F9> <cmd>CodeCompanionChat toggle<cr>
 " Join lines like 'J' without space between
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. 
 	\(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
@@ -141,6 +140,8 @@ nnoremap <expr> <space>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
 noremap <space>y "+y
 noremap <space>Y "+Y
 nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
+nnoremap <leader>. <cmd>CodeCompanionChat Toggle<cr>
+nnoremap <leader>> <cmd>CodeCompanionChat<cr>
 nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
@@ -256,7 +257,7 @@ command! PackList call PackInit()
 	\| echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
 command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
-command! Todo exe "pedit +1 " .. getcwd() .. "/../TODO.md"|wincmd p"
+command! Todo exe "pedit + " .. getcwd() .. "/../TODO.md"|wincmd p"
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
 command! -bang -nargs=1 -complete=customlist,s:CompleteFuzzyParentCd Zpcd call
