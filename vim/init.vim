@@ -244,6 +244,7 @@ endfunction
 " Commands "
 """"""""""""
 
+command! Bonly %bd|e#|bd#|norm `"
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
 command! Ybranch let @+ = system("git branch --show-current")
