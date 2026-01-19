@@ -26,7 +26,6 @@ function! PackInit() abort
 endfunction
 packadd cfilter
 
-exe "source " .. stdpath("config") .. "/vimrc"
 lua require('config')
 
 """""""""""
@@ -35,12 +34,22 @@ lua require('config')
 
 colo default
 let g:maplocalleader = "_"
+set relativenumber
+set number
+set tabstop=4
+set shiftwidth=4
 set termguicolors
+set smartindent
 set wildmenu
 set wildmode=noselect:longest:lastused,full
+set cursorline
+set undofile
 set nofixeol
+set colorcolumn=80,88,120
+set signcolumn=yes
 set completeopt=menuone,popup
 set foldopen-=search
+set mouse=a
 set list
 set listchars=tab:\│\ ,precedes:>,extends:<
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
@@ -50,6 +59,9 @@ set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
 set tabclose=left
 set guicursor=n-v-c-sm:block,i-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor
 set spellcapcheck=
+set foldmethod=indent
+set foldlevel=100
+set foldlevelstart=101
 set fillchars=diff:\
 set statusline=%<%f\ \ %<%{CwdStatusline()}\ \ %{FugitiveStatusline()}\ %h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
 let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, 
@@ -202,6 +214,12 @@ cnoremap <A-.> \.
 cnoremap <A-/> \/
 cnoremap <A-"> \"
 cnoremap <A-'> \'
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+cnoremap <A-b> <S-Left>
+cnoremap <A-f> <S-Right>
 cabbrev FZ FzfLua
 
 tmap <C-a> <C-\><C-n><C-a>
