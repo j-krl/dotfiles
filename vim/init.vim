@@ -232,6 +232,8 @@ command! -nargs=? -bang Ypath exe "let @+ = expand('%:p" ..
 	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
 command! Ycwd let @+ = getcwd()
 command! Gcurr !git branch --show-current
+command! -count=1 Gcurrdiff ccl|wincmd l|only|cc|cw|wincmd p|
+	\exe "Gvdiffsplit " .. g:compare_branch
 command! -count=1 Gnextdiff ccl|wincmd l|only|<count>cnext|cw|
 	\wincmd p|exe "Gvdiffsplit " .. g:compare_branch
 command! -count=1 Gprevdiff ccl|wincmd l|only|<count>cprev|cw|wincmd p|
