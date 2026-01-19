@@ -139,13 +139,14 @@ nnoremap <expr> <space>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <space>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
 noremap <space>y "+y
 noremap <space>Y "+Y
+nnoremap <expr> <leader><leader> ":<C-U>buffer <tab>" .. repeat("<tab>",
+	\v:count1) .. "<cr>"
 nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
 nnoremap <leader>. <cmd>CodeCompanionChat Toggle<cr>
 nnoremap <leader>> <cmd>CodeCompanionChat<cr>
-nnoremap <leader>b :<C-U>b<space><tab>
+nnoremap <leader>b :<C-U>b <tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
-nnoremap <leader>d :<C-U>Zpcd<space><tab>
 nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>g :<C-U>grep ''<left>
@@ -262,49 +263,12 @@ command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
 command! Todo exe "pedit + " .. getcwd() .. "/../TODO.md"|wincmd p"
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
-command! -bang -nargs=1 -complete=customlist,s:CompleteFuzzyParentCd Zpcd call
-	\ s:FuzzyParentCd(<f-args>, <bang>1)
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
 	let filtered_items = matchfuzzy(getqflist(), matchstr, {'key': 'text'})
 	call setqflist([], " ", {"nr": "$", "title": ":Cfuzzy /" .. matchstr .. 
 		\"/", "items": filtered_items})
-endfunction
-
-function s:FuzzyParentCd(query, edit) abort
-	let cwd = getcwd()
-	let dirs = []
-	for f in globpath(cwd .. "/../", "*", 0, 1)
-		let tail = fnamemodify(f, ":t")
-		if isdirectory(f)
-			call add(dirs, tail)
-		endif
-	endfor
-	let matchlist = matchfuzzy(dirs, a:query)
-	if len(matchlist) == 0
-		echoerr "No matching dirs"
-		return
-	endif
-	exe "cd " .. "../" .. matchlist[0]
-	if a:edit
-		exe "e " .. getcwd()
-	endif
-endfunction
-
-function s:CompleteFuzzyParentCd(ArgLead, CmdLine, CursorPos) abort
-	let dirs = []
-	for f in globpath(getcwd() .. "/../", "*", 0, 1)
-		let tail = fnamemodify(f, ":t")
-		if isdirectory(f)
-			call add(dirs, tail)
-		endif
-	endfor
-	if a:ArgLead == ""
-		return dirs
-	endif
-	let matchlist = matchfuzzy(dirs, a:ArgLead)
-	return matchlist
 endfunction
 
 """"""""""""""""
