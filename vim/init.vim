@@ -146,23 +146,23 @@ nnoremap <leader>b :<C-U>b<space><tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>d :<C-U>Zpcd<space><tab>
-nnoremap <leader>f% :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
-nnoremap <leader>ff :<C-U>find<space>
-nnoremap <leader>fp :<C-U>cd ..<cr>:<C-U>find<space>
-nnoremap <leader>g% :<C-U>grep '' %:p:h<tab><S-left><left><left>
-nnoremap <leader>gg :<C-U>grep ''<left>
-nnoremap <leader>gp :<C-U>grep '' ..<left><left><left><left>
+nnoremap <leader>f :<C-U>find<space>
+nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
+nnoremap <leader>g :<C-U>grep ''<left>
+nnoremap <leader>G :<C-U>grep '' %:p:h<tab><S-left><left><left>
 nnoremap <leader>l <cmd>lwindow<cr>
 nnoremap <leader>L <cmd>lclose<cr>
 nnoremap <leader>o mZ<cmd>FzfLua oldfiles<cr>
+nnoremap <leader>pf :<C-U>cd ..<cr>:<C-U>find<space>
+nnoremap <leader>pg :<C-U>grep '' ..<left><left><left><left>
+nnoremap <leader>pz mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
+	\vim.fn.getcwd() .. "/.." })<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>x <cmd>xa<cr>
-nnoremap <leader>z% mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
+nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
+nnoremap <leader>Z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
-nnoremap <leader>zp mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
-	\vim.fn.getcwd() .. "/.." })<cr>
-nnoremap <leader>zz mZ<cmd>FzfLua live_grep_native<cr>
 
 xnoremap <F9> <cmd>CodeCompanionChat Add<cr>
 xnoremap <silent> il g_o^
@@ -231,7 +231,7 @@ command! Ybranch let @+ = system("git branch --show-current")
 command! -nargs=? -bang Ypath exe "let @+ = expand('%:p" .. 
 	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
 command! Ycwd let @+ = getcwd()
-command! Gcurr !git branch --show-current
+command! Gbranch !git branch --show-current
 command! -count=1 Gcurrdiff ccl|wincmd l|only|cc|cw|wincmd p|
 	\exe "Gvdiffsplit " .. g:compare_branch
 command! -count=1 Gnextdiff ccl|wincmd l|only|<count>cnext|cw|
