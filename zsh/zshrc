@@ -115,12 +115,19 @@ ghclone() {
 	git clone "https://github.com/$1.git"
 }
 
+# Get kubectl output as json piped into bat pager with syntax highlighting
 kj() {
 	bat -l json < <(eval "kubectl $* -o json")
 }
 
+# Get kubectl output as yaml piped into bat pager with syntax highlighting
 ky() {
 	bat -l yaml < <(eval "kubectl $* -o yaml")
+}
+
+# Get prettified ripgrep output in bat pager
+rgb() {
+	bat < <(eval "rg --heading --line-number --color=always $*")
 }
 
 # VARS

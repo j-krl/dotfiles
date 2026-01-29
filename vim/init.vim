@@ -56,7 +56,6 @@ set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/bui
 set wildoptions=pum,tagfile
 set wildcharm=<tab>
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
-set tabclose=left
 set guicursor=n-v-c-sm:block,i-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor
 set spellcapcheck=
 set foldmethod=indent
