@@ -153,32 +153,40 @@ noremap <space>Y "+Y
 nnoremap <expr> <leader><leader> ":<C-U>buffer <tab>" .. repeat("<tab>",
 	\v:count1) .. "<cr>"
 nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
+nnoremap <leader>.f :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
+nnoremap <leader>.g :<C-U>grep '' %:p:h<tab><S-left><left><left>
+nnoremap <leader>.G :<C-U>grep '' %:p:h<tab><S-left><left><left><C-R><C-W><cr>
+nnoremap <leader>.z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
+	\vim.fn.expand("%:h:.") })<cr>
+nnoremap <leader>.Z mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
+	\vim.fn.expand("%:h:.") })<cr>
+"nnoremap <leader>.Z mZ<cmd>lua require("fzf-lua").grep({ cwd =
+"	\vim.fn.expand("%:h:.") })<cr><cr>
 nnoremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
 nnoremap <leader>A <cmd>CodeCompanionChat<cr>
 nnoremap <leader>b :<C-U>b <tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
-nnoremap <leader>f :<C-U>find<space>
-nnoremap <leader>F :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
-nnoremap <leader>g :<C-U>grep ''<left>
-nnoremap <leader>G :<C-U>grep '' %:p:h<tab><S-left><left><left>
-nnoremap <leader>l <cmd>lwindow<cr>
-nnoremap <leader>L <cmd>lclose<cr>
-nnoremap <leader>o mZ<cmd>FzfLua oldfiles<cr>
+nnoremap <leader>ff :<C-U>find<space>
+nnoremap <leader>fg :<C-U>grep ''<left>
+nnoremap <leader>fG :<C-U>grep ''<left><C-R><C-W><cr>
+nnoremap <leader>fz mZ<cmd>FzfLua live_grep_native<cr>
+nnoremap <leader>fZ mZ<cmd>FzfLua grep_cword<cr>
+"nnoremap <leader>fZ mZ<cmd>FzfLua grep<cr><cr>
 nnoremap <leader>pf :<C-U>cd ..<cr>:<C-U>find<space>
 nnoremap <leader>pg :<C-U>grep '' ..<left><left><left><left>
-nnoremap <leader>pw mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
-	\vim.fn.getcwd() .. "/.." })<cr>
+nnoremap <leader>pG :<C-U>grep '' ..<left><left><left><left><C-R><C-W><cr>
 nnoremap <leader>pz mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 	\vim.fn.getcwd() .. "/.." })<cr>
+nnoremap <leader>pZ mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
+	\vim.fn.getcwd() .. "/.." })<cr>
+"nnoremap <leader>pZ mZ<cmd>lua require("fzf-lua").grep({ cwd =
+"	\vim.fn.getcwd() .. "/.." })<cr><cr>
+nnoremap <leader>o mZ<cmd>FzfLua oldfiles<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
-nnoremap <leader>w mZ<cmd>FzfLua grep_cword<cr>
-nnoremap <leader>W mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
-	\vim.fn.expand("%:h:.") })<cr>
-nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
-nnoremap <leader>Z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
-	\vim.fn.expand("%:h:.") })<cr>
+nnoremap <leader>r mZ<cmd>FzfLua lsp_references<cr>
+nnoremap <leader>s mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
 
 xnoremap <leader>a <cmd>CodeCompanionChat Add<cr>
 xnoremap <silent> il g_o^
