@@ -153,8 +153,8 @@ noremap <space>Y "+Y
 nnoremap <expr> <leader><leader> ":<C-U>buffer <tab>" .. repeat("<tab>",
 	\v:count1) .. "<cr>"
 nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
-nnoremap <leader>. <cmd>CodeCompanionChat Toggle<cr>
-nnoremap <leader>> <cmd>CodeCompanionChat<cr>
+nnoremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
+nnoremap <leader>A <cmd>CodeCompanionChat<cr>
 nnoremap <leader>b :<C-U>b <tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
@@ -180,7 +180,7 @@ nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
 nnoremap <leader>Z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
 
-xnoremap <leader>. <cmd>CodeCompanionChat Add<cr>
+xnoremap <leader>a <cmd>CodeCompanionChat Add<cr>
 xnoremap <silent> il g_o^
 xnoremap <silent> al $o0
 xnoremap <expr> <A-j> ":m '>+" .. v:count1 .. "<CR>gv=gv"
