@@ -167,11 +167,11 @@ nnoremap <leader>A <cmd>CodeCompanionChat<cr>
 nnoremap <leader>b :<C-U>b <tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
-nnoremap <leader>ff :<C-U>find<space>
-nnoremap <leader>fg :<C-U>grep ''<left>
-nnoremap <leader>fG :<C-U>grep ''<left><C-R><C-W><cr>
-nnoremap <leader>fz mZ<cmd>FzfLua live_grep_native<cr>
-nnoremap <leader>fZ mZ<cmd>FzfLua grep_cword<cr>
+nnoremap <leader>f :<C-U>find<space>
+nnoremap <leader>g :<C-U>grep ''<left>
+nnoremap <leader>G :<C-U>grep ''<left><C-R><C-W><cr>
+nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
+nnoremap <leader>Z mZ<cmd>FzfLua grep_cword<cr>
 "nnoremap <leader>fZ mZ<cmd>FzfLua grep<cr><cr>
 nnoremap <leader>pf :<C-U>cd ..<cr>:<C-U>find<space>
 nnoremap <leader>pg :<C-U>grep '' ..<left><left><left><left>
