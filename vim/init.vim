@@ -150,8 +150,8 @@ nnoremap <expr> <space>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <space>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
 noremap <space>y "+y
 noremap <space>Y "+Y
-nnoremap <expr> <leader><leader> ":<C-U>buffer <tab>" .. repeat("<tab>",
-	\v:count1) .. "<cr>"
+nnoremap <expr> <leader><leader> "<cmd>call EditLastUsedBuf(" .. v:count1 ..
+	\")<cr>"
 nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
 nnoremap <leader>.f :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
 nnoremap <leader>.g :<C-U>grep '' %:p:h<tab><S-left><left><left>
@@ -237,6 +237,17 @@ tmap <C-a> <C-\><C-n><C-a>
 
 onoremap <silent> il :normal vil<CR>
 onoremap <silent> al :normal val<CR>
+
+function! EditLastUsedBuf(num) abort
+	let l = getbufinfo({"buflisted": 1})
+		\->filter({_, d -> !empty(d.name) && d.bufnr != bufnr("%")})
+		\->sort({d1, d2 -> d2.lastused - d1.lastused})
+	if len(l) < a:num
+		echoerr "Not enough buffers"
+		return
+	endif
+	exe 'buffer ' .. l[a:num - 1].bufnr
+endfunc
 
 function! NavDirFiles(count) abort
 	let curfile = expand("%:p")
