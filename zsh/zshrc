@@ -79,7 +79,6 @@ done
 alias soz="source ~/.zshrc"
 alias sov="source venv/bin/activate || source .venv/bin/activate"
 
-alias mux="cd && ~/dotfiles/tmux/tmux-session.sh"
 alias nvs="nvim -S Session.vim"
 alias vs="vim -S Session.vim"
 alias nvcd="nvim -c 'cd %:h'"
