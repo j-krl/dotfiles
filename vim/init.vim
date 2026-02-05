@@ -85,10 +85,7 @@ let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact",
 	\"typescript", "typescriptreact", "html", "css", "json", "vim", "lua",
 	\"go"]
 let g:copilot_no_tab_map = v:true
-let g:copilot_filetypes = {
-		\'markdown': v:false,
-		\'copilot-chat': v:false
-	\}
+let g:copilot_filetypes = {'markdown': v:false}
 let g:tmux_navigator_no_mappings = 1
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
@@ -334,4 +331,10 @@ function! s:SetJumpScopeMaps() abort
 	noremap <silent> <buffer> [1 m'<cmd>for i in range(v:count1)\|
 			\call search('^[^ \t}#/\")\-]', 'bW')\|endfor<cr>
 endfunction	
+
+"""""""""
+" Final "
+"""""""""
+
+colo unokai
 
