@@ -3,7 +3,6 @@ function! PackInit() abort
 	call minpac#init()
 	call minpac#add('k-takata/minpac', {'type': 'opt'})
 	call minpac#add('airblade/vim-rooter')
-	call minpac#add('iamcco/markdown-preview.nvim', {'do': 'packloadall! | call mkdp#util#install()'})
 	call minpac#add('ibhagwan/fzf-lua')
 	call minpac#add('jeetsukumaran/vim-indentwise')
 	call minpac#add('justinmk/vim-dirvish')
