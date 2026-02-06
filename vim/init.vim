@@ -209,8 +209,6 @@ cnoremap <A-"> \"
 cnoremap <A-'> \'
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
 cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
 cabbrev FZ FzfLua
