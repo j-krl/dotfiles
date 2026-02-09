@@ -280,7 +280,9 @@ command! PackClean call PackInit() | call minpac#clean()
 command! PackList call PackInit() 
 	\| echo join(sort(keys(minpac#getpluglist())), "\n")
 command! PackStatus packadd minpac | call minpac#status()
-command! Scratch new|set buftype=nofile|set noswapfile|set bufhidden=hide
+command! -nargs=1 Redir tabnew|set bt=nofile noswf bh=wipe|
+	\exe "0pu=execute(\'" .. <q-args> .. "\')"
+command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
 command! Todo exe "pedit + " .. getcwd() .. "/../TODO.md"|wincmd p"
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
