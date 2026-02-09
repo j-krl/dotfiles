@@ -226,8 +226,7 @@ require("fzf-lua").setup({
 	winopts = {
 		split = "belowright new|resize 20",
 		preview = {
-			horizontal = "right:50%",
-			layout = "horizontal",
+			hidden = true,
 		},
 	},
 })
