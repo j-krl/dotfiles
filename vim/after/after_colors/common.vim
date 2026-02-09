@@ -7,7 +7,8 @@ hi! link @function.macro Function
 hi! link @variable Normal
 hi! link @variable.member Normal
 " Languages
- hi! link @property.lua Normal
+hi! link @property.lua Normal
+hi! link @markup.heading markdownHeadingDelimiter
 
 if &background == "dark"
 	hi QuickScopeSecondary guifg=orange

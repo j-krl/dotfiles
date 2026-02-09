@@ -1,10 +1,10 @@
 hi clear Boolean
 hi clear Constant
-hi clear Delimiter
 hi clear Label
 hi clear Macro
 hi clear Number
 hi clear Type
+hi! link Delimiter Statement
 hi! link Identifier Function
 hi! link Include Statement
 hi! link Operator Normal
