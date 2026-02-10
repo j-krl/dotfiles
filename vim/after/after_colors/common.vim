@@ -9,6 +9,8 @@ hi! link @variable.member Normal
 " Languages
 hi! link @property.lua Normal
 hi! link @markup.heading markdownHeadingDelimiter
+hi! link @markup.raw.markdown_inline Special
+hi! link @markup.raw.block.markdown Special
 
 if &background == "dark"
 	hi QuickScopeSecondary guifg=orange
