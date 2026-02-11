@@ -12,6 +12,7 @@ function! PackInit() abort
 	call minpac#add('tpope/vim-rhubarb')
 	call minpac#add('tpope/vim-sleuth')
 	call minpac#add('unblevable/quick-scope')
+	call minpac#add('ludovicchabant/vim-gutentags')
 	" AI
 	call minpac#add('github/copilot.vim')
 	call minpac#add('nvim-lua/plenary.nvim')
@@ -90,6 +91,19 @@ let g:format_on_save = 1
 let g:compare_branch = "master"
 let g:rooter_change_directory_for_non_project_files = 'current'
 let g:rooter_silent_chdir = 1
+let g:gutentags_add_default_project_roots = 0
+let g:gutentags_project_root = ['.git', 'main.tf'] " TODO: need better tf root
+let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 0
+let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist', 
+	\'bin', 'node_modules', 'venv', '.venv', 'cache', 'docs', 'example', 
+	\'*.md', '*.lock', '*bundle*.js', '*build*.js', '.*rc*', '*.json', 
+	\'*.min.*', '*.bak', '*.zip', '*.pyc', '*.tmp', '*.cache', 'tags*', 
+	\'*.css', '*.scss', '*.swp', '.terraform'
+	\]
 
 """"""""""""
 " Mappings "
