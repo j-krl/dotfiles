@@ -297,9 +297,19 @@ command! PackStatus packadd minpac | call minpac#status()
 command! -nargs=1 Redir tabnew|set bt=nofile noswf bh=wipe|
 	\exe "0pu=execute(\'" .. <q-args> .. "\')"
 command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
-command! Todo exe "pedit + " .. getcwd() .. "/../TODO.md"|wincmd p"
+command! -bang Todo call OpenTodo(<bang>1)
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
+
+function! OpenTodo(preview) abort
+	let path = getcwd() .. "/../TODO.md"
+	if a:preview
+		exe "pedit + " .. path
+		wincmd p
+	else
+		exe "edit " .. path
+	endif
+endfunction
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
