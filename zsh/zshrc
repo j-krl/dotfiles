@@ -114,6 +114,10 @@ ghclone() {
 	git clone "https://github.com/$1.git"
 }
 
+kd() {
+	bat < <(eval "kubectl describe $*")
+}
+
 # Get kubectl output as json piped into bat pager with syntax highlighting
 kj() {
 	bat -l json < <(eval "kubectl $* -o json")
