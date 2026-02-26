@@ -132,6 +132,7 @@ require("nvim-treesitter.configs").setup({
 		"css",
 		"go",
 		"html",
+		"htmldjango",
 		"javascript",
 		"jinja",
 		"json",
