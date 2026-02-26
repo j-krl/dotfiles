@@ -9,6 +9,9 @@
 "
 " TODO: Mangles config if wildoptions=fuzzy is already set
 " TODO: Look into adding wildtrigger() once upgraded to nvim >= 0.12
+" TODO: make the FindFunc smart enough to understand that strings that start
+"		with any instances of `../` in sequence should search that many
+"		directories up from the current cwd.
 
 if !executable('fzf') || !executable('fd')
 	finish
