@@ -260,6 +260,7 @@ endfunction
 " Commands "
 """"""""""""
 
+command! Bdelete e#|bd#
 command! Bonly %bd|e#|bd#|norm `"
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
