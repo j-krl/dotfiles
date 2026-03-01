@@ -50,6 +50,7 @@ set completeopt=menuone,popup
 set foldopen-=search
 set mouse=a
 set list
+set noswapfile
 set listchars=tab:\│\ ,precedes:>,extends:<
 set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/build/*,**/__pycache__/*
 set wildoptions=pum,tagfile
