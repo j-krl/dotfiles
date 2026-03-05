@@ -247,7 +247,7 @@ endfunc
 function! NavDirFiles(count) abort
 	let curfile = expand("%:p")
 	let curdir = expand("%:p:h")
-	let files = systemlist("find " .. curdir .. "/ -type f -maxdepth 1")
+	let files = systemlist("find " .. curdir .. "/ -type f -maxdepth 1 | sort")
 	let filelen = len(files)
 	let curidx = index(files, curfile)
 	let newidx = float2nr(fmod(curidx + a:count, filelen))

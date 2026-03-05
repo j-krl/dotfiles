@@ -26,6 +26,7 @@ local lsps = {
 	-- "tofu_ls",
 	"ts_ls",
 	"vimls",
+	"yamlls",
 }
 
 for _, lsp in pairs(lsps) do
