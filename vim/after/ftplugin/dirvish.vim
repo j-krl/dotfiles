@@ -7,3 +7,6 @@ nnoremap <buffer> mv :<C-U>!mv <C-R>=getline(".")<cr><space><C-R>=expand("%:p:h"
 nnoremap <buffer> MV :<C-U>!mv <C-R>=getline(".")<cr><space>
 nmap <buffer> - <Plug>(dirvish_up)
 nnoremap <buffer> <C-L> <cmd>nohl\|Explore<cr>
+nnoremap <buffer> ]f <cmd>call NavSiblingDirs(v:count1)<cr>
+nnoremap <buffer> [f <cmd>call NavSiblingDirs(v:count1 * -1)<cr>
+

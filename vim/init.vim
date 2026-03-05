@@ -257,6 +257,20 @@ function! NavDirFiles(count) abort
 	exe "e " .. files[newidx]
 endfunction
 
+function! NavSiblingDirs(count) abort
+	let curdir = expand("%:p:h")
+	let parentdir = expand("%:p:h:h")
+	let dirs = systemlist("find " .. parentdir ..
+		\" -type d -maxdepth 1 -mindepth 1 | sort")
+	let dirslen = len(dirs)
+	let curidx = index(dirs, curdir)
+	let newidx = float2nr(fmod(curidx + a:count, dirslen))
+	if newidx < 0
+		let newidx += dirslen
+	endif
+	exe "e " .. dirs[newidx]
+endfunction
+
 """"""""""""
 " Commands "
 """"""""""""
