@@ -115,7 +115,7 @@ ghclone() {
 }
 
 kd() {
-	bat < <(eval "kubectl describe $*")
+	bat -l yaml < <(eval "kubectl describe $*")
 }
 
 # Get kubectl output as json piped into bat pager with syntax highlighting
