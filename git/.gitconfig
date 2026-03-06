@@ -18,12 +18,12 @@
 	ac = "!git add -A && git commit"
 	acp = "!f() { git add -A && git commit -m \"$1\" && git push; }; f"
 	amend = "!git add -A && git commit --amend --no-edit"
+	fp-amend = "!git add -A && git commit --amend --no-edit && git push --force"
 	nuke = "checkout -- ."
-	force-amend = "!git add -A && git commit --amend --no-edit && git push --force"
 	wip = "!f() { git add -A && git commit -m \"wip: $1\"; }; f"
-	nogrep-sha = "!f() { git log --grep=\"$1\" --invert-grep -n 1 --format=%h; }; f"
 	ghclone ="!f() { git clone https://github.com/\"$1\".git; }; f"
 	dcheckout = "!f() { git checkout \"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\"; }; f"
 	dfetch = "!f() { git fetch origin \"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\":\"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\"; }; f"
+	dlatest = "!git stash && git dcheckout && git pull"
 [pull]
 	ff = only
