@@ -118,14 +118,12 @@ kd() {
 	bat -l yaml < <(eval "kubectl describe $*")
 }
 
-# Get kubectl output as json piped into bat pager with syntax highlighting
-kj() {
-	bat -l json < <(eval "kubectl $* -o json")
+kg() {
+	bat -l yaml < <(eval "kubectl get $* -o yaml")
 }
 
-# Get kubectl output as yaml piped into bat pager with syntax highlighting
-ky() {
-	bat -l yaml < <(eval "kubectl $* -o yaml")
+kgj() {
+	bat -l json < <(eval "kubectl get $* -o json")
 }
 
 # Get prettified ripgrep output in bat pager
