@@ -45,12 +45,6 @@ zle -N fg_current_widget
 zle -N fg_previous_widget
 zle -N kill_job_current_widget
 zle -N kill_job_previous_widget
-for i in {1..9}; do
-	eval "fg_${i}_widget() { zle -I; fg %${i}; }"
-	eval "kill_job_${i}_widget() { kill %${i} && fg %${i}; }"
-	eval "zle -N fg_${i}_widget"
-	eval "zle -N kill_job_${i}_widget"
-done
 
 # ZSH KEYMAPS
 
@@ -69,10 +63,6 @@ bindkey '^J^K^M' kill_job_current_widget
 bindkey '^J^Km' kill_job_current_widget
 bindkey '^J^K^N' kill_job_previous_widget
 bindkey '^J^Kn' kill_job_previous_widget
-for i in {1..9}; do
-	eval "bindkey '^J${i}' fg_${i}_widget"
-	eval "bindkey '^J^K${i}' kill_job_${i}_widget"
-done
 
 # ALIASES
 
