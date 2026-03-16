@@ -150,7 +150,9 @@ noremap <space>Y "+Y
 nnoremap <expr> <leader><leader> "<cmd>call EditLastUsedBuf(" .. v:count1 ..
 	\")<cr>"
 nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
-nnoremap <leader>.f :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
+"nnoremap <leader>.f :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
+nnoremap <leader>.f mZ<cmd>lua require("fzf-lua").files({ cwd =
+	\vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>.g :<C-U>grep '' %:p:h<tab><S-left><left><left>
 nnoremap <leader>.G :<C-U>grep '' %:p:h<tab><S-left><left><left><C-R><C-W><cr>
 nnoremap <leader>.z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
@@ -164,21 +166,21 @@ nnoremap <leader>A <cmd>CodeCompanionChat<cr>
 nnoremap <leader>b :<C-U>b <tab>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
-nnoremap <leader>f :<C-U>find<space>
+"nnoremap <leader>f :<C-U>find<space>
+nnoremap <leader>f mZ<cmd>FzfLua files<cr>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep ''<left><C-R><C-W><cr>
 nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
 nnoremap <leader>Z mZ<cmd>FzfLua grep_cword<cr>
-"nnoremap <leader>fZ mZ<cmd>FzfLua grep<cr><cr>
-nnoremap <leader>pf :<C-U>cd ..<cr>:<C-U>find<space>
+"nnoremap <leader>pf :<C-U>cd ..<cr>:<C-U>find<space>
+nnoremap <leader>pf mZ<cmd>lua require("fzf-lua").files({ cwd =
+	\vim.fn.getcwd() .. "/.." })<cr>
 nnoremap <leader>pg :<C-U>grep '' ..<left><left><left><left>
 nnoremap <leader>pG :<C-U>grep '' ..<left><left><left><left><C-R><C-W><cr>
 nnoremap <leader>pz mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 	\vim.fn.getcwd() .. "/.." })<cr>
 nnoremap <leader>pZ mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
 	\vim.fn.getcwd() .. "/.." })<cr>
-"nnoremap <leader>pZ mZ<cmd>lua require("fzf-lua").grep({ cwd =
-"	\vim.fn.getcwd() .. "/.." })<cr><cr>
 nnoremap <leader>o mZ<cmd>FzfLua oldfiles<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
