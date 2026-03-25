@@ -159,11 +159,10 @@ nnoremap <leader>.z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>.Z mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
-"nnoremap <leader>.Z mZ<cmd>lua require("fzf-lua").grep({ cwd =
-"	\vim.fn.expand("%:h:.") })<cr><cr>
 nnoremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
 nnoremap <leader>A <cmd>CodeCompanionChat<cr>
-nnoremap <leader>b :<C-U>b <tab>
+"nnoremap <leader>b :<C-U>b <tab>
+nnoremap <leader>b mZ<cmd>FzfLua buffers<cr>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 "nnoremap <leader>f :<C-U>find<space>
