@@ -1,3 +1,28 @@
+vim.pack.add({
+	"https://github.com/airblade/vim-rooter",
+	"https://github.com/selimacerbas/live-server.nvim",
+	"https://github.com/selimacerbas/markdown-preview.nvim",
+	"https://github.com/ibhagwan/fzf-lua",
+	"https://github.com/jeetsukumaran/vim-indentwise",
+	"https://github.com/justinmk/vim-dirvish",
+	"https://github.com/kylechui/nvim-surround",
+	"https://github.com/ludovicchabant/vim-gutentags",
+	"https://github.com/neovim/nvim-lspconfig",
+	"https://github.com/tpope/vim-fugitive",
+	"https://github.com/tpope/vim-rhubarb",
+	"https://github.com/tpope/vim-sleuth",
+	"https://github.com/unblevable/quick-scope",
+	-- AI
+	"https://github.com/github/copilot.vim",
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/olimorris/codecompanion.nvim",
+	-- Treesitter dependent
+	"https://github.com/nvim-treesitter/nvim-treesitter",
+	"https://github.com/lewis6991/ts-install.nvim",
+	"https://github.com/Wansmer/treesj",
+	"https://github.com/HiPhish/rainbow-delimiters.nvim",
+})
+
 vim.diagnostic.config({
 	severity_sort = true,
 	virtual_text = { current_line = true },
@@ -126,9 +151,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
-require("nvim-treesitter.configs").setup({
-	auto_install = true,
-	ensure_installed = {
+require("ts-install").setup({
+	ensure_install = {
 		"bash",
 		"c",
 		"css",
@@ -151,78 +175,6 @@ require("nvim-treesitter.configs").setup({
 		"vimdoc",
 		"yaml",
 	},
-	highlight = {
-		enable = true,
-	},
-	incremental_selection = {
-		enable = true,
-	},
-	indent = {
-		enable = true,
-	},
-	textobjects = {
-		enable = true,
-		select = {
-			enable = true,
-			-- lookahead = true,
-			keymaps = {
-				["af"] = "@function.outer",
-				["if"] = "@function.inner",
-				["ac"] = "@class.outer",
-				["ic"] = "@class.inner",
-				["ar"] = "@parameter.outer",
-				["ir"] = "@parameter.inner",
-				["a?"] = "@conditional.outer",
-				["i?"] = "@conditional.inner",
-				["ax"] = "@block.outer",
-				["ix"] = "@block.inner",
-				["ae"] = "@call.outer",
-				["ie"] = "@call.inner",
-			},
-		},
-		move = {
-			enable = true,
-			set_jumps = true,
-			goto_next_start = {
-				["]m"] = "@function.outer",
-				["]]"] = "@class.outer",
-				["]/"] = "@conditional.outer",
-				["]x"] = "@block.outer",
-				["]e"] = "@call.outer",
-				["]r"] = "@parameter.inner",
-			},
-			goto_next_end = {
-				["]M"] = "@function.outer",
-				["]["] = "@class.outer",
-				["]?"] = "@conditional.outer",
-				["]X"] = "@block.outer",
-				["]E"] = "@call.outer",
-				["]R"] = "@parameter.inner",
-			},
-			goto_previous_start = {
-				["[m"] = "@function.outer",
-				["[["] = "@class.outer",
-				["[/"] = "@conditional.outer",
-				["[x"] = "@block.outer",
-				["[e"] = "@call.outer",
-				["[r"] = "@parameter.inner",
-			},
-			goto_previous_end = {
-				["[M"] = "@function.outer",
-				["[]"] = "@class.outer",
-				["[?"] = "@conditional.outer",
-				["[X"] = "@block.outer",
-				["[E"] = "@call.outer",
-				["[R"] = "@parameter.inner",
-			},
-		},
-		swap = {
-			enable = true,
-		},
-		lsp_interop = {
-			enable = true,
-		},
-	},
 })
 
 require("fzf-lua").setup({
@@ -235,6 +187,8 @@ require("fzf-lua").setup({
 })
 
 require("nvim-surround").setup()
+
+require("markdown_preview").setup()
 
 require("treesj").setup({ use_default_keymaps = false })
 

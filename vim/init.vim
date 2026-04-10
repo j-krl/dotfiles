@@ -1,37 +1,9 @@
-function! PackInit() abort
-	packadd minpac
-	call minpac#init()
-	call minpac#add('k-takata/minpac', {'type': 'opt'})
-	call minpac#add('airblade/vim-rooter')
-	call minpac#add('ibhagwan/fzf-lua')
-	call minpac#add('jeetsukumaran/vim-indentwise')
-	call minpac#add('justinmk/vim-dirvish')
-	call minpac#add('kylechui/nvim-surround')
-	call minpac#add('neovim/nvim-lspconfig')
-	call minpac#add('tpope/vim-fugitive')
-	call minpac#add('tpope/vim-rhubarb')
-	call minpac#add('tpope/vim-sleuth')
-	call minpac#add('unblevable/quick-scope')
-	call minpac#add('ludovicchabant/vim-gutentags')
-	" AI
-	call minpac#add('github/copilot.vim')
-	call minpac#add('nvim-lua/plenary.nvim')
-	call minpac#add('olimorris/codecompanion.nvim')
-	" Treesitter dependent
-	call minpac#add('nvim-treesitter/nvim-treesitter', {'branch': 'master', 'do': ':TSUpdate'})
-	call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'branch': 'master'})
-	call minpac#add('Wansmer/treesj')
-	call minpac#add('HiPhish/rainbow-delimiters.nvim')
-endfunction
-packadd cfilter
-
 lua require('config')
 
 """""""""""
 " Options "
 """""""""""
 
-colo default
 let g:maplocalleader = "_"
 set relativenumber
 set number
@@ -63,8 +35,6 @@ set foldlevel=100
 set foldlevelstart=101
 set fillchars=diff:\
 set statusline=%<%f\ \ %<%{CwdStatusline()}\ \ %{FugitiveStatusline()}\ %h%m%r%=[%n]\ %-13a%-13(%l,%c%V%)\ %P
-let &packpath = stdpath("data") .. "/site," .. substitute(&packpath, 
-	\stdpath("data") .. "/site,", "", "g")
 
 function! CwdStatusline() abort
 	let cwd = fnamemodify(getcwd(), ":t")
@@ -227,7 +197,7 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
-cabbrev FZ FzfLua
+cabbrev fz FzfLua
 
 tmap <C-a> <C-\><C-n><C-a>
 
@@ -303,16 +273,6 @@ command! -nargs=? -complete=dir Sexplore belowright split |
 command! -nargs=? -complete=dir Vexplore belowright vsplit |
 	\silent Dirvish <args>
 command! Llen echo len(getloclist(winnr()))
-command! PackInstall call PackInit() 
-	\| call minpac#update(keys(filter(copy(minpac#pluglist), 
-	\{-> !isdirectory(v:val.dir . '/.git')})))
-command! -nargs=? PackUpdate call PackInit() | call minpac#update(<args>)
-command! PackClean call PackInit() | call minpac#clean()
-command! PackList call PackInit() 
-	\| echo join(sort(keys(minpac#getpluglist())), "\n")
-command! PackStatus packadd minpac | call minpac#status()
-command! -nargs=1 Redir tabnew|set bt=nofile noswf bh=wipe|
-	\exe "0pu=execute(\'" .. <q-args> .. "\')"
 command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
 command! -bang Todo call OpenTodo(<bang>1)
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
@@ -362,5 +322,6 @@ endfunction
 " Final "
 """""""""
 
+packadd cfilter
 colo unokai
 
