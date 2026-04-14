@@ -277,6 +277,7 @@ command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
 command! -bang Todo call OpenTodo(<bang>1)
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
+command! W Wfmt!
 
 function! OpenTodo(preview) abort
 	let path = getcwd() .. "/../TODO.md"
