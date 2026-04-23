@@ -156,7 +156,7 @@ nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>r mZ<cmd>FzfLua lsp_references<cr>
 nnoremap <leader>s mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
 
-xnoremap <leader>a <cmd>CodeCompanionChat Add<cr>
+xnoremap <leader>a <cmd>CodeCompanionChat<cr>
 xnoremap <silent> il g_o^
 xnoremap <silent> al $o0
 xnoremap <expr> <A-j> ":m '>+" .. v:count1 .. "<CR>gv=gv"

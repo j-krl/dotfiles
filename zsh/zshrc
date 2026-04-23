@@ -72,7 +72,7 @@ alias sov="source venv/bin/activate || source .venv/bin/activate"
 alias nvs="nvim -S Session.vim"
 alias vs="vim -S Session.vim"
 alias nvcd="nvim -c 'cd %:h'"
-alias nvco='nvim -c "CopilotChatOpen" -c "wincmd o" -c "startinsert"'
+alias nvco='nvim -c "CodeCompanion" -c "wincmd o" -c "startinsert"'
 alias nvz="nvim -c 'cd' ~/.zshrc"
 alias nvd="nvim -c 'cd %:h' ~/dotfiles"
 
