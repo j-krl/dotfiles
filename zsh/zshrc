@@ -70,9 +70,9 @@ alias soz="source ~/.zshrc"
 alias sov="source venv/bin/activate || source .venv/bin/activate"
 
 alias ai='nvim -c "CodeCompanionChat" -c "wincmd o" -c "startinsert"'
-alias nvcd="nvim -c 'cd %:h'"
-alias nvz="nvim -c 'cd' ~/.zshrc"
+alias nvf='nvim $(fzf)'
 alias nvd="nvim -c 'cd %:h' ~/dotfiles"
+alias nvz="nvim -c 'cd' ~/.zshrc"
 
 alias k="kubectl"
 alias kn="kubectl config set-context --current --namespace"
