@@ -325,5 +325,10 @@ endfunction
 """""""""
 
 packadd cfilter
-colo lunaperche
+
+" Environment-specific settings
+let g:vimenv = fnamemodify($MYVIMRC, ':h') .. "/.vimenv"
+if filereadable(g:vimenv)
+  exe 'source ' g:vimenv
+endif
 
