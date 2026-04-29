@@ -73,6 +73,7 @@ alias ai='nvim -c "CodeCompanionChat" -c "wincmd o" -c "startinsert"'
 alias nvf='nvim $(fzf)'
 alias nvd="nvim -c 'cd %:h' ~/dotfiles"
 alias nvz="nvim -c 'cd' ~/.zshrc"
+alias fcd='cd $(dirname $(fzf))'
 
 alias k="kubectl"
 alias kn="kubectl config set-context --current --namespace"
