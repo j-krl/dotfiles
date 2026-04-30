@@ -70,6 +70,7 @@ alias soz="source ~/.zshrc"
 alias sov="source venv/bin/activate || source .venv/bin/activate"
 
 alias ai='nvim -c "CodeCompanionChat" -c "wincmd o" -c "startinsert"'
+alias nv0="nvim -c \"normal '0\""
 alias nvf='nvim $(fzf)'
 alias nvd="nvim -c 'cd %:h' ~/dotfiles"
 alias nvz="nvim -c 'cd' ~/.zshrc"

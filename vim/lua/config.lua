@@ -225,7 +225,6 @@ require("codecompanion").setup({
 	},
 	display = {
 		chat = {
-			show_settings = true,
 			show_header_separator = true,
 			auto_scroll = true,
 			opts = {
