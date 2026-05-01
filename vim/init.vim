@@ -274,20 +274,9 @@ command! -nargs=? -complete=dir Vexplore belowright vsplit |
 	\silent Dirvish <args>
 command! Llen echo len(getloclist(winnr()))
 command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
-command! -bang Todo call OpenTodo(<bang>1)
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
 command! W Wfmt!
-
-function! OpenTodo(preview) abort
-	let path = getcwd() .. "/../TODO.md"
-	if a:preview
-		exe "pedit + " .. path
-		wincmd p
-	else
-		exe "edit " .. path
-	endif
-endfunction
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
