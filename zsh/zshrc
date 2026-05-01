@@ -39,12 +39,10 @@ jobs_widget() { echo "" && jobs && zle reset-prompt; }
 fg_current_widget() { zle -I && fg %+; }
 fg_previous_widget() { zle -I && fg %-; }
 kill_job_current_widget() { kill %+ && fg %+; }
-kill_job_previous_widget() { kill %- && fg %-; }
 zle -N jobs_widget
 zle -N fg_current_widget
 zle -N fg_previous_widget
 zle -N kill_job_current_widget
-zle -N kill_job_previous_widget
 
 # ZSH KEYMAPS
 
@@ -59,10 +57,8 @@ bindkey '^J^M' fg_current_widget
 bindkey '^Jm' fg_current_widget
 bindkey '^J^N' fg_previous_widget
 bindkey '^Jn' fg_previous_widget
-bindkey '^J^K^M' kill_job_current_widget
-bindkey '^J^Km' kill_job_current_widget
-bindkey '^J^K^N' kill_job_previous_widget
-bindkey '^J^Kn' kill_job_previous_widget
+bindkey '^J^K' kill_job_current_widget
+bindkey '^Jk' kill_job_current_widget
 
 # ALIASES
 
