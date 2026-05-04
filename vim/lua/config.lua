@@ -177,7 +177,9 @@ require("ts-install").setup({
 	},
 })
 
-require("fzf-lua").setup({
+local fzf_lua = require("fzf-lua")
+
+fzf_lua.setup({
 	winopts = {
 		split = "belowright new|resize 20",
 		preview = {
@@ -185,6 +187,21 @@ require("fzf-lua").setup({
 		},
 	},
 })
+
+fzf_lua.cd_parent = function()
+	require("fzf-lua").fzf_exec("fd --type d --max-depth 1 . ..", {
+		prompt = "cd_parent> ",
+		actions = {
+			["default"] = function(selected)
+				if selected and selected[1] then
+					vim.fn.chdir(selected[1])
+					vim.notify("cwd: " .. selected[1])
+					vim.cmd("Explore")
+				end
+			end,
+		},
+	})
+end
 
 require("nvim-surround").setup()
 

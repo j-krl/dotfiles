@@ -133,6 +133,7 @@ nnoremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
 nnoremap <leader>A <cmd>CodeCompanionChat<cr>
 "nnoremap <leader>b :<C-U>b <tab>
 nnoremap <leader>b mZ<cmd>FzfLua buffers<cr>
+nnoremap <leader>d mZ<cmd>FzfLua cd_parent<cr>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 "nnoremap <leader>f :<C-U>find<space>
