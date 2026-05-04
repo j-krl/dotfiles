@@ -10,6 +10,7 @@ autoload -Uz pushd
 setopt auto_pushd
 setopt prompt_subst
 setopt share_history
+setopt inc_append_history
 setopt auto_cd
 
 # PROMPT
@@ -130,6 +131,7 @@ rgi() {
 
 # VARS
 
+HISTFILE=~/.zsh_history
 HISTSIZE=9999
 SAVEHIST=9999
 KEYTIMEOUT=200
