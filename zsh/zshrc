@@ -125,7 +125,8 @@ rgi() {
 		fzf --bind "change:reload:$RG_PREFIX {q} || true" \
 		--ansi --phony --query "$INITIAL_QUERY" --delimiter ':' \
 		--bind 'f4:change-preview-window(hidden|)' \
-		--preview "bat --style=numbers --color=always --highlight-line {2} {1}" \
+		--preview "bat --style=numbers --color=always --theme ansi \
+			--highlight-line {2} {1}" \
 		--preview-window="+{2}/2"
 }
 
