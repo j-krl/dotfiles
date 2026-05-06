@@ -298,6 +298,7 @@ autocmd vimrc QuickFixCmdPost [^l]* exe "norm mG"|cwindow
 autocmd vimrc QuickFixCmdPost l* exe "norm mG"|lwindow
 autocmd vimrc BufRead * call s:SetJumpScopeMaps()
 autocmd vimrc BufRead,BufNewFile *.jinja2 set filetype=jinja2
+autocmd vimrc BufRead,BufNewFile yarn.lock set filetype=text
 autocmd vimrc FileType * lua pcall(vim.treesitter.start)
 
 function! s:SetJumpScopeMaps() abort

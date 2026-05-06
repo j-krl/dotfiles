@@ -5,7 +5,7 @@
 	excludesfile = ~/.config/git/ignore
 	editor = nvim
 [merge]
-	tool = nvimdiff
+	tool = nvimdiff2
 [log]
 	decorate = short
 [push]
