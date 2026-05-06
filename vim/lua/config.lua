@@ -196,7 +196,7 @@ fzf_lua.cd_parent = function()
 				if selected and selected[1] then
 					vim.fn.chdir(selected[1])
 					vim.notify("cwd: " .. selected[1])
-					vim.cmd("Explore")
+					vim.cmd("Explore " .. vim.fn.getcwd())
 				end
 			end,
 		},

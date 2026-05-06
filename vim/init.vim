@@ -12,7 +12,7 @@ set shiftwidth=4
 set termguicolors
 set smartindent
 set wildmenu
-set wildmode=noselect:longest:lastused,full
+set wildmode=noselect:longest:lastused:full,full
 set cursorline
 set undofile
 set nofixeol
