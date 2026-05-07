@@ -68,10 +68,6 @@ alias sov="source venv/bin/activate || source .venv/bin/activate"
 
 alias ai='nvim -c "CodeCompanionChat" -c "wincmd o" -c "startinsert"'
 alias nv0="nvim -c \"normal '0\""
-alias nvf='nvim $(fzf)'
-alias nvd="nvim -c 'cd %:h' ~/dotfiles"
-alias nvz="nvim -c 'cd' ~/.zshrc"
-alias fcd='cd $(dirname $(fzf))'
 
 alias k="kubectl"
 alias kn="kubectl config set-context --current --namespace"
@@ -90,12 +86,6 @@ alias bd=". bd -si"
 alias null="/dev/null"
 
 # FUNCTIONS
-
-# difftool() {
-# 	nvim -c "let g:taboo_tab_format = \" %N %R \"" -c "Git difftool -y $1" \
-# 		-c "set showtabline=2" -c "set tabclose=" -c "exe 'cd ' .. getcwd()" \
-# 		-c "1tabcl"
-# }
 
 ghclone() {
 	git clone "https://github.com/$1.git"
@@ -118,6 +108,7 @@ rgb() {
 	bat < <(eval "rg --heading --line-number --color=always $*")
 }
 
+# Interactive grep that will open the chosen file in nvim on enter
 rgi() {
 	RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
 	INITIAL_QUERY=""
