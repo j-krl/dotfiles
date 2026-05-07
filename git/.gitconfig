@@ -6,6 +6,8 @@
 	editor = nvim
 [merge]
 	tool = nvimdiff2
+[mergetool]
+	keepBackup = false
 [log]
 	decorate = short
 [push]
