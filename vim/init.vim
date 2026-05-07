@@ -129,14 +129,15 @@ nnoremap <leader>.z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>.Z mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
+noremap <leader>2 :diffget LOCAL<tab><cr>
+noremap <leader>3 :diffget REMOTE<tab><cr>
 nnoremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
 nnoremap <leader>A <cmd>CodeCompanionChat<cr>
 "nnoremap <leader>b :<C-U>b <tab>
 nnoremap <leader>b mZ<cmd>FzfLua buffers<cr>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
-noremap <leader>d2 :diffget LOCAL<tab><cr>
-noremap <leader>d3 :diffget REMOTE<tab><cr>
+nnoremap <leader>d mZ<cmd>FzfLua cd_parent<cr>
 "nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>f mZ<cmd>FzfLua files<cr>
 nnoremap <leader>g :<C-U>grep ''<left>
@@ -157,7 +158,6 @@ nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>r mZ<cmd>FzfLua lsp_references<cr>
 nnoremap <leader>s mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
-nnoremap <leader>w mZ<cmd>FzfLua cd_parent<cr>
 
 xnoremap <leader>a <cmd>CodeCompanionChat<cr>
 xnoremap <silent> il g_o^
