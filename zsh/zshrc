@@ -127,7 +127,8 @@ rgi() {
 		--bind 'f4:change-preview-window(hidden|)' \
 		--preview "bat --style=numbers --color=always --theme ansi \
 			--highlight-line {2} {1}" \
-		--preview-window="+{2}/2"
+		--preview-window="+{2}/2" \
+		--bind 'enter:execute(nvim +{2} {1})+abort'
 }
 
 # VARS
