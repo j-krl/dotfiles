@@ -1,5 +1,5 @@
 if executable("prettier")
-		setlocal formatprg=prettier\ %
+		setlocal formatprg=prettier\ --stdin-filepath\ %
 endif
 " jump to next const on line with no starting white space
 noremap <silent> <buffer> ]1 <cmd>for i in range(v:count1)\|

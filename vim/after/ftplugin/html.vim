@@ -1,3 +1,3 @@
 if executable("prettier")
-	setlocal formatprg=prettier\ %
+	setlocal formatprg=prettier\ --stdin-filepath\ %
 endif
