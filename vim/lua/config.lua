@@ -169,6 +169,7 @@ require("ts-install").setup({
 		"python",
 		"query",
 		"scss",
+		"sql",
 		"svelte",
 		"terraform",
 		"typescript",
