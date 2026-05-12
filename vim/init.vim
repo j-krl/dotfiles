@@ -144,8 +144,6 @@ nnoremap <leader>d mZ<cmd>FzfLua cd_parent<cr>
 nnoremap <leader>f mZ<cmd>FzfLua files<cr>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep ''<left><C-R><C-W><cr>
-nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
-nnoremap <leader>Z mZ<cmd>FzfLua grep_cword<cr>
 "nnoremap <leader>pf :<C-U>cd ..<cr>:<C-U>find<space>
 nnoremap <leader>pf mZ<cmd>lua require("fzf-lua").files({ cwd =
 	\vim.fn.getcwd() .. "/.." })<cr>
@@ -160,6 +158,8 @@ nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>r mZ<cmd>FzfLua lsp_references<cr>
 nnoremap <leader>s mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
+nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
+nnoremap <leader>Z mZ<cmd>FzfLua grep_cword<cr>
 
 xnoremap <leader>a <cmd>CodeCompanionChat<cr>
 xnoremap <silent> il g_o^
@@ -188,6 +188,7 @@ imap <C-L><C-L> <Plug>(copilot-accept-line)
 inoremap <C-S> <cr><esc>kA
 inoremap <C-Space> <C-X><C-O>
 inoremap <c-bs> <bs>
+iabbrev #} #{buffer}
 
 cnoremap <C-H> <C-R>=expand("%:p:h")<cr>/
 cnoremap <C-space> .*
@@ -203,6 +204,7 @@ cnoremap <C-E> <End>
 cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
 cabbrev fz FzfLua
+cabbrev c. cd ~/dotfiles
 
 tmap <C-a> <C-\><C-n><C-a>
 
