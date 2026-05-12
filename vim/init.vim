@@ -204,7 +204,7 @@ cnoremap <C-E> <End>
 cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
 cabbrev fz FzfLua
-cabbrev c. cd ~/dotfiles \| exe "Explore " .. getcwd()
+cabbrev e. edit ~/dotfiles
 
 tmap <C-a> <C-\><C-n><C-a>
 
