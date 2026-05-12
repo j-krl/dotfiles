@@ -78,6 +78,7 @@ alias kl="kubectl config view --minify -o json | jq -r '
 	| @tsv' | column -t"
 alias kla='kubectl config get-contexts | sed -E "s/(^\*.*)/\x1b\[7m\1\x1b\[0m/"'
 
+alias gc="gcloud"
 alias ga="gcloud auth login --update-adc"
 alias batj="bat -l json"
 alias baty="bat -l yaml"
