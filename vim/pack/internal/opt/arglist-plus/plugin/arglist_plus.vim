@@ -5,7 +5,7 @@ command! Argclear %argd|echo "arglist cleared"
 command! Arglclear argl|%argd|echo "local arglist created"
 command! -count -addr=arguments Argu exe (<count> > 0 ? <count> : "") .. "argu"|args
 command! -nargs=+ Argfind exe "args `fd --hidden --type f -E '.git' --full-path '" .. <q-args> .. "'`"
-command! -nargs=? Argdifftool exe "args `git diff " .. <q-args> .. " --name-only`" | args
+command! -nargs=? -complete=customlist,GitBranchComplete Argdifftool exe "args `git diff " .. <q-args> .. " --name-only`" | args
 
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
 nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
@@ -24,3 +24,9 @@ function! NavArglist(count)
 	endif
 	exe float2nr(next + 1) .. 'argu'
 endfunction
+
+function! GitBranchComplete(ArgLead, CmdLine, CursorPos)
+    let l:branches = systemlist("git branch --format='%(refname:short)'")
+    return filter(l:branches, 'v:val =~ "^' . a:ArgLead . '"')
+endfunction
+

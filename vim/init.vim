@@ -262,7 +262,6 @@ command! Bonly %bd|e#|bd#|norm `"
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
 command! -nargs=? -complete=dir Explore Dirvish <args>
-command! -nargs=? -complete=customlist,GitBranchComplete Gadifftool args `git diff <f-args> --name-only`
 command! Llen echo len(getloclist(winnr()))
 command! Rediff windo diffthis\|windo norm zM
 command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
@@ -273,11 +272,6 @@ command! Ybranch let @+ = system("git branch --show-current")
 command! -nargs=? -bang Ypath exe "let @+ = expand('%:p" .. 
 	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
 command! Ycwd let @+ = getcwd()
-
-function! GitBranchComplete(ArgLead, CmdLine, CursorPos)
-    let l:branches = systemlist("git branch --format='%(refname:short)'")
-    return filter(l:branches, 'v:val =~ "^' . a:ArgLead . '"')
-endfunction
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
