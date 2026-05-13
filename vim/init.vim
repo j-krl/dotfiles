@@ -59,6 +59,7 @@ let g:copilot_filetypes = {'markdown': v:false}
 let g:tmux_navigator_no_mappings = 1
 let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
+let g:compbranch = ""
 let g:compare_branch = "master"
 let g:rooter_change_directory_for_non_project_files = 'current'
 let g:rooter_silent_chdir = 1
@@ -99,6 +100,7 @@ nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
 nnoremap <bs> <C-^>
+nnoremap <F2> <C-L><cmd>args<cr>
 nnoremap <F3> <cmd>FmtBuf<cr>
 " Join lines like 'J' without space between
 nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' .. 
@@ -202,8 +204,10 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
+cabbrev ac %argd
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
+cabbrev so source $MYVIMRC
 
 tmap <C-a> <C-\><C-n><C-a>
 
@@ -256,33 +260,23 @@ command! Bdelete e#|bd#
 command! Bonly %bd|e#|bd#|norm `"
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
-command! Ybranch let @+ = system("git branch --show-current")
-command! -nargs=? -bang Ypath exe "let @+ = expand('%:p" .. 
-	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
-command! Ycwd let @+ = getcwd()
-command! Gbranch !git branch --show-current
-command! -count=1 Gcurrdiff ccl|wincmd l|only|cc|cw|wincmd p|
-	\exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Gnextdiff ccl|wincmd l|only|<count>cnext|cw|
-	\wincmd p|exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Gprevdiff ccl|wincmd l|only|<count>cprev|cw|wincmd p|
-	\exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Glastdiff ccl|wincmd l|only|clast|cw|wincmd p|
-	\exe "Gvdiffsplit " .. g:compare_branch
-command! -count=1 Gfirstdiff ccl|wincmd l|only|cfirst|cw|wincmd p|
-	\exe "Gvdiffsplit " .. g:compare_branch
-command! -nargs=? Gcompbranch let g:compare_branch = <q-args>
-command! Grediff windo diffthis\|windo norm zM
 command! -nargs=? -complete=dir Explore Dirvish <args>
-command! -nargs=? -complete=dir Sexplore belowright split |
-	\silent Dirvish <args>
-command! -nargs=? -complete=dir Vexplore belowright vsplit |
-	\silent Dirvish <args>
+command! -nargs=? -complete=customlist,GitBranchComplete Gadifftool args `git diff <f-args> --name-only`
 command! Llen echo len(getloclist(winnr()))
+command! Rediff windo diffthis\|windo norm zM
 command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
 command! W Wfmt!
+command! Ybranch let @+ = system("git branch --show-current")
+command! -nargs=? -bang Ypath exe "let @+ = expand('%:p" .. 
+	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
+command! Ycwd let @+ = getcwd()
+
+function! GitBranchComplete(ArgLead, CmdLine, CursorPos)
+    let l:branches = systemlist("git branch --format='%(refname:short)'")
+    return filter(l:branches, 'v:val =~ "^' . a:ArgLead . '"')
+endfunction
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
@@ -321,6 +315,7 @@ endfunction
 """""""""
 
 packadd cfilter
+packadd arglist-plus
 
 " Environment-specific settings
 let g:vimenv = fnamemodify($MYVIMRC, ':h') .. "/.vimenv"
