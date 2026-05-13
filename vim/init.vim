@@ -207,6 +207,7 @@ cnoremap <A-f> <S-Right>
 cabbrev ac %argd
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
+cabbrev ez edit ~/.zshrc
 cabbrev so source $MYVIMRC
 
 tmap <C-a> <C-\><C-n><C-a>
