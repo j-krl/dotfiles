@@ -188,7 +188,6 @@ imap <C-L><C-L> <Plug>(copilot-accept-line)
 inoremap <C-S> <cr><esc>kA
 inoremap <C-Space> <C-X><C-O>
 inoremap <c-bs> <bs>
-iabbrev #} #{buffer}
 
 cnoremap <C-H> <C-R>=expand("%:p:h")<cr>/
 cnoremap <C-space> .*
