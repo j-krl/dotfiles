@@ -2,13 +2,13 @@ hi Comment guifg=grey50
 hi TablineSel gui=REVERSE
 hi TreesitterContextBottom gui=underline guisp=Grey
 
+hi! link Title Statement
 " Treesitter
 hi! link @function.macro Function
 hi! link @variable Normal
 hi! link @variable.member Normal
 " Languages
 hi! link @property.lua Normal
-hi! link @markup.heading markdownHeadingDelimiter
 hi! link @markup.raw.markdown_inline Special
 hi! link @markup.raw.block.markdown Special
 
