@@ -266,6 +266,8 @@ command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
 command! -nargs=? -complete=dir Explore Dirvish <args>
 command! Llen echo len(getloclist(winnr()))
+command! -bang Prbuf call GhPrCreate(1, <bang>0)
+command! -bang Prinline call GhPrCreate(0, <bang>0)
 command! Rediff windo diffthis\|windo norm zM
 command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
@@ -281,6 +283,23 @@ function! s:FuzzyFilterQf(...) abort
 	let filtered_items = matchfuzzy(getqflist(), matchstr, {'key': 'text'})
 	call setqflist([], " ", {"nr": "$", "title": ":Cfuzzy /" .. matchstr .. 
 		\"/", "items": filtered_items})
+endfunction
+
+function! GhPrCreate(buf, draft)
+	if a:buf
+		let l:title = getline(1)
+		let l:body = join(getline(3, '$'), "\n")
+	else
+		let l:title = input("PR Title: ")
+		let l:body = input("PR Body: ")
+	endif
+	if empty(l:title)
+		echoerr "PR title cannot be empty"
+		return
+	endif
+	let l:cmd = "gh pr create --title " .. shellescape(l:title) .. " --body " ..
+		\shellescape(l:body)
+	call system(l:cmd .. (a:draft ? " --draft" : "") .. " 2>&1")
 endfunction
 
 """"""""""""""""
