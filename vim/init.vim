@@ -207,6 +207,7 @@ cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
 cabbrev ac %argd
 cabbrev ad argd %\|argu\|args
+cabbrev co colorscheme
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
