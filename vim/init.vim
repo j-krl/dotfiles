@@ -299,7 +299,8 @@ function! GhPrCreate(buf, draft)
 	endif
 	let l:cmd = "gh pr create --title " .. shellescape(l:title) .. " --body " ..
 		\shellescape(l:body)
-	call system(l:cmd .. (a:draft ? " --draft" : "") .. " 2>&1")
+	let l:output = system(l:cmd .. (a:draft ? " --draft" : "") .. " 2>&1")
+	exe (v:shell_error ? "echoerr " : "echomsg ") .. l:output
 endfunction
 
 """"""""""""""""
