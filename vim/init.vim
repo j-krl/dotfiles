@@ -272,9 +272,9 @@ command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
 command! W Wfmt!
 command! Ybranch let @+ = system("git branch --show-current")
-command! -nargs=? -bang Ypath exe "let @+ = expand('%:p" .. 
-	\(<q-args> != "" ? ":" : "") .. <q-args> .. (<bang>0 ? ":h" : "") .. "')"
 command! Ycwd let @+ = getcwd()
+command! -bang Ydir exe "let @+ = expand('%:" .. (<bang>0 ? "p" : ".") .. ":h" .. "')"
+command! -bang Yfile exe "let @+ = expand('%:" .. (<bang>0 ? "p" : ".") .. "')"
 
 function! s:FuzzyFilterQf(...) abort
 	let matchstr = join(a:000, " ")
