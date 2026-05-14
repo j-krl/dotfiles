@@ -13,7 +13,7 @@ nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
 nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
 nnoremap ]A <cmd>last<bar>args<cr><esc>
-nnoremap <expr> <space><space> ":<C-U>" .. v:count .. "Argu<cr><esc>"
+nnoremap <expr> <leader><leader> ":<C-U>" .. v:count .. "Argu<cr><esc>"
 
 " Allows wrapping for ]a and [a arglist mappings
 function! NavArglist(count)
