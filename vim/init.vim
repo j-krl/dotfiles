@@ -220,7 +220,10 @@ onoremap <silent> al :normal val<CR>
 
 function! EditLastUsedBuf(num) abort
 	let l = getbufinfo({"buflisted": 1})
-		\->filter({_, d -> !empty(d.name) && d.bufnr != bufnr("%")})
+		\->filter({_, d -> !empty(d.name)
+			\&& d.bufnr != bufnr("%")
+			\&& getbufvar(d.bufnr, '&buftype') !=# 'nofile'
+		\})
 		\->sort({d1, d2 -> d2.lastused - d1.lastused})
 	if len(l) < a:num
 		echoerr "Not enough buffers"
