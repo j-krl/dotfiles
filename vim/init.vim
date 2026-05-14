@@ -211,6 +211,8 @@ cabbrev co colorscheme
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
+cabbrev prc !gh pr create --fill-first
+cabbrev prd !gh pr create --fill-first --draft
 cabbrev so source $MYVIMRC
 
 tmap <C-a> <C-\><C-n><C-a>
