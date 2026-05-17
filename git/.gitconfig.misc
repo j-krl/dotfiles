@@ -1,9 +1,5 @@
-[user]
-	name = Jesse Kearl
-	email = jessekearl@gmail.com
 [core]
 	excludesfile = ~/.config/git/ignore
-	editor = nvim
 [merge]
 	tool = nvimdiff2
 [mergetool]
@@ -12,10 +8,6 @@
 	decorate = short
 [push]
 	autoSetupRemote = true
-[interactive]
-	diffFilter = diff-highlight
-[color "diff"]
-	meta = yellow
 [alias]
 	ac = "!git add -A && git commit"
 	acp = "!f() { git add -A && git commit -m \"$1\" && git push; }; f"
@@ -28,5 +20,3 @@
 	dcheckout = "!f() { git checkout \"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\"; }; f"
 	dfetch = "!f() { git fetch origin \"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\":\"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\"; }; f"
 	dlatest = "!git stash && git dcheckout && git pull"
-[pull]
-	ff = only

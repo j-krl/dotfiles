@@ -1,0 +1,4 @@
+[interactive]
+	diffFilter = diff-highlight
+[color "diff"]
+	meta = yellow
