@@ -1,3 +1,3 @@
 if executable("jq")
-	setlocal formatprg=jq\ --tab
+	setlocal formatprg=prettier\ --stdin-filepath\ %
 endif
