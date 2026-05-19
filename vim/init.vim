@@ -209,6 +209,7 @@ cabbrev ax %argd
 cabbrev ad argd %\|argu\|args
 cabbrev co colorscheme
 cabbrev fz FzfLua
+cabbrev GS Git log -p -S
 cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
 cabbrev prc !gh pr create --fill-first
