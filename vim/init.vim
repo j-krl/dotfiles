@@ -272,6 +272,7 @@ command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
 command! -nargs=? -complete=dir Explore Dirvish <args>
 command! Llen echo len(getloclist(winnr()))
+command! -bang Prbrowse !gh pr view --web
 command! -bang Prbuf call GhPrCreate(1, <bang>0)
 command! -bang Prinline call GhPrCreate(0, <bang>0)
 command! Rediff windo diffthis\|windo norm zM
