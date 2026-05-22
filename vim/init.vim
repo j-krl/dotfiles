@@ -214,7 +214,7 @@ cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
 cabbrev prc !gh pr create --fill-first
 cabbrev prd !gh pr create --fill-first --draft
-cabbrev sorc source $MYVIMRC
+cabbrev sov source $MYVIMRC
 
 tmap <C-a> <C-\><C-n><C-a>
 
