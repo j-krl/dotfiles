@@ -245,7 +245,7 @@ function! NavDirFiles(count) abort
 	if newidx < 0
 		let newidx += filelen
 	endif
-	exe "e " .. files[newidx]
+	exe "e " .. fnameescape(files[newidx])
 endfunction
 
 function! NavSiblingDirs(count) abort
