@@ -124,6 +124,7 @@ rgz() {
 		--preview-window="+{2}/2,top,50%"
 }
 
+# Open file in nvim but search by filename instead of file contents like rgz
 nvz() {
 	fzf \
 		--preview "bat --style=numbers --color=always --theme ansi {1}" \
