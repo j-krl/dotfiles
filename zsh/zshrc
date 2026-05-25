@@ -124,7 +124,7 @@ rgz() {
 		--preview-window="+{2}/2,top,50%"
 }
 
-nvf() {
+nvz() {
 	fzf \
 		--preview "bat --style=numbers --color=always --theme ansi {1}" \
 		--preview-window="top,50%" \
