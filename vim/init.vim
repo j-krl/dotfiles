@@ -29,7 +29,6 @@ set wildignore=**/node_modules/*,**/venv/*,**/.venv/*,**/logs/*,**/.git/*,**/bui
 set wildoptions=pum,tagfile
 set wildcharm=<tab>
 set grepprg=rg\ --vimgrep\ --hidden\ -g\ '!.git/*'
-set guicursor=n-v-c-sm:block,i-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor
 set spellcapcheck=
 set foldmethod=indent
 set foldlevel=100
@@ -57,11 +56,7 @@ let g:markdown_fenced_languages = ["python", "javascript", "javascriptreact",
 	\"go"]
 let g:copilot_no_tab_map = v:true
 let g:copilot_filetypes = {'markdown': v:false}
-let g:tmux_navigator_no_mappings = 1
-let g:qf_cache_dir = expand("~") .. "/.cache/vim/"
 let g:format_on_save = 1
-let g:compbranch = ""
-let g:compare_branch = "master"
 let g:rooter_change_directory_for_non_project_files = 'current'
 let g:rooter_silent_chdir = 1
 let g:gutentags_add_default_project_roots = 0
@@ -82,12 +77,14 @@ let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist',
 " Mappings "
 """"""""""""
 
-noremap / ms/
-noremap ? ms?
-noremap * ms*
-noremap # ms#
+noremap <space>p "+p
+noremap <space>P "+P
+noremap <space>y "+y
+noremap <space>Y "+Y
 nnoremap <silent> - :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" :
 	\""<cr>:Explore<cr>
+nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
+	\exe "Explore " .. getcwd()<cr>
 nnoremap gs a<cr><esc>k$
 nnoremap gS i<cr><esc>k$
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
@@ -96,7 +93,6 @@ nmap <expr> ycc "yy" .. v:count1 .. "gcc\']p"
 nnoremap yob :set background=<C-R>=&background == "dark" ? "light" : "dark"
 	\<cr><cr>
 nnoremap yr+ :let @+ = @0<cr>
-nnoremap yrc :let @+ = system("git branch --show-current")<cr>
 nnoremap <silent> <expr> zM ':<C-U>set foldlevel=' .. v:count .. '<cr>'
 nnoremap ]f <cmd>call NavDirFiles(v:count1)<cr>
 nnoremap [f <cmd>call NavDirFiles(v:count1 * -1)<cr>
@@ -111,15 +107,8 @@ nnoremap <C-W>N <cmd>tabnew\|Explore<cr>
 nnoremap <C-W>Z <C-W>_<C-W>\|
 nnoremap <expr> <A-j> ":<C-U>m +" .. v:count1 .. " <cr>"
 nnoremap <expr> <A-k> ":<C-U>m -" .. (v:count1 + 1) .. " <cr>"
-" Open file explorer at cwd
-nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
-	\exe "Explore " .. getcwd()<cr>
-noremap <space>p "+p
-noremap <space>P "+P
 nnoremap <expr> <space>s v:count >= 1 ? ":s/" : ":%s/"
 nnoremap <expr> <space>S v:count >= 1 ? ":s/<C-R><C-W>/" : ":%s/<C-R><C-W>/"
-noremap <space>y "+y
-noremap <space>Y "+Y
 nnoremap <expr> <leader><leader> "<cmd>call EditLastUsedBuf(" .. v:count1 ..
 	\")<cr>"
 nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
@@ -134,20 +123,15 @@ nnoremap <leader>.z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>.Z mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
-noremap <leader>2 :diffget LOCAL<tab><cr>
-noremap <leader>3 :diffget REMOTE<tab><cr>
 nnoremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
 nnoremap <leader>A <cmd>CodeCompanionChat<cr>
-"nnoremap <leader>b :<C-U>b <tab>
 nnoremap <leader>b mZ<cmd>FzfLua buffers<cr>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>d mZ<cmd>FzfLua cd_parent<cr>
-"nnoremap <leader>f :<C-U>find<space>
 nnoremap <leader>f mZ<cmd>FzfLua files<cr>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep ''<left><C-R><C-W><cr>
-"nnoremap <leader>pf :<C-U>cd ..<cr>:<C-U>find<space>
 nnoremap <leader>pf mZ<cmd>lua require("fzf-lua").files({ cwd =
 	\vim.fn.getcwd() .. "/.." })<cr>
 nnoremap <leader>pg :<C-U>grep '' ..<left><left><left><left>
@@ -174,20 +158,11 @@ xnoremap <expr> <A-k> ":m '<-" .. (v:count1 + 1) .. "<CR>gv=gv"
 inoremap <silent> <expr> <bs> !search('\S','nbW',line('.')) ? 
 	\(col('.') != 1 ? "\<C-U>" : "") .. "\<bs>" : "\<bs>"
 inoremap {<cr> {<cr>}<C-O>O
-inoremap {<tab> {}<esc>i
 inoremap [<cr> [<cr>]<C-O>O
-inoremap [<tab> []<esc>i
 inoremap (<cr> (<cr>)<C-O>O
-inoremap (<tab> ()<esc>i
-inoremap "<tab> ""<esc>i
-inoremap '<tab> ''<esc>i
-inoremap `<tab> ``<esc>i
 imap <expr> <C-\> copilot#Accept("\<cr>")
 imap <C-J> <Plug>(copilot-accept-word)
-imap <C-L><C-]> <Plug>(copilot-dismiss)
-imap <C-L><C-K> <Plug>(copilot-next)
-imap <C-L><C-J> <Plug>(copilot-previous)
-imap <C-L><C-L> <Plug>(copilot-accept-line)
+imap <C-L> <Plug>(copilot-accept-line)
 inoremap <C-S> <cr><esc>kA
 inoremap <C-Space> <C-X><C-O>
 inoremap <c-bs> <bs>
@@ -209,7 +184,6 @@ cabbrev ax %argd
 cabbrev ad argd %\|argu\|args
 cabbrev co colorscheme
 cabbrev fz FzfLua
-cabbrev GS Git log -p -S
 cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
 cabbrev prc !gh pr create --fill-first
@@ -263,13 +237,12 @@ endfunction
 " Commands "
 """"""""""""
 
-command! Bdelete e#|bd#
 command! Bonly %bd|e#|bd#|norm `"
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
 command! -nargs=? -complete=dir Explore Dirvish <args>
 command! Llen echo len(getloclist(winnr()))
-command! -bang Prbrowse !gh pr view --web
+command! -bang Prweb !gh pr view --web
 command! -bang Prbuf call GhPrCreate(1, <bang>0)
 command! -bang Prinline call GhPrCreate(0, <bang>0)
 command! Rediff windo diffthis\|windo norm zM
@@ -279,7 +252,7 @@ command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 command! W Wfmt!
 command! Ybranch let @+ = system("git branch --show-current")
 command! Ycwd let @+ = getcwd()
-command! -bang Ydir exe "let @+ = expand('%:" .. (<bang>0 ? "p" : ".") .. ":h" .. "')"
+command! -bang Ypath exe "let @+ = expand('%:" .. (<bang>0 ? "p" : ".") .. ":h" .. "')"
 command! -bang Yfile exe "let @+ = expand('%:" .. (<bang>0 ? "p" : ".") .. "')"
 
 function! s:FuzzyFilterQf(...) abort
