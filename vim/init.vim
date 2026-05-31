@@ -313,6 +313,9 @@ endfunction
 """""""""
 
 packadd cfilter
+packadd AfterColors.vim
+packadd format
+packadd dynamic-indent-guides
 packadd arglist-plus
 
 " Environment-specific settings
