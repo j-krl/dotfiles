@@ -287,6 +287,7 @@ endfunction
 """""""""
 
 packadd cfilter
+" Custom plugins in pack/internal/opt/
 packadd AfterColors.vim
 packadd format
 packadd dynamic-indent-guides
