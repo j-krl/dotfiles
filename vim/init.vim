@@ -186,8 +186,6 @@ cabbrev co colorscheme
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
-cabbrev prc !gh pr create --fill-first
-cabbrev prd !gh pr create --fill-first --draft
 cabbrev sov source $MYVIMRC
 
 tmap <C-a> <C-\><C-n><C-a>
@@ -242,9 +240,6 @@ command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
 command! -nargs=? -complete=dir Explore Dirvish <args>
 command! Llen echo len(getloclist(winnr()))
-command! -bang Prweb !gh pr view --web
-command! -bang Prbuf call GhPrCreate(1, <bang>0)
-command! -bang Prinline call GhPrCreate(0, <bang>0)
 command! Rediff windo diffthis\|windo norm zM
 command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
@@ -260,27 +255,6 @@ function! s:FuzzyFilterQf(...) abort
 	let filtered_items = matchfuzzy(getqflist(), matchstr, {'key': 'text'})
 	call setqflist([], " ", {"nr": "$", "title": ":Cfuzzy /" .. matchstr .. 
 		\"/", "items": filtered_items})
-endfunction
-
-function! GhPrCreate(buf, draft)
-	if a:buf
-		let l:title = getline(1)
-		let l:body = join(getline(3, '$'), "\n")
-	else
-		let l:title = input("PR Title: ")
-		let l:body = input("PR Body: ")
-	endif
-	if empty(l:title)
-		echoerr "PR title cannot be empty"
-		return
-	endif
-	let l:cmd = "gh pr create --title " .. shellescape(l:title) .. " --body " ..
-		\shellescape(l:body)
-	let l:output = system(l:cmd .. (a:draft ? " --draft" : "") .. " 2>&1")
-	exe (v:shell_error ? "echoerr " : "echomsg ") .. string(l:output)
-	if a:buf
-		bd!
-	endif
 endfunction
 
 """"""""""""""""
@@ -316,6 +290,7 @@ packadd cfilter
 packadd AfterColors.vim
 packadd format
 packadd dynamic-indent-guides
+packadd gh-pull-requests
 packadd arglist-plus
 
 " Environment-specific settings
