@@ -1,6 +1,6 @@
 command! Argappend $arge %|argded|redrawstatus|args
 command! Argprepend 0arge %|argded|redrawstatus|args
-command! Argrm argd %|echo ""|redrawstatus|args
+command! Argdelete argd %|echo ""|redrawstatus|args
 command! Argclear %argd|echo "arglist cleared"
 command! Arglclear argl|%argd|echo "local arglist created"
 command! -count -addr=arguments Argu exe (<count> > 0 ? <count> : "") .. "argu"|args
@@ -8,6 +8,10 @@ command! -nargs=+ Argfind exe "args `fd --hidden --type f -E '.git' --full-path 
     \.. <q-args> .. "'`" | args
 command! -nargs=? -complete=customlist,GitBranchComplete Argdifftool 
     \exe "args `git diff " .. <q-args> .. " --name-only`" | args
+
+cabbrev aa Argappend
+cabbrev ax Argclear
+cabbrev ad Argdelete
 
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
 nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>

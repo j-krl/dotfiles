@@ -181,8 +181,6 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
-cabbrev ax %argd
-cabbrev ad argd %\|argu\|args
 cabbrev co colorscheme
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
