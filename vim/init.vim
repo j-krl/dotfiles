@@ -130,6 +130,7 @@ nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>d mZ<cmd>FzfLua cd_parent<cr>
 nnoremap <leader>f mZ<cmd>FzfLua files<cr>
+nnoremap <leader>F mZ<cmd>FzfLua args<cr>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep ''<left><C-R><C-W><cr>
 nnoremap <leader>pf mZ<cmd>lua require("fzf-lua").files({ cwd =
