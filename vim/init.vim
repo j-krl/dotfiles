@@ -126,6 +126,7 @@ nnoremap <leader>.Z mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
 nnoremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
 nnoremap <leader>A <cmd>CodeCompanionChat<cr>
 nnoremap <leader>b mZ<cmd>FzfLua buffers<cr>
+nnoremap <leader>B mZ<cmd>FzfLua lines<cr>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>d mZ<cmd>FzfLua cd_parent<cr>
