@@ -1,6 +1,6 @@
 command! Argappend $arge %|argded|redrawstatus|args
 command! Argprepend 0arge %|argded|redrawstatus|args
-command! Argdelete argd %|echo ""|redrawstatus|args
+command! Argdelete argd %|echo ""|redrawstatus|argu|args
 command! Argclear %argd|echo "arglist cleared"
 command! Arglclear argl|%argd|echo "local arglist created"
 command! -count -addr=arguments Argu exe (<count> > 0 ? <count> : "") .. "argu"|args
