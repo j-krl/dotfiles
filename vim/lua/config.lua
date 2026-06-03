@@ -157,9 +157,9 @@ local fzf_lua = require("fzf-lua")
 fzf_lua.setup({
 	winopts = {
 		split = "belowright new|resize 20",
-		preview = {
-			hidden = true,
-		},
+		-- preview = {
+		-- 	hidden = true,
+		-- },
 	},
 })
 
