@@ -135,6 +135,7 @@ nnoremap <leader>f mZ<cmd>FzfLua files<cr>
 nnoremap <leader>F mZ<cmd>FzfLua args<cr>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep ''<left><C-R><C-W><cr>
+nnoremap <leader>n mZ<cmd>FzfLua git_dfiles<cr>
 nnoremap <leader>pf mZ<cmd>lua require("fzf-lua").files({ cwd =
 	\vim.fn.getcwd() .. "/.." })<cr>
 nnoremap <leader>pg :<C-U>grep '' ..<left><left><left><left>
