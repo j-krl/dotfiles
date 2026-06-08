@@ -104,6 +104,7 @@ nnoremap <silent> <expr> <C-J> 'ml:<C-U>keepp ,+' ..
 	\(v:count < 2 ? v:count - 1: v:count - 2) .. 's/\n\s*//g<cr>`l'
 nnoremap <expr> <C-W>C "<cmd>" .. repeat("tabcl\|", v:count1) .. "<cr>"
 nnoremap <C-W>N <cmd>tabnew\|Explore<cr>
+nnoremap <C-W>S <cmd>tab split<cr>
 nnoremap <C-W>Z <C-W>_<C-W>\|
 nnoremap <expr> <A-j> ":<C-U>m +" .. v:count1 .. " <cr>"
 nnoremap <expr> <A-k> ":<C-U>m -" .. (v:count1 + 1) .. " <cr>"
