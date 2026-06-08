@@ -135,7 +135,6 @@ nnoremap <leader>f mZ<cmd>FzfLua files<cr>
 nnoremap <leader>F mZ<cmd>FzfLua args<cr>
 nnoremap <leader>g :<C-U>grep ''<left>
 nnoremap <leader>G :<C-U>grep ''<left><C-R><C-W><cr>
-nnoremap <leader>n mZ<cmd>FzfLua git_dfiles<cr>
 nnoremap <leader>pf mZ<cmd>lua require("fzf-lua").files({ cwd =
 	\vim.fn.getcwd() .. "/.." })<cr>
 nnoremap <leader>pg :<C-U>grep '' ..<left><left><left><left>
@@ -149,6 +148,8 @@ nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>r mZ<cmd>FzfLua lsp_references<cr>
 nnoremap <leader>s mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
+nnoremap <leader>vb mZ<cmd>FzfLua git_branches<cr>
+nnoremap <leader>vd mZ<cmd>FzfLua git_dfiles<cr>
 nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
 nnoremap <leader>Z mZ<cmd>FzfLua grep_cword<cr>
 
