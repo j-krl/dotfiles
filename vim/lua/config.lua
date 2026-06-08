@@ -178,6 +178,20 @@ fzf_lua.cd_parent = function()
 	})
 end
 
+fzf_lua.git_dfiles = function()
+	require("fzf-lua").fzf_exec("git diff --name-only", {
+		prompt = "diff-files> ",
+		previewer = "bat",
+		actions = {
+			["default"] = function(selected)
+				if selected and selected[1] then
+					vim.cmd("edit " .. selected[1])
+				end
+			end,
+		},
+	})
+end
+
 require("nvim-surround").setup()
 
 require("markdown_preview").setup()
