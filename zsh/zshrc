@@ -3,6 +3,7 @@
 source ~/.fzf-tab/fzf-tab.plugin.zsh
 autoload -Uz compinit && compinit
 autoload -U bashcompinit && bashcompinit
+autoload -z edit-command-line
 
 bindkey -e
 
@@ -44,6 +45,7 @@ zle -N jobs_widget
 zle -N fg_current_widget
 zle -N fg_previous_widget
 zle -N kill_job_current_widget
+zle -N edit-command-line
 
 # ZSH KEYMAPS
 
@@ -60,6 +62,7 @@ bindkey '^J^N' fg_previous_widget
 bindkey '^Jn' fg_previous_widget
 bindkey '^J^K' kill_job_current_widget
 bindkey '^Jk' kill_job_current_widget
+bindkey "^X^E" edit-command-line
 
 # ALIASES
 
