@@ -77,6 +77,8 @@ let g:gutentags_ctags_exclude = [ '*.git', '*.svg', '*.hg', 'build', 'dist',
 " Mappings "
 """"""""""""
 
+noremap / ms/
+noremap ? ms?
 noremap <space>p "+p
 noremap <space>P "+P
 noremap <space>y "+y
