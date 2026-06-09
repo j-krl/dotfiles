@@ -157,9 +157,11 @@ local fzf_lua = require("fzf-lua")
 fzf_lua.setup({
 	winopts = {
 		split = "belowright new|resize 20",
-		-- preview = {
-		-- 	hidden = true,
-		-- },
+	},
+	git = {
+		branches = {
+			cmd = "git branch --all --color",
+		},
 	},
 })
 
