@@ -2,8 +2,8 @@ command! -bang Prweb !gh pr view --web
 command! -bang Prbuf call GhPrCreate(1, <bang>0)
 command! -bang Prinline call GhPrCreate(0, <bang>0)
 
-cabbrev prc !gh pr create --fill-first
-cabbrev prd !gh pr create --fill-first --draft
+cabbrev Prc !gh pr create --fill-first
+cabbrev Prd !gh pr create --fill-first --draft
 
 function! GhPrCreate(buf, draft)
 	if a:buf
