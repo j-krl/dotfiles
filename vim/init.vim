@@ -193,8 +193,6 @@ cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
 cabbrev sov source $MYVIMRC
 
-tmap <C-a> <C-\><C-n><C-a>
-
 onoremap <silent> il :normal vil<CR>
 onoremap <silent> al :normal val<CR>
 
