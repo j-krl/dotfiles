@@ -241,6 +241,7 @@ endfunction
 command! Bonly %bd|e#|bd#|norm `"
 command! -nargs=+ Cfuzzy call s:FuzzyFilterQf(<f-args>)
 command! Clen echo len(getqflist())
+command! CodeCompanionCopilotModelKeys lua print(vim.inspect(vim.tbl_keys(require("codecompanion.adapters").resolve("copilot").schema.model.choices())))
 command! -nargs=? -complete=dir Explore Dirvish <args>
 command! Llen echo len(getloclist(winnr()))
 command! Rediff windo diffthis\|windo norm zM

@@ -163,6 +163,9 @@ fzf_lua.setup({
 			cmd = "git branch --all --color",
 		},
 	},
+	files = {
+		fd_opts = "--color=never --type f --type l --hidden --exclude .git",
+	},
 })
 
 fzf_lua.cd_parent = function()
