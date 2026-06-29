@@ -187,7 +187,7 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
-cabbrev gdco Git dcheckout
+cabbrev gcd Git dcheckout
 cabbrev col colorscheme
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
