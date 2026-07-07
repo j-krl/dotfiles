@@ -133,6 +133,7 @@ nnoremap <leader>B mZ<cmd>FzfLua lines<cr>
 nnoremap <leader>c <cmd>cwindow<cr>
 nnoremap <leader>C <cmd>cclose<cr>
 nnoremap <leader>d mZ<cmd>FzfLua cd_parent<cr>
+nnoremap <leader>D mZ<cmd>FzfLua git_dfiles<cr>
 nnoremap <leader>f mZ<cmd>FzfLua files<cr>
 nnoremap <leader>F mZ<cmd>FzfLua args<cr>
 nnoremap <leader>g :<C-U>grep ''<left>
@@ -149,9 +150,8 @@ nnoremap <leader>o mZ<cmd>FzfLua oldfiles<cr>
 nnoremap <leader>q <cmd>qa<cr>
 nnoremap <leader>Q <cmd>qa!<cr>
 nnoremap <leader>r mZ<cmd>FzfLua lsp_references<cr>
+nnoremap <leader>R mZ<cmd>FzfLua git_branches<cr>
 nnoremap <leader>s mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
-nnoremap <leader>vb mZ<cmd>FzfLua git_branches<cr>
-nnoremap <leader>vd mZ<cmd>FzfLua git_dfiles<cr>
 nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
 nnoremap <leader>Z mZ<cmd>FzfLua grep_cword<cr>
 
@@ -187,8 +187,19 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
-cabbrev gcd Git dcheckout
-cabbrev col colorscheme
+cabbrev Gac Git ac -m
+cabbrev Gacp Git acp
+cabbrev Gac Git ac
+cabbrev Gb Git blame
+cabbrev Gcb Git checkout -b
+cabbrev Gcd Git dcheckout
+cabbrev Gco Git checkout
+cabbrev Gd Git diff
+cabbrev Gl Git log
+cabbrev Gpl Git pull
+cabbrev Gpr Git pr
+cabbrev Gps Git push
+cabbrev Gs Git show
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
