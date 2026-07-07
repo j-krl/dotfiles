@@ -192,6 +192,7 @@ cabbrev Gacp Git acp
 cabbrev Gac Git ac
 cabbrev Gb Git blame
 cabbrev GB GBrowse
+cabbrev Gbr Git branch
 cabbrev Gcb Git checkout -b
 cabbrev Gcd Git dcheckout
 cabbrev Gco Git checkout
