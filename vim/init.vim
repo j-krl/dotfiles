@@ -189,7 +189,6 @@ cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
 cabbrev Gac Git ac -m
 cabbrev Gacp Git acp
-cabbrev Gac Git ac
 cabbrev Gb Git blame
 cabbrev GB GBrowse
 cabbrev Gbr Git branch
