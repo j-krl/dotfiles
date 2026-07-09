@@ -203,6 +203,7 @@ cabbrev Gpl Git pull
 cabbrev Gpr Git pr
 cabbrev Gps Git push
 cabbrev Gs Git show
+cabbrev Gst Git status
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
