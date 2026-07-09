@@ -196,6 +196,7 @@ cabbrev Gcb Git checkout -b
 cabbrev Gcd Git dcheckout
 cabbrev Gco Git checkout
 cabbrev Gd Git diff
+cabbrev Gdn Git diff --name-only
 cabbrev Gdt Git difftool
 cabbrev Gl Git log
 cabbrev Gpl Git pull
