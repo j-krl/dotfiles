@@ -80,8 +80,6 @@ bindkey "^X^E" edit-command-line
 
 # ALIASES
 
-alias g="git"
-
 alias soz="source ~/.zshrc"
 alias sov="source venv/bin/activate || source .venv/bin/activate"
 

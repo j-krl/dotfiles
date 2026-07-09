@@ -11,9 +11,7 @@
 [alias]
 	ac = "!git add -A && git commit"
 	acp = "!f() { git add -A && git commit -m \"$1\" && git push; }; f"
-	br = "branch"
 	co = "checkout"
-	cob = "checkout -b"
 	amend = "!git add -A && git commit --amend --no-edit"
 	dbr = "!f() { git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'; }; f"
 	dco = "!f() { git checkout \"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\"; }; f"
@@ -21,7 +19,5 @@
 	dlatest = "!git stash && git dco && git pull"
 	fp-amend = "!git add -A && git commit --amend --no-edit && git push --force"
 	ghclone ="!f() { git clone https://github.com/\"$1\".git; }; f"
-	l = "log"
-	l1 = "log --oneline"
 	nuke = "checkout -- ."
-	sh = "show"
+	wip = "!f() { git add -A && git commit -m \"wip: $1\"; }; f"
