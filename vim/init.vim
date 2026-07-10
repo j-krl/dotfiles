@@ -192,8 +192,8 @@ cabbrev Gacp Git acp
 cabbrev Gb Git blame
 cabbrev GB GBrowse
 cabbrev Gbr Git branch
-cabbrev Gcb Git checkout -b
-cabbrev Gcd Git dcheckout
+cabbrev Gcob Git checkout -b
+cabbrev Gcod Git dcheckout
 cabbrev Gco Git checkout
 cabbrev Gd Git diff
 cabbrev Gdn Git diff --name-only
