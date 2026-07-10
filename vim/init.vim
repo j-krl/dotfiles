@@ -199,10 +199,13 @@ cabbrev Gd Git diff
 cabbrev Gdn Git diff --name-only
 cabbrev Gdt Git difftool
 cabbrev Gl Git log
+cabbrev Gm Git merge
 cabbrev Gpl Git pull
 cabbrev Gpr Git pr
 cabbrev Gps Git push
 cabbrev Gs Git show
+cabbrev Gsh Git stash
+cabbrev Gsp Git stash pop
 cabbrev Gst Git status
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
