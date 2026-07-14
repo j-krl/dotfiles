@@ -108,6 +108,17 @@ alias null="/dev/null"
 
 # FUNCTIONS
 
+gita() {
+	local cmd="$*"
+	for dir in */; do
+		if [[ -d "$dir/.git" ]]; then
+			echo "=== $dir ==="
+			git -C "$dir" $cmd
+			echo
+		fi
+	done
+}
+
 ghclone() {
 	git clone "https://github.com/$1.git"
 }
