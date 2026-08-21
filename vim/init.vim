@@ -116,16 +116,19 @@ nnoremap <expr> <leader><leader> "<cmd>call EditLastUsedBuf(" .. v:count1 ..
 	\")<cr>"
 nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
 "nnoremap <leader>.f :<C-U>find <C-R>=expand("%:.:h")<cr>/<tab>
-nnoremap <leader>.f mZ<cmd>lua require("fzf-lua").files({ cwd =
-	\vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>@ :%diffget LOCAL<tab><cr>
 nnoremap <leader># :%diffget REMOTE<tab><cr>
+nnoremap <leader>) mZ<cmd>lua require("fzf-lua").colorschemes({
+	\ignore_patterns = { "-contrast", "-light" } })<cr>
+nnoremap <leader>.f mZ<cmd>lua require("fzf-lua").files({ cwd =
+	\vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>.g :<C-U>grep '' %:p:h<tab><S-left><left><left>
 nnoremap <leader>.G :<C-U>grep '' %:p:h<tab><S-left><left><left><C-R><C-W><cr>
 nnoremap <leader>.z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>.Z mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
+nnoremap <leader>0 <cmd>FzfLua colorschemes<cr>
 nnoremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
 nnoremap <leader>A <cmd>CodeCompanionChat<cr>
 nnoremap <leader>b mZ<cmd>FzfLua buffers<cr>
