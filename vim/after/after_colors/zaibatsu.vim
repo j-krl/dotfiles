@@ -1,1 +1,0 @@
-hi Folded guifg=Grey

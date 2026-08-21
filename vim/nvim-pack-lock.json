@@ -20,6 +20,10 @@
       "rev": "793b32e327bd51143d7cc345aa3ecd10c357ddee",
       "src": "https://github.com/selimacerbas/markdown-preview.nvim"
     },
+    "nano-theme.nvim": {
+      "rev": "b766529e302d170e36b29acf77d074f96ba81269",
+      "src": "https://github.com/ronisbr/nano-theme.nvim"
+    },
     "nvim-lspconfig": {
       "rev": "cb5bc0b2b35a6d513e3298d285db81453e791f4f",
       "src": "https://github.com/neovim/nvim-lspconfig"
@@ -36,6 +40,10 @@
       "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
       "src": "https://github.com/nvim-lua/plenary.nvim"
     },
+    "poimandres.nvim": {
+      "rev": "a488957d803943a4201ac3b774913fcafa9e6b3a",
+      "src": "https://github.com/olivercederborg/poimandres.nvim"
+    },
     "quick-scope": {
       "rev": "6cee1d9e0b9ac0fbffeb538d4a5ba9f5628fabbc",
       "src": "https://github.com/unblevable/quick-scope"
@@ -43,6 +51,10 @@
     "rainbow-delimiters.nvim": {
       "rev": "aab6caaffd79b8def22ec4320a5344f7c42f58d2",
       "src": "https://github.com/HiPhish/rainbow-delimiters.nvim"
+    },
+    "token": {
+      "rev": "2295780916722584e37be4e371161dec4d930a26",
+      "src": "https://github.com/ThorstenRhau/token"
     },
     "treesj": {
       "rev": "26bc2a8432ba3ea79ed6aa346fba780a3d372570",

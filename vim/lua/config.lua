@@ -21,6 +21,10 @@ vim.pack.add({
 	"https://github.com/lewis6991/ts-install.nvim",
 	"https://github.com/Wansmer/treesj",
 	"https://github.com/HiPhish/rainbow-delimiters.nvim",
+	-- Colorschemes
+	"https://github.com/ronisbr/nano-theme.nvim",
+	"https://github.com/olivercederborg/poimandres.nvim",
+	"https://github.com/ThorstenRhau/token",
 })
 
 vim.diagnostic.config({
