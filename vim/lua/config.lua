@@ -21,6 +21,8 @@ vim.pack.add({
 	"https://github.com/lewis6991/ts-install.nvim",
 	"https://github.com/Wansmer/treesj",
 	"https://github.com/HiPhish/rainbow-delimiters.nvim",
+	-- Colorschemes
+	{ src = "https://github.com/rainglow/vim", name = "rainglow" },
 })
 
 vim.diagnostic.config({

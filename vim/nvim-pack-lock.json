@@ -44,6 +44,10 @@
       "rev": "aab6caaffd79b8def22ec4320a5344f7c42f58d2",
       "src": "https://github.com/HiPhish/rainbow-delimiters.nvim"
     },
+    "rainglow": {
+      "rev": "837fd7292274e0ee2f3b5aee4519c3f74d7dc3d1",
+      "src": "https://github.com/rainglow/vim"
+    },
     "treesj": {
       "rev": "26bc2a8432ba3ea79ed6aa346fba780a3d372570",
       "src": "https://github.com/Wansmer/treesj"
