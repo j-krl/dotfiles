@@ -119,7 +119,11 @@ nnoremap <leader>- mZ<cmd>FzfLua resume<cr>
 nnoremap <leader>@ :%diffget LOCAL<tab><cr>
 nnoremap <leader># :%diffget REMOTE<tab><cr>
 nnoremap <leader>) mZ<cmd>lua require("fzf-lua").colorschemes({
-	\ignore_patterns = { "-contrast", "-light" } })<cr>
+	\ignore_patterns = { "^blue$", "^catppuccin$", "^darkblue$", "^delek$",
+	\"^desert$", "^elflord$", "^evening$", "^habamax$", "^industry$", "^koehler$",
+	\"^lunaperche$", "^morning$", "^murphy$", "^novum$", "^pablo$", "^peachpuff$",
+	\"^quiet$", "^retrobox$", "^ron$", "^shine$", "^sorbet$", "^torte$", "^unokai$",
+	\"^vim$", "^wildcharm$", "^zaibatsu$", "^zellner$", "-contrast$", "-light$" } })<cr>
 nnoremap <leader>.f mZ<cmd>lua require("fzf-lua").files({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>.g :<C-U>grep '' %:p:h<tab><S-left><left><left>
