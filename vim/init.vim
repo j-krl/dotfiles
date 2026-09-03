@@ -268,7 +268,7 @@ command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
 command! W Wfmt!
-command! Ybranch let @+ = system("git branch --show-current")
+command! Ybranch let @+ = trim(system("git branch --show-current"))
 command! Ycwd let @+ = getcwd()
 command! -bang Ypath exe "let @+ = expand('%:" .. (<bang>0 ? "p" : ".") .. ":h" .. "')"
 command! -bang Yfile exe "let @+ = expand('%:" .. (<bang>0 ? "p" : ".") .. "')"
