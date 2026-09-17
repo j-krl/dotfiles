@@ -59,7 +59,6 @@ let g:copilot_filetypes = {'markdown': v:false}
 let g:format_on_save = 1
 let g:rooter_change_directory_for_non_project_files = 'current'
 let g:rooter_silent_chdir = 1
-let g:rooter_resolve_links = 1
 let g:gutentags_add_default_project_roots = 0
 let g:gutentags_project_root = ['.git', 'main.tf'] " TODO: need better tf root
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
