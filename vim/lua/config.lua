@@ -45,6 +45,8 @@ local lsps = {
 	"clangd",
 	"emmet_language_server",
 	"gopls",
+	"jqls",
+	"jsonls",
 	"jsonnet_ls",
 	"lua_ls",
 	"ruff",
