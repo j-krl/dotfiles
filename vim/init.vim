@@ -169,6 +169,10 @@ nnoremap <leader>R mZ<cmd>FzfLua git_branches<cr>
 nnoremap <leader>s mZ<cmd>FzfLua lsp_live_workspace_symbols<cr>
 nnoremap <leader>z mZ<cmd>FzfLua live_grep_native<cr>
 nnoremap <leader>Z mZ<cmd>FzfLua grep_cword<cr>
+nnoremap <localleader>f. mZ<cmd>lua require("fzf-lua").files({ cwd =
+	\vim.fn.expand("~/dotfiles") })<cr>
+nnoremap <localleader>z. mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
+	\vim.fn.expand("~/dotfiles") })<cr>
 
 xnoremap <leader>a <cmd>CodeCompanionChat<cr>
 xnoremap <silent> il g_o^
