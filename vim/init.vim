@@ -1,3 +1,5 @@
+let g:maplocalleader = "_"
+
 " Environment-specific settings
 let g:vimenv = fnamemodify($MYVIMRC, ':h') .. "/env.vim"
 if filereadable(g:vimenv)
@@ -11,7 +13,6 @@ lua require('config')
 " Options "
 """""""""""
 
-let g:maplocalleader = "_"
 set relativenumber
 set number
 set tabstop=4
