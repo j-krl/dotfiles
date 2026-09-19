@@ -5,4 +5,4 @@ Session.vim
 *~
 tags
 vim/spell/
-.vimenv
+vim/env.vim

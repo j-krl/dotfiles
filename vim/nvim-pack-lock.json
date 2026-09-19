@@ -1,7 +1,7 @@
 {
   "plugins": {
     "codecompanion.nvim": {
-      "rev": "9724e1386c41d3f986fd11cd127998c55dc26ea0",
+      "rev": "9833ab677869d0c6d83f58fedb77a53a8a2b23be",
       "src": "https://github.com/olimorris/codecompanion.nvim"
     },
     "copilot.vim": {

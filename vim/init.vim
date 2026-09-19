@@ -1,3 +1,10 @@
+" Environment-specific settings
+let g:vimenv = fnamemodify($MYVIMRC, ':h') .. "/env.vim"
+if filereadable(g:vimenv)
+  exe 'source ' g:vimenv
+endif
+
+" Lua config w/ plugins
 lua require('config')
 
 """""""""""
@@ -316,10 +323,4 @@ packadd format
 packadd dynamic-indent-guides
 packadd gh-pull-requests
 packadd arglist-plus
-
-" Environment-specific settings
-let g:vimenv = fnamemodify($MYVIMRC, ':h') .. "/.vimenv"
-if filereadable(g:vimenv)
-  exe 'source ' g:vimenv
-endif
 

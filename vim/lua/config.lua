@@ -213,6 +213,10 @@ require("treesj").setup({ use_default_keymaps = false })
 require("codecompanion").setup({
 	interactions = {
 		chat = {
+			adapter = {
+				name = vim.g.codecompanion_adapter or "copilot",
+				model = vim.g.codecompanion_model or "claude-haiku-4.5",
+			},
 			keymaps = {
 				options = {
 					modes = { n = "gH" },
@@ -253,6 +257,17 @@ require("codecompanion").setup({
 				sticky = true,
 				layout = "horizontal",
 			},
+		},
+	},
+	adapters = {
+		acp = {
+			claude_code = function()
+				return require("codecompanion.adapters").extend("claude_code", {
+					env = {
+						CLAUDE_CODE_OAUTH_TOKEN = "file:~/.claude_token",
+					},
+				})
+			end,
 		},
 	},
 })
