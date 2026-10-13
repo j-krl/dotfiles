@@ -37,7 +37,7 @@ function! NavArglist(count)
 endfunction
 
 function! GitBranchComplete(ArgLead, CmdLine, CursorPos)
-    let l:branches = systemlist("git branch --format='%(refname:short)'")
-    return filter(l:branches, 'v:val =~ "^' . a:ArgLead . '"')
+	let l:branches = systemlist("git branch --format='%(refname:short)'")
+	return filter(l:branches, 'v:val =~ "^' . a:ArgLead . '"')
 endfunction
 
