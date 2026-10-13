@@ -134,6 +134,7 @@ require("ts-install").setup({
 		"c",
 		"css",
 		"go",
+		"gotmpl",
 		"html",
 		"htmldjango",
 		"javascript",
