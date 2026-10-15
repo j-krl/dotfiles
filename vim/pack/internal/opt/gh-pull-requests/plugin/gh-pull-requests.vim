@@ -4,7 +4,6 @@ command! -bang Prinline call GhPrCreate(0, <bang>0)
 
 cabbrev Prc !gh pr create --fill-first
 cabbrev Prd !gh pr create --fill-first --draft
-cabbrev Prv !gh pr view --web
 
 function! GhPrCreate(buf, draft)
 	if a:buf
