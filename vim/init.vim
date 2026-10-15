@@ -217,7 +217,7 @@ cabbrev Gd Git diff
 cabbrev Gdco Git dcheckout
 cabbrev Gdfe Git dfe
 cabbrev Gl Git log
-cabbrev Glo Git log --oneline
+cabbrev Gl1 Git log --oneline --decorate=short
 cabbrev Gpl Git pull
 cabbrev Gps Git push
 cabbrev fz FzfLua
