@@ -13,10 +13,10 @@
 [alias]
 	ac = "!git add -A && git commit"
 	acp = "!f() { git add -A && git commit -m \"$1\" && git push; }; f"
+	amend = "!git add -A && git commit --amend --no-edit"
 	br = "branch"
 	co = "checkout"
 	cob = "checkout -b"
-	amend = "!git add -A && git commit --amend --no-edit"
 	d = "diff"
 	dbr = "!f() { git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'; }; f"
 	dcheckout = "!f() { git checkout \"$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')\"; }; f"
@@ -29,4 +29,6 @@
 	l = "log"
 	l1 = "log --oneline"
 	nuke = "checkout -- ."
+	pl = "pull"
+	ps = "push"
 	sh = "show"
