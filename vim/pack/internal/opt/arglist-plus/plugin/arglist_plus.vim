@@ -9,12 +9,13 @@ command! -nargs=+ Argfind exe "args `fd --hidden --type f -E '.git' --full-path 
 command! -nargs=? -complete=customlist,GitBranchComplete Argdt 
 	\exe "args `git diff " .. <q-args> .. " --name-only`" | let @b = <q-args> |
 	\args | Gvdiffsplit <args> | windo setlocal wrap foldlevel=0
+command! Argqdt wincmd l\|wincmd o\|Argclear\|let @b = ""
 
 cabbrev Aa Argappend
 cabbrev Ax Argclear
 cabbrev Ad Argdelete
 cabbrev At Argdt
-cabbrev Aqt wincmd l\|wincmd o\|Argclear\|let @b = ""
+cabbrev Aqt Argqdt
 
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
 nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
