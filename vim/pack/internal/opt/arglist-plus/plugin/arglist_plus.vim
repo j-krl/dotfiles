@@ -14,7 +14,7 @@ cabbrev Aa Argappend
 cabbrev Ax Argclear
 cabbrev Ad Argdelete
 cabbrev At Argdt
-cabbrev Aqt wincmd l\|wincmd o\|Argclear
+cabbrev Aqt wincmd l\|wincmd o\|Argclear\|let @b = ""
 
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
 nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
