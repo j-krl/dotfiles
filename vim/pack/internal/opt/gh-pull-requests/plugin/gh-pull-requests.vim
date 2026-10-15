@@ -9,6 +9,7 @@ cabbrev Prd !gh pr create --fill-first --draft
 cabbrev Prv !gh pr view
 cabbrev Prw !gh pr view --web
 cabbrev Prt !gh pr edit --title
+cabbrev Pru !gh pr update-branch
 
 function! GhPrClose() abort
 	let l:number = system("gh pr view --json number --jq .number")
