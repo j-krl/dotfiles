@@ -3,6 +3,8 @@ command! Prbody call GhPrEdit()
 command! -bang Prready exe "!gh pr ready" .. (<bang>0 ? " --undo" : "")
 command! Prx call GhPrClose()
 
+command! -bang Ypr let @+ = trim(system("gh pr view --json url --jq .url"))
+
 cabbrev GHP !gh pr
 cabbrev Prc !gh pr create --fill-first
 cabbrev Prd !gh pr create --fill-first --draft
