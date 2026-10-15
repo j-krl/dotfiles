@@ -3,7 +3,7 @@ let g:maplocalleader = "_"
 " Environment-specific settings
 let g:vimenv = fnamemodify($MYVIMRC, ':h') .. "/env.vim"
 if filereadable(g:vimenv)
-  exe 'source ' g:vimenv
+	exe 'source ' g:vimenv
 endif
 
 " Lua config w/ plugins
@@ -217,6 +217,7 @@ cabbrev Gd Git diff
 cabbrev Gdco Git dcheckout
 cabbrev Gdfe Git dfe
 cabbrev Gl Git log
+cabbrev Glo Git log --oneline
 cabbrev Gpl Git pull
 cabbrev Gps Git push
 cabbrev fz FzfLua
