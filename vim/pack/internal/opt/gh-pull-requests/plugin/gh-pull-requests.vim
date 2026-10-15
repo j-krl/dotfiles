@@ -1,5 +1,7 @@
 command! -bang Prbuf call GhPrBuf("gh pr create" .. (<bang>0 ? " --draft" : ""), 1, GhPrFillFirst())
 command! Prbody call GhPrEdit()
+command! -bang Prready exe "!gh pr ready" .. (<bang>0 ? " --undo" : "")
+command! Prx call GhPrClose()
 
 cabbrev GHP !gh pr
 cabbrev Prc !gh pr create --fill-first
@@ -7,6 +9,16 @@ cabbrev Prd !gh pr create --fill-first --draft
 cabbrev Prv !gh pr view
 cabbrev Prw !gh pr view --web
 cabbrev Prt !gh pr edit --title
+
+function! GhPrClose() abort
+	let l:number = system("gh pr view --json number --jq .number")
+	if v:shell_error
+		echoerr l:number
+		return
+	endif
+	let l:output = system("gh pr close " .. trim(l:number))
+	exe (v:shell_error ? "echoerr " : "echomsg ") .. string(l:output)
+endfunction
 
 function! GhPrFillFirst() abort
 	let l:trunk = trim(system("git symbolic-ref --short refs/remotes/origin/HEAD"))
