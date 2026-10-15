@@ -3,3 +3,6 @@ prc: pr create --fill-first
 prd: pr create --fill-first --draft
 prurl: pr view --json url --jq .url
 prstat: pr view --json mergeStateStatus,mergeable
+mypr: search prs author:@me state:open
+mypra: search prs author:@me
+pra: pr list --state all
