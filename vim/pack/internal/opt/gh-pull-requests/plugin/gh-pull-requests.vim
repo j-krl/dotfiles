@@ -13,6 +13,7 @@ cabbrev Prw !gh pr view --web
 cabbrev Prt !gh pr edit --title
 cabbrev Pru !gh pr update-branch
 cabbrev Prs !gh pr view --json mergeStateStatus,mergeable
+cabbrev Pri !gh pr checks \| column -t -s $'\t'
 
 function! GhPrClose() abort
 	let l:number = system("gh pr view --json number --jq .number")
