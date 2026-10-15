@@ -276,7 +276,7 @@ command! CodeCompanionCopilotModelKeys lua print(vim.inspect(vim.tbl_keys(requir
 command! -nargs=? -complete=dir Explore Dirvish <args>
 command! Llen echo len(getloclist(winnr()))
 command! Rediff windo diffthis\|windo norm zM
-command! Scratch new|set buftype=nofile noswapfile bufhidden=hide
+command! Scratch new|set buftype=nofile noswapfile bufhidden=wipe
 command! -nargs=* -complete=dir_in_path Tree exe "Scratch" | exe "r !tree " ..
 	\<q-args>
 command! W Wfmt!
