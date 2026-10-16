@@ -224,6 +224,7 @@ cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
 cabbrev sov source $MYVIMRC
+cabbrev wd windo
 
 onoremap <silent> il :normal vil<CR>
 onoremap <silent> al :normal val<CR>
