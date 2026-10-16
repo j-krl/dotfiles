@@ -206,25 +206,23 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
-cabbrev Gac Git ac -m
-cabbrev Gacp Git acp
-cabbrev Gb Git blame
-cabbrev GB GBrowse
-cabbrev Gbr Git branch
-cabbrev Gcob Git checkout -b
-cabbrev Gco Git checkout
-cabbrev Gd Git diff
-cabbrev Gdco Git dcheckout
-cabbrev Gdfe Git dfe
-cabbrev Gl Git log
-cabbrev Gl1 Git log --oneline --decorate=short
-cabbrev Gpl Git pull
-cabbrev Gps Git push
+cabbrev gac Git ac -m
+cabbrev gacp Git acp
+cabbrev gbl Git blame
+cabbrev gbr Git branch
+cabbrev gcob Git checkout -b
+cabbrev gco Git checkout
+cabbrev gdf Git diff
+cabbrev gdco Git dcheckout
+cabbrev gdfe Git dfe
+cabbrev glg Git log
+cabbrev gl1 Git log --oneline --decorate=short
+cabbrev gpl Git pull
+cabbrev gps Git push
 cabbrev fz FzfLua
 cabbrev e. edit ~/dotfiles
 cabbrev ez edit ~/.zshrc
 cabbrev sov source $MYVIMRC
-cabbrev wd windo
 
 onoremap <silent> il :normal vil<CR>
 onoremap <silent> al :normal val<CR>

@@ -5,15 +5,15 @@ command! Prx call GhPrClose()
 
 command! -bang Ypr let @+ = trim(system("gh pr view --json url --jq .url"))
 
-cabbrev GHP !gh pr
-cabbrev Prc !gh pr create --fill-first
-cabbrev Prd !gh pr create --fill-first --draft
-cabbrev Prv !gh pr view
-cabbrev Prw !gh pr view --web
-cabbrev Prt !gh pr edit --title
-cabbrev Pru !gh pr update-branch
-cabbrev Prs !gh pr view --json mergeStateStatus,mergeable
-cabbrev Pri !gh pr checks \| column -t -s $'\t'
+cabbrev ghp !gh pr
+cabbrev prc !gh pr create --fill-first
+cabbrev prd !gh pr create --fill-first --draft
+cabbrev prv !gh pr view
+cabbrev prw !gh pr view --web
+cabbrev prt !gh pr edit --title
+cabbrev pru !gh pr update-branch
+cabbrev prs !gh pr view --json mergeStateStatus,mergeable
+cabbrev pri !gh pr checks \| column -t -s $'\t'
 
 function! GhPrClose() abort
 	let l:number = system("gh pr view --json number --jq .number")

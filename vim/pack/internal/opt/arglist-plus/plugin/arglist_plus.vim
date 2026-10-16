@@ -11,9 +11,9 @@ command! -nargs=? -complete=customlist,GitBranchComplete Adifftool
 	\args | Gvdiffsplit <args> | windo setlocal wrap foldlevel=0
 command! Aqdifftool wincmd l|wincmd o|%argd|let @b = ""
 
-cabbrev Aa Argappend
-cabbrev Ax Argclear
-cabbrev Ad Argdelete
+cabbrev aga Argappend
+cabbrev agx Argclear
+cabbrev agd Argdelete
 
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
 nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
