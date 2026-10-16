@@ -6,22 +6,20 @@ command! Arglclear argl|%argd|echo "local arglist created"
 command! -count -addr=arguments Argu exe (<count> > 0 ? <count> : "") .. "argu"|args
 command! -nargs=+ Argfind exe "args `fd --hidden --type f -E '.git' --full-path '" 
 	\.. <q-args> .. "'`" | args
-command! -nargs=? -complete=customlist,GitBranchComplete Argdt 
+command! -nargs=? -complete=customlist,GitBranchComplete Adifftool 
 	\exe "args `git diff " .. <q-args> .. " --name-only`" | let @b = <q-args> |
 	\args | Gvdiffsplit <args> | windo setlocal wrap foldlevel=0
-command! Argqdt wincmd l\|wincmd o\|Argclear\|let @b = ""
+command! Aqdifftool wincmd l|wincmd o|%argd|let @b = ""
 
 cabbrev Aa Argappend
 cabbrev Ax Argclear
 cabbrev Ad Argdelete
-cabbrev At Argdt
-cabbrev Aqt Argqdt
 
 nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
 nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
 nnoremap ]A <cmd>last<bar>args<cr><esc>
-" Diff arglist diffs set with :Argdt
+" Diff arglist diffs set with :Adifftool
 nmap <leader>]a ]a:<C-U>wincmd o\|Gvdiffsplit<space><C-R>b\|windo setlocal wrap foldlevel=0<cr>
 nmap <leader>[a [a:<C-U>wincmd o\|Gvdiffsplit<space><C-R>b\|windo setlocal wrap foldlevel=0<cr>
 nnoremap <expr> <space><space> ":<C-U>" .. v:count .. "Argu<cr><esc>"
