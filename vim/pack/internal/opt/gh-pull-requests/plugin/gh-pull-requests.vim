@@ -1,5 +1,6 @@
-command! -bang Prbuf call GhPrBuf("gh pr create" .. (<bang>0 ? " --draft" : ""), 1, GhPrFillFirst())
-command! Prbody call GhPrEdit()
+command! -bang Prcreate call GhPrBuf("gh pr create" .. (<bang>0 ? " --draft" : ""), 1, GhPrFillFirst())
+command! Prebody call GhPrEdit()
+command! Pretitle !gh pr edit --title
 command! -bang Prready exe "!gh pr ready" .. (<bang>0 ? " --undo" : "")
 command! Prx call GhPrClose()
 
@@ -10,7 +11,6 @@ cabbrev prc !gh pr create --fill-first
 cabbrev prd !gh pr create --fill-first --draft
 cabbrev prv !gh pr view
 cabbrev prw !gh pr view --web
-cabbrev prt !gh pr edit --title
 cabbrev pru !gh pr update-branch
 cabbrev prs !gh pr view --json mergeStateStatus,mergeable
 cabbrev pri !gh pr checks \| column -t -s $'\t'
