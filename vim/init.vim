@@ -206,22 +206,23 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <A-b> <S-Left>
 cnoremap <A-f> <S-Right>
+cabbrev e. edit ~/dotfiles
+cabbrev ez edit ~/.zshrc
+cabbrev fz FzfLua
 cabbrev gac Git ac -m
 cabbrev gacp Git acp
 cabbrev gbl Git blame
 cabbrev gbr Git branch
-cabbrev gcob Git checkout -b
 cabbrev gco Git checkout
-cabbrev gdf Git diff
+cabbrev gcob Git checkout -b
 cabbrev gdco Git dcheckout
+cabbrev gdco Git dco
+cabbrev gdf Git diff
 cabbrev gdfe Git dfe
-cabbrev glg Git log
 cabbrev gl1 Git log --oneline --decorate=short
+cabbrev glg Git log
 cabbrev gpl Git pull
 cabbrev gps Git push
-cabbrev fz FzfLua
-cabbrev e. edit ~/dotfiles
-cabbrev ez edit ~/.zshrc
 cabbrev sov source $MYVIMRC
 
 onoremap <silent> il :normal vil<CR>
