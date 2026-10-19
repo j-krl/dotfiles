@@ -45,11 +45,12 @@ endfunction
 
 function! GhPrBuf(cmd, title, lines) abort
 	Scratch
-	setlocal filetype=markdown
+	setlocal buftype=acwrite filetype=markdown
+	exe "silent file gh://pr-" .. bufnr('')
 	call setline(1, a:lines)
 	let b:gh_pr_cmd = a:cmd
 	let b:gh_pr_title = a:title
-	autocmd BufWipeout <buffer> call GhPrSubmit(str2nr(expand('<abuf>')))
+	autocmd BufWriteCmd <buffer> call GhPrSubmit(str2nr(expand('<abuf>')))
 endfunction
 
 function! GhPrSubmit(buf) abort
@@ -58,16 +59,19 @@ function! GhPrSubmit(buf) abort
 	if getbufvar(a:buf, 'gh_pr_title')
 		let l:body = join(l:lines[2:], "\n")
 		if empty(l:lines[0])
+			echoerr "PR title cannot be empty"
 			return
 		endif
 		let l:cmd ..= " --title " .. shellescape(l:lines[0])
 	else
 		let l:body = join(l:lines, "\n")
-		if empty(l:body)
-			return
-		endif
 	endif
 	let l:output = system(l:cmd .. " --body " .. shellescape(l:body))
-	exe (v:shell_error ? "echoerr " : "echomsg ") .. string(l:output)
+	if v:shell_error
+		echoerr l:output
+		return
+	endif
+	call setbufvar(a:buf, '&modified', 0)
+	echomsg l:output
 endfunction
 
