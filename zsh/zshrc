@@ -33,23 +33,23 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 
 precmd() { vcs_info; }
 
-PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
+PROMPT='%(1j.[%j jobs] .)%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 
 # ZLE WIDGETS
 
 jobs_widget() { echo "" && jobs && zle reset-prompt; }
-fg_current_widget() { zle -I && fg %+; }
-fg_previous_widget() { zle -I && fg %-; }
-kill_job_current_widget() { kill %+ && fg %+; }
-kill_job_previous_widget() { kill %- && fg %-; }
+fg_current_widget() { zle -I && fg %+; zle reset-prompt; }
+fg_previous_widget() { zle -I && fg %-; zle reset-prompt; }
+kill_job_current_widget() { kill %+ && fg %+; zle reset-prompt; }
+kill_job_previous_widget() { kill %- && fg %-; zle reset-prompt; }
 zle -N jobs_widget
 zle -N fg_current_widget
 zle -N fg_previous_widget
 zle -N kill_job_current_widget
 zle -N kill_job_previous_widget
 for i in {1..9}; do
-	eval "fg_${i}_widget() { zle -I; fg %${i}; }"
-	eval "kill_job_${i}_widget() { kill %${i} && fg %${i}; }"
+	eval "fg_${i}_widget() { zle -I; fg %${i}; zle reset-prompt; }"
+	eval "kill_job_${i}_widget() { kill %${i} && fg %${i}; zle reset-prompt; }"
 	eval "zle -N fg_${i}_widget"
 	eval "zle -N kill_job_${i}_widget"
 done
@@ -90,6 +90,9 @@ alias nv0="nvim -c \"normal '0\""
 alias nvv="nvim ~/dotfiles/vim/init.vim"
 
 alias k="kubectl"
+alias kd='sh -c "kubectl describe \"\$@\" | bat -l yaml" _'
+alias kg='sh -c "kubectl get \"\$@\" -o yaml | bat -l yaml" _'
+alias kgj='sh -c "kubectl get \"\$@\" -o json | bat -l json" _'
 alias kn="kubectl config set-context --current --namespace"
 alias kx="kubectl config use-context"
 alias kl="kubectl config view --minify -o json | jq -r '
@@ -102,6 +105,8 @@ alias gc="gcloud"
 alias ga="gcloud auth login --update-adc"
 alias batj="bat -l json"
 alias baty="bat -l yaml"
+# Get prettified ripgrep output in bat pager
+alias rgb='sh -c "rg --heading --line-number --color=always \"\$@\" | bat" _'
 alias jq="jq --indent 4"
 alias bd=". bd -si"
 alias null="/dev/null"
@@ -121,23 +126,6 @@ gita() {
 
 ghclone() {
 	git clone "https://github.com/$1.git"
-}
-
-kd() {
-	bat -l yaml < <(eval "kubectl describe $*")
-}
-
-kg() {
-	bat -l yaml < <(eval "kubectl get $* -o yaml")
-}
-
-kgj() {
-	bat -l json < <(eval "kubectl get $* -o json")
-}
-
-# Get prettified ripgrep output in bat pager
-rgb() {
-	bat < <(eval "rg --heading --line-number --color=always $*")
 }
 
 # Interactive grep that will open the chosen file in nvim on enter
