@@ -19,12 +19,12 @@ nnoremap [a <cmd>call NavArglist(v:count1 * -1)<bar>args<cr><esc>
 nnoremap ]a <cmd>call NavArglist(v:count1)<bar>args<cr><esc>
 nnoremap [A <cmd>first<bar>args<cr><esc>
 nnoremap ]A <cmd>last<bar>args<cr><esc>
+nnoremap <expr> <space><space> ":<C-U>" .. v:count .. "Argu<cr><esc>"
 " Diff arglist diffs set with :Adifftool
 nmap <leader>]a ]a:<C-U>wincmd o\|Gvdiffsplit<space><C-R>b\|windo setlocal wrap foldlevel=0\|redraw\|args<cr><esc>
 nmap <leader>[a [a:<C-U>wincmd o\|Gvdiffsplit<space><C-R>b\|windo setlocal wrap foldlevel=0\|redraw\|args<cr><esc>
 nmap <leader>]A ]A:<C-U>wincmd o\|Gvdiffsplit<space><C-R>b\|windo setlocal wrap foldlevel=0\|redraw\|args<cr><esc>
 nmap <leader>[A [A:<C-U>wincmd o\|Gvdiffsplit<space><C-R>b\|windo setlocal wrap foldlevel=0\|redraw\|args<cr><esc>
-nnoremap <expr> <space><space> ":<C-U>" .. v:count .. "Argu<cr><esc>"
 
 " Allows wrapping for ]a and [a arglist mappings
 function! NavArglist(count)
