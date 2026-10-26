@@ -141,6 +141,8 @@ nnoremap <leader>.z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 nnoremap <leader>.Z mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>0 <cmd>FzfLua colorschemes<cr>
+nnoremap <expr> <leader>1a ":<C-U>CodeCompanionChat " .. "adapter=" ..
+	\g:codecompanion_agent_adapter .. " <cr>"
 nnoremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
 nnoremap <leader>A <cmd>CodeCompanionChat<cr>
 nnoremap <leader>b mZ<cmd>FzfLua buffers<cr>

@@ -217,7 +217,7 @@ require("codecompanion").setup({
 		chat = {
 			adapter = {
 				name = vim.g.codecompanion_adapter or "copilot",
-				model = vim.g.codecompanion_model or "claude-haiku-4.5",
+				model = vim.g.codecompanion_model or "claude-haiku-5.5",
 			},
 			keymaps = {
 				options = {
