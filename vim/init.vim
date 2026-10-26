@@ -91,6 +91,11 @@ noremap <space>p "+p
 noremap <space>P "+P
 noremap <space>y "+y
 noremap <space>Y "+Y
+noremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
+noremap <leader>A <cmd>CodeCompanionChat<cr>
+noremap <expr> <leader>1A ":<C-U>CodeCompanionChat " .. "adapter=" ..
+	\g:codecompanion_agent_adapter .. " <cr>"
+
 nnoremap <silent> - :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" :
 	\""<cr>:Explore<cr>
 nnoremap <space>- :<C-U><c-r>=bufname() == "" ? "set bufhidden=\|" : ""<cr>
@@ -141,10 +146,6 @@ nnoremap <leader>.z mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 nnoremap <leader>.Z mZ<cmd>lua require("fzf-lua").grep_cword({ cwd =
 	\vim.fn.expand("%:h:.") })<cr>
 nnoremap <leader>0 <cmd>FzfLua colorschemes<cr>
-nnoremap <expr> <leader>1a ":<C-U>CodeCompanionChat " .. "adapter=" ..
-	\g:codecompanion_agent_adapter .. " <cr>"
-nnoremap <leader>a <cmd>CodeCompanionChat Toggle<cr>
-nnoremap <leader>A <cmd>CodeCompanionChat<cr>
 nnoremap <leader>b mZ<cmd>FzfLua buffers<cr>
 nnoremap <leader>B mZ<cmd>FzfLua lines<cr>
 nnoremap <leader>c <cmd>cwindow<cr>
@@ -176,7 +177,6 @@ nnoremap <localleader>f. mZ<cmd>lua require("fzf-lua").files({ cwd =
 nnoremap <localleader>z. mZ<cmd>lua require("fzf-lua").live_grep_native({ cwd =
 	\vim.fn.expand("~/dotfiles") })<cr>
 
-xnoremap <leader>a <cmd>CodeCompanionChat<cr>
 xnoremap <silent> il g_o^
 xnoremap <silent> al $o0
 xnoremap <expr> <A-j> ":m '>+" .. v:count1 .. "<CR>gv=gv"

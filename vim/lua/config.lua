@@ -214,6 +214,17 @@ require("treesj").setup({ use_default_keymaps = false })
 
 require("codecompanion").setup({
 	interactions = {
+		background = {
+			adapter = {
+				name = "copilot",
+				model = "claude-haiku-5.5",
+			},
+			chat = {
+				opts = {
+					enabled = true,
+				},
+			},
+		},
 		chat = {
 			adapter = {
 				name = vim.g.codecompanion_adapter or "copilot",
@@ -258,6 +269,7 @@ require("codecompanion").setup({
 				height = 0.5,
 				sticky = true,
 				layout = "horizontal",
+				pertab = true,
 			},
 		},
 	},
