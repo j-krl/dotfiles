@@ -1,15 +1,16 @@
 vim.pack.add({
+	"https://github.com/airblade/vim-gitgutter",
 	"https://github.com/airblade/vim-rooter",
-	"https://github.com/selimacerbas/live-server.nvim",
-	"https://github.com/selimacerbas/markdown-preview.nvim",
+	"https://github.com/gcmt/taboo.vim",
 	"https://github.com/ibhagwan/fzf-lua",
 	"https://github.com/jeetsukumaran/vim-indentwise",
 	"https://github.com/justinmk/vim-dirvish",
 	"https://github.com/kylechui/nvim-surround",
 	"https://github.com/ludovicchabant/vim-gutentags",
 	"https://github.com/neovim/nvim-lspconfig",
+	"https://github.com/selimacerbas/live-server.nvim",
+	"https://github.com/selimacerbas/markdown-preview.nvim",
 	"https://github.com/tpope/vim-fugitive",
-	"https://github.com/airblade/vim-gitgutter",
 	"https://github.com/tpope/vim-rhubarb",
 	"https://github.com/tpope/vim-sleuth",
 	"https://github.com/unblevable/quick-scope",
@@ -18,10 +19,10 @@ vim.pack.add({
 	"https://github.com/nvim-lua/plenary.nvim",
 	"https://github.com/olimorris/codecompanion.nvim",
 	-- Treesitter dependent
-	"https://github.com/nvim-treesitter/nvim-treesitter",
-	"https://github.com/lewis6991/ts-install.nvim",
-	"https://github.com/Wansmer/treesj",
 	"https://github.com/HiPhish/rainbow-delimiters.nvim",
+	"https://github.com/Wansmer/treesj",
+	"https://github.com/lewis6991/ts-install.nvim",
+	"https://github.com/nvim-treesitter/nvim-treesitter",
 	-- Colorschemes
 	{ src = "https://github.com/rainglow/vim", name = "rainglow" },
 })
