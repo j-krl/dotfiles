@@ -37,19 +37,20 @@ PROMPT='%(1j.[%j jobs] .)%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 
 # ZLE WIDGETS
 
-jobs_widget() { echo "" && jobs && zle reset-prompt; }
-fg_current_widget() { zle -I && fg %+; zle reset-prompt; }
-fg_previous_widget() { zle -I && fg %-; zle reset-prompt; }
-kill_job_current_widget() { kill %+ && fg %+; zle reset-prompt; }
-kill_job_previous_widget() { kill %- && fg %-; zle reset-prompt; }
+source ~/dotfiles/zsh/jobs.zsh
+jobs_widget() { echo "" && jobs && zle reset-prompt && jobs_status_widget; }
+fg_current_widget() { zle -I && fg %+; zle reset-prompt; jobs_status_widget; }
+fg_previous_widget() { zle -I && fg %-; zle reset-prompt; jobs_status_widget; }
+kill_job_current_widget() { kill %+ && fg %+; zle reset-prompt; jobs_status_widget; }
+kill_job_previous_widget() { kill %- && fg %-; zle reset-prompt; jobs_status_widget; }
 zle -N jobs_widget
 zle -N fg_current_widget
 zle -N fg_previous_widget
 zle -N kill_job_current_widget
 zle -N kill_job_previous_widget
 for i in {1..9}; do
-	eval "fg_${i}_widget() { zle -I; fg %${i}; zle reset-prompt; }"
-	eval "kill_job_${i}_widget() { kill %${i} && fg %${i}; zle reset-prompt; }"
+	eval "fg_${i}_widget() { zle -I; fg %${i}; zle reset-prompt; jobs_status_widget; }"
+	eval "kill_job_${i}_widget() { kill %${i} && fg %${i}; zle reset-prompt; jobs_status_widget; }"
 	eval "zle -N fg_${i}_widget"
 	eval "zle -N kill_job_${i}_widget"
 done
@@ -58,8 +59,10 @@ zle -N edit-command-line
 # ZSH KEYMAPS
 
 bindkey -r '^J' # redundant -- same as ^M
-bindkey '^J^J' jobs_widget
-bindkey '^Jj' jobs_widget
+bindkey '^J^J' jobz_widget
+bindkey '^Jj' jobz_widget
+bindkey '^J^H' jobs_widget
+bindkey '^Jh' jobs_widget
 bindkey '^I' expand-or-complete
 bindkey '^]' fzf-tab-complete
 bindkey '^U' backward-kill-line
