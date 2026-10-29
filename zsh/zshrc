@@ -33,16 +33,32 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 
 precmd() { vcs_info; }
 
-PROMPT='%(1j.[%j jobs] .)%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
+PROMPT='%F{blue}%0~%f ${vcs_info_msg_0_}%F{green}%(!.#.>) %f'
 
 # ZLE WIDGETS
 
 source ~/dotfiles/zsh/jobs.zsh
 jobs_widget() { echo "" && jobs && zle reset-prompt && jobs_status_widget; }
-fg_current_widget() { zle -I && fg %+; zle reset-prompt; jobs_status_widget; }
-fg_previous_widget() { zle -I && fg %-; zle reset-prompt; jobs_status_widget; }
-kill_job_current_widget() { kill %+ && fg %+; zle reset-prompt; jobs_status_widget; }
-kill_job_previous_widget() { kill %- && fg %-; zle reset-prompt; jobs_status_widget; }
+fg_current_widget() {
+	zle -I && fg %+
+	zle reset-prompt
+	jobs_status_widget
+}
+fg_previous_widget() {
+	zle -I && fg %-
+	zle reset-prompt
+	jobs_status_widget
+}
+kill_job_current_widget() {
+	kill %+ && fg %+
+	zle reset-prompt
+	jobs_status_widget
+}
+kill_job_previous_widget() {
+	kill %- && fg %-
+	zle reset-prompt
+	jobs_status_widget
+}
 zle -N jobs_widget
 zle -N fg_current_widget
 zle -N fg_previous_widget
