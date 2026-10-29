@@ -1,19 +1,19 @@
 command! -bang Prcreate call GhPrBuf("gh pr create" .. (<bang>0 ? " --draft" : ""), 1, GhPrFillFirst())
 command! Prebody call GhPrEdit()
+command! Prqcreate !gh pr create --fill-first
+command! Prdcreate !gh pr create --fill-first --draft
 command! Pretitle !gh pr edit --title
 command! -bang Prready exe "!gh pr ready" .. (<bang>0 ? " --undo" : "")
 command! Prx call GhPrClose()
+command! Prview !gh pr view
+command! Prwview !gh pr view --web
+command! Prupdate !gh pr update-branch
+command! Prstatus !gh pr view --json mergeStateStatus,mergeable
+command! Printegration !gh pr checks \| column -t -s $'\t'
 
 command! -bang Ypr let @+ = trim(system("gh pr view --json url --jq .url"))
 
 cabbrev ghp !gh pr
-cabbrev prc !gh pr create --fill-first
-cabbrev prd !gh pr create --fill-first --draft
-cabbrev prv !gh pr view
-cabbrev prw !gh pr view --web
-cabbrev pru !gh pr update-branch
-cabbrev prs !gh pr view --json mergeStateStatus,mergeable
-cabbrev pri !gh pr checks \| column -t -s $'\t'
 
 function! GhPrClose() abort
 	let l:number = system("gh pr view --json number --jq .number")
