@@ -4,7 +4,7 @@ command! Prdcreate !gh pr create --fill-first --draft
 command! Prebody call GhPrEdit()
 command! Pretitle !gh pr edit --title
 command! Prfdiff !gh pr diff
-command! Printegration !gh pr checks \| column -t -s $'\t'
+command! Printegration !gh pr checks | column -t -s $'\t'
 command! Prqcreate !gh pr create --fill-first
 command! Prstatus !gh pr view --json mergeStateStatus,mergeable
 command! Prupdate !gh pr update-branch
