@@ -3,7 +3,7 @@ command! -bang Prready exe "!gh pr ready" .. (<bang>0 ? " --undo" : "")
 command! Prdcreate !gh pr create --fill-first --draft
 command! Prebody call GhPrEdit()
 command! Pretitle !gh pr edit --title
-command! Prfdiff !gh pr diff
+command! Prfdiff exe "Scratch" | call setline(1, systemlist("gh pr diff --color=never")) | setlocal filetype=git
 command! Printegration !gh pr checks | column -t -s $'\t'
 command! Prqcreate !gh pr create --fill-first
 command! Prstatus !gh pr view --json mergeStateStatus,mergeable
@@ -75,4 +75,3 @@ function! GhPrSubmit(buf) abort
 	call setbufvar(a:buf, '&modified', 0)
 	echomsg l:output
 endfunction
-
