@@ -1,11 +1,10 @@
 command! -bang Prcreate call GhPrBuf("gh pr create" .. (<bang>0 ? " --draft" : ""), 1, GhPrFillFirst())
 command! -bang Prready exe "!gh pr ready" .. (<bang>0 ? " --undo" : "")
-command! Prdcreate !gh pr create --fill-first --draft
 command! Prebody call GhPrEdit()
 command! Pretitle !gh pr edit --title
 command! Prfdiff exe "Scratch" | call setline(1, systemlist("gh pr diff --color=never")) | setlocal filetype=git
 command! Printegration !gh pr checks | column -t -s $'\t'
-command! Prqcreate !gh pr create --fill-first
+command! -bang Prqcreate exe "!gh pr create --fill-first" .. (<bang>0 ? " --draft" : "")
 command! Prstatus !gh pr view --json mergeStateStatus,mergeable
 command! Prupdate !gh pr update-branch
 command! Prview !gh pr view
