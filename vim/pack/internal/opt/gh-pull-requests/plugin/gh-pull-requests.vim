@@ -1,3 +1,4 @@
+command! Pracreate call GhPrTicketFull(<q-args>, <bang>0)
 command! -bang Prbcreate call GhPrBuf("gh pr create" .. (<bang>0 ? " --draft" : ""), 1, GhPrFillFirst())
 command! -bang Prqcreate exe "!gh pr create --fill-first" .. (<bang>0 ? " --draft" : "")
 command! -bang Prready exe "!gh pr ready" .. (<bang>0 ? " --undo" : "")
@@ -14,6 +15,21 @@ command! Prxclose call GhPrClose()
 command! -bang Ypr let @+ = trim(system("gh pr view --json url --jq .url"))
 
 cabbrev ghp !gh pr
+
+function! GhPrTicketFull(commitMsg, draft) abort
+	let branch = tolower(a:message)
+	let branch = substitute(branch, '[^[:alnum:][:space:]-]', '', 'g')
+	let branch = substitute(branch, '\s\+', '-', 'g')
+	exe 'Git checkout -b ' .. branch
+	Git add .
+	exe 'Git commit -m ' .. a:commitMsg
+	Git push
+	if a:draft
+		Prqcreate!
+	else
+		Prqcreate
+	endif
+endfunction
 
 function! GhPrClose() abort
 	let l:number = system("gh pr view --json number --jq .number")
