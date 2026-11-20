@@ -17,7 +17,7 @@ command! -bang Ypr let @+ = trim(system("gh pr view --json url --jq .url"))
 cabbrev ghp !gh pr
 
 function! GhPrTicketFull(commitMsg, draft) abort
-	let branch = tolower(a:message)
+	let branch = tolower(a:commitMsg)
 	let branch = substitute(branch, '[^[:alnum:][:space:]-]', '', 'g')
 	let branch = substitute(branch, '\s\+', '-', 'g')
 	exe 'Git checkout -b ' .. branch
