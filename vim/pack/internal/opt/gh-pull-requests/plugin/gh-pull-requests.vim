@@ -1,4 +1,4 @@
-command! Pracreate call GhPrTicketFull(<q-args>, <bang>0)
+command! -bang Pracreate call GhPrTicketFull(<q-args>, <bang>0)
 command! -bang Prbcreate call GhPrBuf("gh pr create" .. (<bang>0 ? " --draft" : ""), 1, GhPrFillFirst())
 command! -bang Prqcreate exe "!gh pr create --fill-first" .. (<bang>0 ? " --draft" : "")
 command! -bang Prready exe "!gh pr ready" .. (<bang>0 ? " --undo" : "")
