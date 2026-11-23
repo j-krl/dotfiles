@@ -193,7 +193,6 @@ export EDITOR=nvim
 export BINDIR="$HOME/.local/bin"
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacadah
-export GIT_PAGER="diff-highlight | less"
 
 export FZF_DEFAULT_COMMAND='fd -t f' # gitignored and hidden file behaviour
 export FZF_DEFAULT_OPTS="--bind ctrl-b:half-page-up,ctrl-f:half-page-down,alt-u:preview-half-page-up,alt-d:preview-half-page-down,alt-up:preview-top,alt-down:preview-bottom"

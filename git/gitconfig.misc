@@ -1,5 +1,6 @@
 [core]
 	excludesfile = ~/.config/git/ignore
+	pager = diff-higlight | less
 [merge]
 	tool = nvimdiff2
 [mergetool]
