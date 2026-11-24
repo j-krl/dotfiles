@@ -228,7 +228,9 @@ cabbrev glg Git log
 cabbrev gpl Git pull
 cabbrev gps Git push
 cabbrev gst Git stash
+cabbrev gss Gdiffsplit
 cabbrev gstp Git stash pop
+cabbrev gvv Gvdiffsplit
 cabbrev sov source $MYVIMRC
 
 onoremap <silent> il :normal vil<CR>
