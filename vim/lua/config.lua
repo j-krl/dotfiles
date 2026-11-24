@@ -167,7 +167,7 @@ fzf_lua.setup({
 	},
 	git = {
 		branches = {
-			cmd = "git branch --all --color",
+			cmd = "git branch --color",
 		},
 	},
 	files = {
